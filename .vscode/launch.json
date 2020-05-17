@@ -1,0 +1,50 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Dev Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/x_mains/dev_main.dart",
+            "args": [
+                "--flavor",
+                "dev",
+            ],
+        },
+        {
+            "name": "Dev Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/x_mains/dev_main.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "dev",
+            ],
+        },
+        {
+            "name": "Prod Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/x_mains/prod_main.dart",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
+        },
+        {
+            "name": "Prod Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/x_mains/prod_main.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "prod",
+            ],
+        }
+    ]
+}
