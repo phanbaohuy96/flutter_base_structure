@@ -15,7 +15,9 @@ class ThemeButton extends SimpleButton {
           width: width,
           height: height,
           borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.title,
+          textStyle: Theme.of(context).textTheme.title.copyWith(
+                color: Colors.white,
+              ),
           color: Theme.of(context).accentColor,
         );
 
@@ -31,7 +33,9 @@ class ThemeButton extends SimpleButton {
           width: width,
           height: height,
           borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.title,
+          textStyle: Theme.of(context).textTheme.title.copyWith(
+                color: Colors.white,
+              ),
           color: Theme.of(context).primaryColorLight,
         );
 
@@ -47,7 +51,9 @@ class ThemeButton extends SimpleButton {
           width: width,
           height: height,
           borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.title,
+          textStyle: Theme.of(context).textTheme.title.copyWith(
+                color: Colors.white,
+              ),
           color: Theme.of(context).accentColor,
         );
 }

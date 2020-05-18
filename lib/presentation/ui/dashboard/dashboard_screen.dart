@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbasestructure/base/bloc_provider.dart';
-import 'package:flutterbasestructure/presentation/common_bloc/app_data_bloc.dart';
+import 'package:flutterbasestructure/base/bloc_base.dart';
 
 import '../../../envs.dart';
 

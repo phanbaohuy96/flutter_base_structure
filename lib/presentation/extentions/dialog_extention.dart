@@ -29,6 +29,7 @@ Future<dynamic> showNoticeDialog({
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: ThemeButton.primary(
+              width: Dimension.getWidth(0.8),
               context: context,
               title: titleBtn ?? S.of(context).translate('common.dismiss'),
               onTap: () {
