@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_simple_ui/dialog.dart';
 
 import '../../common/components/i18n/internationalization.dart';
-import '../../utils/dimension.dart';
+import '../../common/utils/dimension.dart';
 import '../theme/theme_button.dart';
 
 Future<dynamic> showNoticeDialog({

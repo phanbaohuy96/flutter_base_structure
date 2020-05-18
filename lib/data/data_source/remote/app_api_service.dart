@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
+import '../../../common/utils/log_utils.dart';
 import '../../../envs.dart';
-import '../../../utils/log_utils.dart';
 import 'http_constants.dart';
 import 'rest_client.dart';
 

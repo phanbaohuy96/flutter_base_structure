@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
 import '../common/components/i18n/internationalization.dart';
+import '../common/utils/log_utils.dart';
 import '../data/data_source/remote/app_api_service.dart';
 import '../presentation/extentions/dialog_extention.dart';
-import '../utils/log_utils.dart';
 import 'bloc_base.dart';
 
 abstract class StateBase<T extends StatefulWidget> extends State<T>

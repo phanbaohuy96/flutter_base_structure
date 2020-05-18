@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../ui/dashboard/dashboard_screen.dart';
-import '../ui/welcome/splash_screen.dart';
+import '../modules/dashboard/dashboard_screen.dart';
+import '../modules/welcome/splash_screen.dart';
 import 'route_list.dart';
 
 class RouteGenerator {
