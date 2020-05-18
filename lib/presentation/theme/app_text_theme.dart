@@ -1,40 +1,41 @@
 import 'package:flutter/material.dart';
+import 'text_utils.dart';
 import 'theme_color.dart';
 
 class AppTextTheme {
-  static TextTheme getDefaultTextTheme() => const TextTheme(
+  static TextTheme getDefaultTextTheme() => TextTheme(
         title: TextStyle(
-          fontSize: 20,
+          fontSize: TextSize.size20,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         subtitle: TextStyle(
-          fontSize: 16,
+          fontSize: TextSize.size16,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         headline: TextStyle(
-          fontSize: 35,
+          fontSize: TextSize.size35,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         subhead: TextStyle(
-          fontSize: 10,
+          fontSize: TextSize.size10,
         ),
       );
-  static TextTheme getDefaultTextThemeDark() => const TextTheme(
+  static TextTheme getDefaultTextThemeDark() => TextTheme(
         title: TextStyle(
-          fontSize: 20,
+          fontSize: TextSize.size20,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         subtitle: TextStyle(
-          fontSize: 16,
+          fontSize: TextSize.size16,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         headline: TextStyle(
-          fontSize: 35,
+          fontSize: TextSize.size35,
           fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
