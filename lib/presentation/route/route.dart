@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import '../modules/dashboard/dashboard_screen.dart';
@@ -8,31 +10,56 @@ class RouteGenerator {
   static Route buildRoutes(RouteSettings settings) {
     switch (settings.name) {
       case RouteList.initial:
-        return buildRoute(settings, SplashScreen());
+        return buildRoute(
+          SplashScreen(),
+          settings: settings,
+        );
       case RouteList.dashBoardRoute:
         return buildRoute(
-          settings,
           DashboardScreen(),
+          settings: settings,
         );
       default:
         return buildRoute(
-          settings,
           const SizedBox(),
+          settings: settings,
         );
     }
   }
 }
 
-MaterialPageRoute buildRoute(RouteSettings settings, Widget builder) {
-  return MaterialPageRoute(
-    settings: settings,
-    builder: (BuildContext context) => builder,
-  );
+Route buildRoute(Widget screen, {RouteSettings settings}) {
+  if (Platform.isIOS) {
+    return MaterialPageRoute(builder: (context) => screen, settings: settings);
+  } else {
+    return SlideLeftRoute(enterWidget: screen);
+  }
 }
 
-MaterialPageRoute buildDialog(RouteSettings settings, Widget builder) {
-  return MaterialPageRoute(
-      settings: settings,
-      builder: (BuildContext context) => builder,
-      fullscreenDialog: true);
+class SlideLeftRoute extends PageRouteBuilder {
+  final Widget enterWidget;
+  SlideLeftRoute({this.enterWidget})
+      : super(
+          pageBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+          ) {
+            return enterWidget;
+          },
+          transitionsBuilder: (
+            BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child,
+          ) {
+            return SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(1.5, 0.0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          },
+        );
 }

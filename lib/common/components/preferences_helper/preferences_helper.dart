@@ -4,7 +4,6 @@ import '../../../presentation/theme/theme_data.dart';
 import 'preferences_key.dart';
 
 class PreferencesHelper {
-  static SharedPreferences _prefs;
   static PreferencesHelper _instance;
 
   factory PreferencesHelper() {
@@ -12,6 +11,8 @@ class PreferencesHelper {
   }
 
   PreferencesHelper._();
+
+  SharedPreferences _prefs;
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();

@@ -11,21 +11,16 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     implements ApiServiceHandler {
   BlocBase getBloc();
 
-  StateBase() {
-    LogUtils.i('[ScreenBase->${T.toString()}] contructor');
-  }
-
   @override
   void initState() {
     super.initState();
-
     LogUtils.i('[ScreenBase->${T.toString()}] initState');
     getBloc()?.appApiService?.handlerEror = this;
   }
 
   @override
   dynamic onError(ErrorData error) {
-    LogUtils.i('[Statebase] error ${error.type}');
+    LogUtils.i('[ScreenBase->${T.toString()}] error ${error.type}');
 
     switch (error.type) {
       case ErrorType.unAuthorized:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbasestructure/base/bloc_base.dart';
 
 import '../../../envs.dart';
 
