@@ -14,7 +14,7 @@ class Env {
   static final Map<String, dynamic> prodEnv = {
     environmentKey: 'prod',
     cheatKey: false,
-    appnameKey: 'App Pro',
+    appnameKey: 'App Prod',
     baseApiLayerKey: ''
   };
 }
