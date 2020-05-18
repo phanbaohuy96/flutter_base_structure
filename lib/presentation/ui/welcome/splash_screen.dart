@@ -24,20 +24,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     PreferencesHelper().init().then((_) {
+      BlocProvider.of<AppDataBloc>(context).initial();
+
+      final MediaQueryData data = MediaQuery.of(context);
+      Dimension.setup(data);
+      TextSize.textScaleFactor = data.textScaleFactor;
+
       Future.delayed(
         const Duration(seconds: 1),
-      ).then((_) {
-        BlocProvider.of<AppDataBloc>(context).initial();
-
-        final MediaQueryData data = MediaQuery.of(context);
-        Dimension.setup(data);
-        TextSize.textScaleFactor = data.textScaleFactor;
-
-        Future.delayed(
-          const Duration(seconds: 1),
-        ).then((onValue) {
-          _launchApp();
-        });
+      ).then((onValue) {
+        _launchApp();
       });
     });
   }
