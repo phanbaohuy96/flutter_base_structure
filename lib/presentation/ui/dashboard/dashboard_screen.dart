@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterbasestructure/base/bloc_provider.dart';
 import 'package:flutterbasestructure/presentation/common_bloc/app_data_bloc.dart';
 
+import '../../../envs.dart';
+
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key}) : super(key: key);
 
@@ -20,11 +22,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appDataBloc = BlocProvider.of<AppDataBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '''${appDataBloc.getAppData.config.appName} - ${appDataBloc.getAppData.config.envName}'''),
+        title: Text('''${appConfig.appName} - ${appConfig.envName}'''),
       ),
       body: Center(
         child: Column(

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../base/bloc_provider.dart';
+import '../../../common/components/preferences_helper/preferences_helper.dart';
+import '../../../presentation/common_bloc/app_data_bloc.dart';
 import '../../../presentation/route/route_list.dart';
 import '../../../utils/dimension.dart';
 import '../../../utils/log_utils.dart';
@@ -20,15 +23,22 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    PreferencesHelper().init().then((_) {
+      Future.delayed(
+        const Duration(seconds: 1),
+      ).then((_) {
+        BlocProvider.of<AppDataBloc>(context).initial();
 
-    final MediaQueryData data = MediaQuery.of(context);
-    Dimension.setup(data);
-    TextSize.textScaleFactor = data.textScaleFactor;
+        final MediaQueryData data = MediaQuery.of(context);
+        Dimension.setup(data);
+        TextSize.textScaleFactor = data.textScaleFactor;
 
-    Future.delayed(
-      const Duration(seconds: 1),
-    ).then((onValue) {
-      _launchApp();
+        Future.delayed(
+          const Duration(seconds: 1),
+        ).then((onValue) {
+          _launchApp();
+        });
+      });
     });
   }
 

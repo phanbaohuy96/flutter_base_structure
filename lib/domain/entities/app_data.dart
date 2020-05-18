@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbasestructure/envs.dart';
 
 import '../../presentation/theme/theme_data.dart';
 
@@ -7,9 +6,8 @@ class AppData {
   ThemeData themeData;
   SupportedTheme currentTheme;
   Locale locale;
-  Config config;
 
-  AppData(this.currentTheme, this.locale, this.config) {
+  AppData(this.currentTheme, this.locale) {
     themeData = initialTheme.data;
   }
 

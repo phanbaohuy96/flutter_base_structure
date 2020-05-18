@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 
+import '../../../envs.dart';
 import '../../../utils/log_utils.dart';
 import 'http_constants.dart';
 import 'rest_client.dart';
@@ -10,7 +11,7 @@ class AppApiService {
   ApiServiceHandler handlerEror;
 
   void create() {
-    client = RestClient(dio, baseUrl: '');
+    client = RestClient(dio, baseUrl: appConfig.baseApiLayer);
 
     addDioHeader();
 

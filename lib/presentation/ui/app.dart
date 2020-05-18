@@ -4,49 +4,23 @@ import 'package:flutterbasestructure/envs.dart';
 
 import '../../base/bloc_provider.dart';
 import '../../common/components/i18n/internationalization.dart';
-import '../../common/components/preferences_helper/preferences_helper.dart';
 import '../../domain/entities/app_data.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../route/route.dart';
 import '../route/route_list.dart';
-import 'welcome/splash_view.dart';
 
 class App extends StatefulWidget {
-  final Config config;
-
-  const App({Key key, this.config}) : super(key: key);
+  const App({Key key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<App> {
-  bool isConfigLoaded = false;
-  AppDataBloc _appDataBloc;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    PreferencesHelper().init().then((_) {
-      setState(() {
-        _appDataBloc = AppDataBloc(widget.config);
-        isConfigLoaded = true;
-      });
-    });
-  }
+  final AppDataBloc _appDataBloc = AppDataBloc();
 
   @override
   Widget build(BuildContext context) {
-    if (!isConfigLoaded) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: widget.config.cheat,
-        home: Scaffold(
-          backgroundColor: Colors.white,
-          body: SplashView(),
-        ),
-      );
-    }
-
     return MultiBlocProvider(
       providers: [
         BlocProvider<AppDataBloc>(
@@ -58,8 +32,8 @@ class _MyAppState extends State<App> {
         stream: _appDataBloc.appDataStream,
         builder: (BuildContext context, AsyncSnapshot<AppData> snapshotTheme) {
           return MaterialApp(
-            theme: snapshotTheme.data.themeData,
-            debugShowCheckedModeBanner: _appDataBloc.getAppData.config.cheat,
+            theme: snapshotTheme.data?.themeData ?? ThemeData(),
+            debugShowCheckedModeBanner: appConfig.cheat,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -70,7 +44,7 @@ class _MyAppState extends State<App> {
               Locale(LocaleKey.en),
               Locale(LocaleKey.vn),
             ],
-            locale: snapshotTheme.data.locale,
+            locale: snapshotTheme.data?.locale ?? const Locale(LocaleKey.vn),
             onGenerateRoute: RouteGenerator.buildRoutes,
             initialRoute: RouteList.initial,
           );

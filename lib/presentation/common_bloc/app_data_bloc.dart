@@ -7,7 +7,6 @@ import '../../base/bloc_base.dart';
 import '../../common/components/i18n/internationalization.dart';
 import '../../common/components/preferences_helper/preferences_helper.dart';
 import '../../domain/entities/app_data.dart';
-import '../../envs.dart';
 import '../../presentation/theme/theme_data.dart';
 
 class AppDataBloc extends BlocBase {
@@ -18,10 +17,15 @@ class AppDataBloc extends BlocBase {
   Stream<AppData> get appDataStream => _appDataController.stream;
   PreferencesHelper preferencesHelper;
 
-  AppDataBloc(Config config) : _appDataController = PublishSubject<AppData>() {
+  AppDataBloc() : _appDataController = PublishSubject<AppData>();
+
+  void initial() {
     preferencesHelper = PreferencesHelper();
-    appData = AppData(preferencesHelper.getTheme(),
-        Locale(preferencesHelper.getLocalization() ?? LocaleKey.en), config);
+    appData = AppData(
+      preferencesHelper.getTheme(),
+      Locale(preferencesHelper.getLocalization() ?? LocaleKey.en),
+    );
+    notifyAppDataChanged();
   }
 
   /// --------------------- Theme ---------------------//

@@ -34,3 +34,5 @@ class Config {
     baseApiLayer = env[Env.baseApiLayerKey];
   }
 }
+
+Config appConfig;
