@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 
 import '../../../utils/log_utils.dart';
+import 'http_constants.dart';
 import 'rest_client.dart';
 
 class AppApiService {
@@ -11,19 +12,19 @@ class AppApiService {
   void create() {
     client = RestClient(dio, baseUrl: '');
 
-    dio.options.headers['Content-Type'] = 'application/json';
+    addDioHeader();
 
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options) {
           LogUtils.i(
               '''[${DateTime.now().toString().split(' ').last}]-> DioSTART\tonRequest \t${options.method} [${options.path}] ${options.contentType}''');
-          return options; //continue
+          return options;
         },
         onResponse: (Response response) {
           LogUtils.i(
-              '''[${DateTime.now().toString().split(' ').last}]-> DioEND\tonResponse \t${response.statusCode} [${response.request.path}] ${response.request.method}  ${response.request.responseType}''');
-          return response; // continue
+              '''[${DateTime.now().toString().split(' ').last}]-> DioEND\tonResponse \t${response.statusCode} [${response.request.path}] ${response.request.method} ${response.request.responseType}''');
+          return response;
         },
         onError: (DioError error) async {
           LogUtils.e(
@@ -32,6 +33,24 @@ class AppApiService {
         },
       ),
     );
+  }
+
+  void addDioHeader({Map<String, String> headers}) {
+    dio.options.headers.clear();
+
+    //default header
+    dio.options.headers[HttpConstants.contentType] = 'application/json';
+
+    //config authentication
+    // final User user = _preferencesHelper.getUser();
+    // if (user?.accessToken != null) {
+    //   dio.options.headers[HttpConstants.authorization] =
+    //       'Bearer ${user.accessToken}';
+    // }
+
+    headers?.forEach((k, v) {
+      dio.options.headers[k] = v;
+    });
   }
 
   dynamic handlError(DioError error) {
@@ -53,18 +72,17 @@ class AppApiService {
       case DioErrorType.RESPONSE:
         {
           LogUtils.e(
-              '''[AppApiService] _handleError DioErrorType.RESPONSE status code: ${error.response.statusCode}''');
+              '''[AppApiService] _handleError ${error.type} status code: ${error.response.statusCode}''');
           result.statusCode = error.response.statusCode;
 
           if (result.statusCode == 401) {
             result.type = ErrorType.unAuthorized;
-          }
-          if (result.statusCode == 403) {
           } else if (result.statusCode >= 500 && result.statusCode < 600) {
             result.type = ErrorType.httpException;
           } else {
-            result.type = ErrorType.httpException;
-            // result.message = getErrorMessage(error.response.data);
+            result
+              ..type = ErrorType.httpException
+              ..message = getErrorMessage(error.response.data);
           }
           break;
         }
@@ -72,11 +90,12 @@ class AppApiService {
         break;
       case DioErrorType.DEFAULT:
         LogUtils.e(
-            '''[AppApiService] _handleError DioErrorType.DEFAULT status code: error.response is null -> Server die or No Internet connection''');
-        result.type = ErrorType.noInternet;
+            '''[AppApiService] _handleError ${error.type} status code: ${error.response.statusCode} -> Server die or No Internet connection''');
 
         if (error.message.contains('Unexpected character')) {
           result.type = ErrorType.serverUnExpected;
+        } else {
+          result.type = ErrorType.noInternet;
         }
         break;
     }
@@ -85,12 +104,17 @@ class AppApiService {
   }
 
   String getErrorMessage(Map<String, dynamic> dataRes) {
-    if (dataRes.containsKey('message') && dataRes['message'] != null) {
-      return dataRes['message']?.toString();
-    }
-    if (dataRes.containsKey('error') && dataRes['error'] != null) {
-      return dataRes['error']?.toString();
-    }
+    try {
+      if (dataRes.containsKey('message') && dataRes['message'] != null) {
+        return dataRes['message'].toString();
+      }
+      if (dataRes.containsKey('error') && dataRes['error'] != null) {
+        return dataRes['error'].toString();
+      }
+      if (dataRes.containsKey('errors') && dataRes['errors'] != null) {
+        return dataRes['errors'].toString();
+      }
+    } catch (e) {/* ignore */}
     return dataRes.toString();
   }
 }

@@ -10,10 +10,6 @@ analyzer:
     # exclude files
     - lib/generated_plugin_registrant.dart
     - lib/data/datasources/remote/networking/rest_client.g.dart
-    - lib/data/models/user.g.dart
-    - lib/data/models/camera_playback.g.dart
-    - lib/data/models/response_status.g.dart
-    - lib/.env.dart
   enable-experiment:
     - extension-methods
 

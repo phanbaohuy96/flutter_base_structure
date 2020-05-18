@@ -12,10 +12,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   
-  fluttersimpleui:
+  flutter_simple_ui:
     git: 
       url: https://github.com/phanbaohuy96/flutter_simple_ui.git
-      ref: 9e38e8d9b0e6414fbe45c1ee854dd1226a652c1d
+      ref: f5cb4b1985554308a0c82be093bd159dc8e17b74
 
   #network
   dio: ^3.0.4

@@ -214,20 +214,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_simple_ui:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: f5cb4b1985554308a0c82be093bd159dc8e17b74
+      resolved-ref: f5cb4b1985554308a0c82be093bd159dc8e17b74
+      url: "https://github.com/phanbaohuy96/flutter_simple_ui.git"
+    source: git
+    version: "0.0.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
-  fluttersimpleui:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "9e38e8d9b0e6414fbe45c1ee854dd1226a652c1d"
-      resolved-ref: "9e38e8d9b0e6414fbe45c1ee854dd1226a652c1d"
-      url: "https://github.com/phanbaohuy96/flutter_simple_ui.git"
-    source: git
-    version: "0.0.1"
   glob:
     dependency: transitive
     description:

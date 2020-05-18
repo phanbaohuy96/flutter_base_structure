@@ -6,7 +6,7 @@ class SplashView extends StatelessWidget {
     return Container(
       child: const Center(
         child: FlutterLogo(
-          size: 30,
+          size: 60,
         ),
       ),
     );
