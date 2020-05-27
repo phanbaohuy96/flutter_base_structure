@@ -21,7 +21,7 @@ class ThemeButton extends SimpleButton {
           color: Theme.of(context).accentColor,
         );
 
-  ThemeButton.left({
+  ThemeButton.notRecommend({
     @required BuildContext context,
     String title,
     Function() onTap,
@@ -39,7 +39,7 @@ class ThemeButton extends SimpleButton {
           color: Theme.of(context).primaryColorLight,
         );
 
-  ThemeButton.right({
+  ThemeButton.recommend({
     @required BuildContext context,
     String title,
     Function() onTap,

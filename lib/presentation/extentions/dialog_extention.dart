@@ -107,7 +107,7 @@ Future<dynamic> showNoticeConfirmDialog({
           textAlign: TextAlign.center,
         ),
         buttonActions: [
-          ThemeButton.left(
+          ThemeButton.notRecommend(
             context: context,
             title: titleBtnCancel ?? S.of(context).translate('common.cancel'),
             onTap: () {
@@ -116,7 +116,7 @@ Future<dynamic> showNoticeConfirmDialog({
             },
             width: Dimension.getWidth(0.4),
           ),
-          ThemeButton.right(
+          ThemeButton.recommend(
             context: context,
             title: titleBtnDone ?? S.of(context).translate('common.confirm'),
             onTap: () {
