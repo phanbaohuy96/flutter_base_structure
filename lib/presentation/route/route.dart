@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../modules/dashboard/dashboard_screen.dart';
@@ -29,37 +28,5 @@ class RouteGenerator {
 }
 
 Route buildRoute(Widget screen, {RouteSettings settings}) {
-  if (Platform.isIOS) {
-    return MaterialPageRoute(builder: (context) => screen, settings: settings);
-  } else {
-    return SlideLeftRoute(enterWidget: screen);
-  }
-}
-
-class SlideLeftRoute extends PageRouteBuilder {
-  final Widget enterWidget;
-  SlideLeftRoute({this.enterWidget})
-      : super(
-          pageBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-          ) {
-            return enterWidget;
-          },
-          transitionsBuilder: (
-            BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child,
-          ) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(1.5, 0.0),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child,
-            );
-          },
-        );
+  return CupertinoPageRoute(builder: (context) => screen, settings: settings);
 }
