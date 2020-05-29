@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterbasestructure/common/utils/dimension.dart';
 
 import '../../../base/bloc_provider.dart';
 import '../../../common/components/preferences_helper/preferences_helper.dart';

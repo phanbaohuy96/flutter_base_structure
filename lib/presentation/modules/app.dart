@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutterbasestructure/envs.dart';
 
 import '../../base/bloc_provider.dart';
 import '../../common/components/i18n/internationalization.dart';
 import '../../domain/entities/app_data.dart';
+import '../../envs.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../route/route.dart';
 import '../route/route_list.dart';
