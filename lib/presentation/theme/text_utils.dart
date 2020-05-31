@@ -10,11 +10,8 @@ class TextSize {
   static double size18 = 18.0 / textScaleFactor;
   static double size20 = 20.0 / textScaleFactor;
   static double size22 = 22.0 / textScaleFactor;
-  static double size25 = 25.0 / textScaleFactor;
+  static double size24 = 24.0 / textScaleFactor;
   static double size26 = 26.0 / textScaleFactor;
   static double size28 = 28.0 / textScaleFactor;
   static double size30 = 30.0 / textScaleFactor;
-  static double size32 = 32.0 / textScaleFactor;
-  static double size35 = 35.0 / textScaleFactor;
-  static double size40 = 40.0 / textScaleFactor;
 }

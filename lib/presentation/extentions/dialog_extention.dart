@@ -12,17 +12,19 @@ Future<dynamic> showNoticeDialog({
   String titleBtn,
   bool barrierDismissible = true,
   Function() onPressed,
+  bool useRootNavigator = true,
 }) {
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
+    useRootNavigator: useRootNavigator,
     builder: (build) {
       final theme = Theme.of(context);
       return NotifyDialog(
         iconPopup: icon,
         content: Text(
           message,
-          style: theme.textTheme.title,
+          style: theme.textTheme.headline6,
           textAlign: TextAlign.center,
         ),
         buttonActions: [
@@ -49,6 +51,7 @@ Future<dynamic> showNoticeErrorDialog({
   @required String message,
   bool barrierDismissible = true,
   Function() onPressed,
+  bool useRootNavigator = true,
 }) {
   return showNoticeDialog(
     context: context,
@@ -56,6 +59,7 @@ Future<dynamic> showNoticeErrorDialog({
     barrierDismissible: barrierDismissible,
     onPressed: onPressed,
     titleBtn: S.of(context).translate('common.dismiss'),
+    useRootNavigator: useRootNavigator,
     icon: Icon(
       Icons.error_outline,
       color: Colors.red,
@@ -69,6 +73,7 @@ Future<dynamic> showNoticeWarningDialog({
   @required String message,
   bool barrierDismissible = true,
   Function() onPressed,
+  bool useRootNavigator = true,
 }) {
   return showNoticeDialog(
     context: context,
@@ -76,6 +81,7 @@ Future<dynamic> showNoticeWarningDialog({
     barrierDismissible: barrierDismissible,
     onPressed: onPressed,
     titleBtn: S.of(context).translate('common.dismiss'),
+    useRootNavigator: useRootNavigator,
     icon: Icon(
       Icons.warning,
       color: Colors.orange,
@@ -93,17 +99,19 @@ Future<dynamic> showNoticeConfirmDialog({
   String titleBtnCancel,
   Function() onConfirmed,
   Function() onCanceled,
+  bool useRootNavigator = true,
 }) {
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
+    useRootNavigator: useRootNavigator,
     builder: (build) {
       final theme = Theme.of(context);
       return NotifyDialog(
         iconPopup: icon,
         content: Text(
           message,
-          style: theme.textTheme.title,
+          style: theme.textTheme.headline6,
           textAlign: TextAlign.center,
         ),
         buttonActions: [
@@ -126,6 +134,26 @@ Future<dynamic> showNoticeConfirmDialog({
             width: Dimension.getWidth(0.4),
           )
         ],
+      );
+    },
+  );
+}
+
+Future<void> showModal(
+  BuildContext context,
+  Widget content, {
+  bool useRootNavigator = true,
+}) {
+  return showModalBottomSheet<void>(
+    context: context,
+    useRootNavigator: useRootNavigator,
+    builder: (BuildContext context) {
+      return Container(
+        padding: EdgeInsets.only(bottom: Dimension.bottomPadding),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: [BoxShadow(blurRadius: 10.9, color: Colors.grey[400])]),
+        child: content,
       );
     },
   );

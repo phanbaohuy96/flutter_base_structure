@@ -12,5 +12,12 @@ class AppColor {
 
   static const Color titleMenu = Colors.grey;
   static const Color primaryIcon = Colors.grey;
-  static const Color primaryText = Colors.grey;
+
+  //light
+  static const Color primaryText = Colors.black;
+  static const Color subText = Colors.grey;
+
+  //dart
+  static const Color primaryDarkText = Colors.black;
+  static const Color subDarkText = Colors.grey;
 }
