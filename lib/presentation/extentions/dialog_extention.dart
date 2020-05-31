@@ -24,21 +24,19 @@ Future<dynamic> showNoticeDialog({
         iconPopup: icon,
         content: Text(
           message,
-          style: theme.textTheme.headline6,
+          style: theme.textTheme.bodyText2,
           textAlign: TextAlign.center,
         ),
         buttonActions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: ThemeButton.primary(
-              width: Dimension.getWidth(0.8),
-              context: context,
-              title: titleBtn ?? S.of(context).translate('common.dismiss'),
-              onTap: () {
-                onPressed?.call();
-                Navigator.of(context, rootNavigator: true).pop();
-              },
-            ),
+          ThemeButton.primary(
+            width: Dimension.getWidth(0.9),
+            height: 45,
+            context: context,
+            title: titleBtn ?? S.of(context).translate('common.dismiss'),
+            onTap: () {
+              onPressed?.call();
+              Navigator.of(context, rootNavigator: useRootNavigator).pop();
+            },
           )
         ],
       );
@@ -111,7 +109,7 @@ Future<dynamic> showNoticeConfirmDialog({
         iconPopup: icon,
         content: Text(
           message,
-          style: theme.textTheme.headline6,
+          style: theme.textTheme.bodyText2,
           textAlign: TextAlign.center,
         ),
         buttonActions: [
@@ -122,7 +120,8 @@ Future<dynamic> showNoticeConfirmDialog({
               onCanceled?.call();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            width: Dimension.getWidth(0.4),
+            width: Dimension.getWidth(0.42),
+            height: 50,
           ),
           ThemeButton.recommend(
             context: context,
@@ -131,7 +130,8 @@ Future<dynamic> showNoticeConfirmDialog({
               onConfirmed?.call();
               Navigator.of(context, rootNavigator: true).pop();
             },
-            width: Dimension.getWidth(0.4),
+            width: Dimension.getWidth(0.42),
+            height: 50,
           )
         ],
       );
