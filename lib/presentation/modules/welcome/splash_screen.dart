@@ -24,6 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     PreferencesHelper().init().then((_) {
+      //init appdata based on local cache
       BlocProvider.of<AppDataBloc>(context).initial();
 
       final MediaQueryData data = MediaQuery.of(context);
