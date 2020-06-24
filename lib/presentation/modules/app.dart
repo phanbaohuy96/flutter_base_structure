@@ -28,7 +28,7 @@ class _MyAppState extends State<App> {
         ),
       ],
       child: StreamBuilder<AppData>(
-        initialData: _appDataBloc.getAppData,
+        initialData: _appDataBloc.appData,
         stream: _appDataBloc.appDataStream,
         builder: (BuildContext context, AsyncSnapshot<AppData> snapshotTheme) {
           return MaterialApp(

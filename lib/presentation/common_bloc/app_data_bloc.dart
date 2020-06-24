@@ -10,8 +10,9 @@ import '../../domain/entities/app_data.dart';
 import '../../presentation/theme/theme_data.dart';
 
 class AppDataBloc extends BlocBase {
-  static AppData appData;
-  AppData get getAppData => appData;
+  AppData _appData;
+
+  AppData get appData => _appData;
 
   final PublishSubject<AppData> _appDataController;
   Stream<AppData> get appDataStream => _appDataController.stream;
@@ -21,7 +22,7 @@ class AppDataBloc extends BlocBase {
 
   void initial() {
     preferencesHelper = PreferencesHelper();
-    appData = AppData(
+    _appData = AppData(
       preferencesHelper.getTheme(),
       Locale(preferencesHelper.getLocalization() ?? LocaleKey.en),
     );
@@ -30,14 +31,16 @@ class AppDataBloc extends BlocBase {
 
   /// --------------------- Theme ---------------------//
   void changeLightTheme() {
-    appData.currentTheme = SupportedTheme.light;
-    appData.themeData = buildLightTheme().data;
+    appData
+      ..currentTheme = SupportedTheme.light
+      ..themeData = buildLightTheme().data;
     notifyAppDataChanged();
   }
 
   void changeDarkTheme() {
-    appData.currentTheme = SupportedTheme.dark;
-    appData.themeData = buildDarkTheme().data;
+    appData
+      ..currentTheme = SupportedTheme.dark
+      ..themeData = buildDarkTheme().data;
     notifyAppDataChanged();
   }
 
@@ -54,7 +57,7 @@ class AppDataBloc extends BlocBase {
     }
   }
 
-  /// ------------------- End Route ------------------------//
+  /// ------------------- End Locale ------------------------//
   void notifyAppDataChanged() {
     _appDataController.sink.add(appData);
   }
