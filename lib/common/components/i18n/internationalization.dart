@@ -61,4 +61,8 @@ class S {
 class LocaleKey {
   static const String en = 'en';
   static const String vn = 'vi';
+
+  static bool isSupported(String locale) {
+    return locale == en || locale == vn;
+  }
 }
