@@ -37,7 +37,7 @@ class S {
         await rootBundle.loadString('assets/languages/$localeName.json');
     final Map<String, dynamic> _result = json.decode(data);
 
-    _sentences = Map();
+    _sentences = {};
     _result.forEach((String key, dynamic value) {
       _sentences[key] = value.toString();
     });

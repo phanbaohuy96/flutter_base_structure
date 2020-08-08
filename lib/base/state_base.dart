@@ -85,7 +85,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     showNoticeConfirmDialog(
       barrierDismissible: false,
       context: context,
-      icon: Icon(Icons.warning, size: 100, color: Colors.orange),
+      icon: const Icon(Icons.warning, size: 100, color: Colors.orange),
       message: 'Please login to continue!',
       onConfirmed: () {},
     );

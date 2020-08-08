@@ -28,15 +28,17 @@ Future<dynamic> showNoticeDialog({
           textAlign: TextAlign.center,
         ),
         buttonActions: [
-          ThemeButton.primary(
+          SizedBox(
             width: Dimension.getWidth(0.9),
             height: 45,
-            context: context,
-            title: titleBtn ?? S.of(context).translate('common.dismiss'),
-            onTap: () {
-              onPressed?.call();
-              Navigator.of(context, rootNavigator: useRootNavigator).pop();
-            },
+            child: ThemeButton.primary(
+              context: context,
+              title: titleBtn ?? S.of(context).translate('common.dismiss'),
+              onPressed: () {
+                onPressed?.call();
+                Navigator.of(context, rootNavigator: useRootNavigator).pop();
+              },
+            ),
           )
         ],
       );
@@ -58,7 +60,7 @@ Future<dynamic> showNoticeErrorDialog({
     onPressed: onPressed,
     titleBtn: S.of(context).translate('common.dismiss'),
     useRootNavigator: useRootNavigator,
-    icon: Icon(
+    icon: const Icon(
       Icons.error_outline,
       color: Colors.red,
       size: 100,
@@ -80,7 +82,7 @@ Future<dynamic> showNoticeWarningDialog({
     onPressed: onPressed,
     titleBtn: S.of(context).translate('common.dismiss'),
     useRootNavigator: useRootNavigator,
-    icon: Icon(
+    icon: const Icon(
       Icons.warning,
       color: Colors.orange,
       size: 100,
@@ -113,25 +115,29 @@ Future<dynamic> showNoticeConfirmDialog({
           textAlign: TextAlign.center,
         ),
         buttonActions: [
-          ThemeButton.notRecommend(
-            context: context,
-            title: titleBtnCancel ?? S.of(context).translate('common.cancel'),
-            onTap: () {
-              onCanceled?.call();
-              Navigator.of(context, rootNavigator: true).pop();
-            },
+          SizedBox(
             width: Dimension.getWidth(0.42),
             height: 50,
+            child: ThemeButton.notRecommend(
+              context: context,
+              title: titleBtnCancel ?? S.of(context).translate('common.cancel'),
+              onPressed: () {
+                onCanceled?.call();
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+            ),
           ),
-          ThemeButton.recommend(
-            context: context,
-            title: titleBtnDone ?? S.of(context).translate('common.confirm'),
-            onTap: () {
-              onConfirmed?.call();
-              Navigator.of(context, rootNavigator: true).pop();
-            },
+          SizedBox(
             width: Dimension.getWidth(0.42),
             height: 50,
+            child: ThemeButton.recommend(
+              context: context,
+              title: titleBtnDone ?? S.of(context).translate('common.confirm'),
+              onPressed: () {
+                onConfirmed?.call();
+                Navigator.of(context, rootNavigator: true).pop();
+              },
+            ),
           )
         ],
       );

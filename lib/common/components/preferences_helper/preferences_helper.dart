@@ -19,7 +19,7 @@ class PreferencesHelper {
   }
 
   SupportedTheme getTheme() {
-    final String theme = _prefs.getString(PreferencesKey.theme);
+    final theme = _prefs.getString(PreferencesKey.theme);
     if (theme == null || theme == SupportedTheme.light.toString()) {
       return SupportedTheme.light;
     }
@@ -39,8 +39,8 @@ class PreferencesHelper {
   }
 
   Future<bool> clearData() async {
-    final SupportedTheme theme = getTheme();
-    final String locale = getLocalization();
+    final theme = getTheme();
+    final locale = getLocalization();
 
     await _prefs.clear();
 

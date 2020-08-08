@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       //init appdata based on local cache
       BlocProvider.of<AppDataBloc>(context).initial();
 
-      final MediaQueryData data = MediaQuery.of(context);
+      final data = MediaQuery.of(context);
       Dimension.setup(data);
       TextSize.textScaleFactor = data.textScaleFactor;
 

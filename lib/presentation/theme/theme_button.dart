@@ -1,52 +1,65 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_ui/simple_button.dart';
 
-class ThemeButton extends SimpleButton {
+class ThemeButton extends RawMaterialButton {
+  static TextStyle getTextStyle(BuildContext context) {
+    return Theme.of(context).textTheme.headline6;
+  }
+
   ThemeButton.primary({
     @required BuildContext context,
     String title,
-    Function() onTap,
-    double width,
-    double height,
+    Function() onPressed,
+    EdgeInsetsGeometry padding = EdgeInsets.zero,
   }) : super(
-          text: title,
-          onPressed: onTap,
-          width: width,
-          height: height,
-          borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.button,
-          color: Theme.of(context).accentColor,
+          fillColor: Theme.of(context).accentColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          onPressed: onPressed,
+          child: Padding(
+            padding: padding,
+            child: Text(
+              title,
+              style: getTextStyle(context).copyWith(
+                color: Colors.white,
+              ),
+            ),
+          ),
         );
 
   ThemeButton.notRecommend({
     @required BuildContext context,
     String title,
-    Function() onTap,
-    double width,
-    double height,
+    Function() onPressed,
+    EdgeInsetsGeometry padding = EdgeInsets.zero,
   }) : super(
-          text: title,
-          onPressed: onTap,
-          width: width,
-          height: height,
-          borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.button,
-          color: Theme.of(context).primaryColorLight,
+          fillColor: Theme.of(context).primaryColorLight,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          onPressed: onPressed,
+          child: Padding(
+            padding: padding,
+            child: Text(
+              title,
+              style: getTextStyle(context).copyWith(
+                color: Colors.white,
+              ),
+            ),
+          ),
         );
 
-  ThemeButton.recommend({
+  factory ThemeButton.recommend({
     @required BuildContext context,
     String title,
-    Function() onTap,
-    double width,
-    double height,
-  }) : super(
-          text: title,
-          onPressed: onTap,
-          width: width,
-          height: height,
-          borderRadius: 8,
-          textStyle: Theme.of(context).textTheme.button,
-          color: Theme.of(context).accentColor,
-        );
+    Function() onPressed,
+    EdgeInsetsGeometry padding = EdgeInsets.zero,
+  }) {
+    return ThemeButton.primary(
+      context: context,
+      title: title,
+      onPressed: onPressed,
+      padding: padding,
+    );
+  }
 }
