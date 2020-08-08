@@ -6,8 +6,9 @@ import '../../common/components/i18n/internationalization.dart';
 import '../../domain/entities/app_data.dart';
 import '../../envs.dart';
 import '../common_bloc/app_data_bloc.dart';
+import '../common_widget/text_scale_fixed.dart';
+import '../modules/welcome/splash_screen.dart';
 import '../route/route.dart';
-import '../route/route_list.dart';
 
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
@@ -33,7 +34,7 @@ class _MyAppState extends State<App> {
         builder: (BuildContext context, AsyncSnapshot<AppData> snapshotTheme) {
           return MaterialApp(
             theme: snapshotTheme.data?.themeData ?? ThemeData(),
-            debugShowCheckedModeBanner: appConfig.cheat,
+            debugShowCheckedModeBanner: Config.appConfig.cheat,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -46,7 +47,12 @@ class _MyAppState extends State<App> {
             ],
             locale: snapshotTheme.data?.locale ?? const Locale(LocaleKey.vn),
             onGenerateRoute: RouteGenerator.buildRoutes,
-            initialRoute: RouteList.initial,
+            home: SplashScreen(),
+            builder: (_, child) {
+              return TextScaleFixed(
+                child: child,
+              );
+            },
           );
         },
       ),

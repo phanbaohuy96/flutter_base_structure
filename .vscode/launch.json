@@ -5,7 +5,7 @@
             "name": "Dev Debug",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceRoot}/lib/x_mains/dev_main.dart",
+            "program": "${workspaceRoot}/lib/main_dev.dart",
             "args": [
                 "--flavor",
                 "dev",
@@ -15,7 +15,7 @@
             "name": "Dev Release",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceRoot}/lib/x_mains/dev_main.dart",
+            "program": "${workspaceRoot}/lib/main_dev.dart",
             "args": [
                 "--release",
                 "--flavor",
@@ -26,7 +26,7 @@
             "name": "Prod Debug",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceRoot}/lib/x_mains/prod_main.dart",
+            "program": "${workspaceRoot}/lib/main.dart",
             "args": [
                 "--flavor",
                 "prod",
@@ -36,7 +36,7 @@
             "name": "Prod Release",
             "request": "launch",
             "type": "dart",
-            "program": "${workspaceRoot}/lib/x_mains/prod_main.dart",
+            "program": "${workspaceRoot}/lib/main.dart",
             "args": [
                 "--release",
                 "--flavor",

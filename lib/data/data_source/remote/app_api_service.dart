@@ -11,7 +11,7 @@ class AppApiService {
   ApiServiceHandler handlerEror;
 
   void create() {
-    client = RestClient(dio, baseUrl: appConfig.baseApiLayer);
+    client = RestClient(dio, baseUrl: Config.appConfig.baseApiLayer);
 
     addDioHeader();
 

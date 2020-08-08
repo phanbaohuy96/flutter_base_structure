@@ -4,6 +4,6 @@ import 'envs.dart';
 import 'presentation/modules/app.dart';
 
 void main() {
-  Config.setup(Env.prodEnv);
+  Config.setup(Env.devEnv);
   runApp(const App());
 }

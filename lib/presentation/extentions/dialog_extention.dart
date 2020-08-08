@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_simple_ui/dialog.dart';
 
 import '../../common/components/i18n/internationalization.dart';
-import '../../common/utils/dimension.dart';
 import '../theme/theme_button.dart';
 
 Future<dynamic> showNoticeDialog({
@@ -20,6 +19,7 @@ Future<dynamic> showNoticeDialog({
     useRootNavigator: useRootNavigator,
     builder: (build) {
       final theme = Theme.of(context);
+      final mediaData = MediaQuery.of(context);
       return NotifyDialog(
         iconPopup: icon,
         content: Text(
@@ -29,7 +29,7 @@ Future<dynamic> showNoticeDialog({
         ),
         buttonActions: [
           SizedBox(
-            width: Dimension.getWidth(0.9),
+            width: mediaData.size.width * 0.9,
             height: 45,
             child: ThemeButton.primary(
               context: context,
@@ -107,6 +107,7 @@ Future<dynamic> showNoticeConfirmDialog({
     useRootNavigator: useRootNavigator,
     builder: (build) {
       final theme = Theme.of(context);
+      final mediaData = MediaQuery.of(context);
       return NotifyDialog(
         iconPopup: icon,
         content: Text(
@@ -116,7 +117,7 @@ Future<dynamic> showNoticeConfirmDialog({
         ),
         buttonActions: [
           SizedBox(
-            width: Dimension.getWidth(0.42),
+            width: mediaData.size.width * 0.42,
             height: 50,
             child: ThemeButton.notRecommend(
               context: context,
@@ -128,7 +129,7 @@ Future<dynamic> showNoticeConfirmDialog({
             ),
           ),
           SizedBox(
-            width: Dimension.getWidth(0.42),
+            width: mediaData.size.width * 0.42,
             height: 50,
             child: ThemeButton.recommend(
               context: context,
@@ -154,11 +155,21 @@ Future<void> showModal(
     context: context,
     useRootNavigator: useRootNavigator,
     builder: (BuildContext context) {
+      final mediaData = MediaQuery.of(context);
+
       return Container(
-        padding: EdgeInsets.only(bottom: Dimension.bottomPadding),
+        padding: EdgeInsets.only(
+          bottom: mediaData.padding.bottom,
+        ),
         decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [BoxShadow(blurRadius: 10.9, color: Colors.grey[400])]),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 10.9,
+              color: Colors.grey[400],
+            ),
+          ],
+        ),
         child: content,
       );
     },

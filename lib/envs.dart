@@ -20,6 +20,13 @@ class Env {
 }
 
 class Config {
+  static Config get appConfig => _appConfig;
+  static Config _appConfig;
+
+  static void setup(Map<String, dynamic> env) {
+    _appConfig = Config.from(env);
+  }
+
   String envName;
   bool cheat;
   String appName;
@@ -34,5 +41,3 @@ class Config {
     baseApiLayer = env[Env.baseApiLayerKey];
   }
 }
-
-Config appConfig;
