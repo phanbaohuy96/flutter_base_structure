@@ -8,8 +8,7 @@ class SLocalizationsDelegate extends LocalizationsDelegate<S> {
   const SLocalizationsDelegate();
 
   @override
-  bool isSupported(Locale locale) =>
-      [LocaleKey.en, LocaleKey.vn].contains(locale.languageCode);
+  bool isSupported(Locale locale) => LocaleKey.isSupported(locale.languageCode);
 
   @override
   Future<S> load(Locale locale) async {
@@ -54,7 +53,10 @@ class S {
   Map<String, String> _sentences;
 
   String translate(String key, {List<dynamic> params = const []}) {
-    return localeName == null ? key : sprintf(_sentences[key], params);
+    if (localeName == null || _sentences[key] == null) {
+      return key;
+    }
+    return sprintf(_sentences[key], params);
   }
 }
 
