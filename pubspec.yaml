@@ -9,26 +9,29 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  #language
   flutter_localizations:
     sdk: flutter
+  sprintf: ^4.0.2
   
+  #network
+  dio: ^3.0.4
+  retrofit: ^1.3.4
+
+  #base
+  cupertino_icons: ^0.1.2
+  cached_network_image: ^2.2.0+1
+  
+  #utils
+  toast: ^0.1.5
+  logger: 0.9.1
+  shared_preferences: ^0.5.4+9
+  provider: ^4.0.4
   flutter_simple_ui:
     git: 
       url: https://github.com/phanbaohuy96/flutter_simple_ui.git
       ref: f5cb4b1985554308a0c82be093bd159dc8e17b74
-
-  #network
-  dio: ^3.0.4
-  retrofit: ^1.3.4
-  #base UI
-  cupertino_icons: ^0.1.2
-  provider: ^4.0.4
-  toast: ^0.1.5
-  logger: 0.9.1
-  cached_network_image: ^2.2.0+1
-  shared_preferences: ^0.5.4+9
-  #language
-  sprintf: ^4.0.2
 
 dev_dependencies:
   flutter_test:
