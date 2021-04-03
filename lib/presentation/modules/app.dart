@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../common/components/i18n/internationalization.dart';
 import '../../common/config.dart';
+import '../../data/data_source/local/local_data_manager.dart';
 import '../../domain/entities/app_data.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../common_widget/text_scale_fixed.dart';
@@ -20,6 +21,17 @@ class App extends StatefulWidget {
 
 class _MyAppState extends State<App> {
   final AppDataBloc _appDataBloc = AppDataBloc();
+
+  @override
+  void initState() {
+    Future.wait([
+      LocalDataManager.init(),
+    ]).then((_) {
+      //init appdata based on local cache
+      _appDataBloc.initial();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

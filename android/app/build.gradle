@@ -23,10 +23,8 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.google.gms.google-services'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply from: 'signing.gradle'
-apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 android {
     compileSdkVersion 29

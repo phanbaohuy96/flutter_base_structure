@@ -41,8 +41,8 @@ class InputContainer extends StatelessWidget {
       builder: (ctx, value, w) {
         return Theme(
           data: themeData.copyWith(
-            primaryColor: themeData.primaryColorLight,
-            primaryColorDark: themeData.primaryColorLight,
+            primaryColor: themeData.accentColor,
+            primaryColorDark: themeData.accentColor,
           ),
           child: TextField(
             focusNode: value.focusNode,

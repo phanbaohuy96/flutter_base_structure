@@ -3,16 +3,11 @@ buildscript {
     repositories {
         google()
         jcenter()
-        // Gradle Plugin Portal
-        maven { url 'https://plugins.gradle.org/m2/' }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.4'
-        // OneSignal-Gradle-Plugin
-        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.6, 0.99.99]'
     }
 }
 

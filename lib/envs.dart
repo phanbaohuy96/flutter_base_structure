@@ -11,7 +11,7 @@ class Env {
   static final Map<String, dynamic> devEnv = {
     environment: 'Development',
     developmentMode: true,
-    appName: 'DaikinSales_Dev',
+    appName: 'FBS_Dev',
     baseApiLayer: 'https://dev.authorization.daikin-sales.nexlab.vn/',
     baseGraphQLUrl: 'https://dev.graphql.daikin-sales.nexlab.vn/v1/graphql',
     onesignalAppID: 'f826e303-49d1-4062-829f-27a40a092c11',
@@ -22,7 +22,7 @@ class Env {
   static final Map<String, dynamic> stagingEnv = {
     environment: 'Staging',
     developmentMode: false,
-    appName: 'DaikinSales_Staging',
+    appName: 'FBS_Staging',
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
@@ -33,7 +33,7 @@ class Env {
   static final Map<String, dynamic> prodEnv = {
     environment: 'Production',
     developmentMode: false,
-    appName: 'DAIKIN Dealer',
+    appName: 'FBS',
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',

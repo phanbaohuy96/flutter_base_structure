@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../common/config.dart';
+import '../../common_widget/export.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key}) : super(key: key);
@@ -22,8 +23,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '''${Config.instance.appConfig.appName} - ${Config.instance.appConfig.envName}'''),
+        title: Text('${Config.instance.appConfig.appName}'),
       ),
       body: Center(
         child: Column(
@@ -33,6 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               'You have pushed the button this many times:',
             ),
             Text('$_counter', style: Theme.of(context).textTheme.headline4),
+            const InputContainer(),
           ],
         ),
       ),
