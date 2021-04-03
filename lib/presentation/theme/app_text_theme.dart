@@ -2,50 +2,46 @@ import 'package:flutter/material.dart';
 import 'theme_color.dart';
 
 class AppTextTheme {
+  static TextStyle textLinkStyle = const TextStyle(
+    decoration: TextDecoration.underline,
+    color: AppColor.primaryColorLight,
+    fontSize: 14,
+  );
+
   static TextTheme getDefaultTextTheme() => const TextTheme(
-        headline1: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryText,
-        ),
-        headline2: TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryText,
-        ),
         headline3: TextStyle(
           fontSize: 24,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryText,
+          fontWeight: FontWeight.bold,
+          color: AppColor.primaryColor,
         ),
         headline4: TextStyle(
           fontSize: 22,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         headline5: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         headline6: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryText,
-        ),
-        subtitle1: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
+          fontSize: 12,
+          fontWeight: FontWeight.bold,
           color: AppColor.subText,
         ),
-        subtitle2: TextStyle(
+        subtitle1: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.normal,
           color: AppColor.subText,
         ),
+        subtitle2: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.normal,
+          color: AppColor.subText,
+        ),
         bodyText1: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
           color: AppColor.primaryText,
         ),
         bodyText2: TextStyle(
@@ -59,31 +55,16 @@ class AppTextTheme {
           color: AppColor.primaryText,
         ),
         button: TextStyle(
+          color: Colors.white,
           fontSize: 16,
-          fontWeight: FontWeight.normal,
-          color: AppColor.primaryText,
-        ),
-        overline: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: AppColor.primaryText,
+          fontWeight: FontWeight.bold,
         ),
       );
   static TextTheme getDefaultTextThemeDark() => const TextTheme(
-        headline1: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryDarkText,
-        ),
-        headline2: TextStyle(
-          fontSize: 26,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryDarkText,
-        ),
         headline3: TextStyle(
           fontSize: 24,
-          fontWeight: FontWeight.w500,
-          color: AppColor.primaryDarkText,
+          fontWeight: FontWeight.bold,
+          color: AppColor.primaryColor,
         ),
         headline4: TextStyle(
           fontSize: 22,
@@ -91,7 +72,7 @@ class AppTextTheme {
           color: AppColor.primaryDarkText,
         ),
         headline5: TextStyle(
-          fontSize: 20,
+          fontSize: 18,
           fontWeight: FontWeight.w500,
           color: AppColor.primaryDarkText,
         ),
@@ -127,11 +108,6 @@ class AppTextTheme {
         ),
         button: TextStyle(
           fontSize: 16,
-          fontWeight: FontWeight.normal,
-          color: AppColor.primaryDarkText,
-        ),
-        overline: TextStyle(
-          fontSize: 14,
           fontWeight: FontWeight.normal,
           color: AppColor.primaryDarkText,
         ),

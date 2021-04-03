@@ -1,34 +1,38 @@
 import 'dart:async';
 
-import 'package:rxdart/rxdart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rxdart/rxdart.dart';
 
-import '../../base/bloc_base.dart';
 import '../../common/components/i18n/internationalization.dart';
-import '../../common/components/preferences_helper/preferences_helper.dart';
-import '../../common/utils/log_utils.dart';
+import '../../common/utils.dart';
+import '../../data/data_source/local/local_data_manager.dart';
 import '../../domain/entities/app_data.dart';
 import '../../presentation/theme/theme_data.dart';
 
-class AppDataBloc extends BlocBase {
+class AppDataBloc extends Cubit<dynamic> {
   AppData _appData;
 
   AppData get appData => _appData;
 
   final PublishSubject<AppData> _appDataController;
   Stream<AppData> get appDataStream => _appDataController.stream;
-  PreferencesHelper preferencesHelper;
 
-  AppDataBloc() : _appDataController = PublishSubject<AppData>();
+  AppDataBloc()
+      : _appDataController = PublishSubject<AppData>(),
+        super(0);
 
   void initial() {
-    preferencesHelper = PreferencesHelper();
-    _appData = AppData(
-      preferencesHelper.getTheme(),
-      Locale(preferencesHelper.getLocalization() ?? LocaleKey.en),
-    );
-    notifyAppDataChanged();
+    if (!isInitialed) {
+      _appData = AppData(
+        LocalDataManager.getTheme(),
+        Locale(LocalDataManager.getLocalization() ?? LocaleKey.vn),
+      );
+      notifyAppDataChanged();
+    }
   }
+
+  bool get isInitialed => _appData != null;
 
   /// --------------------- Theme ---------------------//
   void changeLightTheme() {
@@ -54,7 +58,7 @@ class AppDataBloc extends BlocBase {
       return false;
     }
 
-    if (await preferencesHelper.saveLocalization(locale)) {
+    if (await LocalDataManager.saveLocalization(locale)) {
       appData.locale = Locale(locale);
       notifyAppDataChanged();
       return true;
@@ -68,7 +72,6 @@ class AppDataBloc extends BlocBase {
     _appDataController.sink.add(appData);
   }
 
-  @override
   void dispose() {
     _appDataController?.close();
   }

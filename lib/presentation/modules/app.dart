@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../base/bloc_provider.dart';
 import '../../common/components/i18n/internationalization.dart';
+import '../../common/config.dart';
 import '../../domain/entities/app_data.dart';
-import '../../envs.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../common_widget/text_scale_fixed.dart';
 import '../modules/welcome/splash_screen.dart';
@@ -34,7 +35,8 @@ class _MyAppState extends State<App> {
         builder: (BuildContext context, AsyncSnapshot<AppData> snapshotTheme) {
           return MaterialApp(
             theme: snapshotTheme.data?.themeData ?? ThemeData(),
-            debugShowCheckedModeBanner: Config.appConfig.cheat,
+            debugShowCheckedModeBanner:
+                Config.instance.appConfig.developmentMode,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -48,11 +50,13 @@ class _MyAppState extends State<App> {
             locale: snapshotTheme.data?.locale ?? const Locale(LocaleKey.vn),
             onGenerateRoute: RouteGenerator.buildRoutes,
             home: SplashScreen(),
-            builder: (_, child) {
-              return TextScaleFixed(
-                child: child,
-              );
-            },
+            builder: EasyLoading.init(
+              builder: (_, child) {
+                return TextScaleFixed(
+                  child: child,
+                );
+              },
+            ),
           );
         },
       ),

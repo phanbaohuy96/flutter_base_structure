@@ -12,6 +12,19 @@
             ],
         },
         {
+            "name": "Dev Profile",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/main_dev.dart",
+            "flutterMode": "profile",
+            "args": [
+                "--profile",
+                "--trace-skia",
+                "--flavor",
+                "dev",
+            ],
+        },
+        {
             "name": "Dev Release",
             "request": "launch",
             "type": "dart",
@@ -20,6 +33,27 @@
                 "--release",
                 "--flavor",
                 "dev",
+            ],
+        },
+        {
+            "name": "Staging Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+            ],
+        },
+        {
+            "name": "Staging Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/lib/main_staging.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "staging",
             ],
         },
         {

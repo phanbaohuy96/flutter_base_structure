@@ -5,6 +5,17 @@ import 'theme_color.dart';
 
 enum SupportedTheme { light, dark }
 
+extension SupportedThemeExt on SupportedTheme {
+  String get name {
+    switch (this) {
+      case SupportedTheme.light:
+        return 'light';
+      default:
+        return 'dark';
+    }
+  }
+}
+
 class AppTheme {
   final String name;
   final ThemeData data;
@@ -22,8 +33,8 @@ AppTheme buildLightTheme() {
       primaryColorLight: AppColor.primaryColorLight,
       primaryColor: Colors.white,
       backgroundColor: Colors.white,
-      scaffoldBackgroundColor: Colors.white,
-      cardColor: const Color(0xFFf4f5f8),
+      scaffoldBackgroundColor: AppColor.cardBackground,
+      cardColor: AppColor.cardBackground,
       textTheme: AppTextTheme.getDefaultTextTheme(),
     ),
   );

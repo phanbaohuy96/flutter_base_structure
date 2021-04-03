@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterbasestructure/common/utils.dart';
 
-import '../../../base/bloc_provider.dart';
 import '../../../common/components/preferences_helper/preferences_helper.dart';
-import '../../../common/utils/log_utils.dart';
 import '../../../presentation/common_bloc/app_data_bloc.dart';
 import '../../../presentation/route/route_list.dart';
 import 'splash_view.dart';

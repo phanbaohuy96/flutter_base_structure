@@ -1,43 +1,43 @@
 class Env {
-  static const environmentKey = 'environment';
-  static const cheatKey = 'cheat';
-  static const appnameKey = 'appname';
-  static const baseApiLayerKey = 'baseApiLayer';
+  static const environment = 'environment';
+  static const developmentMode = 'developmentMode';
+  static const appName = 'appname';
+  static const baseApiLayer = 'baseApiLayer';
+  static const baseGraphQLUrl = 'baseGraphQLUrl';
+  static const onesignalAppID = 'onesignalAppID';
+  static const subDealerEnabled = 'subDealerEnabled';
+  static const guestRegiterEnabled = 'guestRegiterEnabled';
 
   static final Map<String, dynamic> devEnv = {
-    environmentKey: 'dev',
-    cheatKey: true,
-    appnameKey: 'App Dev',
-    baseApiLayerKey: ''
+    environment: 'Development',
+    developmentMode: true,
+    appName: 'DaikinSales_Dev',
+    baseApiLayer: 'https://dev.authorization.daikin-sales.nexlab.vn/',
+    baseGraphQLUrl: 'https://dev.graphql.daikin-sales.nexlab.vn/v1/graphql',
+    onesignalAppID: 'f826e303-49d1-4062-829f-27a40a092c11',
+    subDealerEnabled: false,
+    guestRegiterEnabled: true,
+  };
+
+  static final Map<String, dynamic> stagingEnv = {
+    environment: 'Staging',
+    developmentMode: false,
+    appName: 'DaikinSales_Staging',
+    baseApiLayer: '',
+    baseGraphQLUrl: '',
+    onesignalAppID: '',
+    subDealerEnabled: false,
+    guestRegiterEnabled: true,
   };
 
   static final Map<String, dynamic> prodEnv = {
-    environmentKey: 'prod',
-    cheatKey: false,
-    appnameKey: 'App Prod',
-    baseApiLayerKey: ''
+    environment: 'Production',
+    developmentMode: false,
+    appName: 'DAIKIN Dealer',
+    baseApiLayer: '',
+    baseGraphQLUrl: '',
+    onesignalAppID: '',
+    subDealerEnabled: false,
+    guestRegiterEnabled: true,
   };
-}
-
-class Config {
-  static Config get appConfig => _appConfig;
-  static Config _appConfig;
-
-  static void setup(Map<String, dynamic> env) {
-    _appConfig = Config.from(env);
-  }
-
-  String envName;
-  bool cheat;
-  String appName;
-  String baseApiLayer;
-
-  Config(this.envName, this.cheat, this.appName, this.baseApiLayer);
-
-  Config.from(Map<String, dynamic> env) {
-    envName = env[Env.environmentKey];
-    cheat = env[Env.cheatKey];
-    appName = env[Env.appnameKey];
-    baseApiLayer = env[Env.baseApiLayerKey];
-  }
 }

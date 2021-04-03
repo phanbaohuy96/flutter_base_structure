@@ -1,8 +1,12 @@
-import 'dart:convert';
 import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:sprintf/sprintf.dart';
+
+import 'res/en.dart';
+import 'res/vi.dart';
+
+typedef TranslateCallback = String Function(String key, {List<dynamic> params});
 
 class SLocalizationsDelegate extends LocalizationsDelegate<S> {
   const SLocalizationsDelegate();
@@ -15,7 +19,7 @@ class SLocalizationsDelegate extends LocalizationsDelegate<S> {
     final localeName =
         (locale.countryCode == null || locale.countryCode.isEmpty)
             ? locale.languageCode
-            : locale.toString();
+            : LocaleKey.vn;
 
     final localizations = S(localeName);
     await localizations.load(locale);
@@ -32,9 +36,7 @@ class S {
   static const LocalizationsDelegate<S> delegate = SLocalizationsDelegate();
 
   Future<bool> load(Locale locale) async {
-    final data =
-        await rootBundle.loadString('assets/languages/$localeName.json');
-    final Map<String, dynamic> _result = json.decode(data);
+    final Map<String, dynamic> _result = _getResData();
 
     _sentences = {};
     _result.forEach((String key, dynamic value) {
@@ -46,6 +48,9 @@ class S {
 
   // ignore: prefer_constructors_over_static_methods
   static S of(BuildContext context) {
+    if (context == null) {
+      return S(null);
+    }
     return Localizations.of<S>(context, S) ?? S(null);
   }
 
@@ -53,10 +58,24 @@ class S {
   Map<String, String> _sentences;
 
   String translate(String key, {List<dynamic> params = const []}) {
-    if (localeName == null || _sentences[key] == null) {
+    if (localeName == null) {
+      return sprintf(en_res[key], params);
+    }
+    if (_sentences[key] == null) {
       return key;
     }
     return sprintf(_sentences[key], params);
+  }
+
+  Map<String, String> _getResData() {
+    switch (localeName) {
+      case LocaleKey.en:
+        return en_res;
+      case LocaleKey.vn:
+        return vi_res;
+      default:
+        return {};
+    }
   }
 }
 

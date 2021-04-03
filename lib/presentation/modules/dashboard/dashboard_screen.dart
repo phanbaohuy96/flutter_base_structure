@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../envs.dart';
+import '../../../common/config.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key}) : super(key: key);
@@ -23,7 +23,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            '''${Config.appConfig.appName} - ${Config.appConfig.envName}'''),
+            '''${Config.instance.appConfig.appName} - ${Config.instance.appConfig.envName}'''),
       ),
       body: Center(
         child: Column(
