@@ -15,16 +15,16 @@ class SubmitScreenForm extends StatelessWidget {
   final String title;
   final bool isBackButtonVisible;
 
-  const SubmitScreenForm(
-      {Key key,
-      this.submitBtnTitle,
-      this.cancelBtnTitle,
-      this.child,
-      this.onCancel,
-      this.onConfirm,
-      this.title,
-      this.isBackButtonVisible = false})
-      : super(key: key);
+  const SubmitScreenForm({
+    Key key,
+    this.submitBtnTitle,
+    this.cancelBtnTitle,
+    this.child,
+    this.onCancel,
+    this.onConfirm,
+    this.title,
+    this.isBackButtonVisible = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +52,8 @@ class SubmitScreenForm extends StatelessWidget {
               titleSpacing: 0,
             )
           : null,
-      body: InkWell(
+      body: GestureDetector(
         onTap: () => CommonFunction.hideKeyBoard(context),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
         child: SafeArea(
           bottom: false,
           child: Column(
