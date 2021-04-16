@@ -8,14 +8,14 @@ class SelectionDialog<T> extends StatefulWidget {
   final List<T> items;
   final Function(T) onSelected;
   final Widget Function(BuildContext, T) itemBuilder;
-  final bool Function(T item, String filter) filterFn;
+  final bool Function(T item, String? filter) filterFn;
 
   const SelectionDialog({
-    Key key,
-    this.items,
-    this.onSelected,
-    this.itemBuilder,
-    this.filterFn,
+    Key? key,
+    required this.items,
+    required this.onSelected,
+    required this.itemBuilder,
+    required this.filterFn,
   }) : super(key: key);
 
   @override
@@ -23,8 +23,8 @@ class SelectionDialog<T> extends StatefulWidget {
 }
 
 class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
-  ValueNotifier<List<T>> searchNotifier;
-  Debouncer _debouncer;
+  late ValueNotifier<List<T>> searchNotifier;
+  late Debouncer _debouncer;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
     super.dispose();
   }
 
-  void search(String filter) {
+  void search(String? filter) {
     final result = widget.items.where((element) {
       return widget.filterFn(element, filter);
     }).toList();

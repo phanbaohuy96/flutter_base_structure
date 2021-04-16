@@ -9,9 +9,9 @@ part of 'rest_client.dart';
 class _RestClient implements RestClient {
   _RestClient(this._dio, {this.baseUrl});
 
-  final Dio _dio;
+  final Dio? _dio;
 
-  String baseUrl;
+  String? baseUrl;
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&

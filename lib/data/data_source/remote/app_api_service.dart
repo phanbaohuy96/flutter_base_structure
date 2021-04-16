@@ -12,13 +12,13 @@ part 'api_service_error.dart';
 
 class AppApiService {
   final dio_p.Dio dio = dio_p.Dio();
-  RestClient client;
-  ApiServiceHandler handlerEror;
+  late RestClient client;
+  ApiServiceHandler? handlerEror;
 
   void create() {
     createDioHeader();
 
-    client = RestClient(dio, baseUrl: Config.instance.appConfig.baseApiLayer);
+    client = RestClient(dio, baseUrl: Config.instance.appConfig?.baseApiLayer);
 
     dio.interceptors.add(AuthInterceptor(/*LocalDataManager.getToken*/ null));
     dio.interceptors.add(LoggerInterceptor(

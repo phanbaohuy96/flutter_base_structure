@@ -14,11 +14,15 @@ enum ErrorType {
 }
 
 class ErrorData {
-  ErrorType type;
-  String message;
-  int statusCode;
+  late ErrorType type;
+  late String message;
+  int? statusCode;
 
-  ErrorData({this.type, this.statusCode, this.message});
+  ErrorData({
+    this.type = ErrorType.unKnown,
+    this.statusCode,
+    this.message = '',
+  });
 
   ErrorData.fromDio(dio_p.DioError error) {
     type = ErrorType.unKnown;
@@ -31,7 +35,7 @@ class ErrorData {
         type = ErrorType.timeout;
         break;
       case dio_p.DioErrorType.response:
-        statusCode = error.response.statusCode;
+        statusCode = error.response?.statusCode;
         final errorCode = error.response?.data is Map<dynamic, dynamic>
             ? error.response?.data['code']?.toString()
             : null;
@@ -41,8 +45,8 @@ class ErrorData {
           type = ErrorType.unAuthorized;
         } else {
           type = ErrorType.httpException;
-          if (error.response.data is Map<dynamic, dynamic>) {
-            message = getErrorMessage(error.response.data);
+          if (error.response?.data is Map<dynamic, dynamic>) {
+            message = getErrorMessage(error.response?.data);
           }
         }
         break;

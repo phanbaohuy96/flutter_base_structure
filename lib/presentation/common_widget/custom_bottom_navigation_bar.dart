@@ -9,7 +9,11 @@ class BottomBarItemData {
   final Widget icon;
   final Widget selectedIcon;
 
-  BottomBarItemData({this.lable, this.icon, this.selectedIcon});
+  BottomBarItemData({
+    required this.lable,
+    required this.icon,
+    required this.selectedIcon,
+  });
 }
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -18,10 +22,10 @@ class CustomBottomNavigationBar extends StatefulWidget {
   final List<BottomBarItemData> items;
 
   const CustomBottomNavigationBar({
-    Key key,
-    this.onItemSelection,
+    Key? key,
+    required this.onItemSelection,
     this.selectedIdx = 0,
-    this.items,
+    required this.items,
   }) : super(key: key);
   @override
   _CustomBottomNavigationBarState createState() =>
@@ -29,7 +33,7 @@ class CustomBottomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
-  ValueNotifier<int> idxNotifier;
+  late ValueNotifier<int> idxNotifier;
 
   @override
   void initState() {
@@ -76,7 +80,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                       item: item,
                       onPressed: () async {
                         if (idx != value &&
-                            await widget.onItemSelection?.call(idx) == true) {
+                            await widget.onItemSelection.call(idx) == true) {
                           idxNotifier.value = idx;
                         }
                       },
@@ -94,12 +98,12 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
 class BottomItem extends StatelessWidget {
   final BottomBarItemData item;
-  final Function() onPressed;
+  final Function()? onPressed;
   final bool selected;
 
   const BottomItem({
-    Key key,
-    this.item,
+    Key? key,
+    required this.item,
     this.onPressed,
     this.selected = false,
   }) : super(key: key);
@@ -117,7 +121,7 @@ class BottomItem extends StatelessWidget {
           children: [
             SizedBox(width: 22, height: 22, child: _getIcon),
             const SizedBox(height: 3),
-            Text(item.lable ?? '--', style: _getTextStyle(context))
+            Text(item.lable, style: _getTextStyle(context))
           ],
         ),
       ),
@@ -132,14 +136,14 @@ class BottomItem extends StatelessWidget {
     }
   }
 
-  TextStyle _getTextStyle(BuildContext context) {
+  TextStyle? _getTextStyle(BuildContext context) {
     final theme = Theme.of(context);
     if (selected) {
-      return theme.textTheme.subtitle1.copyWith(
+      return theme.textTheme.subtitle1?.copyWith(
         color: theme.accentColor,
       );
     } else {
-      return theme.textTheme.subtitle1.copyWith(
+      return theme.textTheme.subtitle1?.copyWith(
         color: AppColor.primaryText,
       );
     }

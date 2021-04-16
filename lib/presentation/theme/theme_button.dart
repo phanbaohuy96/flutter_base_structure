@@ -5,14 +5,14 @@ import '../../common/constants.dart';
 import '../common_widget/export.dart';
 
 class ThemeButton {
-  static TextStyle getTextStyle(BuildContext context) {
+  static TextStyle? getTextStyle(BuildContext context) {
     return Theme.of(context).textTheme.button;
   }
 
   static Widget primary({
-    @required BuildContext context,
-    String title,
-    Function() onPressed,
+    required BuildContext context,
+    required String title,
+    Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
   }) =>
@@ -27,7 +27,7 @@ class ThemeButton {
         constraints: constraints,
         child: Text(
           title,
-          style: getTextStyle(context).copyWith(
+          style: getTextStyle(context)?.copyWith(
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
@@ -35,10 +35,10 @@ class ThemeButton {
       );
 
   static Widget primaryIcon({
-    @required BuildContext context,
-    @required String title,
-    @required Widget icon,
-    Function() onPressed,
+    required BuildContext context,
+    required String title,
+    required Widget icon,
+    Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
       horizontal: 16,
       vertical: 15,
@@ -61,7 +61,7 @@ class ThemeButton {
             Expanded(
               child: Text(
                 title,
-                style: getTextStyle(context).copyWith(
+                style: getTextStyle(context)?.copyWith(
                   color: Colors.white,
                 ),
               ),
@@ -73,9 +73,9 @@ class ThemeButton {
       );
 
   static Widget notRecommend({
-    @required BuildContext context,
+    required BuildContext context,
     String title = '',
-    Function() onPressed,
+    Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
   }) =>
@@ -90,7 +90,7 @@ class ThemeButton {
         constraints: constraints,
         child: Text(
           title,
-          style: getTextStyle(context).copyWith(
+          style: getTextStyle(context)?.copyWith(
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
@@ -98,9 +98,9 @@ class ThemeButton {
       );
 
   static Widget recommend({
-    @required BuildContext context,
-    String title,
-    Function() onPressed,
+    required BuildContext context,
+    required String title,
+    Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
   }) {
@@ -114,11 +114,11 @@ class ThemeButton {
   }
 
   static Widget loadingButton({
-    @required BuildContext context,
-    @required LoadingButtonController controller,
+    required BuildContext context,
+    required LoadingButtonController controller,
     String title = '',
-    Function onPressed,
-    Widget icon,
+    Function()? onPressed,
+    Widget? icon,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
       horizontal: 24,
       vertical: 15,

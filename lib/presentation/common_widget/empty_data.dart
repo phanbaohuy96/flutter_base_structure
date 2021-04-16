@@ -4,9 +4,9 @@ import '../../common/constants.dart';
 import '../extentions/extention.dart';
 
 class EmptyData extends StatelessWidget {
-  final Function() onTap;
+  final Function()? onTap;
 
-  const EmptyData({Key key, this.onTap}) : super(key: key);
+  const EmptyData({Key? key, this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Center(

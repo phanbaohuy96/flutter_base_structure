@@ -3,10 +3,10 @@ part of 'base.dart';
 abstract class StateBase<T extends StatefulWidget> extends State<T>
     implements ApiServiceHandler {
   //prevent show the same error dialog when call multiple api at the same time
-  ErrorType errorTypeShowing;
+  ErrorType? errorTypeShowing;
   bool isLoadingShowing = false;
 
-  AppBlocBase get bloc;
+  AppBlocBase? get bloc;
   bool get willHandleError => false;
 
   @override
@@ -23,7 +23,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
   @mustCallSuper
   void didChangeDependencies() {
     bloc?.updateHeader({
-      HttpConstants.language: S.of(context).localeName,
+      HttpConstants.language: S.of(context).localeName ?? '',
     });
     super.didChangeDependencies();
   }
@@ -59,8 +59,8 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
         }
         errorTypeShowing = ErrorType.httpException;
         if (error.statusCode != null &&
-            error.statusCode >= 500 &&
-            error.statusCode < 600) {
+            error.statusCode! >= 500 &&
+            error.statusCode! < 600) {
           showErrorDialog(tr('common.error.technicalIssues'));
         } else {
           showErrorDialog(error.message);
@@ -120,7 +120,10 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
   void showLoading() {
     if (!isLoadingShowing) {
       isLoadingShowing = true;
-      EasyLoading.show(status: tr('common.loading'));
+      EasyLoading.show(
+        status: tr('common.loading'),
+        indicator: const Loading(),
+      );
     }
   }
 
@@ -139,12 +142,12 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     );
   }
 
-  void showErrorDialog(String message, {Function() onClose}) {
+  void showErrorDialog(String? message, {Function()? onClose}) {
     showNoticeErrorDialog(
       context: context,
       message: message?.isNotEmpty != true
           ? tr('common.error.technicalIssues')
-          : message,
+          : message!,
       onClose: () {
         onCloseErrorDialog();
         onClose?.call();
@@ -157,7 +160,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     errorTypeShowing = null;
   }
 
-  void showLoginRequired({Function onClose}) {
+  void showLoginRequired({void Function()? onClose}) {
     LogUtils.i('[${T.toString()}] showLoginRequired!');
     showNoticeErrorDialog(
       barrierDismissible: false,

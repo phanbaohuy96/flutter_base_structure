@@ -11,9 +11,9 @@ import '../../domain/entities/app_data.dart';
 import '../../presentation/theme/theme_data.dart';
 
 class AppDataBloc extends Cubit<dynamic> {
-  AppData _appData;
+  AppData? _appData;
 
-  AppData get appData => _appData;
+  AppData? get appData => _appData;
 
   final PublishSubject<AppData> _appDataController;
   Stream<AppData> get appDataStream => _appDataController.stream;
@@ -36,14 +36,14 @@ class AppDataBloc extends Cubit<dynamic> {
 
   /// --------------------- Theme ---------------------//
   void changeLightTheme() {
-    appData
+    appData!
       ..currentTheme = SupportedTheme.light
       ..themeData = buildLightTheme().data;
     notifyAppDataChanged();
   }
 
   void changeDarkTheme() {
-    appData
+    appData!
       ..currentTheme = SupportedTheme.dark
       ..themeData = buildDarkTheme().data;
     notifyAppDataChanged();
@@ -58,8 +58,8 @@ class AppDataBloc extends Cubit<dynamic> {
       return false;
     }
 
-    if (await LocalDataManager.saveLocalization(locale)) {
-      appData.locale = Locale(locale);
+    if (await LocalDataManager.saveLocalization(locale) == true) {
+      appData?.locale = Locale(locale);
       notifyAppDataChanged();
       return true;
     } else {
@@ -69,10 +69,10 @@ class AppDataBloc extends Cubit<dynamic> {
 
   /// ------------------- End Locale ------------------------//
   void notifyAppDataChanged() {
-    _appDataController.sink.add(appData);
+    _appDataController.sink.add(appData!);
   }
 
   void dispose() {
-    _appDataController?.close();
+    _appDataController.close();
   }
 }

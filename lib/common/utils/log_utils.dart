@@ -22,22 +22,22 @@ class LogUtils {
     printer: PrettyPrinter(methodCount: 0),
   );
 
-  static void d(dynamic message, [dynamic error, StackTrace stackTrace]) {
+  static void d(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     if (Config.instance.appConfig?.developmentMode == true) {
       _loggerNoStackDebug.d(message, error, stackTrace);
     }
   }
 
-  static void e(dynamic message, [dynamic error, StackTrace stackTrace]) {
+  static void e(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     if (Config.instance.appConfig?.developmentMode == true) {
       _logger.e(message, error, stackTrace);
     }
   }
 
-  static T eCatch<T>(
+  static T? eCatch<T>(
     dynamic message, [
     dynamic error,
-    StackTrace stackTrace,
+    StackTrace? stackTrace,
   ]) {
     if (Config.instance.appConfig?.developmentMode == true) {
       _logger.w(message, error, stackTrace);
@@ -45,13 +45,13 @@ class LogUtils {
     return null;
   }
 
-  static void i(dynamic message, [dynamic error, StackTrace stackTrace]) {
+  static void i(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     if (Config.instance.appConfig?.developmentMode == true) {
       _loggerNoStack.i(message, error, stackTrace);
     }
   }
 
-  static void w(dynamic message, [dynamic error, StackTrace stackTrace]) {
+  static void w(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     if (Config.instance.appConfig?.developmentMode == true) {
       _loggerNoStack.w(message, error, stackTrace);
     }

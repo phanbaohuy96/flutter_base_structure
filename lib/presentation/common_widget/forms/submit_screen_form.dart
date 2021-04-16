@@ -7,16 +7,16 @@ import '../../theme/shadow.dart';
 import '../../theme/theme_button.dart';
 
 class SubmitScreenForm extends StatelessWidget {
-  final String submitBtnTitle;
-  final String cancelBtnTitle;
-  final Widget child;
-  final Function() onCancel;
-  final Function() onConfirm;
-  final String title;
+  final String? submitBtnTitle;
+  final String? cancelBtnTitle;
+  final Widget? child;
+  final Function()? onCancel;
+  final Function()? onConfirm;
+  final String? title;
   final bool isBackButtonVisible;
 
   const SubmitScreenForm({
-    Key key,
+    Key? key,
     this.submitBtnTitle,
     this.cancelBtnTitle,
     this.child,
@@ -34,7 +34,7 @@ class SubmitScreenForm extends StatelessWidget {
       appBar: title != null
           ? AppBar(
               title: Text(
-                title,
+                title!,
                 style: _themeData.textTheme.headline5,
               ),
               leading: isBackButtonVisible

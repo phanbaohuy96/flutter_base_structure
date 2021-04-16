@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../presentation/theme/theme_data.dart';
 
 class AppData {
-  ThemeData themeData;
+  ThemeData? themeData;
   SupportedTheme currentTheme;
   Locale locale;
 

@@ -6,12 +6,12 @@ import 'loading.dart';
 
 class CachedNetworkImageWrapper extends CachedNetworkImage {
   CachedNetworkImageWrapper({
-    @required String url,
-    double width,
-    double height,
-    BoxFit fit,
+    required String url,
+    double? width,
+    double? height,
+    BoxFit? fit,
   }) : super(
-          imageUrl: url ?? '',
+          imageUrl: url,
           width: width,
           height: height,
           fit: fit,
@@ -23,12 +23,12 @@ class CachedNetworkImageWrapper extends CachedNetworkImage {
         );
 
   CachedNetworkImageWrapper.avatar({
-    @required String url,
-    double width,
-    double height,
-    BoxFit fit,
+    required String url,
+    double? width,
+    double? height,
+    BoxFit? fit,
   }) : super(
-          imageUrl: url ?? '',
+          imageUrl: url,
           width: width,
           height: height,
           fit: fit,
@@ -44,12 +44,12 @@ class CachedNetworkImageWrapper extends CachedNetworkImage {
         );
 
   CachedNetworkImageWrapper.item({
-    @required String url,
-    double width,
-    double height,
-    BoxFit fit,
+    required String url,
+    double? width,
+    double? height,
+    BoxFit? fit,
   }) : super(
-          imageUrl: url ?? '',
+          imageUrl: url,
           width: width,
           height: height,
           fit: fit,
@@ -61,12 +61,12 @@ class CachedNetworkImageWrapper extends CachedNetworkImage {
         );
 
   CachedNetworkImageWrapper.banner({
-    @required String url,
-    double width,
-    double height,
-    BoxFit fit,
+    required String url,
+    double? width,
+    double? height,
+    BoxFit? fit,
   }) : super(
-          imageUrl: url ?? '',
+          imageUrl: url,
           width: width,
           height: height,
           fit: fit,
@@ -78,12 +78,12 @@ class CachedNetworkImageWrapper extends CachedNetworkImage {
         );
 
   CachedNetworkImageWrapper.background({
-    @required String url,
-    double width,
-    double height,
-    BoxFit fit,
+    required String url,
+    double? width,
+    double? height,
+    BoxFit? fit,
   }) : super(
-          imageUrl: url ?? '',
+          imageUrl: url,
           width: width,
           height: height,
           fit: fit,

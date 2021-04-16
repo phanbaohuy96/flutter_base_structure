@@ -17,7 +17,7 @@ class SLocalizationsDelegate extends LocalizationsDelegate<S> {
   @override
   Future<S> load(Locale locale) async {
     final localeName =
-        (locale.countryCode == null || locale.countryCode.isEmpty)
+        (locale.countryCode == null || locale.countryCode?.isEmpty == true)
             ? locale.languageCode
             : LocaleKey.vn;
 
@@ -40,31 +40,34 @@ class S {
 
     _sentences = {};
     _result.forEach((String key, dynamic value) {
-      _sentences[key] = value.toString();
+      _sentences?[key] = value.toString();
     });
 
     return true;
   }
 
   // ignore: prefer_constructors_over_static_methods
-  static S of(BuildContext context) {
+  static S of(BuildContext? context) {
     if (context == null) {
       return S(null);
     }
     return Localizations.of<S>(context, S) ?? S(null);
   }
 
-  final String localeName;
-  Map<String, String> _sentences;
+  final String? localeName;
+  Map<String, String>? _sentences;
 
   String translate(String key, {List<dynamic> params = const []}) {
     if (localeName == null) {
-      return sprintf(en_res[key], params);
+      if (en_res[key] == null) {
+        return key;
+      }
+      return sprintf(en_res[key]!, params);
     }
-    if (_sentences[key] == null) {
+    if (_sentences?[key] == null) {
       return key;
     }
-    return sprintf(_sentences[key], params);
+    return sprintf(_sentences![key]!, params);
   }
 
   Map<String, String> _getResData() {

@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../../../../common/utils.dart';
 
 class LoggerInterceptor extends Interceptor {
-  final Function(DioError) onRequestError;
+  final Function(DioError)? onRequestError;
 
   LoggerInterceptor({this.onRequestError});
 
@@ -48,7 +48,7 @@ class LoggerInterceptor extends Interceptor {
         'path': error.requestOptions.path,
         'type': error.type,
         'message': error.message,
-        'statusCode': error?.response?.statusCode,
+        'statusCode': error.response?.statusCode,
         'error': error.error,
       }),
       error,

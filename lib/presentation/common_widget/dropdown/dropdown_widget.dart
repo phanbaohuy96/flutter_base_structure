@@ -7,15 +7,15 @@ part 'dropdown_controller.dart';
 
 class DropdownWidget<T> extends StatelessWidget {
   final List<T> items;
-  final Function(T) onChanged;
-  final String hint;
+  final Function(T?)? onChanged;
+  final String? hint;
   final Widget Function(T) itemBuilder;
   final DropdownContoller<T, DropdownData<T>> controller;
 
   DropdownWidget({
-    @required this.controller,
-    @required this.itemBuilder,
-    this.items,
+    required this.controller,
+    required this.itemBuilder,
+    required this.items,
     this.onChanged,
     this.hint,
   });
@@ -56,7 +56,7 @@ class DropdownWidget<T> extends StatelessWidget {
             hintText: hint,
             hintStyle: themeData.textTheme.subtitle2,
             errorText: value.validation,
-            errorStyle: themeData.textTheme.subtitle1.copyWith(
+            errorStyle: themeData.textTheme.subtitle1?.copyWith(
               color: Colors.red,
             ),
           ),

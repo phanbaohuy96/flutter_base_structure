@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../../../common/constants.dart';
 
 class ScreenForm extends StatefulWidget {
-  final String title;
-  final Widget child;
+  final String? title;
+  final Widget? child;
   final double elevation;
 
   const ScreenForm({
-    Key key,
+    Key? key,
     this.title,
     this.child,
     this.elevation = 3,

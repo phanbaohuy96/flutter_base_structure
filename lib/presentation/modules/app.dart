@@ -13,7 +13,7 @@ import '../modules/welcome/splash_screen.dart';
 import '../route/route.dart';
 
 class App extends StatefulWidget {
-  const App({Key key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -48,7 +48,7 @@ class _MyAppState extends State<App> {
           return MaterialApp(
             theme: snapshotTheme.data?.themeData ?? ThemeData(),
             debugShowCheckedModeBanner:
-                Config.instance.appConfig.developmentMode,
+                Config.instance.appConfig?.developmentMode == true,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -65,7 +65,7 @@ class _MyAppState extends State<App> {
             builder: EasyLoading.init(
               builder: (_, child) {
                 return TextScaleFixed(
-                  child: child,
+                  child: child ?? const SizedBox(),
                 );
               },
             ),

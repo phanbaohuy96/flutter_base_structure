@@ -6,8 +6,8 @@ import '../extentions/extention.dart';
 class ThemeBottomSheet {
   static Widget bottomSheetForm(
     BuildContext context, {
-    Widget body,
-    Function() onTapClose,
+    Widget? body,
+    Function()? onTapClose,
     String title = '',
   }) {
     final themeData = Theme.of(context);
@@ -59,10 +59,10 @@ class ThemeBottomSheet {
   }
 
   static Widget cupertinoBottomActionSheet({
-    @required BuildContext context,
-    @required Map<String, Function> action,
-    Function onCancelPressed,
-    String title,
+    required BuildContext context,
+    required Map<String, void Function()> action,
+    Function()? onCancelPressed,
+    String? title,
   }) {
     final theme = Theme.of(context);
     final BorderRadiusGeometry borderRadius = BorderRadius.circular(14);
@@ -91,7 +91,7 @@ class ThemeBottomSheet {
                       vertical: 22,
                     ),
                     child: Text(
-                      title,
+                      title!,
                       style: theme.textTheme.subtitle1,
                       textAlign: TextAlign.center,
                     ),
@@ -105,7 +105,7 @@ class ThemeBottomSheet {
                             border: Border(
                               top: BorderSide(
                                 width: 1,
-                                color: Colors.grey[400],
+                                color: Colors.grey[400]!,
                               ),
                             ),
                           ),
@@ -115,7 +115,7 @@ class ThemeBottomSheet {
                           ),
                           child: Text(
                             e.key,
-                            style: theme.textTheme.headline5.copyWith(
+                            style: theme.textTheme.headline5?.copyWith(
                               color: Colors.blue,
                               fontWeight: FontWeight.normal,
                             ),
@@ -141,7 +141,7 @@ class ThemeBottomSheet {
               ),
               child: Text(
                 translate(context)('common.cancel'),
-                style: theme.textTheme.button.copyWith(
+                style: theme.textTheme.button?.copyWith(
                   color: Colors.blue,
                 ),
               ),

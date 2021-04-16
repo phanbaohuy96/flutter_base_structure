@@ -1,12 +1,12 @@
 part of 'extention.dart';
 
 Future<dynamic> showNoticeDialog({
-  @required BuildContext context,
-  @required String message,
-  String title,
-  String titleBtn,
+  required BuildContext context,
+  required String message,
+  String? title,
+  String? titleBtn,
   bool barrierDismissible = true,
-  Function() onClose,
+  Function()? onClose,
   bool useRootNavigator = true,
 }) {
   return showDialog(
@@ -60,10 +60,10 @@ Future<dynamic> showNoticeDialog({
 }
 
 Future<dynamic> showNoticeErrorDialog({
-  @required BuildContext context,
-  @required String message,
+  required BuildContext context,
+  required String message,
   bool barrierDismissible = false,
-  Function() onClose,
+  void Function()? onClose,
   bool useRootNavigator = true,
 }) {
   return showNoticeDialog(
@@ -78,10 +78,10 @@ Future<dynamic> showNoticeErrorDialog({
 }
 
 Future<dynamic> showNoticeWarningDialog({
-  @required BuildContext context,
-  @required String message,
+  required BuildContext context,
+  required String message,
   bool barrierDismissible = false,
-  Function() onClose,
+  void Function()? onClose,
   bool useRootNavigator = true,
 }) {
   return showNoticeDialog(
@@ -96,15 +96,15 @@ Future<dynamic> showNoticeWarningDialog({
 }
 
 Future<dynamic> showNoticeConfirmDialog({
-  @required BuildContext context,
-  @required Icon icon,
-  @required String message,
-  @required String title,
+  required BuildContext context,
+  required Icon icon,
+  required String message,
+  required String title,
   bool barrierDismissible = true,
-  String titleBtnDone,
-  String titleBtnCancel,
-  Function() onConfirmed,
-  Function() onCanceled,
+  String? titleBtnDone,
+  String? titleBtnCancel,
+  void Function()? onConfirmed,
+  void Function()? onCanceled,
   bool useRootNavigator = true,
 }) {
   return showDialog(
@@ -143,7 +143,7 @@ Future<dynamic> showNoticeConfirmDialog({
           ],
         );
       } else {
-        Widget _buildAction({Function() onTap, String title}) {
+        Widget _buildAction({Function()? onTap, String title = ''}) {
           return RawMaterialButton(
             constraints: const BoxConstraints(minHeight: 45),
             padding: EdgeInsets.zero,
@@ -153,7 +153,7 @@ Future<dynamic> showNoticeConfirmDialog({
             },
             child: Text(
               title,
-              style: theme.textTheme.button.copyWith(
+              style: theme.textTheme.button?.copyWith(
                 color: Colors.blue,
                 fontWeight: FontWeight.normal,
               ),
@@ -198,7 +198,7 @@ Future<void> showModal(
   BuildContext context,
   Widget content, {
   bool useRootNavigator = true,
-  double bottomPadding,
+  double? bottomPadding,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -233,7 +233,7 @@ Future<void> showModal(
 
 Future<void> showActionDialog(
   BuildContext context, {
-  Map<String, Function> action = const <String, Function>{},
+  Map<String, void Function()> action = const <String, void Function()>{},
   String title = '',
   bool useRootNavigator = true,
   bool barrierDismissible = true,
@@ -261,7 +261,7 @@ Future<void> showActionDialog(
                           rootNavigator: useRootNavigator,
                         ).pop();
                       }
-                      e.value?.call();
+                      e.value.call();
                     },
                     child: Text(e.key),
                   ),
@@ -297,7 +297,7 @@ Future<void> showActionDialog(
                         context,
                         rootNavigator: useRootNavigator,
                       ).pop();
-                      value?.call();
+                      value.call();
                     },
                   ),
                 ),

@@ -5,11 +5,8 @@ class Config {
 
   Config._();
 
-  AppConfig get appConfig => _appConfig;
-  AppConfig _appConfig;
-
-  String pointType;
-  bool isGuestAccess;
+  AppConfig? get appConfig => _appConfig;
+  AppConfig? _appConfig;
 
   void setup(Map<String, dynamic> env) {
     _appConfig = AppConfig.from(env);
@@ -17,14 +14,14 @@ class Config {
 }
 
 class AppConfig {
-  String envName;
-  bool developmentMode;
-  String appName;
-  String baseApiLayer;
-  String baseGraphQLUrl;
-  String onesignalAppID;
-  bool subDealerEnabled;
-  bool guestRegiterEnabled;
+  String? envName;
+  bool? developmentMode;
+  String? appName;
+  String? baseApiLayer;
+  String? baseGraphQLUrl;
+  String? onesignalAppID;
+  bool? subDealerEnabled;
+  bool? guestRegiterEnabled;
 
   AppConfig(
     this.envName,

@@ -8,13 +8,13 @@ class LoadingButton extends StatelessWidget {
   final Color bgColor;
   final Widget loadingIndicator;
   final String title;
-  final TextStyle textStyle;
-  final Function() onPressed;
-  final EdgeInsets padding;
+  final TextStyle? textStyle;
+  final Function()? onPressed;
+  final EdgeInsetsGeometry padding;
 
   const LoadingButton({
-    Key key,
-    @required this.controller,
+    Key? key,
+    required this.controller,
     this.normalIcon = const SizedBox(),
     this.bgColor = const Color(0xFF03a1e4),
     this.loadingIndicator = const SizedBox(),
@@ -76,7 +76,7 @@ class LoadingButton extends StatelessWidget {
     }
   }
 
-  Function _getPressedFunction(ButtonState state) {
+  GestureTapCallback? _getPressedFunction(ButtonState state) {
     switch (state) {
       case ButtonState.loading:
         return null;

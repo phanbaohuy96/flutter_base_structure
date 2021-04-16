@@ -6,18 +6,18 @@ import 'item_devider.dart';
 
 class MenuItem extends StatelessWidget {
   final String title;
-  final Function() onTap;
+  final Function()? onTap;
   final Widget icon;
-  final Color color;
-  final ItemDivider divider;
+  final Color? color;
+  final ItemDivider? divider;
   final EdgeInsets padding;
-  final Widget tailIcon;
+  final Widget? tailIcon;
 
   const MenuItem({
-    Key key,
-    this.title,
+    Key? key,
+    required this.title,
+    required this.icon,
     this.onTap,
-    this.icon,
     this.color,
     this.divider,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -61,10 +61,10 @@ class MenuItem extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .subtitle2
-                          .copyWith(color: Colors.black),
+                          ?.copyWith(color: Colors.black),
                     ),
                   ),
-                  if (tailIcon != null) tailIcon,
+                  if (tailIcon != null) tailIcon!,
                   if (onTap != null && tailIcon == null)
                     Image.asset(
                       ImageConstant.iconChevronRight,

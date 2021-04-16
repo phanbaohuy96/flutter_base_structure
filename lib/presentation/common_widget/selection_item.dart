@@ -6,15 +6,15 @@ import 'item_devider.dart';
 class SelectionItem extends StatelessWidget {
   final String title;
   final bool isChecked;
-  final Color color;
-  final ItemDivider divider;
+  final Color? color;
+  final ItemDivider? divider;
   final EdgeInsets padding;
-  final Function(bool) onTap;
+  final Function(bool)? onTap;
 
   const SelectionItem({
-    Key key,
-    this.title,
-    this.isChecked,
+    Key? key,
+    required this.title,
+    required this.isChecked,
     this.color,
     this.divider,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
@@ -52,11 +52,11 @@ class SelectionItem extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    title ?? '--',
+                    title,
                     style: Theme.of(context)
                         .textTheme
                         .subtitle2
-                        .copyWith(color: Colors.black),
+                        ?.copyWith(color: Colors.black),
                   ),
                 ),
                 const SizedBox(width: 8),

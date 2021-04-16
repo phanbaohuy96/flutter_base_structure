@@ -6,7 +6,7 @@ import '../theme/theme_color.dart';
 class StatusWidget extends StatelessWidget {
   final bool isSuccess;
 
-  const StatusWidget({Key key, this.isSuccess}) : super(key: key);
+  const StatusWidget({Key? key, required this.isSuccess}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +19,7 @@ class StatusWidget extends StatelessWidget {
         isSuccess == true
             ? translate(context)('common.succeed')
             : translate(context)('common.failed'),
-        style: Theme.of(context).textTheme.subtitle1.copyWith(
+        style: Theme.of(context).textTheme.subtitle1?.copyWith(
               color: Colors.white,
             ),
       ),

@@ -4,9 +4,9 @@ import '../extentions/extention.dart';
 import '../theme/theme_color.dart';
 
 class LoadFailed extends StatelessWidget {
-  final Function() onTap;
+  final Function()? onTap;
 
-  const LoadFailed({Key key, this.onTap}) : super(key: key);
+  const LoadFailed({Key? key, this.onTap}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -17,7 +17,7 @@ class LoadFailed extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             translate(context)('common.loadFailed'),
-            style: textTheme.subtitle1.copyWith(
+            style: textTheme.subtitle1?.copyWith(
               color: AppColor.primaryColor,
             ),
           ),

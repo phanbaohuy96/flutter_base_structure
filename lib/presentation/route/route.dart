@@ -27,6 +27,6 @@ class RouteGenerator {
   }
 }
 
-Route buildRoute(Widget screen, {RouteSettings settings}) {
+Route buildRoute(Widget screen, {RouteSettings? settings}) {
   return CupertinoPageRoute(builder: (context) => screen, settings: settings);
 }

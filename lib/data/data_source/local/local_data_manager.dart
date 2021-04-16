@@ -4,7 +4,7 @@ import '../../../presentation/theme/theme_data.dart';
 
 class LocalDataManager {
   //-------------> Singleton
-  static LocalDataManager _instance;
+  static LocalDataManager? _instance;
 
   factory LocalDataManager() {
     return _instance ??= LocalDataManager._();
@@ -15,17 +15,17 @@ class LocalDataManager {
 
   // static Box _myBox;
 
-  static PreferencesHelper _preferencesHelper;
+  static PreferencesHelper? _preferencesHelper;
 
   static Future<void> init() async {
     _instance = LocalDataManager();
-    await _instance._init();
+    await _instance!._init();
   }
 
   Future<void> _init() async {
     // Hive.init(Directory.current.path);
     _preferencesHelper = PreferencesHelper();
-    await _preferencesHelper.init();
+    await _preferencesHelper!.init();
     // _myBox = await Hive.openBox(Config.appConfig.appName);
   }
 
@@ -34,21 +34,21 @@ class LocalDataManager {
   ///
   static SupportedTheme getTheme() {
     assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.getTheme();
+    return _preferencesHelper!.getTheme();
   }
 
-  static Future<bool> setTheme(String data) {
+  static Future<bool?> setTheme(String data) {
     assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.setTheme(data);
+    return _preferencesHelper!.setTheme(data);
   }
 
-  static String getLocalization() {
+  static String? getLocalization() {
     assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.getLocalization();
+    return _preferencesHelper!.getLocalization();
   }
 
-  static Future<bool> saveLocalization(String locale) {
+  static Future<bool?> saveLocalization(String locale) {
     assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.saveLocalization(locale);
+    return _preferencesHelper!.saveLocalization(locale);
   }
 }

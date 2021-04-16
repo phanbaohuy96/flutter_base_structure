@@ -9,10 +9,10 @@ class CustomSwitch extends StatefulWidget {
   final Color inactiveTextColor;
 
   const CustomSwitch({
-    Key key,
-    this.value,
-    this.onChanging,
-    this.activeColor,
+    Key? key,
+    required this.value,
+    required this.onChanging,
+    required this.activeColor,
     this.inactiveColor = Colors.grey,
     this.activeTextColor = Colors.white70,
     this.inactiveTextColor = Colors.white70,
@@ -24,8 +24,8 @@ class CustomSwitch extends StatefulWidget {
 
 class _CustomSwitchState extends State<CustomSwitch>
     with SingleTickerProviderStateMixin {
-  Animation _circleAnimation;
-  AnimationController _animationController;
+  late Animation _circleAnimation;
+  late AnimationController _animationController;
 
   @override
   void initState() {

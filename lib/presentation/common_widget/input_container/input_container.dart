@@ -5,19 +5,19 @@ import '../../../common/constants.dart';
 part 'input_container.controller.dart';
 
 class InputContainer extends StatelessWidget {
-  final InputContainerController controller;
-  final String hint;
+  final InputContainerController? controller;
+  final String? hint;
   final bool isPassword;
   final bool readOnly;
-  final Widget suffixIcon;
-  final TextInputType keyboardType;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
   final TextCapitalization textCapitalization;
-  final Function() onTap;
-  final Function(String) onTextChanged;
+  final Function()? onTap;
+  final Function(String)? onTextChanged;
   final int maxLines;
 
   const InputContainer({
-    Key key,
+    Key? key,
     this.controller,
     this.hint,
     this.isPassword = false,
@@ -59,7 +59,7 @@ class InputContainer extends StatelessWidget {
               hintText: hint,
               hintStyle: themeData.textTheme.subtitle2,
               errorText: value.validation,
-              errorStyle: themeData.textTheme.subtitle1.copyWith(
+              errorStyle: themeData.textTheme.subtitle1?.copyWith(
                 color: Colors.red,
               ),
               suffixIcon: Padding(
@@ -74,10 +74,10 @@ class InputContainer extends StatelessWidget {
             keyboardType: keyboardType,
             textCapitalization: textCapitalization,
             style: themeData.textTheme.bodyText2,
-            obscureText: isPassword && !controller.isShowPass,
+            obscureText: isPassword && controller?.isShowPass != true,
             onChanged: (text) {
               if (value.validation != null) {
-                controller.resetValidation();
+                controller?.resetValidation();
               }
               onTextChanged?.call(text);
             },
@@ -89,11 +89,11 @@ class InputContainer extends StatelessWidget {
     );
   }
 
-  Widget _getSuffixIcon() {
+  Widget? _getSuffixIcon() {
     if (isPassword) {
       final icon = suffixIcon ?? _getPasswordIcon();
       return InkWell(
-        onTap: controller.showOrHidePass,
+        onTap: controller?.showOrHidePass,
         child: icon,
       );
     }
@@ -102,7 +102,7 @@ class InputContainer extends StatelessWidget {
 
   Widget _getPasswordIcon() {
     var imagePath = ImageConstant.iconEyeSlash;
-    if (controller.isShowPass) {
+    if (controller?.isShowPass == true) {
       imagePath = ImageConstant.iconEye;
     }
 
