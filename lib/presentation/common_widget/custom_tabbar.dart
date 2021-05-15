@@ -83,7 +83,7 @@ class _CustomTabbarState extends State<CustomTabbar> {
 class TabItem extends StatelessWidget {
   final String title;
   final bool selected;
-  final Function onTap;
+  final void Function() onTap;
 
   const TabItem({
     Key? key,
@@ -96,7 +96,7 @@ class TabItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
     return InkWell(
-      onTap: onTap.call,
+      onTap: onTap,
       customBorder: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
       ),
