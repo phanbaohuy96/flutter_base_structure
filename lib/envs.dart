@@ -5,8 +5,6 @@ class Env {
   static const baseApiLayer = 'baseApiLayer';
   static const baseGraphQLUrl = 'baseGraphQLUrl';
   static const onesignalAppID = 'onesignalAppID';
-  static const subDealerEnabled = 'subDealerEnabled';
-  static const guestRegiterEnabled = 'guestRegiterEnabled';
 
   static final Map<String, dynamic> devEnv = {
     environment: 'Development',
@@ -15,8 +13,6 @@ class Env {
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
-    subDealerEnabled: false,
-    guestRegiterEnabled: true,
   };
 
   static final Map<String, dynamic> stagingEnv = {
@@ -26,8 +22,6 @@ class Env {
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
-    subDealerEnabled: false,
-    guestRegiterEnabled: true,
   };
 
   static final Map<String, dynamic> prodEnv = {
@@ -37,7 +31,5 @@ class Env {
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
-    subDealerEnabled: false,
-    guestRegiterEnabled: true,
   };
 }

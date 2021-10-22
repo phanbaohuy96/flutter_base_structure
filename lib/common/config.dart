@@ -20,8 +20,6 @@ class AppConfig {
   String? baseApiLayer;
   String? baseGraphQLUrl;
   String? onesignalAppID;
-  bool? subDealerEnabled;
-  bool? guestRegiterEnabled;
 
   AppConfig(
     this.envName,
@@ -30,8 +28,6 @@ class AppConfig {
     this.baseApiLayer,
     this.baseGraphQLUrl,
     this.onesignalAppID,
-    this.subDealerEnabled,
-    this.guestRegiterEnabled,
   );
 
   AppConfig.from(Map<String, dynamic> env) {
@@ -41,7 +37,5 @@ class AppConfig {
     baseApiLayer = env[Env.baseApiLayer];
     baseGraphQLUrl = env[Env.baseGraphQLUrl];
     onesignalAppID = env[Env.onesignalAppID];
-    subDealerEnabled = env[Env.subDealerEnabled];
-    guestRegiterEnabled = env[Env.guestRegiterEnabled];
   }
 }
