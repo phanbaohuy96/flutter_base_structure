@@ -3,8 +3,7 @@ class PreferencesKey {
   static const String localization = 'locale';
   static const String user = 'user';
   static const String token = 'token';
-  static const String notification = 'notification';
-  static const String seenTermOfUse = 'seen';
   static const String banner = 'banner';
-  static const String deviceType = 'device_type';
+  static const String onboarding = 'onboarding';
+  static const String appConfig = 'AppConfig';
 }

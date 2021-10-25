@@ -5,7 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../common/components/i18n/internationalization.dart';
 import '../../common/config.dart';
-import '../../data/data_source/local/local_data_manager.dart';
 import '../../domain/entities/app_data.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../common_widget/text_scale_fixed.dart';
@@ -24,12 +23,8 @@ class _MyAppState extends State<App> {
 
   @override
   void initState() {
-    Future.wait([
-      LocalDataManager.init(),
-    ]).then((_) {
-      //init appdata based on local cache
-      _appDataBloc.initial();
-    });
+    //init appdata based on local cache
+    _appDataBloc.initial();
     super.initState();
   }
 
@@ -48,18 +43,15 @@ class _MyAppState extends State<App> {
           return MaterialApp(
             theme: snapshotTheme.data?.themeData ?? ThemeData(),
             debugShowCheckedModeBanner:
-                Config.instance.appConfig?.developmentMode == true,
+                Config.instance.appConfig.developmentMode == true,
             localizationsDelegates: const [
               S.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale(LocaleKey.en),
-              Locale(LocaleKey.vn),
-            ],
-            locale: snapshotTheme.data?.locale ?? const Locale(LocaleKey.vn),
+            supportedLocales: S.supportedLocales,
+            locale: snapshotTheme.data?.locale ?? S.supportedLocales.first,
             onGenerateRoute: RouteGenerator.buildRoutes,
             home: SplashScreen(),
             builder: EasyLoading.init(

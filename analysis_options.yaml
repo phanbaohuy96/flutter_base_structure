@@ -23,7 +23,6 @@ linter:
     - void_checks
     - annotate_overrides
     - prefer_single_quotes
-    - avoid_as
     - avoid_empty_else
     - avoid_print
     - avoid_field_initializers_in_const_classes

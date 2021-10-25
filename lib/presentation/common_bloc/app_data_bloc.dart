@@ -7,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../common/components/i18n/internationalization.dart';
 import '../../common/utils.dart';
 import '../../data/data_source/local/local_data_manager.dart';
+import '../../di/di.dart';
 import '../../domain/entities/app_data.dart';
 import '../../presentation/theme/theme_data.dart';
 
@@ -22,11 +23,13 @@ class AppDataBloc extends Cubit<dynamic> {
       : _appDataController = PublishSubject<AppData>(),
         super(0);
 
+  LocalDataManager get localDataManager => injector.get();
+
   void initial() {
     if (!isInitialed) {
       _appData = AppData(
-        LocalDataManager.getTheme(),
-        Locale(LocalDataManager.getLocalization() ?? LocaleKey.vn),
+        localDataManager.getTheme(),
+        Locale(localDataManager.getLocalization() ?? LocaleKey.vn),
       );
       notifyAppDataChanged();
     }
@@ -58,7 +61,7 @@ class AppDataBloc extends Cubit<dynamic> {
       return false;
     }
 
-    if (await LocalDataManager.saveLocalization(locale) == true) {
+    if (await localDataManager.saveLocalization(locale) == true) {
       appData?.locale = Locale(locale);
       notifyAppDataChanged();
       return true;

@@ -25,4 +25,33 @@ extension PhoneNumberStringExt on String {
       return '+84$this';
     }
   }
+
+  bool validVNPhoneNumber() {
+    final format = formatVNPhoneNumber();
+    return format.length == 12 || format.length == 13;
+  }
+
+  bool isEmail() {
+    return RegExp(
+      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+    ).hasMatch(this);
+  }
+}
+
+extension ListExtension<E> on List<E>? {
+  E? get firstOrNull {
+    if (this?.isNotEmpty == true) {
+      return this!.first;
+    }
+    return null;
+  }
+}
+
+extension DoubleExt on double {
+  String toStringAsMaxFixed(int fractionDigits) {
+    final formatter = NumberFormat()
+      ..minimumFractionDigits = 0
+      ..maximumFractionDigits = fractionDigits;
+    return formatter.format(this);
+  }
 }

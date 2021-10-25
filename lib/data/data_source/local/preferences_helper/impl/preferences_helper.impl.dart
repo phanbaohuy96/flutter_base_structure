@@ -1,16 +1,15 @@
-import 'package:shared_preferences/shared_preferences.dart';
+part of '../preferences_helper.dart';
 
-import '../../../presentation/theme/theme_data.dart';
-import 'preferences_key.dart';
-
-class PreferencesHelper {
+class PreferencesHelperImpl extends PreferencesHelper {
   SharedPreferences? _prefs;
 
+  @override
   Future<PreferencesHelper> init() async {
     _prefs = await SharedPreferences.getInstance();
     return this;
   }
 
+  @override
   SupportedTheme getTheme() {
     final theme = _prefs?.getString(PreferencesKey.theme);
     if (theme == null || theme == SupportedTheme.light.name) {
@@ -19,6 +18,7 @@ class PreferencesHelper {
     return SupportedTheme.dark;
   }
 
+  @override
   Future<bool?> setTheme(String? data) async {
     if (data == null) {
       return _prefs?.remove(PreferencesKey.theme);
@@ -26,10 +26,12 @@ class PreferencesHelper {
     return _prefs?.setString(PreferencesKey.theme, data);
   }
 
+  @override
   String? getLocalization() {
     return _prefs?.getString(PreferencesKey.localization);
   }
 
+  @override
   Future<bool?> saveLocalization(String? locale) async {
     if (locale == null) {
       return _prefs?.remove(PreferencesKey.localization);
@@ -37,17 +39,18 @@ class PreferencesHelper {
     return _prefs?.setString(PreferencesKey.localization, locale);
   }
 
+  @override
   Future<bool?> clearData() async {
     final theme = getTheme();
     final locale = getLocalization();
 
     await _prefs?.clear();
 
-    await Future.wait([
+    final result = await Future.wait([
       saveLocalization(locale),
       setTheme(theme.name),
     ]);
 
-    return setTheme(theme.toString());
+    return result.any((e) => e == false) == false;
   }
 }

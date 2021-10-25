@@ -1,15 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'rest_client.dart';
+part of 'rest_api_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl});
+class _RestApiRepository implements RestApiRepository {
+  _RestApiRepository(this._dio, {this.baseUrl});
 
-  final Dio? _dio;
+  final Dio _dio;
 
   String? baseUrl;
 

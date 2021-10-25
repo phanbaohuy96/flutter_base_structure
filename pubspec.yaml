@@ -18,10 +18,15 @@ dependencies:
   
   #network
   retrofit: ^2.0.1 #ns
+  graphql_flutter: ^5.0.0 #ns
 
   #base
   flutter_bloc: ^7.2.0 #ns
   shared_preferences: ^2.0.7 #ns
+  get_it: ^7.2.0 #ns
+  intl: ^0.17.0 #ns
+  flutter_svg_provider: ^0.1.10 #ns
+  flutter_svg: ^0.22.0 #ns
   
   #utils
   logger: ^1.0.0 #ns

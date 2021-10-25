@@ -23,13 +23,13 @@ class LogUtils {
   );
 
   static void d(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    if (Config.instance.appConfig?.developmentMode == true) {
+    if (Config.instance.appConfig.developmentMode == true) {
       _loggerNoStackDebug.d(message, error, stackTrace);
     }
   }
 
   static void e(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    if (Config.instance.appConfig?.developmentMode == true) {
+    if (Config.instance.appConfig.developmentMode == true) {
       _logger.e(message, error, stackTrace);
     }
   }
@@ -39,20 +39,20 @@ class LogUtils {
     dynamic error,
     StackTrace? stackTrace,
   ]) {
-    if (Config.instance.appConfig?.developmentMode == true) {
+    if (Config.instance.appConfig.developmentMode == true) {
       _logger.w(message, error, stackTrace);
     }
     return null;
   }
 
   static void i(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    if (Config.instance.appConfig?.developmentMode == true) {
+    if (Config.instance.appConfig.developmentMode == true) {
       _loggerNoStack.i(message, error, stackTrace);
     }
   }
 
   static void w(dynamic message, [dynamic error, StackTrace? stackTrace]) {
-    if (Config.instance.appConfig?.developmentMode == true) {
+    if (Config.instance.appConfig.developmentMode == true) {
       _loggerNoStack.w(message, error, stackTrace);
     }
   }

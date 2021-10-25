@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:intl/intl.dart';
 
 import 'config.dart';
 
@@ -12,3 +13,4 @@ part 'utils/date_utils.dart';
 part 'utils/debouncer.dart';
 part 'utils/extensions.dart';
 part 'utils/log_utils.dart';
+part 'utils/jwt_utils.dart';

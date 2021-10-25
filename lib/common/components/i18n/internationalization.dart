@@ -35,6 +35,11 @@ class S {
 
   static const LocalizationsDelegate<S> delegate = SLocalizationsDelegate();
 
+  static const supportedLocales = [
+    Locale(LocaleKey.vn),
+    Locale(LocaleKey.en),
+  ];
+
   Future<bool> load(Locale locale) async {
     final Map<String, dynamic> _result = _getResData();
 
@@ -89,4 +94,8 @@ class LocaleKey {
   static bool isSupported(String locale) {
     return locale == en || locale == vn;
   }
+}
+
+extension LocaleExt on String {
+  bool get isVn => this == LocaleKey.vn;
 }

@@ -23,7 +23,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${Config.instance.appConfig?.appName}'),
+        title: Text('${Config.instance.appConfig.appName}'),
       ),
       body: Center(
         child: Column(

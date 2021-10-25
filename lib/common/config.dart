@@ -5,8 +5,8 @@ class Config {
 
   Config._();
 
-  AppConfig? get appConfig => _appConfig;
-  AppConfig? _appConfig;
+  AppConfig get appConfig => _appConfig;
+  late AppConfig _appConfig;
 
   void setup(Map<String, dynamic> env) {
     _appConfig = AppConfig.from(env);
@@ -14,12 +14,12 @@ class Config {
 }
 
 class AppConfig {
-  String? envName;
-  bool? developmentMode;
-  String? appName;
-  String? baseApiLayer;
-  String? baseGraphQLUrl;
-  String? onesignalAppID;
+  String envName;
+  bool developmentMode;
+  String appName;
+  String baseApiLayer;
+  String baseGraphQLUrl;
+  String onesignalAppID;
 
   AppConfig(
     this.envName,
@@ -30,12 +30,11 @@ class AppConfig {
     this.onesignalAppID,
   );
 
-  AppConfig.from(Map<String, dynamic> env) {
-    envName = env[Env.environment];
-    developmentMode = env[Env.developmentMode];
-    appName = env[Env.appName];
-    baseApiLayer = env[Env.baseApiLayer];
-    baseGraphQLUrl = env[Env.baseGraphQLUrl];
-    onesignalAppID = env[Env.onesignalAppID];
-  }
+  AppConfig.from(Map<String, dynamic> env)
+      : envName = env[Env.environment],
+        developmentMode = env[Env.developmentMode],
+        appName = env[Env.appName],
+        baseApiLayer = env[Env.baseApiLayer],
+        baseGraphQLUrl = env[Env.baseGraphQLUrl],
+        onesignalAppID = env[Env.onesignalAppID];
 }
