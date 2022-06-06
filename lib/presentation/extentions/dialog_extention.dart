@@ -15,6 +15,7 @@ Future<dynamic> showNoticeDialog({
       Navigator.of(context, rootNavigator: useRootNavigator).pop();
     }
   };
+  final trans = translate(context);
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -24,7 +25,7 @@ Future<dynamic> showNoticeDialog({
 
       final showAndroidDialog = () => AlertDialog(
             title: Text(
-              title ?? translate(context)('common.inform'),
+              title ?? trans.inform,
               style: theme.textTheme.headline5,
             ),
             content: Text(
@@ -38,7 +39,7 @@ Future<dynamic> showNoticeDialog({
                   dismissFunc.call();
                   onClose?.call();
                 },
-                child: Text(titleBtn ?? translate(context)('common.ok')),
+                child: Text(titleBtn ?? trans.ok),
               )
             ],
           );
@@ -49,7 +50,7 @@ Future<dynamic> showNoticeDialog({
         return showAndroidDialog();
       } else {
         return CupertinoAlertDialog(
-          title: Text(title ?? translate(context)('common.inform')),
+          title: Text(title ?? trans.inform),
           content: Text(
             message,
             style: theme.textTheme.bodyText2,
@@ -61,7 +62,7 @@ Future<dynamic> showNoticeDialog({
                 dismissFunc.call();
                 onClose?.call();
               },
-              child: Text(titleBtn ?? translate(context)('common.ok')),
+              child: Text(titleBtn ?? trans.ok),
             ),
           ],
         );
@@ -78,14 +79,15 @@ Future<dynamic> showNoticeErrorDialog({
   bool useRootNavigator = true,
   String? titleBtn,
 }) {
+  final trans = translate(context);
   return showNoticeDialog(
     context: context,
     message: message,
     barrierDismissible: barrierDismissible,
     onClose: onClose,
-    titleBtn: titleBtn ?? translate(context)('common.ok'),
+    titleBtn: titleBtn ?? trans.ok,
     useRootNavigator: useRootNavigator,
-    title: translate(context)('common.error'),
+    title: trans.error,
   );
 }
 
@@ -96,14 +98,15 @@ Future<dynamic> showNoticeWarningDialog({
   void Function()? onClose,
   bool useRootNavigator = true,
 }) {
+  final trans = translate(context);
   return showNoticeDialog(
     context: context,
     message: message,
     barrierDismissible: barrierDismissible,
     onClose: onClose,
-    titleBtn: translate(context)('common.ok'),
+    titleBtn: trans.ok,
     useRootNavigator: useRootNavigator,
-    title: translate(context)('common.warning'),
+    title: trans.warning,
   );
 }
 
@@ -118,12 +121,15 @@ Future<dynamic> showNoticeConfirmDialog({
   void Function()? onCanceled,
   bool useRootNavigator = true,
   bool dismissWhenAction = true,
+  TextStyle? styleBtnRight,
+  TextStyle? styleBtnLeft,
 }) {
   final dismissFunc = () {
     if (dismissWhenAction) {
       Navigator.of(context, rootNavigator: useRootNavigator).pop();
     }
   };
+  final trans = translate(context);
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
@@ -147,16 +153,26 @@ Future<dynamic> showNoticeConfirmDialog({
                   dismissFunc.call();
                   onCanceled?.call();
                 },
-                child:
-                    Text(titleBtnCancel ?? translate(context)('common.cancel')),
+                child: Text(
+                  titleBtnCancel ?? trans.cancel,
+                  style: styleBtnLeft ??
+                      theme.textTheme.button?.copyWith(
+                        color: AppColor.primaryColor,
+                      ),
+                ),
               ),
               TextButton(
                 onPressed: () {
                   dismissFunc.call();
                   onConfirmed?.call();
                 },
-                child:
-                    Text(titleBtnDone ?? translate(context)('common.confirm')),
+                child: Text(
+                  titleBtnDone ?? trans.confirm,
+                  style: styleBtnRight ??
+                      theme.textTheme.button?.copyWith(
+                        color: AppColor.primaryColor,
+                      ),
+                ),
               ),
             ],
           );
@@ -166,7 +182,11 @@ Future<dynamic> showNoticeConfirmDialog({
       } else if (Platform.isAndroid) {
         return showAndroidDialog();
       } else {
-        Widget _buildAction({Function()? onTap, String title = ''}) {
+        Widget _buildAction({
+          Function()? onTap,
+          required String title,
+          TextStyle? style,
+        }) {
           return RawMaterialButton(
             constraints: const BoxConstraints(minHeight: 45),
             padding: EdgeInsets.zero,
@@ -176,10 +196,11 @@ Future<dynamic> showNoticeConfirmDialog({
             },
             child: Text(
               title,
-              style: theme.textTheme.button?.copyWith(
-                color: Colors.blue,
-                fontWeight: FontWeight.normal,
-              ),
+              style: style ??
+                  theme.textTheme.button!.copyWith(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.normal,
+                  ),
             ),
           );
         }
@@ -195,18 +216,22 @@ Future<dynamic> showNoticeConfirmDialog({
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            Row(
               children: [
-                _buildAction(
-                  onTap: onConfirmed,
-                  title: titleBtnDone ?? translate(context)('common.confirm'),
+                Expanded(
+                  child: _buildAction(
+                    onTap: onCanceled,
+                    title: titleBtnCancel ?? trans.cancel,
+                    style: styleBtnLeft,
+                  ),
                 ),
-                const Divider(thickness: 1, height: 1),
-                _buildAction(
-                  onTap: onCanceled,
-                  title: titleBtnCancel ?? translate(context)('common.cancel'),
+                Container(width: 0.5, height: 44, color: Colors.grey),
+                Expanded(
+                  child: _buildAction(
+                    onTap: onConfirmed,
+                    title: titleBtnDone ?? trans.confirm,
+                    style: styleBtnRight,
+                  ),
                 ),
               ],
             )
@@ -262,6 +287,7 @@ Future<void> showActionDialog(
   bool barrierDismissible = true,
   bool dimissWhenSelect = true,
 }) {
+  final trans = translate(context);
   if (kIsWeb || Platform.isAndroid) {
     return showDialog(
       context: context,
@@ -294,7 +320,7 @@ Future<void> showActionDialog(
               onPressed: () {
                 Navigator.of(context, rootNavigator: useRootNavigator).pop();
               },
-              child: Text(translate(context)('common.cancel')),
+              child: Text(trans.cancel),
             ),
           ],
         );
@@ -348,7 +374,7 @@ Future<void> showActionDialog(
               ).pop();
             },
             child: Text(
-              translate(context)('common.cancel'),
+              trans.cancel,
               style: theme.textTheme.headline5?.copyWith(
                 color: Colors.blue,
                 fontWeight: FontWeight.normal,

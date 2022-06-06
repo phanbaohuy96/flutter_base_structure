@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../common/constants.dart';
 import '../theme/theme_color.dart';
 import 'item_devider.dart';
 
-class MenuItem extends StatelessWidget {
+class MenuItemView extends StatelessWidget {
   final String title;
   final Function()? onTap;
   final Widget icon;
@@ -13,7 +12,7 @@ class MenuItem extends StatelessWidget {
   final EdgeInsets padding;
   final Widget? tailIcon;
 
-  const MenuItem({
+  const MenuItemView({
     Key? key,
     required this.title,
     required this.icon,
@@ -66,9 +65,10 @@ class MenuItem extends StatelessWidget {
                   ),
                   if (tailIcon != null) tailIcon!,
                   if (onTap != null && tailIcon == null)
-                    Image.asset(
-                      ImageConstant.iconChevronRight,
-                      height: 16,
+                    const Icon(
+                      Icons.chevron_right_outlined,
+                      size: 24,
+                      color: Colors.grey,
                     )
                 ],
               ),

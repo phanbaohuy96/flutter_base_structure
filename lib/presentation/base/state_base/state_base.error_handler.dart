@@ -16,7 +16,7 @@ extension StateBaseErrorHandlerExt on StateBase {
           break;
         }
         errorTypeShowing = error.type;
-        showLoginRequired(message: error.message);
+        requireLogin(onSuccess: () {});
         break;
       case ErrorType.httpException:
         if (errorTypeShowing == ErrorType.httpException) {
@@ -26,7 +26,7 @@ extension StateBaseErrorHandlerExt on StateBase {
         if (error.statusCode != null &&
             error.statusCode! >= 500 &&
             error.statusCode! < 600) {
-          showErrorDialog(tr('common.error.technicalIssues'));
+          showErrorDialog(trans.technicalIssues);
         } else {
           onLogicError(error.message);
         }
@@ -36,7 +36,7 @@ extension StateBaseErrorHandlerExt on StateBase {
           break;
         }
         errorTypeShowing = ErrorType.timeout;
-        showErrorDialog(tr('common.error.connectionTimeout'));
+        showErrorDialog(trans.connectionTimeout);
         break;
       case ErrorType.noInternet:
         if (errorTypeShowing == ErrorType.noInternet) {
@@ -47,7 +47,7 @@ extension StateBaseErrorHandlerExt on StateBase {
           if (value == ConnectivityResult.none) {
             showNoInternetDialog();
           } else {
-            showErrorDialog(tr('common.error.technicalIssues'));
+            showErrorDialog(trans.technicalIssues);
           }
         });
         break;
@@ -56,7 +56,7 @@ extension StateBaseErrorHandlerExt on StateBase {
           break;
         }
         errorTypeShowing = ErrorType.unknown;
-        showErrorDialog(tr('common.error.unknowError'));
+        showErrorDialog(trans.unknowError);
         break;
       case ErrorType.grapQLUnknown:
         if (errorTypeShowing == ErrorType.grapQLUnknown) {
@@ -70,7 +70,7 @@ extension StateBaseErrorHandlerExt on StateBase {
           break;
         }
         errorTypeShowing = ErrorType.serverUnExpected;
-        showErrorDialog(tr('common.error.serverMaintenance'));
+        showErrorDialog(trans.serverMaintenance);
         break;
       default:
         break;

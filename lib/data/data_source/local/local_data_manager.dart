@@ -1,44 +1,40 @@
+import 'package:injectable/injectable.dart';
+
+import '../../../di/di.dart';
 import '../../../presentation/theme/theme_data.dart';
 import 'preferences_helper/preferences_helper.dart';
 
+@Singleton()
 class LocalDataManager implements AppPreferenceData {
-  PreferencesHelper? _preferencesHelper;
+  late final PreferencesHelper _preferencesHelper = injector.get();
 
-  Future<void> init() async {
-    _preferencesHelper = PreferencesHelperImpl();
-    await _preferencesHelper!.init();
-  }
+  Future<void> init() async {}
 
   ////////////////////////////////////////////////////////
   ///             Preferences helper
   ///
   @override
   SupportedTheme getTheme() {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper!.getTheme();
+    return _preferencesHelper.getTheme();
   }
 
   @override
   Future<bool?> setTheme(String? data) {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper!.setTheme(data);
+    return _preferencesHelper.setTheme(data);
   }
 
   @override
   String? getLocalization() {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper!.getLocalization();
+    return _preferencesHelper.getLocalization();
   }
 
   @override
   Future<bool?> saveLocalization(String? locale) {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper!.saveLocalization(locale);
+    return _preferencesHelper.saveLocalization(locale);
   }
 
   @override
   Future<bool?> clearData() {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper!.clearData();
+    return _preferencesHelper.clearData();
   }
 }

@@ -4,7 +4,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
   flutter: ">=2.0.0"
 
 dependencies:
@@ -17,36 +17,45 @@ dependencies:
   sprintf: ^6.0.0
   
   #network
-  retrofit: ^2.0.1 #ns
-  graphql_flutter: ^5.0.0 #ns
+  retrofit: ^3.0.1+1
+  graphql_flutter: ^5.0.0
 
   #base
-  flutter_bloc: ^7.2.0 #ns
-  shared_preferences: ^2.0.7 #ns
-  get_it: ^7.2.0 #ns
-  intl: ^0.17.0 #ns
-  flutter_svg_provider: ^0.1.10 #ns
-  flutter_svg: ^0.22.0 #ns
+  flutter_bloc: ^8.0.1
+  shared_preferences: ^2.0.15
+  get_it: ^7.2.0
+  intl: ^0.17.0
+  flutter_svg_provider: ^1.0.3
+  flutter_svg: ^1.1.0
   
   #utils
-  logger: ^1.0.0 #ns
-  pedantic: ^1.11.1 #ns
-  date_format: ^2.0.2 #ns
-  connectivity_plus: ^1.1.0
+  logger: ^1.1.0
+  pedantic: ^1.11.1
+  date_format: ^2.0.6
+  connectivity_plus: ^2.3.2
+  package_info: ^2.0.2 
+  device_info: ^2.0.2 
+  permission_handler: ^9.2.0
+  url_launcher: ^6.1.2
 
   #ui
-  cached_network_image: ^3.1.0 #ns
-  fluttertoast: ^8.0.8 #ns
-  flutter_statusbarcolor_ns: ^0.3.0-nullsafety #ns
-  flutter_spinkit: ^5.1.0 #ns
-  flutter_easyloading: ^3.0.3 #ns
+  cached_network_image: ^3.2.0
+  fluttertoast: ^8.0.9
+  flutter_statusbarcolor_ns: ^0.4.0
+  flutter_spinkit: ^5.1.0
+  flutter_easyloading: ^3.0.5
+  badges: ^2.0.3
+  webview_flutter: ^3.0.4
 
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  injectable_generator:  
   build_runner: ^2.0.4 #ns
-  retrofit_generator: ^2.0.0+1 #ns
+  retrofit_generator: ^4.0.1
+  json_serializable: ^6.0.1
+  hive_generator: ^1.1.1
 
 flutter:
 
@@ -54,6 +63,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true 
 
   # To add assets to your application, add an assets section, like this:
   assets:

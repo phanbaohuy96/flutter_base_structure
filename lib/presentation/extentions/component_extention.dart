@@ -1,10 +1,7 @@
 part of 'extention.dart';
 
-TranslateCallback translate(BuildContext context) => S.of(context).translate;
-
-String locale(BuildContext context) => S.of(context).localeName ?? '';
-
-bool isVnLocale(BuildContext context) => locale(context).isVn;
+AppLocalizations translate(BuildContext context) =>
+    AppLocalizations.of(context)!;
 
 extension DiacriticsAwareString on String {
   static const diacritics =
@@ -21,5 +18,7 @@ extension DiacriticsAwareString on String {
 Future<void> preIm(String path, BuildContext ctx) =>
     precacheImage(AssetImage(path), ctx);
 
-Future<void> prePt(String path, BuildContext ctx) =>
-    precachePicture(ExactAssetPicture(SvgPicture.svgStringDecoder, path), ctx);
+Future<void> prePt(String path, BuildContext ctx) => precachePicture(
+      ExactAssetPicture(SvgPicture.svgStringDecoderBuilder, path),
+      ctx,
+    );

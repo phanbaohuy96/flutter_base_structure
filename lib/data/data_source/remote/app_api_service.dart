@@ -4,6 +4,7 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart' as dio_p;
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'package:injectable/injectable.dart';
 import 'package:pedantic/pedantic.dart';
 
 import '../../../common/client_info.dart';
@@ -16,25 +17,24 @@ import '../../models/graphql_error.dart';
 import '../local/local_data_manager.dart';
 import 'interceptor/auth_interceptor.dart';
 import 'interceptor/logger_interceptor.dart';
-import 'rest_api_repository/api_contract.dart';
 import 'rest_api_repository/rest_api_repository.dart';
 
 part 'api_service_error.dart';
 
+@Injectable()
 class AppApiService {
   late dio_p.Dio dio;
   late RestApiRepository client;
   late GraphQLClient graphQLClient;
   ApiServiceDelegate? apiServiceDelegate;
 
-  /// Cached headers for GraphQl will get headers from lastest `updateHeaders`
-  late Map<String, String> _cacheHeaders;
+  AppApiService() {
+    _config();
+  }
 
   LocalDataManager get localDataManager => injector.get();
 
-  void create() {
-    _cacheHeaders = _getDefaultHeader();
-
+  void _config() {
     _createGraphQLClient();
 
     _setupDioClient();
@@ -50,6 +50,7 @@ class AppApiService {
       HttpConstants.osversion: ClientInfo.osversion,
       HttpConstants.appVersion: ClientInfo.appVersionName,
       HttpConstants.appVersionFull: ClientInfo.appVersion,
+      HttpConstants.language: ClientInfo.languageCode,
     };
 
     if (!kIsWeb) {
@@ -58,25 +59,9 @@ class AppApiService {
     return defaultHeader;
   }
 
-  void updateHeaders({Map<String, String> headers = const {}}) {
-    final defaultHeader = _getDefaultHeader();
-
-    final _headers = <String, String>{
-      ...defaultHeader,
-      ...headers,
-    };
-
-    dio.options.headers.clear();
-
-    dio.options.headers = _headers;
-
-    _cacheHeaders = _headers;
-  }
-
   void _createGraphQLClient() {
     graphQLClient = createGraphQLClient(
       baseUri: Config.instance.appConfig.baseGraphQLUrl,
-      // TODO : implement get token if needed
       getToken: () async {
         // return localDataManager.getToken();
         return '';
@@ -105,7 +90,7 @@ class AppApiService {
       /// Remove old `authorization` bcs of GraphQl will get new from `getToken`
       headers: _getDefaultHeader()..remove(HttpConstants.authorization),
       customHeaderFnc: () {
-        return {..._cacheHeaders}..remove(HttpConstants.authorization);
+        return {..._getDefaultHeader()}..remove(HttpConstants.authorization);
       },
       onRefreshToken: refreshToken,
     );
@@ -146,11 +131,7 @@ class AppApiService {
         // TODO : implement get token if needed
         getToken: null /*localDataManager.getToken*/,
         refreshToken: (token, options) async {
-          // TODO : implement refresh token if needed
-          return refreshToken(
-            token,
-            saveToken: options.path != ApiContract.logout,
-          );
+          return refreshToken(token);
         },
         onLogoutRequest: () {
           unawaited(localDataManager.clearData());
@@ -162,7 +143,7 @@ class AppApiService {
         onRequestError: (error) => apiServiceDelegate?.onError(
           ErrorData.fromDio(error),
         ),
-        // TODO : implement ignore large logs if needed
+        // implement ignore large logs if needed
         ignoreReponseDataLog: (response) {
           // return response.requestOptions.path == ApiContract.administrative;
           return false;

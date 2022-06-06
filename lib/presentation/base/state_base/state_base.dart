@@ -9,6 +9,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
   bool get isLoading => _isLoadingShowing;
 
   AppBlocBase? get bloc;
+
   bool get willHandleError => true;
 
   @override
@@ -17,14 +18,14 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     super.initState();
     LogUtils.d('[${T.toString()}] initState');
     if (willHandleError) {
-      bloc?.registerDelegate(this);
+      bloc?.errorHandler = onError;
     }
   }
 
   @override
   @mustCallSuper
   void didChangeDependencies() {
-    refreshHeader();
+    ClientInfo.languageCode = languageCode;
     super.didChangeDependencies();
   }
 
@@ -39,7 +40,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     if (!_isLoadingShowing) {
       _isLoadingShowing = true;
       EasyLoading.show(
-        status: tr('common.loading'),
+        status: trans.processing,
         indicator: const Loading(),
       );
     }
@@ -54,23 +55,14 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
 
   @override
   void onError(ErrorData error) {
+    hideLoading();
     _onError(error);
-  }
-
-  void showGuestRequestingNotice() {
-    showNoticeDialog(
-      context: context,
-      message: tr('common.guestRequesting.notice'),
-      titleBtn: tr('common.ok'),
-    );
   }
 
   void showErrorDialog(String? message, {Function()? onClose}) {
     showNoticeErrorDialog(
       context: context,
-      message: message?.isNotEmpty != true
-          ? tr('common.error.technicalIssues')
-          : message!,
+      message: message?.isNotEmpty != true ? trans.technicalIssues : message!,
       onClose: () {
         onCloseErrorDialog();
         onClose?.call();
@@ -83,25 +75,10 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
     errorTypeShowing = null;
   }
 
-  void showLoginRequired({String? message, Function()? onConfirmed}) {
-    LogUtils.d('[${T.toString()}] showLoginRequired!');
-    showNoticeConfirmDialog(
-      barrierDismissible: true,
-      context: context,
-      title: tr('common.inform'),
-      message: message ?? tr('common.error.sessionExpired'),
-      onConfirmed: () {
-        onCloseErrorDialog();
-        (onConfirmed ?? backToAuth).call();
-      },
-      onCanceled: onCloseErrorDialog,
-    );
-  }
-
   void showNoInternetDialog() {
     showNoticeDialog(
       context: context,
-      message: tr('common.error.noInternet'),
+      message: trans.noInternet,
       onClose: onCloseErrorDialog,
     );
   }
@@ -113,4 +90,47 @@ abstract class StateBase<T extends StatefulWidget> extends State<T>
   Widget baseLoading() {
     return const Loading();
   }
+
+  void requireLogin({required Function() onSuccess, Function()? onSkip}) {
+    // if (injector.get<AuthService>().isSignedIn) {
+    //   onSuccess.call();
+    //   return;
+    // }
+    showNoticeConfirmDialog(
+      context: context,
+      message: trans.loginRequired,
+      title: trans.inform,
+      titleBtnDone: trans.login,
+      titleBtnCancel: trans.dismiss,
+      onCanceled: onSkip,
+      onConfirmed: () {
+        _showLoginScreen(onSuccess, onSkip);
+      },
+    );
+  }
+
+  void _showLoginScreen(Function() onSuccess, Function()? onSkip) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return const SizedBox();
+      },
+    );
+  }
+
+  Future<void> openWeb({String? title, String? url, String? html}) async {
+    await Navigator.of(context).pushNamed(
+      RouteList.webview,
+      arguments: WebviewArgs(
+        title: title,
+        html: html,
+        url: url,
+      ),
+    );
+  }
+
+  String get languageCode =>
+      context.read<AppDataBloc>().state?.locale.languageCode ??
+      AppLocale.vi.languageCode;
 }

@@ -1,13 +1,22 @@
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data/data_source/local/local_data_manager.dart';
+import 'di.config.dart';
 
 GetIt injector = GetIt.instance;
+@InjectableInit(
+  initializerName: r'$initGetIt',
+  preferRelativeImports: true,
+  asExtension: false,
+)
+Future<dynamic> configureDependencies() {
+  return $initGetIt(injector);
+}
 
-class DI {
-  static Future<void> inject() async {
-    final localDataManager = LocalDataManager();
-    await localDataManager.init();
-    injector.registerLazySingleton<LocalDataManager>(() => localDataManager);
-  }
+@module
+abstract class AppModule {
+  @preResolve
+  Future<SharedPreferences> get sharedPreferences =>
+      SharedPreferences.getInstance();
 }

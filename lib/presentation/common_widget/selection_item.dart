@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../common/constants.dart';
 import 'item_devider.dart';
 
 class SelectionItem extends StatelessWidget {
@@ -61,10 +60,10 @@ class SelectionItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 if (isChecked == true)
-                  Image.asset(
-                    ImageConstant.iconCheckGreen,
-                    width: 18,
-                    height: 18,
+                  const Icon(
+                    Icons.check,
+                    size: 18,
+                    color: Colors.green,
                   ),
               ],
             ),

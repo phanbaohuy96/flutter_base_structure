@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../../../common/constants.dart';
 import '../cache_network_image_wrapper.dart';
 
 class SliverScreenForm extends StatefulWidget {
@@ -88,11 +87,10 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(
-                  child: Image.asset(
-                    ImageConstant.iconChevronLeft,
+                  child: Icon(
+                    Icons.chevron_left_outlined,
                     color: _colorTween.transform(scale),
-                    height: 14,
-                    width: 8,
+                    size: 14,
                   ),
                 ),
               );
@@ -163,7 +161,7 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
     }
     final scale =
         (height - minAppBarHeight) / (maxAppBarHeight! - minAppBarHeight);
-    SchedulerBinding.instance?.addPostFrameCallback(
+    SchedulerBinding.instance.addPostFrameCallback(
       (_) => _textScaleNotifier.value = scale,
     );
 

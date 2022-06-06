@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../common/constants.dart';
-import '../common_widget/export.dart';
+import 'theme_color.dart';
 
 class ThemeButton {
   static TextStyle? getTextStyle(BuildContext context) {
@@ -15,19 +13,22 @@ class ThemeButton {
     Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
+    bool enable = true,
   }) =>
       RawMaterialButton(
-        fillColor: Theme.of(context).accentColor,
+        fillColor: enable
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).colorScheme.primary.withAlpha(55),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
-        onPressed: onPressed,
+        onPressed: enable ? onPressed : null,
         elevation: 0,
         padding: padding,
         constraints: constraints,
         child: Text(
           title,
-          style: getTextStyle(context)?.copyWith(
+          style: getTextStyle(context)!.copyWith(
             color: Colors.white,
           ),
           textAlign: TextAlign.center,
@@ -46,7 +47,7 @@ class ThemeButton {
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
   }) =>
       RawMaterialButton(
-        fillColor: Theme.of(context).accentColor,
+        fillColor: Theme.of(context).colorScheme.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -61,7 +62,7 @@ class ThemeButton {
             Expanded(
               child: Text(
                 title,
-                style: getTextStyle(context)?.copyWith(
+                style: getTextStyle(context)!.copyWith(
                   color: Colors.white,
                 ),
               ),
@@ -78,9 +79,38 @@ class ThemeButton {
     Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
+    bool enable = true,
   }) =>
       RawMaterialButton(
-        fillColor: Colors.grey,
+        fillColor: enable
+            ? AppColor.greyDC
+            : Theme.of(context).colorScheme.primary.withAlpha(55),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        onPressed: enable ? onPressed : null,
+        elevation: 0,
+        padding: padding,
+        constraints: constraints,
+        child: Text(
+          title,
+          style: getTextStyle(context)!.copyWith(
+            color: Colors.black,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      );
+
+  static Widget denied({
+    required BuildContext context,
+    String title = '',
+    Function()? onPressed,
+    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
+    BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
+    bool? reverseColor,
+  }) =>
+      RawMaterialButton(
+        fillColor: reverseColor == true ? Colors.red : const Color(0xffFFF0F1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
         ),
@@ -90,8 +120,8 @@ class ThemeButton {
         constraints: constraints,
         child: Text(
           title,
-          style: getTextStyle(context)?.copyWith(
-            color: Colors.white,
+          style: getTextStyle(context)!.copyWith(
+            color: reverseColor == true ? AppColor.white : Colors.red,
           ),
           textAlign: TextAlign.center,
         ),
@@ -103,6 +133,7 @@ class ThemeButton {
     Function()? onPressed,
     EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 16),
     BoxConstraints constraints = const BoxConstraints(minHeight: 48.0),
+    bool enable = true,
   }) {
     return ThemeButton.primary(
       context: context,
@@ -110,37 +141,7 @@ class ThemeButton {
       onPressed: onPressed,
       padding: padding,
       constraints: constraints,
-    );
-  }
-
-  static Widget loadingButton({
-    required BuildContext context,
-    required LoadingButtonController controller,
-    String title = '',
-    Function()? onPressed,
-    Widget? icon,
-    EdgeInsetsGeometry padding = const EdgeInsets.symmetric(
-      horizontal: 24,
-      vertical: 15,
-    ),
-  }) {
-    return LoadingButton(
-      controller: controller,
-      title: title,
-      textStyle: getTextStyle(context),
-      normalIcon: icon ??
-          Image.asset(
-            ImageConstant.iconArrowCircleRight,
-            width: 16,
-            height: 16,
-          ),
-      loadingIndicator: const SpinKitFadingCircle(
-        color: Colors.white,
-        size: 16,
-      ),
-      bgColor: Theme.of(context).accentColor,
-      onPressed: onPressed,
-      padding: padding,
+      enable: enable,
     );
   }
 }

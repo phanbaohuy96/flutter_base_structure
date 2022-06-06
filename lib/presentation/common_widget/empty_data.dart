@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../common/constants.dart';
 import '../extentions/extention.dart';
 
 class EmptyData extends StatelessWidget {
@@ -16,13 +15,13 @@ class EmptyData extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              ImageConstant.iconEmpty,
-              width: MediaQuery.of(context).size.width / 3,
+            Icon(
+              Icons.hourglass_empty_rounded,
+              size: MediaQuery.of(context).size.width / 3,
             ),
             const SizedBox(height: 8),
             Text(
-              translate(context)('No data'),
+              translate(context).noData,
               style: Theme.of(context).textTheme.subtitle2,
             )
           ],

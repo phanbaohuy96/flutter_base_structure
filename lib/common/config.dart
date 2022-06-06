@@ -37,4 +37,10 @@ class AppConfig {
         baseApiLayer = env[Env.baseApiLayer],
         baseGraphQLUrl = env[Env.baseGraphQLUrl],
         onesignalAppID = env[Env.onesignalAppID];
+
+  bool get isDevBuild => envName == Env.devEnvName;
+
+  bool get isStagBuild => envName == Env.stagingEnvName;
+
+  bool get isProdBuild => envName == Env.prodEnvName;
 }

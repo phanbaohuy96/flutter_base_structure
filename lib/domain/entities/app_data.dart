@@ -3,23 +3,32 @@ import 'package:flutter/material.dart';
 import '../../presentation/theme/theme_data.dart';
 
 class AppData {
-  ThemeData? themeData;
-  SupportedTheme currentTheme;
-  Locale locale;
+  final ThemeData themeData;
+  final SupportedTheme currentTheme;
+  final Locale locale;
 
-  AppData(this.currentTheme, this.locale) {
-    themeData = initialTheme.data;
-  }
+  AppData(this.currentTheme, this.locale)
+      : themeData = getTheme(currentTheme).data;
 
-  AppTheme get initialTheme {
-    if (currentTheme == SupportedTheme.light) {
+  static AppTheme getTheme(SupportedTheme supportedTheme) {
+    if (supportedTheme == SupportedTheme.light) {
       return buildLightTheme();
     }
 
-    if (currentTheme == SupportedTheme.dark) {
+    if (supportedTheme == SupportedTheme.dark) {
       return buildDarkTheme();
     }
 
     return buildLightTheme();
+  }
+
+  AppData copyWith({
+    SupportedTheme? currentTheme,
+    Locale? locale,
+  }) {
+    return AppData(
+      currentTheme ?? this.currentTheme,
+      locale ?? this.locale,
+    );
   }
 }

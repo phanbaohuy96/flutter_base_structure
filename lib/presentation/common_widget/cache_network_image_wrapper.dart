@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../common/constants.dart';
 import 'loading.dart';
 
 class CachedNetworkImageWrapper extends CachedNetworkImage {
@@ -36,10 +35,9 @@ class CachedNetworkImageWrapper extends CachedNetworkImage {
             brightness: Brightness.light,
             radius: 10,
           ),
-          errorWidget: (context, url, error) => Image.asset(
-            ImageConstant.iconAvatarPlaceHolder,
-            width: width,
-            height: height,
+          errorWidget: (context, url, error) => Icon(
+            Icons.person,
+            size: width,
           ),
         );
 

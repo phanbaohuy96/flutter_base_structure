@@ -16,7 +16,7 @@ class LoadFailed extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            translate(context)('common.loadFailed'),
+            translate(context).failed,
             style: textTheme.subtitle1?.copyWith(
               color: AppColor.primaryColor,
             ),

@@ -1,7 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../../../common/constants.dart';
 
 part 'dropdown_controller.dart';
 
@@ -39,10 +36,9 @@ class DropdownWidget<T> extends StatelessWidget {
             controller.setData(value);
             onChanged?.call(value);
           },
-          icon: Image.asset(
-            ImageConstant.iconChevronDown,
-            width: 16,
-            height: 16,
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            size: 16,
           ),
           iconSize: 16,
           decoration: InputDecoration(

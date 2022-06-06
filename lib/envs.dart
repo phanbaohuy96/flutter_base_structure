@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Env {
   static const environment = 'environment';
   static const developmentMode = 'developmentMode';
@@ -6,9 +8,13 @@ class Env {
   static const baseGraphQLUrl = 'baseGraphQLUrl';
   static const onesignalAppID = 'onesignalAppID';
 
+  static const devEnvName = 'Development';
+  static const stagingEnvName = 'Staging';
+  static const prodEnvName = 'Production';
+
   static final Map<String, dynamic> devEnv = {
-    environment: 'Development',
-    developmentMode: true,
+    environment: devEnvName,
+    developmentMode: kDebugMode,
     appName: 'FBS_Dev',
     baseApiLayer: '',
     baseGraphQLUrl: '',
@@ -16,8 +22,8 @@ class Env {
   };
 
   static final Map<String, dynamic> stagingEnv = {
-    environment: 'Staging',
-    developmentMode: false,
+    environment: stagingEnvName,
+    developmentMode: kDebugMode,
     appName: 'FBS_Staging',
     baseApiLayer: '',
     baseGraphQLUrl: '',
@@ -25,8 +31,8 @@ class Env {
   };
 
   static final Map<String, dynamic> prodEnv = {
-    environment: 'Production',
-    developmentMode: false,
+    environment: prodEnvName,
+    developmentMode: kDebugMode,
     appName: 'FBS',
     baseApiLayer: '',
     baseGraphQLUrl: '',

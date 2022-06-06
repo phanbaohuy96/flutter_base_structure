@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../common/constants.dart';
 import '../extentions/extention.dart';
 
 class ThemeBottomSheet {
@@ -35,17 +34,16 @@ class ThemeBottomSheet {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  InkWell(
-                    onTap: onTapClose,
-                    child: SizedBox(
-                      height: 50,
-                      width: 50,
-                      child: Image.asset(
-                        ImageConstant.timeWhite,
-                        width: 20,
-                        height: 20,
-                        color: Colors.grey,
-                      ),
+                  IconButton(
+                    constraints: const BoxConstraints(
+                      minHeight: 50,
+                      minWidth: 50,
+                    ),
+                    onPressed: onTapClose,
+                    icon: const Icon(
+                      Icons.close_rounded,
+                      size: 20,
+                      color: Colors.grey,
                     ),
                   )
                 ],
@@ -140,7 +138,7 @@ class ThemeBottomSheet {
                 vertical: 16,
               ),
               child: Text(
-                translate(context)('common.cancel'),
+                translate(context).cancel,
                 style: theme.textTheme.button?.copyWith(
                   color: Colors.blue,
                 ),

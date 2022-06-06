@@ -2,68 +2,58 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rxdart/rxdart.dart';
 
-import '../../common/components/i18n/internationalization.dart';
+import '../../common/client_info.dart';
+import '../../common/constants/app_locale.dart';
 import '../../common/utils.dart';
 import '../../data/data_source/local/local_data_manager.dart';
 import '../../di/di.dart';
 import '../../domain/entities/app_data.dart';
 import '../../presentation/theme/theme_data.dart';
 
-class AppDataBloc extends Cubit<dynamic> {
-  AppData? _appData;
-
-  AppData? get appData => _appData;
-
-  final PublishSubject<AppData> _appDataController;
-  Stream<AppData> get appDataStream => _appDataController.stream;
-
-  AppDataBloc()
-      : _appDataController = PublishSubject<AppData>(),
-        super(0);
+class AppDataBloc extends Cubit<AppData?> {
+  AppDataBloc() : super(null);
 
   LocalDataManager get localDataManager => injector.get();
 
-  void initial() {
+  Future<void> initial() async {
     if (!isInitialed) {
-      _appData = AppData(
+      ClientInfo.languageCode =
+          localDataManager.getLocalization() ?? AppLocale.vi.languageCode;
+      emit(AppData(
         localDataManager.getTheme(),
-        Locale(localDataManager.getLocalization() ?? LocaleKey.vn),
-      );
-      notifyAppDataChanged();
+        Locale(ClientInfo.languageCode),
+      ));
     }
   }
 
-  bool get isInitialed => _appData != null;
+  bool get isInitialed => state != null;
 
   /// --------------------- Theme ---------------------//
   void changeLightTheme() {
-    appData!
-      ..currentTheme = SupportedTheme.light
-      ..themeData = buildLightTheme().data;
-    notifyAppDataChanged();
+    emit(state?.copyWith(
+      currentTheme: SupportedTheme.light,
+    ));
   }
 
   void changeDarkTheme() {
-    appData!
-      ..currentTheme = SupportedTheme.dark
-      ..themeData = buildDarkTheme().data;
-    notifyAppDataChanged();
+    emit(state?.copyWith(
+      currentTheme: SupportedTheme.dark,
+    ));
   }
 
   /// ------------------- End Theme -------------------//
 
   /// -------------------- Locale --------------------//
-  Future<bool> changeLocale(String locale) async {
-    if (!LocaleKey.isSupported(locale)) {
+  Future<bool> changeLocale(Locale locale) async {
+    if (!AppLocale.isSupported(locale)) {
       LogUtils.w('locale $locale is not supported!');
       return false;
     }
+    ClientInfo.languageCode = locale.languageCode;
 
-    if (await localDataManager.saveLocalization(locale) == true) {
-      appData?.locale = Locale(locale);
-      notifyAppDataChanged();
+    if (await localDataManager.saveLocalization(locale.languageCode) == true) {
+      emit(state?.copyWith(locale: locale));
       return true;
     } else {
       return false;
@@ -71,11 +61,4 @@ class AppDataBloc extends Cubit<dynamic> {
   }
 
   /// ------------------- End Locale ------------------------//
-  void notifyAppDataChanged() {
-    _appDataController.sink.add(appData!);
-  }
-
-  void dispose() {
-    _appDataController.close();
-  }
 }

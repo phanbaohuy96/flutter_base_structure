@@ -6,6 +6,8 @@ part of 'rest_api_repository.dart';
 // RetrofitGenerator
 // **************************************************************************
 
+// ignore_for_file: unnecessary_brace_in_string_interps
+
 class _RestApiRepository implements RestApiRepository {
   _RestApiRepository(this._dio, {this.baseUrl});
 

@@ -3,7 +3,7 @@ part of '../base.dart';
 extension StateBaseExtention on StateBase {
   void hideKeyBoard() => CommonFunction.hideKeyBoard(context);
 
-  TranslateCallback get tr => S.of(context).translate;
+  AppLocalizations get trans => translate(context);
 
   ThemeData get theme => Theme.of(context);
 
@@ -13,29 +13,35 @@ extension StateBaseExtention on StateBase {
 
   double get paddingBottom => MediaQuery.of(context).padding.bottom;
 
-  void refreshHeader() {
-    bloc?.updateHeader({HttpConstants.language: locale(context)});
-  }
-
-  void backToAuth() {
-    // TODO: implement `backToAuth`
-    // Navigator.of(context).pushNamedAndRemoveUntil(
-    //   RouteList.authRoute,
-    //   (route) => false,
-    // );
-  }
-
   void backToHome() {
     Navigator.of(context).popUntil(
       ModalRoute.withName(RouteList.dashBoardRoute),
     );
   }
 
-  String parseServerGender(String gender) {
-    if (gender == tr('gender.male')) {
+  String? genderFromText(String? text) {
+    if (text == trans.male) {
       return ServerGender.male;
-    } else {
+    }
+    if (text == trans.female) {
       return ServerGender.female;
+    }
+    if (text == trans.otherGender) {
+      return ServerGender.other;
+    }
+    return null;
+  }
+
+  String? textFromGender(String? gender) {
+    switch (gender) {
+      case ServerGender.male:
+        return trans.male;
+      case ServerGender.female:
+        return trans.female;
+      case ServerGender.other:
+        return trans.otherGender;
+      default:
+        return null;
     }
   }
 }

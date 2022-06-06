@@ -14,7 +14,9 @@ class AppDelegate {
 
     Config.instance.setup(env);
 
-    await DI.inject();
+    await Future.wait([
+      configureDependencies(),
+    ]);
 
     return runZonedGuarded(() async {
       runApp(const App());
