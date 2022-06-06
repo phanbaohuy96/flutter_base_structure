@@ -1,21 +1,18 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../../../common/constants.dart';
 
 part 'dropdown_controller.dart';
 
 class DropdownWidget<T> extends StatelessWidget {
   final List<T> items;
-  final Function(T) onChanged;
-  final String hint;
+  final Function(T?)? onChanged;
+  final String? hint;
   final Widget Function(T) itemBuilder;
   final DropdownContoller<T, DropdownData<T>> controller;
 
   DropdownWidget({
-    @required this.controller,
-    @required this.itemBuilder,
-    this.items,
+    required this.controller,
+    required this.itemBuilder,
+    required this.items,
     this.onChanged,
     this.hint,
   });
@@ -39,10 +36,9 @@ class DropdownWidget<T> extends StatelessWidget {
             controller.setData(value);
             onChanged?.call(value);
           },
-          icon: Image.asset(
-            ImageConstant.iconChevronDown,
-            width: 16,
-            height: 16,
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            size: 16,
           ),
           iconSize: 16,
           decoration: InputDecoration(
@@ -56,7 +52,7 @@ class DropdownWidget<T> extends StatelessWidget {
             hintText: hint,
             hintStyle: themeData.textTheme.subtitle2,
             errorText: value.validation,
-            errorStyle: themeData.textTheme.subtitle1.copyWith(
+            errorStyle: themeData.textTheme.subtitle1?.copyWith(
               color: Colors.red,
             ),
           ),

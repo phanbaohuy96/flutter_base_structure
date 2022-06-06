@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 
-import '../../../common/constants.dart';
 import '../../../common/utils.dart';
 import '../../extentions/extention.dart';
 import '../../theme/shadow.dart';
 import '../../theme/theme_button.dart';
 
 class SubmitScreenForm extends StatelessWidget {
-  final String submitBtnTitle;
-  final String cancelBtnTitle;
-  final Widget child;
-  final Function() onCancel;
-  final Function() onConfirm;
-  final String title;
+  final String? submitBtnTitle;
+  final String? cancelBtnTitle;
+  final Widget? child;
+  final Function()? onCancel;
+  final Function()? onConfirm;
+  final String? title;
   final bool isBackButtonVisible;
 
   const SubmitScreenForm({
-    Key key,
+    Key? key,
     this.submitBtnTitle,
     this.cancelBtnTitle,
     this.child,
@@ -34,17 +33,17 @@ class SubmitScreenForm extends StatelessWidget {
       appBar: title != null
           ? AppBar(
               title: Text(
-                title,
+                title!,
                 style: _themeData.textTheme.headline5,
               ),
               leading: isBackButtonVisible
                   ? IconButton(
-                      icon: Image.asset(
-                        ImageConstant.iconChevronLeft,
-                        width: 18,
-                        height: 18,
+                      icon: const Icon(
+                        Icons.chevron_left_outlined,
+                        size: 18,
                       ),
-                      onPressed: onCancel)
+                      onPressed: onCancel,
+                    )
                   : null,
               centerTitle: true,
               automaticallyImplyLeading: false,
@@ -78,8 +77,7 @@ class SubmitScreenForm extends StatelessWidget {
                     Expanded(
                       child: ThemeButton.notRecommend(
                         context: context,
-                        title: cancelBtnTitle ??
-                            translate(context)('common.cancel'),
+                        title: cancelBtnTitle ?? translate(context).cancel,
                         onPressed: onCancel,
                       ),
                     ),
@@ -87,8 +85,7 @@ class SubmitScreenForm extends StatelessWidget {
                     Expanded(
                       child: ThemeButton.recommend(
                         context: context,
-                        title: submitBtnTitle ??
-                            translate(context)('common.confirm'),
+                        title: submitBtnTitle ?? translate(context).confirm,
                         onPressed: onConfirm,
                       ),
                     ),

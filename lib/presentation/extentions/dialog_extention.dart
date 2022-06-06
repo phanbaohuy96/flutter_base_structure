@@ -1,44 +1,56 @@
 part of 'extention.dart';
 
 Future<dynamic> showNoticeDialog({
-  @required BuildContext context,
-  @required String message,
-  String title,
-  String titleBtn,
+  required BuildContext context,
+  required String message,
+  String? title,
+  String? titleBtn,
   bool barrierDismissible = true,
-  Function() onClose,
+  Function()? onClose,
   bool useRootNavigator = true,
+  bool dismissWhenAction = true,
 }) {
+  final dismissFunc = () {
+    if (dismissWhenAction) {
+      Navigator.of(context, rootNavigator: useRootNavigator).pop();
+    }
+  };
+  final trans = translate(context);
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
     useRootNavigator: useRootNavigator,
     builder: (context) {
       final theme = Theme.of(context);
-      if (Platform.isAndroid) {
-        return AlertDialog(
-          title: Text(
-            title ?? translate(context)('common.inform'),
-            style: theme.textTheme.headline5,
-          ),
-          content: Text(
-            message,
-            style: theme.textTheme.bodyText2,
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: useRootNavigator).pop();
-                onClose?.call();
-              },
-              child: Text(titleBtn ?? translate(context)('common.dismiss')),
-            )
-          ],
-        );
+
+      final showAndroidDialog = () => AlertDialog(
+            title: Text(
+              title ?? trans.inform,
+              style: theme.textTheme.headline5,
+            ),
+            content: Text(
+              message,
+              style: theme.textTheme.bodyText2,
+              textAlign: TextAlign.center,
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  dismissFunc.call();
+                  onClose?.call();
+                },
+                child: Text(titleBtn ?? trans.ok),
+              )
+            ],
+          );
+
+      if (kIsWeb) {
+        return showAndroidDialog();
+      } else if (Platform.isAndroid) {
+        return showAndroidDialog();
       } else {
         return CupertinoAlertDialog(
-          title: Text(title ?? translate(context)('common.inform')),
+          title: Text(title ?? trans.inform),
           content: Text(
             message,
             style: theme.textTheme.bodyText2,
@@ -47,10 +59,10 @@ Future<dynamic> showNoticeDialog({
           actions: <Widget>[
             CupertinoDialogAction(
               onPressed: () {
-                Navigator.of(context, rootNavigator: useRootNavigator).pop();
+                dismissFunc.call();
                 onClose?.call();
               },
-              child: Text(titleBtn ?? translate(context)('common.dismiss')),
+              child: Text(titleBtn ?? trans.ok),
             ),
           ],
         );
@@ -60,103 +72,135 @@ Future<dynamic> showNoticeDialog({
 }
 
 Future<dynamic> showNoticeErrorDialog({
-  @required BuildContext context,
-  @required String message,
+  required BuildContext context,
+  required String message,
   bool barrierDismissible = false,
-  Function() onClose,
+  void Function()? onClose,
   bool useRootNavigator = true,
+  String? titleBtn,
 }) {
+  final trans = translate(context);
   return showNoticeDialog(
     context: context,
     message: message,
     barrierDismissible: barrierDismissible,
     onClose: onClose,
-    titleBtn: translate(context)('common.ok'),
+    titleBtn: titleBtn ?? trans.ok,
     useRootNavigator: useRootNavigator,
-    title: translate(context)('common.error'),
+    title: trans.error,
   );
 }
 
 Future<dynamic> showNoticeWarningDialog({
-  @required BuildContext context,
-  @required String message,
+  required BuildContext context,
+  required String message,
   bool barrierDismissible = false,
-  Function() onClose,
+  void Function()? onClose,
   bool useRootNavigator = true,
 }) {
+  final trans = translate(context);
   return showNoticeDialog(
     context: context,
     message: message,
     barrierDismissible: barrierDismissible,
     onClose: onClose,
-    titleBtn: translate(context)('common.ok'),
+    titleBtn: trans.ok,
     useRootNavigator: useRootNavigator,
-    title: translate(context)('common.warning'),
+    title: trans.warning,
   );
 }
 
 Future<dynamic> showNoticeConfirmDialog({
-  @required BuildContext context,
-  @required Icon icon,
-  @required String message,
-  @required String title,
+  required BuildContext context,
+  required String message,
+  required String title,
   bool barrierDismissible = true,
-  String titleBtnDone,
-  String titleBtnCancel,
-  Function() onConfirmed,
-  Function() onCanceled,
+  String? titleBtnDone,
+  String? titleBtnCancel,
+  void Function()? onConfirmed,
+  void Function()? onCanceled,
   bool useRootNavigator = true,
+  bool dismissWhenAction = true,
+  TextStyle? styleBtnRight,
+  TextStyle? styleBtnLeft,
 }) {
+  final dismissFunc = () {
+    if (dismissWhenAction) {
+      Navigator.of(context, rootNavigator: useRootNavigator).pop();
+    }
+  };
+  final trans = translate(context);
   return showDialog(
     context: context,
     barrierDismissible: barrierDismissible,
     useRootNavigator: useRootNavigator,
     builder: (context) {
       final theme = Theme.of(context);
-      if (Platform.isAndroid) {
-        return AlertDialog(
-          title: Text(
-            title,
-            style: theme.textTheme.headline5,
-          ),
-          content: Text(
-            message,
-            style: theme.textTheme.bodyText2,
-            textAlign: TextAlign.center,
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: useRootNavigator).pop();
-                onCanceled?.call();
-              },
-              child:
-                  Text(titleBtnCancel ?? translate(context)('common.cancel')),
+
+      final showAndroidDialog = () => AlertDialog(
+            title: Text(
+              title,
+              style: theme.textTheme.headline5,
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: useRootNavigator).pop();
-                onConfirmed?.call();
-              },
-              child: Text(titleBtnDone ?? translate(context)('common.confirm')),
+            content: Text(
+              message,
+              style: theme.textTheme.bodyText2,
+              textAlign: TextAlign.center,
             ),
-          ],
-        );
+            actions: [
+              TextButton(
+                onPressed: () {
+                  dismissFunc.call();
+                  onCanceled?.call();
+                },
+                child: Text(
+                  titleBtnCancel ?? trans.cancel,
+                  style: styleBtnLeft ??
+                      theme.textTheme.button?.copyWith(
+                        color: AppColor.primaryColor,
+                      ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  dismissFunc.call();
+                  onConfirmed?.call();
+                },
+                child: Text(
+                  titleBtnDone ?? trans.confirm,
+                  style: styleBtnRight ??
+                      theme.textTheme.button?.copyWith(
+                        color: AppColor.primaryColor,
+                      ),
+                ),
+              ),
+            ],
+          );
+
+      if (kIsWeb) {
+        return showAndroidDialog();
+      } else if (Platform.isAndroid) {
+        return showAndroidDialog();
       } else {
-        Widget _buildAction({Function() onTap, String title}) {
+        Widget _buildAction({
+          Function()? onTap,
+          required String title,
+          TextStyle? style,
+        }) {
           return RawMaterialButton(
             constraints: const BoxConstraints(minHeight: 45),
             padding: EdgeInsets.zero,
             onPressed: () {
-              Navigator.of(context, rootNavigator: useRootNavigator).pop();
+              dismissFunc.call();
               onTap?.call();
             },
             child: Text(
               title,
-              style: theme.textTheme.button.copyWith(
-                color: Colors.blue,
-                fontWeight: FontWeight.normal,
-              ),
+              style: style ??
+                  theme.textTheme.button!.copyWith(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.normal,
+                  ),
             ),
           );
         }
@@ -172,18 +216,22 @@ Future<dynamic> showNoticeConfirmDialog({
             textAlign: TextAlign.center,
           ),
           actions: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+            Row(
               children: [
-                _buildAction(
-                  onTap: onConfirmed,
-                  title: titleBtnDone ?? translate(context)('common.confirm'),
+                Expanded(
+                  child: _buildAction(
+                    onTap: onCanceled,
+                    title: titleBtnCancel ?? trans.cancel,
+                    style: styleBtnLeft,
+                  ),
                 ),
-                const Divider(thickness: 1, height: 1),
-                _buildAction(
-                  onTap: onCanceled,
-                  title: titleBtnCancel ?? translate(context)('common.cancel'),
+                Container(width: 0.5, height: 44, color: Colors.grey),
+                Expanded(
+                  child: _buildAction(
+                    onTap: onConfirmed,
+                    title: titleBtnDone ?? trans.confirm,
+                    style: styleBtnRight,
+                  ),
                 ),
               ],
             )
@@ -198,7 +246,7 @@ Future<void> showModal(
   BuildContext context,
   Widget content, {
   bool useRootNavigator = true,
-  double bottomPadding,
+  double? bottomPadding,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -233,13 +281,14 @@ Future<void> showModal(
 
 Future<void> showActionDialog(
   BuildContext context, {
-  Map<String, Function> action = const <String, Function>{},
+  Map<String, void Function()> actions = const <String, void Function()>{},
   String title = '',
   bool useRootNavigator = true,
   bool barrierDismissible = true,
   bool dimissWhenSelect = true,
 }) {
-  if (Platform.isAndroid) {
+  final trans = translate(context);
+  if (kIsWeb || Platform.isAndroid) {
     return showDialog(
       context: context,
       barrierDismissible: barrierDismissible,
@@ -251,7 +300,7 @@ Future<void> showActionDialog(
             style: Theme.of(context).textTheme.headline5,
           ),
           actions: [
-            ...action.entries
+            ...actions.entries
                 .map<TextButton>(
                   (e) => TextButton(
                     onPressed: () {
@@ -261,7 +310,7 @@ Future<void> showActionDialog(
                           rootNavigator: useRootNavigator,
                         ).pop();
                       }
-                      e.value?.call();
+                      e.value.call();
                     },
                     child: Text(e.key),
                   ),
@@ -271,7 +320,7 @@ Future<void> showActionDialog(
               onPressed: () {
                 Navigator.of(context, rootNavigator: useRootNavigator).pop();
               },
-              child: Text(translate(context)('common.cancel')),
+              child: Text(trans.cancel),
             ),
           ],
         );
@@ -285,26 +334,54 @@ Future<void> showActionDialog(
       isScrollControlled: true,
       isDismissible: barrierDismissible,
       builder: (BuildContext context) {
-        return ThemeBottomSheet.cupertinoBottomActionSheet(
-          context: context,
-          action: !dimissWhenSelect
-              ? action
-              : action.map(
-                  (key, value) => MapEntry(
-                    key,
-                    () {
+        final theme = Theme.of(context);
+        return CupertinoActionSheet(
+          actions: [
+            ...actions.entries.map(
+              (e) => CupertinoActionSheetAction(
+                onPressed: () {
+                  if (dimissWhenSelect) {
+                    if (dimissWhenSelect) {
                       Navigator.of(
                         context,
                         rootNavigator: useRootNavigator,
                       ).pop();
-                      value?.call();
-                    },
+                    }
+                    e.value.call();
+                  }
+                },
+                child: Text(
+                  e.key,
+                  style: theme.textTheme.headline5?.copyWith(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.normal,
                   ),
+                  textAlign: TextAlign.center,
                 ),
-          title: title,
-          onCancelPressed: () {
-            Navigator.of(context, rootNavigator: useRootNavigator).pop();
-          },
+              ),
+            )
+          ],
+          title: Text(
+            title,
+            style: theme.textTheme.subtitle1,
+            textAlign: TextAlign.center,
+          ),
+          cancelButton: CupertinoActionSheetAction(
+            onPressed: () {
+              Navigator.of(
+                context,
+                rootNavigator: useRootNavigator,
+              ).pop();
+            },
+            child: Text(
+              trans.cancel,
+              style: theme.textTheme.headline5?.copyWith(
+                color: Colors.blue,
+                fontWeight: FontWeight.normal,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
         );
       },
     );

@@ -4,15 +4,15 @@ import 'item_devider.dart';
 
 class InfoItem extends StatelessWidget {
   final String title;
-  final String value;
+  final String? value;
   final Color color;
   final ItemDivider divider;
   final EdgeInsets padding;
-  final Widget myOwnValueWidget;
+  final Widget? myOwnValueWidget;
 
   const InfoItem({
-    Key key,
-    this.title,
+    Key? key,
+    required this.title,
     this.value,
     this.color = Colors.white,
     this.divider = ItemDivider.space,
@@ -47,11 +47,11 @@ class InfoItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                title ?? '--',
+                title,
                 style: Theme.of(context)
                     .textTheme
                     .subtitle2
-                    .copyWith(color: Colors.black),
+                    ?.copyWith(color: Colors.black),
               ),
               const SizedBox(width: 8),
               myOwnValueWidget ??

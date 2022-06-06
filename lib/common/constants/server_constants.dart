@@ -3,6 +3,7 @@ part of '../constants.dart';
 class ServerGender {
   static const String male = 'Male';
   static const String female = 'Female';
+  static const String other = 'Other';
 }
 
 class ServerScanStatus {

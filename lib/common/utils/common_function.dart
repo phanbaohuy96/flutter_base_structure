@@ -65,7 +65,7 @@ class CommonFunction {
       }</style>
       <body>
         <div>
-          ${htmlContent ?? ''}
+          $htmlContent
         </div>
       </body>
     </html>''';

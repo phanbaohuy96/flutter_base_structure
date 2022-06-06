@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
-import '../../../common/constants.dart';
 import '../cache_network_image_wrapper.dart';
 
 class SliverScreenForm extends StatefulWidget {
-  final Widget child;
-  final String title;
-  final String imageUrl;
-  final Color bgColor;
-  final Widget bottom;
+  final Widget? child;
+  final String? title;
+  final String? imageUrl;
+  final Color? bgColor;
+  final Widget? bottom;
 
   const SliverScreenForm({
-    Key key,
+    Key? key,
     this.child,
     this.title,
     this.imageUrl = '',
@@ -35,7 +34,7 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
   final maxExtent = 280.0;
 
   double minAppBarHeight = 0;
-  double maxAppBarHeight;
+  double? maxAppBarHeight;
 
   @override
   void dispose() {
@@ -88,11 +87,10 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(
-                  child: Image.asset(
-                    ImageConstant.iconChevronLeft,
+                  child: Icon(
+                    Icons.chevron_left_outlined,
                     color: _colorTween.transform(scale),
-                    height: 14,
-                    width: 8,
+                    size: 14,
                   ),
                 ),
               );
@@ -107,7 +105,7 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
             opacity: scale > 0.2 ? 0 : 1 - scale,
             child: Text(
               widget.title ?? '',
-              style: textTheme.bodyText1.copyWith(
+              style: textTheme.bodyText1?.copyWith(
                 fontSize: 16,
               ),
               textAlign: TextAlign.center,
@@ -138,7 +136,7 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
                 opacity: scale > 0.2 ? scale : 0,
                 child: Text(
                   widget.title ?? '',
-                  style: textTheme.bodyText1.copyWith(
+                  style: textTheme.bodyText1?.copyWith(
                     fontSize: 16 - (16 * 0.5 * scale / 1.5),
                   ),
                   textAlign: TextAlign.center,
@@ -158,11 +156,11 @@ class _SliverScreenFormState extends State<SliverScreenForm> {
   }
 
   double _updateScale(double height) {
-    if (maxAppBarHeight == null || maxAppBarHeight < height) {
+    if (maxAppBarHeight == null || maxAppBarHeight! < height) {
       maxAppBarHeight = height;
     }
     final scale =
-        (height - minAppBarHeight) / (maxAppBarHeight - minAppBarHeight);
+        (height - minAppBarHeight) / (maxAppBarHeight! - minAppBarHeight);
     SchedulerBinding.instance.addPostFrameCallback(
       (_) => _textScaleNotifier.value = scale,
     );

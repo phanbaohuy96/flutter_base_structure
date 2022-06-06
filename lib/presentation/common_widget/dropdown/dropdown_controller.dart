@@ -1,14 +1,14 @@
 part of 'dropdown_widget.dart';
 
 class DropdownData<T> {
-  T value;
-  String validation;
+  T? value;
+  String? validation;
 
   DropdownData({this.value, this.validation});
 }
 
 class DropdownContoller<V, T extends DropdownData<V>> extends ValueNotifier<T> {
-  DropdownContoller({T value}) : super(value ?? DropdownData<V>());
+  DropdownContoller({required T value}) : super(value);
 
   void setError(String validation) {
     value.validation = validation;
@@ -20,10 +20,10 @@ class DropdownContoller<V, T extends DropdownData<V>> extends ValueNotifier<T> {
     notifyListeners();
   }
 
-  void setData(V data) {
+  void setData(V? data) {
     value.value = data;
     resetValidaiton();
   }
 
-  V get data => value.value;
+  V? get data => value.value;
 }

@@ -5,7 +5,7 @@ class Loading extends StatelessWidget {
   final double radius;
 
   const Loading({
-    Key key,
+    Key? key,
     this.brightness = Brightness.dark,
     this.radius = 15,
   }) : super(key: key);

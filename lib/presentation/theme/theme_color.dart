@@ -10,6 +10,7 @@ class AppColor {
   static const Color iconUnselected = Colors.grey;
   static const Color lightGrey = Color(0xFFbebebe);
   static const Color greyDC = Color(0xFFdcdcdc);
+  static const Color scaffoldBackgroundColor = Color(0xFFF1F3F7);
 
   static const Color inactiveColor = Color(0xFF111111);
   static const Color activeColor = primaryColor;

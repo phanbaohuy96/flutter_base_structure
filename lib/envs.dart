@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class Env {
   static const environment = 'environment';
   static const developmentMode = 'developmentMode';
@@ -5,39 +7,35 @@ class Env {
   static const baseApiLayer = 'baseApiLayer';
   static const baseGraphQLUrl = 'baseGraphQLUrl';
   static const onesignalAppID = 'onesignalAppID';
-  static const subDealerEnabled = 'subDealerEnabled';
-  static const guestRegiterEnabled = 'guestRegiterEnabled';
+
+  static const devEnvName = 'Development';
+  static const stagingEnvName = 'Staging';
+  static const prodEnvName = 'Production';
 
   static final Map<String, dynamic> devEnv = {
-    environment: 'Development',
-    developmentMode: true,
+    environment: devEnvName,
+    developmentMode: kDebugMode,
     appName: 'FBS_Dev',
-    baseApiLayer: 'https://dev.authorization.daikin-sales.nexlab.vn/',
-    baseGraphQLUrl: 'https://dev.graphql.daikin-sales.nexlab.vn/v1/graphql',
-    onesignalAppID: 'f826e303-49d1-4062-829f-27a40a092c11',
-    subDealerEnabled: false,
-    guestRegiterEnabled: true,
+    baseApiLayer: '',
+    baseGraphQLUrl: '',
+    onesignalAppID: '',
   };
 
   static final Map<String, dynamic> stagingEnv = {
-    environment: 'Staging',
-    developmentMode: false,
+    environment: stagingEnvName,
+    developmentMode: kDebugMode,
     appName: 'FBS_Staging',
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
-    subDealerEnabled: false,
-    guestRegiterEnabled: true,
   };
 
   static final Map<String, dynamic> prodEnv = {
-    environment: 'Production',
-    developmentMode: false,
+    environment: prodEnvName,
+    developmentMode: kDebugMode,
     appName: 'FBS',
     baseApiLayer: '',
     baseGraphQLUrl: '',
     onesignalAppID: '',
-    subDealerEnabled: false,
-    guestRegiterEnabled: true,
   };
 }

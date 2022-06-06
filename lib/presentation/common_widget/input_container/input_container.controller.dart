@@ -1,10 +1,10 @@
 part of 'input_container.dart';
 
 class InputContainerProperties {
-  TextEditingController tdController;
-  String validation;
+  TextEditingController? tdController;
+  String? validation;
   bool isShowPassword;
-  FocusNode focusNode;
+  FocusNode? focusNode;
 
   InputContainerProperties({
     this.tdController,
@@ -18,10 +18,10 @@ class InputContainerProperties {
 }
 
 class InputContainerController extends ValueNotifier<InputContainerProperties> {
-  InputContainerController({InputContainerProperties value})
+  InputContainerController({InputContainerProperties? value})
       : super(value ?? InputContainerProperties());
 
-  String get text => value.tdController.text;
+  String? get text => value.tdController?.text;
 
   void resetValidation() {
     value.validation = null;
@@ -47,7 +47,7 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   }
 
   set setText(String v) {
-    value.tdController.text = v;
+    value.tdController?.text = v;
     resetValidation();
   }
 }

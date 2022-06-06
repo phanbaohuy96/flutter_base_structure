@@ -4,7 +4,7 @@ import '../../../common/config.dart';
 import '../../common_widget/export.dart';
 
 class DashboardScreen extends StatefulWidget {
-  DashboardScreen({Key key}) : super(key: key);
+  DashboardScreen({Key? key}) : super(key: key);
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();

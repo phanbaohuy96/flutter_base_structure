@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import '../../common/components/i18n/internationalization.dart';
-import '../../common/config.dart';
-import '../../data/data_source/local/local_data_manager.dart';
+import '../../common/components/navigation/navigation_observer.dart';
+import '../../common/constants/app_locale.dart';
 import '../../domain/entities/app_data.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../common_widget/text_scale_fixed.dart';
-import '../modules/welcome/splash_screen.dart';
 import '../route/route.dart';
+import '../theme/theme_data.dart';
+import 'welcome/splash/bloc/splash_bloc.dart';
+import 'welcome/splash/splash_screen.dart';
 
 class App extends StatefulWidget {
-  const App({Key key}) : super(key: key);
+  const App({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -24,12 +26,7 @@ class _MyAppState extends State<App> {
 
   @override
   void initState() {
-    Future.wait([
-      LocalDataManager.init(),
-    ]).then((_) {
-      //init appdata based on local cache
-      _appDataBloc.initial();
-    });
+    _appDataBloc.initial();
     super.initState();
   }
 
@@ -37,35 +34,31 @@ class _MyAppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AppDataBloc>(
-          create: (BuildContext context) => _appDataBloc,
-        ),
+        BlocProvider(create: (_) => _appDataBloc),
       ],
-      child: StreamBuilder<AppData>(
-        initialData: _appDataBloc.appData,
-        stream: _appDataBloc.appDataStream,
-        builder: (BuildContext context, AsyncSnapshot<AppData> snapshotTheme) {
+      child: BlocBuilder<AppDataBloc, AppData?>(
+        builder: (context, appData) {
           return MaterialApp(
-            theme: snapshotTheme.data?.themeData ?? ThemeData(),
-            debugShowCheckedModeBanner:
-                Config.instance.appConfig.developmentMode,
+            debugShowCheckedModeBanner: false,
+            theme: appData?.themeData ?? buildLightTheme().data,
             localizationsDelegates: const [
-              S.delegate,
+              AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
-            supportedLocales: const [
-              Locale(LocaleKey.en),
-              Locale(LocaleKey.vn),
-            ],
-            locale: snapshotTheme.data?.locale ?? const Locale(LocaleKey.vn),
-            onGenerateRoute: RouteGenerator.buildRoutes,
-            home: SplashScreen(),
+            supportedLocales: AppLocale.supportedLocales,
+            locale: appData?.locale ?? AppLocale.vi,
+            onGenerateRoute: RouteGenerator.generateRoute,
+            home: BlocProvider(
+              create: (_) => SplashBloc(),
+              child: SplashScreen(),
+            ),
+            navigatorObservers: [myNavigatorObserver],
             builder: EasyLoading.init(
               builder: (_, child) {
                 return TextScaleFixed(
-                  child: child,
+                  child: child ?? const SizedBox(),
                 );
               },
             ),

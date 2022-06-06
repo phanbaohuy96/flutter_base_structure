@@ -1,54 +1,40 @@
-// import 'package:hive/hive.dart';
-import '../../../common/components/preferences_helper/preferences_helper.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../../di/di.dart';
 import '../../../presentation/theme/theme_data.dart';
+import 'preferences_helper/preferences_helper.dart';
 
-class LocalDataManager {
-  //-------------> Singleton
-  static LocalDataManager _instance;
+@Singleton()
+class LocalDataManager implements AppPreferenceData {
+  late final PreferencesHelper _preferencesHelper = injector.get();
 
-  factory LocalDataManager() {
-    return _instance ??= LocalDataManager._();
-  }
-
-  LocalDataManager._();
-  //-------------> Singleton
-
-  // static Box _myBox;
-
-  static PreferencesHelper _preferencesHelper;
-
-  static Future<void> init() async {
-    _instance = LocalDataManager();
-    await _instance._init();
-  }
-
-  Future<void> _init() async {
-    // Hive.init(Directory.current.path);
-    _preferencesHelper = PreferencesHelper();
-    await _preferencesHelper.init();
-    // _myBox = await Hive.openBox(Config.appConfig.appName);
-  }
+  Future<void> init() async {}
 
   ////////////////////////////////////////////////////////
   ///             Preferences helper
   ///
-  static SupportedTheme getTheme() {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.getTheme();
+  @override
+  SupportedTheme getTheme() {
+    return _preferencesHelper.getTheme();
   }
 
-  static Future<bool> setTheme(String data) {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.setTheme(data);
+  @override
+  Future<bool?> setTheme(String? data) {
+    return _preferencesHelper.setTheme(data);
   }
 
-  static String getLocalization() {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.getLocalization();
+  @override
+  String? getLocalization() {
+    return _preferencesHelper.getLocalization();
   }
 
-  static Future<bool> saveLocalization(String locale) {
-    assert(_preferencesHelper != null, 'Must call init first!');
-    return _preferencesHelper?.saveLocalization(locale);
+  @override
+  Future<bool?> saveLocalization(String? locale) {
+    return _preferencesHelper.saveLocalization(locale);
+  }
+
+  @override
+  Future<bool?> clearData() {
+    return _preferencesHelper.clearData();
   }
 }
