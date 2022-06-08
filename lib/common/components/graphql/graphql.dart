@@ -13,7 +13,6 @@ import '../../utils.dart';
 GraphQLClient createGraphQLClient({
   required String baseUri,
   required Future<String?> Function() getToken,
-  Function(GraphQLError?, Exception?)? onError,
   Map<String, String> headers = const <String, String>{
     'content-type': 'application/json',
     'platform': 'dealer',
@@ -74,7 +73,7 @@ GraphQLClient createGraphQLClient({
         'errorType': linkException.originalException?.runtimeType,
         'token': _token,
       }.toString());
-      onError?.call(null, linkException.originalException);
+      yield* forward(request);
     },
     onGraphQLError: (request, forward, response) async* {
       LogUtils.e({
@@ -85,7 +84,7 @@ GraphQLClient createGraphQLClient({
         'extensions': response.errors?.firstOrNull?.extensions,
         'token': _token,
       }.toString());
-      onError?.call(response.errors?.firstOrNull, null);
+      yield* forward(request);
     },
   );
 

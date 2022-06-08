@@ -26,7 +26,6 @@ class AppApiService {
   late dio_p.Dio dio;
   late RestApiRepository client;
   late GraphQLClient graphQLClient;
-  ApiServiceDelegate? apiServiceDelegate;
 
   AppApiService() {
     _config();
@@ -65,26 +64,6 @@ class AppApiService {
       getToken: () async {
         // return localDataManager.getToken();
         return '';
-      },
-      onError: (err, exception) {
-        final error = GraphQLException.fromJson({
-          'message': err?.message,
-          'locations': err?.locations,
-          'path': err?.path,
-          'extensions': err?.extensions,
-        });
-
-        if (!error.isAccessDenied) {
-          apiServiceDelegate?.onError(ErrorData.fromGraplQL(
-            error: error,
-            exception: exception,
-          ));
-        } else {
-          apiServiceDelegate?.onError(ErrorData.fromGraplQL(
-            error: null,
-            exception: RefreshTokenException(),
-          ));
-        }
       },
 
       /// Remove old `authorization` bcs of GraphQl will get new from `getToken`
@@ -140,9 +119,6 @@ class AppApiService {
     );
     dio.interceptors.add(
       LoggerInterceptor(
-        onRequestError: (error) => apiServiceDelegate?.onError(
-          ErrorData.fromDio(error),
-        ),
         // implement ignore large logs if needed
         ignoreReponseDataLog: (response) {
           // return response.requestOptions.path == ApiContract.administrative;
@@ -171,8 +147,4 @@ class AppApiService {
     // return res?.token?.token;
     return token;
   }
-}
-
-mixin ApiServiceDelegate {
-  void onError(ErrorData onError);
 }
