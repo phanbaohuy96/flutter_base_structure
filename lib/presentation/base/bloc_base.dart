@@ -1,8 +1,6 @@
 part of 'base.dart';
 
 abstract class AppBlocBase<E, S> extends Bloc<E, S> {
-  late final appApiService = injector.get<AppApiService>();
-
   Function(ErrorData)? errorHandler;
 
   LocalDataManager get localDataManager => injector.get();
