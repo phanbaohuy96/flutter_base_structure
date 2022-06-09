@@ -1,0 +1,17 @@
+import 'package:flutter/material.dart';
+
+part '%%MODULE_NAME%%.action.dart';
+
+class %%CLASS_NAME%%Screen extends StatefulWidget {
+  const %%CLASS_NAME%%Screen({Key? key}) : super(key: key);
+
+  @override
+  State<%%CLASS_NAME%%Screen> createState() => _%%CLASS_NAME%%ScreenState();
+}
+
+class _%%CLASS_NAME%%ScreenState extends State<%%CLASS_NAME%%Screen> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

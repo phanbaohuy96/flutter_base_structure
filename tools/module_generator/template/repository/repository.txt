@@ -1,0 +1,5 @@
+import '../../../../data/data_source/data_repository.dart';
+
+part '%%MODULE_NAME%%_repository.impl.dart';
+
+abstract class %%CLASS_NAME%%Repository with DataRepository {}

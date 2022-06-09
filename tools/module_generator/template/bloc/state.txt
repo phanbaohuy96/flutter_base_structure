@@ -1,0 +1,36 @@
+part of '%%MODULE_NAME%%_bloc.dart';
+
+
+class ViewModel {
+  const ViewModel();
+}
+
+abstract class %%CLASS_NAME%%State {
+  final ViewModel viewModel;
+
+  %%CLASS_NAME%%State(this.viewModel);
+
+  T copyWith<T extends %%CLASS_NAME%%State>({
+    ViewModel? viewModel,
+  }) {
+    return _factories[T == %%CLASS_NAME%%State ? runtimeType : T]!(
+      viewModel ?? this.viewModel,
+    );
+  }
+}
+
+class %%CLASS_NAME%%Initial extends %%CLASS_NAME%%State {
+  %%CLASS_NAME%%Initial({
+    ViewModel viewModel = const ViewModel(),
+  }) : super(viewModel);
+}
+
+final _factories = <
+    Type,
+    Function(
+  ViewModel viewModel,
+)>{
+  %%CLASS_NAME%%Initial: (viewModel) => %%CLASS_NAME%%Initial(
+        viewModel: viewModel,
+      ),
+};

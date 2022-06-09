@@ -1,0 +1,10 @@
+import 'package:flutter/material.dart';
+
+import 'views/%%MODULE_NAME%%_screen.dart';
+
+class %%CLASS_NAME%%Route {
+  static Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
+        //TODO: Update route name
+        '': (context) => %%CLASS_NAME%%Screen(),
+      };
+}
