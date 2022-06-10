@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'bloc/%%MODULE_NAME%%_bloc.dart';
 import 'views/%%MODULE_NAME%%_screen.dart';
 
 class %%CLASS_NAME%%Route {
   static Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
         //TODO: Update route name
-        '': (context) => %%CLASS_NAME%%Screen(),
+        '': (context) => BlocProvider(
+              create: (context) => %%CLASS_NAME%%Bloc(),
+              child: %%CLASS_NAME%%Screen(),
+            ),
       };
 }
