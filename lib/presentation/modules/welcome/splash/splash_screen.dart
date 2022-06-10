@@ -7,7 +7,6 @@ import 'package:package_info/package_info.dart';
 
 import '../../../../common/client_info.dart';
 import '../../../../common/constants.dart';
-import '../../../../common/utils.dart';
 import '../../../base/base.dart';
 import '../../../common_widget/after_layout.dart';
 import '../../../extentions/extention.dart';
@@ -30,10 +29,13 @@ class _SplashScreenState extends StateBase<SplashScreen> with AfterLayoutMixin {
   @override
   SplashBloc get bloc => BlocProvider.of<SplashBloc>(context);
 
+  late ThemeData _themeData;
+
+  TextTheme get textTheme => _themeData.textTheme;
+
   @override
   Widget build(BuildContext context) {
-    LogUtils.i('[SplashScreen] build');
-
+    _themeData = Theme.of(context);
     return Scaffold(
       body: BlocListener<SplashBloc, SplashState>(
         listener: (context, state) {
@@ -57,7 +59,7 @@ class _SplashScreenState extends StateBase<SplashScreen> with AfterLayoutMixin {
                   const SizedBox(height: 12),
                   Text(
                     translate(context).appName.toUpperCase(),
-                    style: theme.textTheme.bodyText1!.copyWith(
+                    style: textTheme.bodyText1!.copyWith(
                       color: AppColor.subText,
                       fontWeight: FontWeight.normal,
                       fontSize: 18,
@@ -72,7 +74,7 @@ class _SplashScreenState extends StateBase<SplashScreen> with AfterLayoutMixin {
               right: 0,
               child: Text(
                 'Powered By Flutter Base Tructure',
-                style: theme.textTheme.bodyText2!.copyWith(
+                style: textTheme.bodyText2!.copyWith(
                   color: AppColor.subText,
                   fontSize: 12,
                 ),

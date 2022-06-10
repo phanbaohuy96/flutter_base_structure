@@ -7,9 +7,11 @@ import 'views/%%MODULE_NAME%%_screen.dart';
 class %%CLASS_NAME%%Route {
   static Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
         //TODO: Update route name
-        '': (context) => BlocProvider(
-              create: (context) => %%CLASS_NAME%%Bloc(),
-              child: %%CLASS_NAME%%Screen(),
-            ),
+        '': (context) {
+          return BlocProvider(
+            create: (context) => %%CLASS_NAME%%Bloc(),
+            child: const %%CLASS_NAME%%Screen(),
+          );
+        },
       };
 }

@@ -39,7 +39,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T> {
     if (!_isLoadingShowing) {
       _isLoadingShowing = true;
       EasyLoading.show(
-        status: trans.processing,
+        status: translate(context).processing,
         indicator: const Loading(),
       );
     }
@@ -60,7 +60,9 @@ abstract class StateBase<T extends StatefulWidget> extends State<T> {
   void showErrorDialog(String? message, {Function()? onClose}) {
     showNoticeErrorDialog(
       context: context,
-      message: message?.isNotEmpty != true ? trans.technicalIssues : message!,
+      message: message?.isNotEmpty != true
+          ? translate(context).technicalIssues
+          : message!,
       onClose: () {
         onCloseErrorDialog();
         onClose?.call();
@@ -76,7 +78,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T> {
   void showNoInternetDialog() {
     showNoticeDialog(
       context: context,
-      message: trans.noInternet,
+      message: translate(context).noInternet,
       onClose: onCloseErrorDialog,
     );
   }
@@ -94,6 +96,7 @@ abstract class StateBase<T extends StatefulWidget> extends State<T> {
     //   onSuccess.call();
     //   return;
     // }
+    final trans = translate(context);
     showNoticeConfirmDialog(
       context: context,
       message: trans.loginRequired,

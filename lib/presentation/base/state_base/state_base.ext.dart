@@ -3,10 +3,6 @@ part of '../base.dart';
 extension StateBaseExtention on StateBase {
   void hideKeyBoard() => CommonFunction.hideKeyBoard(context);
 
-  AppLocalizations get trans => translate(context);
-
-  ThemeData get theme => Theme.of(context);
-
   Size get device => MediaQuery.of(context).size;
 
   double get paddingTop => MediaQuery.of(context).padding.top;
@@ -20,6 +16,7 @@ extension StateBaseExtention on StateBase {
   }
 
   String? genderFromText(String? text) {
+    final trans = translate(context);
     if (text == trans.male) {
       return ServerGender.male;
     }
@@ -33,6 +30,7 @@ extension StateBaseExtention on StateBase {
   }
 
   String? textFromGender(String? gender) {
+    final trans = translate(context);
     switch (gender) {
       case ServerGender.male:
         return trans.male;

@@ -16,6 +16,7 @@ import '../../../di/di.dart';
 import '../../models/graphql_error.dart';
 import '../local/local_data_manager.dart';
 import 'interceptor/auth_interceptor.dart';
+import 'interceptor/header_interceptor.dart';
 import 'interceptor/logger_interceptor.dart';
 import 'rest_api_repository/rest_api_repository.dart';
 
@@ -105,6 +106,9 @@ class AppApiService {
     }
 
     /// Dio InterceptorsWrapper
+    dio.interceptors.add(HeaderInterceptor(
+      getHeader: _getDefaultHeader,
+    ));
     dio.interceptors.add(
       AuthInterceptor(
         // TODO : implement get token if needed

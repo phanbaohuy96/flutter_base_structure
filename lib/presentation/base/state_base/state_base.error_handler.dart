@@ -9,6 +9,7 @@ extension StateBaseErrorHandlerExt on StateBase {
       return;
     }
     hideLoading();
+    final trans = translate(context);
     switch (error.type) {
       case ErrorType.unauthorized:
       case ErrorType.grapQLInvalidToken:

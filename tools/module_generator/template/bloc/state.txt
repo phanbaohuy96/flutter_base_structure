@@ -1,17 +1,20 @@
 part of '%%MODULE_NAME%%_bloc.dart';
 
+class _ViewModel {
+  const _ViewModel();
 
-class ViewModel {
-  const ViewModel();
+  _ViewModel copyWith() {
+    return const _ViewModel();
+  }
 }
 
 abstract class %%CLASS_NAME%%State {
-  final ViewModel viewModel;
+  final _ViewModel viewModel;
 
   %%CLASS_NAME%%State(this.viewModel);
 
   T copyWith<T extends %%CLASS_NAME%%State>({
-    ViewModel? viewModel,
+    _ViewModel? viewModel,
   }) {
     return _factories[T == %%CLASS_NAME%%State ? runtimeType : T]!(
       viewModel ?? this.viewModel,
@@ -21,14 +24,14 @@ abstract class %%CLASS_NAME%%State {
 
 class %%CLASS_NAME%%Initial extends %%CLASS_NAME%%State {
   %%CLASS_NAME%%Initial({
-    ViewModel viewModel = const ViewModel(),
+    _ViewModel viewModel = const _ViewModel(),
   }) : super(viewModel);
 }
 
 final _factories = <
     Type,
     Function(
-  ViewModel viewModel,
+  _ViewModel viewModel,
 )>{
   %%CLASS_NAME%%Initial: (viewModel) => %%CLASS_NAME%%Initial(
         viewModel: viewModel,

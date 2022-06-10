@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../../common/utils.dart';
 import '../../base/base.dart';
 import '../../common_widget/export.dart';
+import '../../extentions/extention.dart';
 import '../../theme/theme_color.dart';
 
 class WebviewArgs {
@@ -51,8 +53,11 @@ class _WebviewScreenState extends StateBase<WebviewScreen> {
     super.didUpdateWidget(oldWidget);
   }
 
+  late AppLocalizations trans;
+
   @override
   Widget build(BuildContext context) {
+    trans = translate(context);
     return ScreenForm(
       title: widget.args?.title,
       actions: [

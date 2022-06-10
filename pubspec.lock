@@ -175,7 +175,7 @@ packages:
       name: connectivity_plus
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "2.3.3"
   connectivity_plus_linux:
     dependency: transitive
     description:
@@ -189,7 +189,7 @@ packages:
       name: connectivity_plus_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.3"
   connectivity_plus_platform_interface:
     dependency: transitive
     description:
@@ -328,6 +328,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.5"
+  flutter_hooks:
+    dependency: transitive
+    description:
+      name: flutter_hooks
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.18.4"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -412,56 +419,56 @@ packages:
       name: gql_dedupe_link
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
   gql_error_link:
     dependency: transitive
     description:
       name: gql_error_link
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.2"
   gql_exec:
     dependency: transitive
     description:
       name: gql_exec
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.4.0"
   gql_http_link:
     dependency: transitive
     description:
       name: gql_http_link
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.2"
   gql_link:
     dependency: transitive
     description:
       name: gql_link
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.2"
   gql_transform_link:
     dependency: transitive
     description:
       name: gql_transform_link
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.2"
   graphql:
     dependency: transitive
     description:
       name: graphql
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.1"
+    version: "5.1.1"
   graphql_flutter:
     dependency: "direct main"
     description:
       name: graphql_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.0"
+    version: "5.1.0"
   graphs:
     dependency: transitive
     description:
