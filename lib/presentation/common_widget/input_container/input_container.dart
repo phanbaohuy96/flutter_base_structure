@@ -93,6 +93,7 @@ class _InputContainerState extends State<InputContainer> {
   void dispose() {
     if (widget.controller == null) {
       _controller?.dispose();
+      _controller = null;
     }
     super.dispose();
   }
