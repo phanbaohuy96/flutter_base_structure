@@ -37,6 +37,7 @@ dependencies:
   device_info: ^2.0.2 
   permission_handler: ^9.2.0
   url_launcher: ^6.1.2
+  file_picker: ^4.6.1
 
   #ui
   cached_network_image: ^3.2.0

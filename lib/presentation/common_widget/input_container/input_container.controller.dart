@@ -1,19 +1,27 @@
 part of 'input_container.dart';
 
 class InputContainerProperties {
-  TextEditingController? tdController;
+  late TextEditingController tdController;
   String? validation;
   bool isShowPassword;
-  FocusNode? focusNode;
+  late FocusNode focusNode;
 
   InputContainerProperties({
-    this.tdController,
+    TextEditingController? tdController,
     this.validation,
     this.isShowPassword = false,
-    this.focusNode,
+    FocusNode? focusNode,
   }) {
-    focusNode ??= FocusNode();
-    tdController ??= TextEditingController();
+    this.focusNode = focusNode ?? FocusNode();
+    this.tdController = tdController ?? TextEditingController();
+  }
+
+  void withValue({
+    TextEditingController? tdController,
+    FocusNode? focusNode,
+  }) {
+    this.tdController = tdController ?? this.tdController;
+    this.focusNode = focusNode ?? this.focusNode;
   }
 }
 
@@ -21,15 +29,17 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   InputContainerController({InputContainerProperties? value})
       : super(value ?? InputContainerProperties());
 
-  String? get text => value.tdController?.text;
+  String get text => value.tdController.text;
 
   void resetValidation() {
     value.validation = null;
     notifyListeners();
   }
 
-  void setError(String message) {
-    value.focusNode?.requestFocus();
+  void setError(String? message, {bool focusOn = true}) {
+    if (focusOn) {
+      value.focusNode.requestFocus();
+    }
     value.validation = message;
     notifyListeners();
   }
@@ -47,7 +57,14 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   }
 
   set setText(String v) {
-    value.tdController?.text = v;
+    value.tdController.text = v;
     resetValidation();
+  }
+
+  @override
+  void dispose() {
+    value.focusNode.dispose();
+    value.tdController.dispose();
+    super.dispose();
   }
 }
