@@ -1,0 +1,53 @@
+part of '%%MODULE_NAME%%_bloc.dart';
+
+class _ViewModel {
+  //TODO: Update to your model
+  final List<Model> data;
+  final bool? canLoadMore;
+
+  const _ViewModel({
+    this.canLoadMore,
+    this.data = const [],
+  });
+
+  _ViewModel copyWith({
+    //TODO: Update to your model
+    List<Model>? data,
+    bool? canLoadMore,
+  }) {
+    return _ViewModel(
+      data: data ?? this.data,
+      canLoadMore: canLoadMore ?? this.canLoadMore,
+    );
+  }
+}
+
+abstract class %%CLASS_NAME%%State {
+  final _ViewModel viewModel;
+
+  %%CLASS_NAME%%State(this.viewModel);
+
+  T copyWith<T extends %%CLASS_NAME%%State>({
+    _ViewModel? viewModel,
+  }) {
+    return _factories[T == %%CLASS_NAME%%State ? runtimeType : T]!(
+      viewModel ?? this.viewModel,
+    );
+  }
+}
+
+class %%CLASS_NAME%%Initial extends %%CLASS_NAME%%State {
+  %%CLASS_NAME%%Initial({
+    _ViewModel viewModel = const _ViewModel(),
+  }) : super(viewModel);
+}
+
+final _factories = <
+    Type,
+    Function(
+  _ViewModel viewModel,
+)>{
+  %%CLASS_NAME%%Initial: (viewModel) => %%CLASS_NAME%%Initial(
+        viewModel: viewModel,
+      ),
+};

@@ -11,6 +11,6 @@
 
 # Tools:
 ```
-- module_generator: python3 tools/module_generator/module_generator.py [module_path] [module_name]
-    -- module_name: refer under-scrore (test_module)
+- module_generator: python3 tools/module_generator/module_generator.py
+    -- Module name: refer under-scrore (test_module)
 ```

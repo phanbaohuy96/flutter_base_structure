@@ -1,0 +1,9 @@
+part '%%MODULE_NAME%%_repository.impl.dart';
+
+abstract class %%CLASS_NAME%%Repository {
+  //TODO: Update to your model
+  Future<List<Model>> getData(
+    int offset,
+    int limit,
+  );
+}
