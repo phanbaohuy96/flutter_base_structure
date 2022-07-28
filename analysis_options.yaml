@@ -110,8 +110,8 @@ linter:
     - avoid_bool_literals_in_conditional_expressions
     - avoid_function_literals_in_foreach_calls
     - unnecessary_lambdas
-    - flutter_style_todos
     - join_return_with_assignment
     - lines_longer_than_80_chars
     - prefer_foreach
     - use_to_and_as_if_applicable
+    - flutter_style_todos
