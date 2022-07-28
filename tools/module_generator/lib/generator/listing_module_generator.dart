@@ -3,18 +3,27 @@ import '../common/file_helper.dart';
 import '../common/input_helper.dart';
 
 Future<void> generateListingModule() async {
-  final inputModuleName = await InputHelper.enterText(
-    'Module name (eg. test_module): ',
-  );
-  final inputModuleDir = await InputHelper.enterText('Module directory: ').then(
+  var inputModuleName = '';
+  while (inputModuleName.isEmpty) {
+    inputModuleName = await InputHelper.enterText(
+      'Module name (eg. test_module)*: ',
+    ).then((value) => value ?? '');
+  }
+  var inputModuleDir = await InputHelper.enterText(
+    'Module directory (default: lib/presentation/modules): ',
+  ).then(
     (value) {
-      return value?.replaceAll("'", '');
+      return value?.replaceAll("'", '') ?? '';
     },
   );
-  if (inputModuleName != null && inputModuleDir != null) {
+
+  if (inputModuleDir.isEmpty) {
+    inputModuleDir = 'lib/presentation/modules';
+  }
+  if (inputModuleName.isNotEmpty) {
     final className = formatClassName(inputModuleName);
     final moduleName = formatModuleName(inputModuleName);
-
+    inputModuleDir += '/$moduleName';
     // #BLOC
     await FilesHelper.createFolder('$inputModuleDir/bloc/');
     final blocFileName = '${moduleName}_bloc.dart';
