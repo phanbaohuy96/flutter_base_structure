@@ -1,6 +1,8 @@
 name: flutterbasestructure
 description: A new Flutter application.
 
+publish_to: none
+
 version: 1.0.0+1
 
 environment:
@@ -48,6 +50,8 @@ dependencies:
   badges: ^2.0.3
   webview_flutter: ^3.0.4
   pull_to_refresh: ^2.0.0
+  module_generator:
+    path: ./tools/module_generator #ns
 
   
 dev_dependencies:

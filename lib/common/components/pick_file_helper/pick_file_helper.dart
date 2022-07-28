@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:file_picker/file_picker.dart' as f_picker;
 import 'package:flutter/foundation.dart';
 
@@ -56,6 +58,6 @@ class PickFileHelper {
       lockParentWindow: lockParentWindow,
     );
 
-    return [...?result?.files.map((e) => FilePicked.fromPlatFormFile(e))];
+    return [...?result?.files.map(FilePicked.fromPlatFormFile)];
   }
 }

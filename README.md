@@ -6,11 +6,10 @@
 # Configuration
 ```
 - Flutter version >=3.0.0
-- python3 required for tools
 ```
 
 # Tools:
 ```
-- module_generator: python3 tools/module_generator/module_generator.py
+- module_generator: flutter pub run module_generator
     -- Module name: refer under-scrore (test_module)
 ```
