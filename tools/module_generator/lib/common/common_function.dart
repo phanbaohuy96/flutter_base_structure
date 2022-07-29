@@ -40,7 +40,7 @@ Future<String> openTemplateAndReplaceContent({
 }) async {
   final content = await FilesHelper.readFile(
     pathFile:
-        'tools/pub_module_generator/res/templates/$relativeFilePathFromTemplate',
+        'tools/module_generator/res/templates/$relativeFilePathFromTemplate',
   );
   return (content ?? '')
       .replaceAll(classNameKey, className)
