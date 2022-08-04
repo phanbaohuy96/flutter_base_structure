@@ -5,4 +5,5 @@ enum MenuItem {
   exit,
   commonModuleGenerator,
   listingModuleGenerator,
+  repositoryGenerator,
 }

@@ -9,21 +9,22 @@ class InputHelper {
     return text;
   }
 
-  static Future<String> enterModuleName() async {
+  static Future<String> enterName({
+    String message = 'Module name (eg. test_module)*: ',
+  }) async {
     var inputModuleName = '';
     while (inputModuleName.isEmpty) {
-      inputModuleName = await enterText(
-        'Module name (eg. test_module)*: ',
-      ).then((value) => value ?? '');
+      inputModuleName = await enterText(message).then((value) => value ?? '');
     }
     return inputModuleName;
   }
 
-  static Future<String> enterModuleDir({
+  static Future<String> enterDir({
     String defaultDir = 'lib/presentation/modules',
+    String message = 'Module directory',
   }) async {
     var inputModuleDir = await InputHelper.enterText(
-      'Module directory (default: $defaultDir): ',
+      '$message (default: $defaultDir): ',
     ).then(
       (value) {
         return value?.replaceAll("'", '') ?? '';
