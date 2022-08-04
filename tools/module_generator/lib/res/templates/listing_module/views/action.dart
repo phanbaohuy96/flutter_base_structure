@@ -1,13 +1,15 @@
-const listingModuleAction = '''part of '%%MODULE_NAME%%_screen.dart';
+import '../../../../common/definations.dart';
 
-extension %%CLASS_NAME%%Action on _%%CLASS_NAME%%ScreenState {
-  void _blocListener(BuildContext context, %%CLASS_NAME%%State state) {
+const listingModuleAction = '''part of '${moduleNameKey}_screen.dart';
+
+extension ${classNameKey}Action on _${classNameKey}ScreenState {
+  void _blocListener(BuildContext context, ${classNameKey}State state) {
     _refreshController
       ..refreshCompleted()
       ..loadComplete();
   }
 
-  void onRefresh() async {
+  void onRefresh() {
     bloc.add(GetDataEvent());
   }
 

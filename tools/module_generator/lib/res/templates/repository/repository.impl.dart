@@ -1,7 +1,9 @@
-const repositoryImpl = r'''part of '%%MODULE_NAME%%_repository.dart';
+import '../../../common/definations.dart';
 
-@Injectable(as: %%CLASS_NAME%%Repository)
-class %%CLASS_NAME%%RepositoryImpl with DataRepository implements %%CLASS_NAME%%Repository {
+const repositoryImpl = '''part of '${moduleNameKey}_repository.dart';
+
+@Injectable(as: ${classNameKey}Repository)
+class ${classNameKey}RepositoryImpl with DataRepository implements ${classNameKey}Repository {
   @override
   Future<dynamic> sampleFunc() async {
     const query = '';

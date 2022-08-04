@@ -1,6 +1,8 @@
-const listingModuleRepository = '''part '%%MODULE_NAME%%_repository.impl.dart';
+import '../../../../common/definations.dart';
 
-abstract class %%CLASS_NAME%%Repository {
+const listingModuleRepository = '''part '${moduleNameKey}_repository.impl.dart';
+
+abstract class ${classNameKey}Repository {
   //TODO: Update to your model
   Future<List<Model>> getData(
     int offset,

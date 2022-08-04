@@ -1,23 +1,25 @@
+import '../../../../common/definations.dart';
+
 const commonModuleScreen = '''import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../base/base.dart';
 import '../../../extentions/extention.dart';
-import '../bloc/%%MODULE_NAME%%_bloc.dart';
+import '../bloc/${moduleNameKey}_bloc.dart';
 
-part '%%MODULE_NAME%%.action.dart';
+part '$moduleNameKey.action.dart';
 
-class %%CLASS_NAME%%Screen extends StatefulWidget {
-  const %%CLASS_NAME%%Screen({Key? key}) : super(key: key);
+class ${classNameKey}Screen extends StatefulWidget {
+  const ${classNameKey}Screen({Key? key}) : super(key: key);
 
   @override
-  State<%%CLASS_NAME%%Screen> createState() => _%%CLASS_NAME%%ScreenState();
+  State<${classNameKey}Screen> createState() => _${classNameKey}ScreenState();
 }
 
-class _%%CLASS_NAME%%ScreenState extends StateBase<%%CLASS_NAME%%Screen> {
+class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
   @override
-  %%CLASS_NAME%%Bloc get bloc => BlocProvider.of(context);
+  ${classNameKey}Bloc get bloc => BlocProvider.of(context);
 
   late ThemeData _themeData;
 
@@ -29,7 +31,7 @@ class _%%CLASS_NAME%%ScreenState extends StateBase<%%CLASS_NAME%%Screen> {
   Widget build(BuildContext context) {
     _themeData = Theme.of(context);
     trans = translate(context);
-    return BlocConsumer<%%CLASS_NAME%%Bloc, %%CLASS_NAME%%State>(
+    return BlocConsumer<${classNameKey}Bloc, ${classNameKey}State>(
       listener: _blocListener,
       builder: (context, state) {
         return Container();

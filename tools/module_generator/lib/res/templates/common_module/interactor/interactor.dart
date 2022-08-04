@@ -1,6 +1,8 @@
+import '../../../../common/definations.dart';
+
 const commonModuleInteractor =
-    '''import '../repository/%%MODULE_NAME%%_repository.dart';
+    '''import '../repository/${moduleNameKey}_repository.dart';
 
-part '%%MODULE_NAME%%_interactor.impl.dart';
+part '${moduleNameKey}_interactor.impl.dart';
 
-abstract class %%CLASS_NAME%%Interactor {}''';
+abstract class ${classNameKey}Interactor {}''';

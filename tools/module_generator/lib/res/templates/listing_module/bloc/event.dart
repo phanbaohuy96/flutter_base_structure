@@ -1,8 +1,10 @@
-const listingModuleEvent = '''part of '%%MODULE_NAME%%_bloc.dart';
+import '../../../../common/definations.dart';
+
+const listingModuleEvent = '''part of '${moduleNameKey}_bloc.dart';
 
 @immutable
-abstract class %%CLASS_NAME%%Event {}
+abstract class ${classNameKey}Event {}
 
-class GetDataEvent extends %%CLASS_NAME%%Event {}
+class GetDataEvent extends ${classNameKey}Event {}
 
-class LoadMoreDataEvent extends %%CLASS_NAME%%Event {}''';
+class LoadMoreDataEvent extends ${classNameKey}Event {}''';

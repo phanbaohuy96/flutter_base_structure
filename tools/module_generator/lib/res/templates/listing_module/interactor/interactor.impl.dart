@@ -1,10 +1,12 @@
+import '../../../../common/definations.dart';
+
 const listingModuleInteractorImpl =
-    '''part of '%%MODULE_NAME%%_interactor.dart';
+    '''part of '${moduleNameKey}_interactor.dart';
 
-class %%CLASS_NAME%%InteractorImpl extends %%CLASS_NAME%%Interactor {
-  final %%CLASS_NAME%%Repository _repository;
+class ${classNameKey}InteractorImpl extends ${classNameKey}Interactor {
+  final ${classNameKey}Repository _repository;
 
-  %%CLASS_NAME%%InteractorImpl(this._repository);
+  ${classNameKey}InteractorImpl(this._repository);
 
   var _pagination = Pagination();
 

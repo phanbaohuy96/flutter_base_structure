@@ -1,3 +1,6 @@
-const commonModuleRepositoryImpl = '''part of '%%MODULE_NAME%%_repository.dart';
+import '../../../../common/definations.dart';
 
-class %%CLASS_NAME%%RepositoryImpl extends %%CLASS_NAME%%Repository {}''';
+const commonModuleRepositoryImpl =
+    '''part of '${moduleNameKey}_repository.dart';
+
+class ${classNameKey}RepositoryImpl extends ${classNameKey}Repository {}''';

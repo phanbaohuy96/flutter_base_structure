@@ -1,4 +1,6 @@
-const commonModuleState = '''part of '%%MODULE_NAME%%_bloc.dart';
+import '../../../../common/definations.dart';
+
+const commonModuleState = '''part of '${moduleNameKey}_bloc.dart';
 
 class _ViewModel {
   const _ViewModel();
@@ -8,22 +10,22 @@ class _ViewModel {
   }
 }
 
-abstract class %%CLASS_NAME%%State {
+abstract class ${classNameKey}State {
   final _ViewModel viewModel;
 
-  %%CLASS_NAME%%State(this.viewModel);
+  ${classNameKey}State(this.viewModel);
 
-  T copyWith<T extends %%CLASS_NAME%%State>({
+  T copyWith<T extends ${classNameKey}State>({
     _ViewModel? viewModel,
   }) {
-    return _factories[T == %%CLASS_NAME%%State ? runtimeType : T]!(
+    return _factories[T == ${classNameKey}State ? runtimeType : T]!(
       viewModel ?? this.viewModel,
     );
   }
 }
 
-class %%CLASS_NAME%%Initial extends %%CLASS_NAME%%State {
-  %%CLASS_NAME%%Initial({
+class ${classNameKey}Initial extends ${classNameKey}State {
+  ${classNameKey}Initial({
     _ViewModel viewModel = const _ViewModel(),
   }) : super(viewModel);
 }
@@ -33,7 +35,7 @@ final _factories = <
     Function(
   _ViewModel viewModel,
 )>{
-  %%CLASS_NAME%%Initial: (viewModel) => %%CLASS_NAME%%Initial(
+  ${classNameKey}Initial: (viewModel) => ${classNameKey}Initial(
         viewModel: viewModel,
       ),
 };''';

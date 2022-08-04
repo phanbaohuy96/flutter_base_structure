@@ -1,4 +1,6 @@
-const commonModuleEvent = '''part of '%%MODULE_NAME%%_bloc.dart';
+import '../../../../common/definations.dart';
+
+const commonModuleEvent = '''part of '${moduleNameKey}_bloc.dart';
 
 @immutable
-abstract class %%CLASS_NAME%%Event {}''';
+abstract class ${classNameKey}Event {}''';

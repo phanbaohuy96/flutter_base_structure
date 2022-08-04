@@ -1,7 +1,10 @@
-const commonModuleInteractorImpl = '''part of '%%MODULE_NAME%%_interactor.dart';
+import '../../../../common/definations.dart';
 
-class %%CLASS_NAME%%InteractorImpl extends %%CLASS_NAME%%Interactor {
-  final %%CLASS_NAME%%Repository _repository;
+const commonModuleInteractorImpl =
+    '''part of '${moduleNameKey}_interactor.dart';
 
-  %%CLASS_NAME%%InteractorImpl(this._repository);
+class ${classNameKey}InteractorImpl extends ${classNameKey}Interactor {
+  final ${classNameKey}Repository _repository;
+
+  ${classNameKey}InteractorImpl(this._repository);
 }''';

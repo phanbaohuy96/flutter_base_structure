@@ -1,11 +1,13 @@
+import '../../../common/definations.dart';
+
 const repository = '''import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 import '../../../data_repository.dart';
 
-part '%%MODULE_NAME%%_repository.impl.dart';
+part '${moduleNameKey}_repository.impl.dart';
 
-abstract class %%CLASS_NAME%%Repository {
+abstract class ${classNameKey}Repository {
   Future<dynamic> sampleFunc();
 }
 ''';

@@ -1,4 +1,6 @@
-const commonModuleRepository = '''part '%%MODULE_NAME%%_repository.impl.dart';
+import '../../../../common/definations.dart';
 
-abstract class %%CLASS_NAME%%Repository {}
+const commonModuleRepository = '''part '${moduleNameKey}_repository.impl.dart';
+
+abstract class ${classNameKey}Repository {}
 ''';
