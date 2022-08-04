@@ -1,0 +1,8 @@
+const listingModuleEvent = '''part of '%%MODULE_NAME%%_bloc.dart';
+
+@immutable
+abstract class %%CLASS_NAME%%Event {}
+
+class GetDataEvent extends %%CLASS_NAME%%Event {}
+
+class LoadMoreDataEvent extends %%CLASS_NAME%%Event {}''';

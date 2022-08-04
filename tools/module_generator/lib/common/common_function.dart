@@ -1,9 +1,16 @@
 import 'definations.dart';
-import 'file_helper.dart';
 
 extension StringExtension on String {
   String capitalize() {
     return '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
+  }
+
+  String replaceContent({
+    required String className,
+    required String moduleName,
+  }) {
+    return replaceAll(classNameKey, className)
+        .replaceAll(moduleNameKey, moduleName);
   }
 }
 
@@ -32,17 +39,21 @@ String formatModuleName(String inputName) {
       .join('_');
 }
 
-// eg: openTemplateAndReplaceContent('common_module/module.txt', 'className', 'moduleName')
-Future<String> openTemplateAndReplaceContent({
-  required String relativeFilePathFromTemplate,
-  required String className,
-  required String moduleName,
-}) async {
-  final content = await FilesHelper.readFile(
-    pathFile:
-        'tools/module_generator/res/templates/$relativeFilePathFromTemplate',
-  );
-  return (content ?? '')
-      .replaceAll(classNameKey, className)
-      .replaceAll(moduleNameKey, moduleName);
-}
+// // eg: openTemplateAndReplaceContent('common_module/module', 'className', 'moduleName')
+// String openTemplateAndReplaceContent({
+//   required String relativeFilePathFromTemplate,
+//   required String className,
+//   required String moduleName,
+// }) {
+//   final parts = relativeFilePathFromTemplate.split('/');
+//   dynamic current = templates;
+//   for (var part in parts) {
+//     current = current[part];
+//   }
+
+//   String content = current is String ? current : '';
+
+//   return content
+//       .replaceAll(classNameKey, className)
+//       .replaceAll(moduleNameKey, moduleName);
+// }

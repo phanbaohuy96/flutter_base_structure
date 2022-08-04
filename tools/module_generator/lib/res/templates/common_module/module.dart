@@ -1,0 +1,5 @@
+const commonModule = '''export 'bloc/%%MODULE_NAME%%_bloc.dart';
+export 'interactor/%%MODULE_NAME%%_interactor.dart';
+export 'repository/%%MODULE_NAME%%_repository.dart';
+export '%%MODULE_NAME%%_route.dart';
+export 'views/%%MODULE_NAME%%_screen.dart';''';

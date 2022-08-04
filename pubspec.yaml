@@ -50,8 +50,6 @@ dependencies:
   badges: ^2.0.3
   webview_flutter: ^3.0.4
   pull_to_refresh: ^2.0.0
-  module_generator:
-    path: ./tools/module_generator #ns
 
   
 dev_dependencies:
@@ -62,6 +60,8 @@ dev_dependencies:
   retrofit_generator: ^4.0.1
   json_serializable: ^6.0.1
   hive_generator: ^1.1.1
+  module_generator:
+    path: ./tools/module_generator
 
 flutter:
 

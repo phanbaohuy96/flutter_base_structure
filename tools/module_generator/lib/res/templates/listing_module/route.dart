@@ -1,0 +1,18 @@
+const listingModuleRoute = '''import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'bloc/%%MODULE_NAME%%_bloc.dart';
+import 'views/%%MODULE_NAME%%_screen.dart';
+
+class %%CLASS_NAME%%Route {
+  static Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
+        //TODO: Update route name
+        '': (context) {
+          return BlocProvider(
+            create: (context) => %%CLASS_NAME%%Bloc(),
+            child: const %%CLASS_NAME%%Screen(),
+          );
+        },
+      };
+}
+''';

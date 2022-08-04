@@ -617,7 +617,7 @@ packages:
     source: hosted
     version: "1.0.2"
   module_generator:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       path: "tools/module_generator"
       relative: true
