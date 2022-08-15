@@ -62,7 +62,7 @@ class InputContainer extends StatefulWidget {
 }
 
 class _InputContainerState extends State<InputContainer> {
-  late InputContainerController? _controller;
+  InputContainerController? _controller;
 
   bool get hasSuffixIcon => widget.isPassword || widget.suffixIcon != null;
 
