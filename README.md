@@ -12,4 +12,5 @@
 ```
 - module_generator: flutter pub run module_generator
     -- Module name: refer under-scrore (test_module)
+- asset generator: flutter pub run module_generator:generate_asset
 ```
