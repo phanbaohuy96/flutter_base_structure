@@ -1,4 +1,5 @@
 import 'definations.dart';
+import 'utils.dart';
 
 extension StringExtension on String {
   String capitalize() {
@@ -14,16 +15,25 @@ extension StringExtension on String {
   }
 }
 
+extension ExtendedIterable<E> on Iterable<E> {
+  /// Like Iterable<T>.map but callback have index as second argument
+  Iterable<T> mapIndex<T>(T Function(E e, int i) f) {
+    var i = 0;
+    return map((e) => f(e, i++));
+  }
+
+  void forEachIndex(void Function(E e, int i) f) {
+    var i = 0;
+    forEach((e) => f(e, i++));
+  }
+}
+
 /// input: test_module
 /// output: TestModule
 /// input: testModule
 /// output: TestModule
 String formatClassName(String inputName) {
-  final regex = RegExp(r'[A-Z]?[a-z]+');
-  return regex
-      .allMatches(inputName)
-      .map((e) => e.group(0)?.capitalize() ?? '')
-      .join('');
+  return inputName.titleCase.replaceAll(' ', '');
 }
 
 /// input: test_module
@@ -32,11 +42,15 @@ String formatClassName(String inputName) {
 /// output: test_module
 ///
 String formatModuleName(String inputName) {
-  final regex = RegExp(r'[A-Z]?[a-z]+');
-  return regex
-      .allMatches(inputName)
-      .map((e) => e.group(0)?.toLowerCase() ?? '')
-      .join('_');
+  return inputName.snakeCase;
+}
+
+/// input: test_module
+/// output: testModule
+/// input: testModule
+/// output: testModule
+String camelCase(String inputName) {
+  return inputName.camelCase;
 }
 
 // // eg: openTemplateAndReplaceContent('common_module/module', 'className', 'moduleName')
