@@ -4,7 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../common/utils.dart';
+import '../../common/utils/extensions.dart';
 import '../theme/shadow.dart';
 import '../theme/theme_color.dart';
 import 'cache_network_image_wrapper.dart';

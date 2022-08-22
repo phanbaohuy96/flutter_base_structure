@@ -29,6 +29,7 @@ dependencies:
   intl: ^0.17.0
   flutter_svg_provider: ^1.0.3
   flutter_svg: ^1.1.0
+  dartx: ^0.7.1
   
   #utils
   logger: ^1.1.0
@@ -40,6 +41,9 @@ dependencies:
   permission_handler: ^9.2.0
   url_launcher: ^6.1.2
   file_picker: ^4.6.1
+  phone_numbers_parser: ^4.2.0
+  flutter_multi_formatter: ^2.5.1
+  
 
   #ui
   cached_network_image: ^3.2.0

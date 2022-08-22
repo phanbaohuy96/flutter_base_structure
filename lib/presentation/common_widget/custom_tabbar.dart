@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../common/utils.dart';
+import '../../common/utils/extensions.dart';
 
 class CustomTabbar extends StatefulWidget {
   final List<String> titles;

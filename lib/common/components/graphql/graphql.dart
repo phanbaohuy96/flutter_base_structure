@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gql/language.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
