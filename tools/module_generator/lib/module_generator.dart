@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'common/definations.dart';
+import 'common/definitions.dart';
 import 'common/input_helper.dart';
 import 'common/utils.dart';
 import 'generator/base_module_generator.dart';

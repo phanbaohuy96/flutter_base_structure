@@ -23,7 +23,7 @@ dependencies:
   graphql_flutter: ^5.0.1
 
   #base
-  flutter_bloc: ^8.0.1
+  flutter_bloc: ^8.1.1
   shared_preferences: ^2.0.15
   get_it: ^7.2.0
   intl: ^0.17.0

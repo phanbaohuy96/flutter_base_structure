@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const commonModuleScreen = '''import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

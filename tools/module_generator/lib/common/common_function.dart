@@ -1,4 +1,4 @@
-import 'definations.dart';
+import 'definitions.dart';
 import 'utils.dart';
 
 extension StringExtension on String {

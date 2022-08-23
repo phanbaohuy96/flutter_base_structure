@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppLocale {
   static const vi = Locale('vi');
   static const en = Locale('en');
+  static const defaultLocale = vi;
 
   static const supportedLocales = [vi, en];
 

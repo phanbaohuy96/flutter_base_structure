@@ -1,5 +1,4 @@
 flutter:
   assets:
-    - assets/svg/
     - assets/images/
   assets_generated: 'lib/generated/'

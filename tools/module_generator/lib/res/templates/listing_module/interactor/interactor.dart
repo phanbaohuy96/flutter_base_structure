@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const listingModuleInteractor =
     '''import '../../../../../../domain/entities/pagination.entity.dart';

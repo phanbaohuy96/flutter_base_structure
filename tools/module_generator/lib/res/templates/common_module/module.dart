@@ -1,4 +1,4 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
 const commonModule = '''export 'bloc/${moduleNameKey}_bloc.dart';
 export 'interactor/${moduleNameKey}_interactor.dart';

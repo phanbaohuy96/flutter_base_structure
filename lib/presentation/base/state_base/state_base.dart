@@ -132,6 +132,5 @@ abstract class StateBase<T extends StatefulWidget> extends State<T> {
   }
 
   String get languageCode =>
-      context.read<AppDataBloc>().state?.locale.languageCode ??
-      AppLocale.vi.languageCode;
+      context.read<AppDataBloc>().state.locale.languageCode;
 }

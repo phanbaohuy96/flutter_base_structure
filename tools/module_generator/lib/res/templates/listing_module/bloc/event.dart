@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const listingModuleEvent = '''part of '${moduleNameKey}_bloc.dart';
 

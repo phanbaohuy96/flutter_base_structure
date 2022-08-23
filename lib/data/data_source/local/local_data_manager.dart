@@ -1,14 +1,27 @@
-import 'package:injectable/injectable.dart';
-
 import '../../../di/di.dart';
 import '../../../presentation/theme/theme_data.dart';
 import 'preferences_helper/preferences_helper.dart';
 
-@Singleton()
 class LocalDataManager implements AppPreferenceData {
   late final PreferencesHelper _preferencesHelper = injector.get();
+  // final Box<Province>? _administrativeHiveBox;
 
-  Future<void> init() async {}
+  LocalDataManager(
+      // this._administrativeHiveBox,
+      );
+
+  static Future<LocalDataManager> init() async {
+    // Hive.registerAdapter(ProvinceAdapter());
+
+    // return Future.value(
+    //   LocalDataManager(
+    //     await Hive.openBox<Province>(
+    //       'administrative_hive_box',
+    //     ),
+    //   ),
+    // );
+    return Future.value(LocalDataManager());
+  }
 
   ////////////////////////////////////////////////////////
   ///             Preferences helper

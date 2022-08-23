@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import '../common/common_function.dart';
-import '../common/definations.dart';
+import '../common/definitions.dart';
 import '../common/file_helper.dart';
 import '../res/templates/asset/assets.dart';
 

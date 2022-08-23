@@ -6,6 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../../common/components/navigation/navigation_observer.dart';
 import '../../common/constants/app_locale.dart';
+import '../../di/di.dart';
 import '../../domain/entities/app_data.dart';
 import '../common_bloc/app_data_bloc.dart';
 import '../common_widget/text_scale_fixed.dart';
@@ -22,11 +23,8 @@ class App extends StatefulWidget {
 }
 
 class _MyAppState extends State<App> {
-  final AppDataBloc _appDataBloc = AppDataBloc();
-
   @override
   void initState() {
-    _appDataBloc.initial();
     super.initState();
   }
 
@@ -34,7 +32,7 @@ class _MyAppState extends State<App> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => _appDataBloc),
+        BlocProvider(create: (_) => injector.get<AppDataBloc>()),
       ],
       child: BlocBuilder<AppDataBloc, AppData?>(
         builder: (context, appData) {
@@ -48,7 +46,7 @@ class _MyAppState extends State<App> {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: AppLocale.supportedLocales,
-            locale: appData?.locale ?? AppLocale.vi,
+            locale: appData?.locale ?? AppLocale.defaultLocale,
             onGenerateRoute: RouteGenerator.generateRoute,
             home: BlocProvider(
               create: (_) => SplashBloc(),

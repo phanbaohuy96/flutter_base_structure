@@ -9,7 +9,6 @@ import 'package:rxdart/rxdart.dart';
 
 import '../../common/client_info.dart';
 import '../../common/constants.dart';
-import '../../common/constants/app_locale.dart';
 import '../../common/utils.dart';
 import '../../data/data_source/local/local_data_manager.dart';
 import '../../data/data_source/remote/app_api_service.dart';

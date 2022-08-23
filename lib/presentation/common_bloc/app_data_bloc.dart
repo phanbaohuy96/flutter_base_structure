@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../common/client_info.dart';
 import '../../common/constants/app_locale.dart';
@@ -11,33 +12,33 @@ import '../../di/di.dart';
 import '../../domain/entities/app_data.dart';
 import '../../presentation/theme/theme_data.dart';
 
-class AppDataBloc extends Cubit<AppData?> {
-  AppDataBloc() : super(null);
+@Singleton()
+class AppDataBloc extends Cubit<AppData> {
+  AppDataBloc._(AppData data) : super(data);
 
   LocalDataManager get localDataManager => injector.get();
 
-  Future<void> initial() async {
-    if (!isInitialed) {
-      ClientInfo.languageCode =
-          localDataManager.getLocalization() ?? AppLocale.vi.languageCode;
-      emit(AppData(
-        localDataManager.getTheme(),
-        Locale(ClientInfo.languageCode),
-      ));
-    }
+  @factoryMethod
+  static Future<AppDataBloc> create() async {
+    final localDataManager = injector.get<LocalDataManager>();
+    ClientInfo.languageCode = localDataManager.getLocalization() ??
+        AppLocale.defaultLocale.languageCode;
+    final data = AppData(
+      localDataManager.getTheme(),
+      Locale(ClientInfo.languageCode),
+    );
+    return AppDataBloc._(data);
   }
-
-  bool get isInitialed => state != null;
 
   /// --------------------- Theme ---------------------//
   void changeLightTheme() {
-    emit(state?.copyWith(
+    emit(state.copyWith(
       currentTheme: SupportedTheme.light,
     ));
   }
 
   void changeDarkTheme() {
-    emit(state?.copyWith(
+    emit(state.copyWith(
       currentTheme: SupportedTheme.dark,
     ));
   }
@@ -50,10 +51,10 @@ class AppDataBloc extends Cubit<AppData?> {
       LogUtils.w('locale $locale is not supported!');
       return false;
     }
-    ClientInfo.languageCode = locale.languageCode;
 
     if (await localDataManager.saveLocalization(locale.languageCode) == true) {
-      emit(state?.copyWith(locale: locale));
+      ClientInfo.languageCode = locale.languageCode;
+      emit(state.copyWith(locale: locale));
       return true;
     } else {
       return false;
