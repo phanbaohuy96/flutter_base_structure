@@ -1,0 +1,22 @@
+# dart run module_generator:generate_app_identifier
+
+android:
+  dev:
+    package: net.vnsilicon.flutter.dev
+    name: Flutter DEV
+  staging:
+    package: net.vnsilicon.flutter.staging
+    name: Flutter STAGING
+  prod:
+    package: net.vnsilicon.flutter
+    name: Flutter Core
+ios:
+  dev:
+    package: net.vnsilicon.flutter.dev
+    name: Flutter DEV
+  staging:
+    package: net.vnsilicon.flutter.staging
+    name: Flutter STAGING
+  prod:
+    package: net.vnsilicon.flutter
+    name: Flutter Core

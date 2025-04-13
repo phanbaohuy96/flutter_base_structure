@@ -1,0 +1,75 @@
+default_platform(:android)
+
+platform :android do
+  desc "Deploy with Fastlane"
+  lane :upload_firebase_dev do |options|
+    apk_path = options[:binary_path]
+
+    firebase_app_distribution(
+      app: "",
+      groups: "android-internal",
+      release_notes_file: "release_notes_dev.txt",
+      apk_path: apk_path
+    )
+  end
+
+  lane :upload_firebase_staging do |options|
+    apk_path = options[:binary_path]
+
+    firebase_app_distribution(
+      app: "",
+      groups: "android-internal",
+      release_notes_file: "release_notes_staging.txt",
+      apk_path: apk_path
+    )
+  end
+
+  lane :upload_firebase_prod do |options|
+    apk_path = options[:binary_path]
+
+    firebase_app_distribution(
+      app: "",
+      groups: "android-internal",
+      release_notes_file: "release_notes_prod.txt",
+      apk_path: apk_path
+    )
+  end
+
+end
+
+platform :ios do
+  desc "Description of what the lane does"
+  lane :upload_firebase_dev do |options|
+    ipa_path = options[:binary_path]
+
+    firebase_app_distribution(
+      app: "",
+      groups: "ios-internal",
+      release_notes_file: "release_notes_dev.txt",
+      ipa_path: ipa_path
+    )
+  end
+
+  lane :upload_firebase_staging do |options|
+    ipa_path = options[:binary_path]
+
+    firebase_app_distribution(
+      app: "",
+      groups: "ios-internal",
+      release_notes_file: "release_notes_staging.txt",
+      ipa_path: ipa_path
+    )
+  end
+
+  lane :upload_firebase_prod do  |options|
+    ipa_path = options[:binary_path]
+
+    firebase_app_distribution(
+      app: "",
+      groups: "ios-internal",
+      release_notes_file: "release_notes_prod.txt",
+      ipa_path: ipa_path
+    )
+  end
+   
+end

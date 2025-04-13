@@ -1,0 +1,6 @@
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
+#include "Generated.xcconfig"
+#include "AppSpecific.xcconfig"
+
+APP_DISPLAY_NAME=$(PROD_APP_DISPLAY_NAME)
+PRODUCT_BUNDLE_IDENTIFIER=$(PROD_PRODUCT_BUNDLE_IDENTIFIER)

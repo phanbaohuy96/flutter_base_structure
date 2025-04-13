@@ -1,0 +1,14 @@
+key,th,en
+inform,Inform,Inform
+ok,Ok,Ok
+cancel,Cancel,Cancel
+confirm,Confirm,Confirm
+skip,Skip,Skip
+close,Close,Close
+loginRequired,Please login to continue,Please login to continue
+login,เข้าสู่ระบบ,Login
+userRole,User role,User role
+poweredByBKS,Powered by BKS,Powered by BKS
+pleaseSelectARoleBeforeLoginMsg,Please select a role before logging in.,Please select a role before logging in.
+thisRoleIsNotSupportedYet,This role is not supported yet.,This role is not supported yet.
+loginFailed,Failed to fetch user info,Failed to fetch user info

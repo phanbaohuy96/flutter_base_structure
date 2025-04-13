@@ -1,0 +1,1 @@
+cd $1; dart run module_generator:generate_app_identifier

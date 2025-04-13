@@ -1,0 +1,5 @@
+What's new?
+ - Flow 6: Authentication
+ - Flow 6: Forgot PIN
+ - Revamp Harvesting Creation UI
+ - Bug fixes and improvements
