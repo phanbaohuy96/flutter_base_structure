@@ -1,0 +1,47 @@
+library core;
+
+export 'package:badges/badges.dart';
+export 'package:bloc_concurrency/bloc_concurrency.dart';
+export 'package:carousel_slider/carousel_slider.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';
+export 'package:dots_indicator/dots_indicator.dart';
+export 'package:dotted_border/dotted_border.dart';
+export 'package:equatable/equatable.dart';
+export 'package:fl_media/fl_media.dart';
+export 'package:fl_theme/fl_theme.dart';
+export 'package:fl_ui/fl_ui.dart';
+export 'package:fl_utils/fl_utils.dart';
+export 'package:flutter_bloc/flutter_bloc.dart';
+export 'package:flutter_easyloading/flutter_easyloading.dart';
+export 'package:flutter_svg/flutter_svg.dart';
+export 'package:flutter_swipe_action_cell/core/cell.dart';
+export 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
+    hide ImageSource;
+export 'package:fluttertoast/fluttertoast.dart';
+export 'package:hive_flutter/hive_flutter.dart';
+export 'package:iconsax/iconsax.dart';
+export 'package:logger/logger.dart';
+export 'package:mime/mime.dart';
+export 'package:pedantic/pedantic.dart';
+export 'package:rxdart/rxdart.dart';
+export 'package:shared_preferences/shared_preferences.dart';
+export 'package:sqflite/sqflite.dart';
+export 'package:table_calendar/table_calendar.dart';
+export 'package:timeago/timeago.dart';
+export 'package:uuid/uuid.dart';
+
+export 'common/common.dart';
+export 'common/utils.dart';
+export 'data/data.dart';
+export 'domain/domain.dart';
+export 'envs.dart';
+export 'l10n/generated/core_localizations.dart';
+export 'presentation/base/base.dart';
+export 'presentation/common_bloc/common_bloc.dart';
+export 'presentation/common_widget/export.dart';
+export 'presentation/extentions/extention.dart';
+export 'presentation/modules/dev_mode/devmode.dart';
+export 'presentation/modules/document_viewer/document_viewer_coordinator.dart';
+export 'presentation/modules/webview/webview_coordinator.dart';
+export 'presentation/route/core_route.dart';
+export 'presentation/theme/export.dart';
