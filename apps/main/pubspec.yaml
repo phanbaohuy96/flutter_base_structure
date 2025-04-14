@@ -1,8 +1,8 @@
 name: duriantraceability
 description: VNS Durian Traceability
 
-version: 1.0.0+47
-version_staging: 1.0.0+3
+version: 1.0.0+1
+version_staging: 1.0.0+1
 version_prod: 1.0.0+1
 
 publish_to: none

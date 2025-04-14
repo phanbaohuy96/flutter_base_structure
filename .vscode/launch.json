@@ -44,5 +44,27 @@
                 "staging",
             ],
         },
+        /// PRODUCTION
+        {
+            "name": "Production Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main.dart",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
+        },
+        {
+            "name": "Production Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "prod",
+            ],
+        },
     ]
 }

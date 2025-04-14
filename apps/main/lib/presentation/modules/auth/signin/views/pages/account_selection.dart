@@ -55,7 +55,7 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
             bottomNavigationBar: Padding(
               padding: EdgeInsets.only(bottom: max(paddingBottom, 16)),
               child: Text(
-                trans.poweredByBKS,
+                trans.poweredByVNS,
                 style: textTheme.labelMedium,
                 textAlign: TextAlign.center,
               ),
@@ -72,7 +72,11 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(Assets.image.logo, height: 100),
+          Image.asset(
+            Assets.image.logo,
+            height: 100,
+            fit: BoxFit.fitHeight,
+          ),
           const SizedBox(height: 20),
           Text(
             'Flutter Core'.hardcode,

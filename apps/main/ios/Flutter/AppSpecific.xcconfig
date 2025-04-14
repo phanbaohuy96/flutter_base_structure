@@ -1,11 +1,11 @@
 // dev
 DEV_APP_DISPLAY_NAME=Flutter DEV
-DEV_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.flutter.dev
+DEV_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.core.dev
 
 // staging
 STAGING_APP_DISPLAY_NAME=Flutter STAGING
-STAGING_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.flutter.staging
+STAGING_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.core.staging
 
 // prod
 PROD_APP_DISPLAY_NAME=Flutter Core
-PROD_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.flutter
+PROD_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.core

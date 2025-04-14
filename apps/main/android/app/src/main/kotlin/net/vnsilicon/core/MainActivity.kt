@@ -1,4 +1,4 @@
-package net.vnsilicon.duriantraceability
+package net.vnsilicon.core
 
 import io.flutter.embedding.android.FlutterActivity
 

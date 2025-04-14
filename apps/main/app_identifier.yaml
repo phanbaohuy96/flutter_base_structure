@@ -2,21 +2,21 @@
 
 android:
   dev:
-    package: net.vnsilicon.flutter.dev
+    package: net.vnsilicon.core.dev
     name: Flutter DEV
   staging:
-    package: net.vnsilicon.flutter.staging
+    package: net.vnsilicon.core.staging
     name: Flutter STAGING
   prod:
-    package: net.vnsilicon.flutter
+    package: net.vnsilicon.core
     name: Flutter Core
 ios:
   dev:
-    package: net.vnsilicon.flutter.dev
+    package: net.vnsilicon.core.dev
     name: Flutter DEV
   staging:
-    package: net.vnsilicon.flutter.staging
+    package: net.vnsilicon.core.staging
     name: Flutter STAGING
   prod:
-    package: net.vnsilicon.flutter
+    package: net.vnsilicon.core
     name: Flutter Core

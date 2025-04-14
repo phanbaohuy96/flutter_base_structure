@@ -1,2 +1,2 @@
 What's new?
- - Bug fixes and improvements
+ - The app with Flutter Core Template 

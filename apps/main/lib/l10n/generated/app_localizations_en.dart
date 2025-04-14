@@ -34,7 +34,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get userRole => 'User role';
 
   @override
-  String get poweredByBKS => 'Powered by BKS';
+  String get poweredByVNS => 'Powered by VNS';
 
   @override
   String get pleaseSelectARoleBeforeLoginMsg =>

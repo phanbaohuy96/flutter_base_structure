@@ -152,11 +152,11 @@ abstract class AppLocalizations {
   /// **'User role'**
   String get userRole;
 
-  /// No description provided for @poweredByBKS.
+  /// No description provided for @poweredByVNS.
   ///
   /// In en, this message translates to:
-  /// **'Powered by BKS'**
-  String get poweredByBKS;
+  /// **'Powered by VNS'**
+  String get poweredByVNS;
 
   /// No description provided for @pleaseSelectARoleBeforeLoginMsg.
   ///

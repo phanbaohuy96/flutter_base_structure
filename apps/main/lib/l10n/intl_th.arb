@@ -6,9 +6,9 @@
   "skip": "Skip",
   "close": "Close",
   "loginRequired": "Please login to continue",
-  "login": "เข้าสู่ระบบ",
+  "login": "Login",
   "userRole": "User role",
-  "poweredByBKS": "Powered by BKS",
+  "poweredByVNS": "Powered by VNS",
   "pleaseSelectARoleBeforeLoginMsg": "Please select a role before logging in.",
   "thisRoleIsNotSupportedYet": "This role is not supported yet.",
   "loginFailed": "Failed to fetch user info"

@@ -28,13 +28,13 @@ class AppLocalizationsTh extends AppLocalizations {
   String get loginRequired => 'Please login to continue';
 
   @override
-  String get login => 'เข้าสู่ระบบ';
+  String get login => 'Login';
 
   @override
   String get userRole => 'User role';
 
   @override
-  String get poweredByBKS => 'Powered by BKS';
+  String get poweredByVNS => 'Powered by VNS';
 
   @override
   String get pleaseSelectARoleBeforeLoginMsg =>
