@@ -14,12 +14,6 @@
     <!-- Include only if your app benefits from precise location access. -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     
-    <!-- Speech To Text -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
-    
     <application
         android:name="${applicationName}"
         android:label="@string/app_name"

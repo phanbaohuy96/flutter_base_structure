@@ -48,20 +48,10 @@
 		<key>UIStatusBarHidden</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>This app needs camera access to take photos of durian products.</string>
+		<string>$(APP_DISPLAY_NAME) would like to access camera access to take photos.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>This app needs photo library access to save durian product photos.</string>
+		<string>$(APP_DISPLAY_NAME) would like to access photo library access to save product photos.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>This app needs photo library access to save durian product photos.</string>
-		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access location service using for products information</string>
-		<key>NSLocationAlwaysUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access location service using for products information</string>
-		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access location service using for products information</string>
-		<key>NSSpeechRecognitionUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access speech recognition</string>
-		<key>NSMicrophoneUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access microphone using for speech recognition</string>
+		<string>$(APP_DISPLAY_NAME) would like to access photo library access to save product photos.</string>
 	</dict>
 </plist>

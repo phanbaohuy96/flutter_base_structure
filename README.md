@@ -104,4 +104,4 @@ The project includes several tools to automate and simplify development tasks:
 ---
 
 ## Summary
-This project is a modular, scalable, and maintainable solution for managing durian traceability. It leverages Flutter's capabilities, clean code architecture, and custom tools to streamline development and ensure high-quality software delivery.
+This project is a modular, scalable, and maintainable solution for Flutter applications. It leverages Flutter's capabilities, clean code architecture, and custom tools to streamline development and ensure high-quality software delivery.
