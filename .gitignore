@@ -15,7 +15,7 @@ node_modules
 *.ipr
 *.iws
 .idea/
-**.gradle
+**/.gradle
 local.properties
 *.lock
 
