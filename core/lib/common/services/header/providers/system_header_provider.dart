@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../common.dart';
@@ -11,7 +12,8 @@ class SystemHeaderProvider extends HeaderProvider {
   @override
   Map<String, String> build() {
     return {
-      RequestHeaderKey.osplatform.key: Platform.operatingSystem,
+      RequestHeaderKey.osplatform.key:
+          kIsWeb ? 'web-app' : Platform.operatingSystem,
     };
   }
 }

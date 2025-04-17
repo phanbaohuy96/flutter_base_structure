@@ -1,4 +1,4 @@
-import 'dart:io';
+import 'dart:io' as io;
 import 'dart:typed_data';
 
 import 'package:extended_image/extended_image.dart';
@@ -20,7 +20,7 @@ class ImageCropperScreen extends StatefulWidget {
     required this.imagefile,
   }) : super(key: key);
 
-  final File imagefile;
+  final io.File imagefile;
   @override
   _ImageCropperScreenState createState() => _ImageCropperScreenState();
 }
