@@ -52,10 +52,10 @@ extension ImageCropperAction on _ImageCropperScreenState {
     return result!;
   }
 
-  Future<File> _saveTempFile(Uint8List data) async {
+  Future<io.File> _saveTempFile(Uint8List data) async {
     final tempDir = await getTemporaryDirectory();
     final filePath = '${tempDir.path}/${UniqueKey()}.png';
-    final file = File(filePath);
+    final file = io.File(filePath);
     if (await file.exists()) {
       await file.delete();
     }
