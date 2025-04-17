@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-import 'image_cropper_screen.dart';
+import 'image_cropper.dart';
 
 class ImageCropperRoute {
   Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
