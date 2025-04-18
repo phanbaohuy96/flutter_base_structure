@@ -7,6 +7,7 @@ class FilePicked {
     required this.size,
     this.bytes,
     this.identifier,
+    this.mimeType,
   });
 
   factory FilePicked.fromPlatFormFile(f_picker.PlatformFile file) {
@@ -19,19 +20,22 @@ class FilePicked {
       size: file.size,
       bytes: file.bytes,
       identifier: file.identifier,
+      mimeType: kIsWeb
+          ? lookupMimeType(file.extension ?? '')
+          : lookupMimeType(file.path ?? ''),
     );
   }
 
-  factory FilePicked.fromXFile(XFile file) {
+  static Future<FilePicked> fromXFile(XFile file) async {
     ///  On web `path` is always `null`,
     ///  You should access `bytes` property instead,
     ///  Read more about it [here](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ)
-    final _file = File(file.path);
     return FilePicked(
       path: kIsWeb ? null : file.path,
       name: file.name,
-      size: _file.lengthSync(),
-      bytes: _file.readAsBytesSync(),
+      size: await file.length(),
+      bytes: await file.readAsBytes(),
+      mimeType: file.mimeType,
     );
   }
 
@@ -67,6 +71,9 @@ class FilePicked {
   /// this is a safe-reference for the original platform files, for
   /// that the [path] property should be used instead.
   final String? identifier;
+
+  /// File mimeType for this file.
+  final String? mimeType;
 
   /// File extension for this file.
   String? get extension => name.split('.').last;

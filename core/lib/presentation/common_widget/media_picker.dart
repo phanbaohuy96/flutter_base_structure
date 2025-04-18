@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
@@ -43,17 +42,9 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
   void addAll(Iterable<MediaPicked> medias) {
     value = [
       ...value,
-      ...medias
-          .where(
-            (insert) => !value.any((value) => insert.key == value.key),
-          )
-          .map(
-            (e) => e.copyWith(
-              cloudFile: e.cloudFile?.copyWith(
-                url: () => storageAssetProvider.url(e.url ?? ''),
-              ),
-            ),
-          ),
+      ...medias.where(
+        (insert) => !value.any((value) => insert.key == value.key),
+      ),
     ];
     onMediaPicked?.call(value);
   }
@@ -93,19 +84,16 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
   ) async {
     final file = media.mediaFile!;
     try {
-      final cloudFile = await storageService.uploadFile(
-        file,
+      final cloudFile = await storageService.uploadBytes(
+        file.bytes ?? await File(file.path!).readAsBytes(),
+        media.fileName ?? file.path?.split('/').last ?? '',
+        mimeType: media.mimetype,
+        filePath: file.path,
       );
-      final url = storageService.getAssetUrl(cloudFile?.id ?? '');
-      if (url.isNullOrEmpty) {
-        throw Exception('Update media but return empty url');
-      }
       _updateMedia(
         media.copyWith(
           isInUploadProgress: false,
-          cloudFile: cloudFile?.copyWith(
-            url: () => url,
-          ),
+          cloudFile: () => cloudFile,
         ),
       );
     } catch (e, stackTrace) {
@@ -147,9 +135,10 @@ extension _MediaType on MediaType {
   }
 }
 
-class MediaPicked {
+// ignore: must_be_immutable
+class MediaPicked extends Equatable {
   final String key;
-  final File? mediaFile;
+  final FilePicked? mediaFile;
   final String? mimetype;
   final bool isInUploadProgress;
   Uint8List? videoThumbnail;
@@ -157,41 +146,45 @@ class MediaPicked {
   final CloudFile? cloudFile;
 
   MediaPicked({
-    required this.key,
+    String? key,
     this.mediaFile,
     this.mimetype,
     this.isInUploadProgress = false,
     this.videoThumbnail,
     this.index,
     this.cloudFile,
-  });
+  }) : key = key ?? const Uuid().v4();
 
   bool get isVideo => mimetype?.contains('video') == true;
 
   MediaPicked copyWith({
     String? key,
-    File? mediaFile,
-    String? mimetype,
+    ValueGetter<FilePicked?>? mediaFile,
+    ValueGetter<String?>? mimetype,
     bool? isInUploadProgress,
-    Uint8List? videoThumbnail,
-    int? index,
-    CloudFile? cloudFile,
+    ValueGetter<Uint8List?>? videoThumbnail,
+    ValueGetter<int?>? index,
+    ValueGetter<CloudFile?>? cloudFile,
   }) {
     return MediaPicked(
       key: key ?? this.key,
-      mediaFile: mediaFile ?? this.mediaFile,
-      mimetype: mimetype ?? this.mimetype,
+      mediaFile: mediaFile != null ? mediaFile() : this.mediaFile,
+      mimetype: mimetype != null ? mimetype() : this.mimetype,
       isInUploadProgress: isInUploadProgress ?? this.isInUploadProgress,
-      videoThumbnail: videoThumbnail ?? this.videoThumbnail,
-      index: index ?? this.index,
-      cloudFile: cloudFile ?? this.cloudFile,
+      videoThumbnail:
+          videoThumbnail != null ? videoThumbnail() : this.videoThumbnail,
+      index: index != null ? index() : this.index,
+      cloudFile: cloudFile != null ? cloudFile() : this.cloudFile,
     );
   }
 
   bool get isLoading => isInUploadProgress;
   bool get isEmpty => mediaFile == null && url.isNullOrEmpty;
-  String? get fileName => mediaFile?.path.let(path.basename);
-  String? get url => cloudFile?.url;
+  String? get fileName =>
+      mediaFile?.name ?? mediaFile?.path?.let(path.basename);
+  String? get url => cloudFile?.url.isNotNullOrEmpty == true
+      ? cloudFile?.url
+      : cloudFile?.filenameDisk;
 
   Future<Uint8List?> loadVideoThumbnail() async {
     if (videoThumbnail != null) {
@@ -206,6 +199,17 @@ class MediaPicked {
       ).then((value) => videoThumbnail = value);
     });
   }
+
+  @override
+  List<Object?> get props => [
+        key,
+        mediaFile,
+        mimetype,
+        isInUploadProgress,
+        videoThumbnail,
+        index,
+        cloudFile,
+      ];
 }
 
 class MediaPickerWidget extends StatefulWidget {
@@ -302,7 +306,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.camera_alt,
+                    Icons.camera_alt_outlined,
                     size: 22,
                     color: widget.foregroundColor ?? context.themeColor.primary,
                   ),
@@ -398,19 +402,35 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                         height: constraints.maxHeight - 6,
                         child: Stack(
                           children: [
-                            media.mediaFile != null
-                                ? Image.file(
-                                    media.mediaFile!,
+                            Builder(
+                              builder: (context) {
+                                final width = constraints.maxWidth - 6;
+                                final height = constraints.maxHeight - 6;
+                                if (media.mediaFile?.bytes != null) {
+                                  return Image.memory(
+                                    media.mediaFile!.bytes!,
                                     fit: BoxFit.cover,
-                                    width: constraints.maxWidth - 6,
-                                    height: constraints.maxHeight - 6,
-                                  )
-                                : ImageView(
-                                    source: media.url ?? '',
+                                    width: width,
+                                    height: height,
+                                  );
+                                }
+                                if (media.mediaFile?.path != null) {
+                                  return Image.file(
+                                    File(media.mediaFile!.path!),
                                     fit: BoxFit.cover,
-                                    width: constraints.maxWidth - 6,
-                                    height: constraints.maxHeight - 6,
-                                  ),
+                                    width: width,
+                                    height: height,
+                                  );
+                                }
+
+                                return ImageViewWrapper.item(
+                                  media.url ?? '',
+                                  fit: BoxFit.cover,
+                                  width: width,
+                                  height: height,
+                                );
+                              },
+                            ),
                             if (media.isLoading)
                               Container(
                                 decoration: BoxDecoration(
@@ -528,7 +548,8 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
             ),
           );
 
-      if (pickedFile != null && pickedFile.path.isNotNullOrEmpty) {
+      if (pickedFile != null &&
+          (pickedFile.path.isNotNullOrEmpty || pickedFile.bytes != null)) {
         clearLiveCachedImages();
         _onMediaPicked([pickedFile]);
       }
@@ -549,15 +570,14 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
     widget.controller.addAll(
       [
         ...filePicked
-            .where((e) => e.path.isNotNullOrEmpty)
             .mapIndex(
-              (e, i) => MediaPicked(
-                key: const Uuid().v4(),
-                mediaFile: File(e.path!),
-                mimetype: lookupMimeType(e.path!),
-                index: currentIndex + i,
-              ),
-            )
+          (e, i) => MediaPicked(
+            key: const Uuid().v4(),
+            mediaFile: e,
+            mimetype: lookupMimeType(e.path ?? ''),
+            index: currentIndex + i,
+          ),
+        )
             .let((it) {
           if (widget.maxMedia != null) {
             return it.take(widget.maxMedia! - widget.controller.value.length);
