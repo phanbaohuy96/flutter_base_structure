@@ -19,10 +19,11 @@ dependencies:
   extended_image: ^8.1.1
   flutter_svg_provider: ^1.0.3
   flutter_svg: ^2.0.9
-  file_picker: ^8.1.2
+  file_picker: ^10.1.2
   image_picker: ^1.1.2
   image_editor: ^1.0.0
   flutter_easyloading: ^3.0.3
+  mime: ^1.0.2
 
   pedantic: ^1.11.1
 

@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:file_picker/file_picker.dart' as f_picker;
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 export 'package:image_picker/image_picker.dart' show CameraDevice;
 
@@ -42,18 +41,36 @@ class PickFileHelper {
     String? initialDirectory,
     FileType type = FileType.any,
     List<String>? allowedExtensions,
-    bool allowCompression = true,
+    int compressionQuality = 0,
     bool allowMultiple = false,
     bool withData = false,
     bool withReadStream = false,
     bool lockParentWindow = false,
   }) async {
+    if (kIsWeb) {
+      /// This helper class addresses a limitation with the `file_picker`
+      /// package, which currently does not support web platforms.
+      /// As a temporary workaround, the [ImagePicker] package is used for
+      /// file picking functionality on the web.
+      ///
+      /// For more details, refer to the related issue on GitHub:
+      /// https://github.com/miguelpruivo/flutter_file_picker/issues/876
+      final picker = ImagePicker();
+      final result = await picker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      return [
+        if (result != null) await FilePicked.fromXFile(result),
+      ];
+    }
+
     final result = await f_picker.FilePicker.platform.pickFiles(
       dialogTitle: dialogTitle,
       initialDirectory: initialDirectory,
       type: type.filePickerType,
       allowedExtensions: allowedExtensions,
-      allowCompression: allowCompression,
+      compressionQuality: compressionQuality,
       allowMultiple: allowMultiple,
       withData: withData,
       withReadStream: withReadStream,
