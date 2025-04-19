@@ -15,6 +15,22 @@ abstract class StorageService {
     CompressImageOption compressImageOption = const CompressImageOption(),
   });
 
+  Future<CloudFile?> uploadBytes(
+    Uint8List bytes,
+    String name, {
+    String? filePath,
+    String? mimeType,
+    bool autoCompressImage = true,
+    CompressImageOption compressImageOption = const CompressImageOption(),
+  });
+
+  Future<CloudFile?> uploadImageBytes(
+    Uint8List bytes,
+    String name, {
+    bool autoCompressImage = true,
+    CompressImageOption compressImageOption = const CompressImageOption(),
+  });
+
   String getAssetUrl(String id);
 }
 
@@ -46,6 +62,9 @@ class StorageAssetProvider {
   /// Returns the generated URL or the original reference if it is not a UUID.
   String url(String reference, [bool shouldBeUUID = false]) {
     if (reference.isNotEmpty) {
+      if (reference.isUrl) {
+        return reference;
+      }
       if (!shouldBeUUID || reference.split('.').first.isUUID) {
         return storageService.getAssetUrl(reference);
       }
