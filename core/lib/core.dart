@@ -42,6 +42,8 @@ export 'presentation/common_widget/export.dart';
 export 'presentation/extentions/extention.dart';
 export 'presentation/modules/dev_mode/devmode.dart';
 export 'presentation/modules/document_viewer/document_viewer_coordinator.dart';
+export 'presentation/modules/html_viewer/htmlviewer_coordinator.dart';
 export 'presentation/modules/webview/webview_coordinator.dart';
 export 'presentation/route/core_route.dart';
+export 'presentation/route/route.dart';
 export 'presentation/theme/export.dart';

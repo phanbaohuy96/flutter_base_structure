@@ -25,6 +25,8 @@ class _StorageRepository implements StorageRepository {
   Future<ApiResponse<CloudFile>> uploadFile(
     File file, {
     String? authorization,
+    void Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -50,6 +52,8 @@ class _StorageRepository implements StorageRepository {
           'files',
           queryParameters: queryParameters,
           data: _data,
+          cancelToken: cancelToken,
+          onSendProgress: onSendProgress,
         )
         .copyWith(
             baseUrl: _combineBaseUrls(
@@ -74,6 +78,8 @@ class _StorageRepository implements StorageRepository {
   Future<ApiResponse<CloudFile>> uploadBytes(
     List<MultipartFile> files, {
     String? authorization,
+    void Function(int, int)? onSendProgress,
+    CancelToken? cancelToken,
   }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -93,6 +99,8 @@ class _StorageRepository implements StorageRepository {
           'files',
           queryParameters: queryParameters,
           data: _data,
+          cancelToken: cancelToken,
+          onSendProgress: onSendProgress,
         )
         .copyWith(
             baseUrl: _combineBaseUrls(

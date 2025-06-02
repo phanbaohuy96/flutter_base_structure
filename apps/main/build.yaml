@@ -27,6 +27,7 @@ targets:
           - lib/di/di.dart
           - lib/domain/usecases/auth/auth_usecase.dart
           - lib/presentation/modules/auth/signin/bloc/signin_bloc.dart
+          - lib/presentation/route/route.dart
           - lib/presentation/theme/theme_dialog.dart
       injectable_generator:injectable_config_builder:
         generate_for:
@@ -39,4 +40,5 @@ targets:
           - lib/di/di.dart
           - lib/domain/usecases/auth/auth_usecase.dart
           - lib/presentation/modules/auth/signin/bloc/signin_bloc.dart
+          - lib/presentation/route/route.dart
           - lib/presentation/theme/theme_dialog.dart

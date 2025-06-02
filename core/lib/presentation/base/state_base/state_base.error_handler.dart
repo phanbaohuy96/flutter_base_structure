@@ -15,66 +15,83 @@ extension StateBaseErrorHandlerExt on CoreStateBase {
     }
     errorTypeShowing = error.type;
 
+    final message = getErrorMsg(error);
+
     hideLoading();
     switch (error.type) {
       case ErrorType.unauthorized:
-        showLoginRequired(message: error.message);
+        showLoginRequired(message: message);
         break;
-      case ErrorType.badRequest:
-        _connectivityErrorOrNot(
-          orNot: () {
-            final errorMessage = [
-              error.message ?? coreL10n.technicalIssues,
-              if (Config.instance.appConfig.developmentMode)
-                error.errorCode ?? '',
-            ].join('\n');
-
-            if (error.statusCode != null &&
-                error.statusCode! >= 500 &&
-                error.statusCode! < 600) {
-              showErrorDialog(errorMessage);
-            } else {
-              onLogicError(errorMessage, error);
-            }
-          },
-        );
+      case ErrorType.badResponse:
+        if (error.statusCode != null &&
+            error.statusCode! >= 500 &&
+            error.statusCode! < 600) {
+          showErrorDialog(message);
+        } else {
+          onLogicError(message, error);
+        }
         break;
       case ErrorType.timeout:
-        showErrorDialog(coreL10n.connectionTimeout);
-        break;
       case ErrorType.noInternet:
         _connectivityErrorOrNot(
           orNot: () {
-            showErrorDialog(coreL10n.technicalIssues);
+            showErrorDialog(message);
           },
         );
         break;
-      case ErrorType.unknown:
-        final errorMessage = [
-          error.message ?? coreL10n.unknownError,
-          if (Config.instance.appConfig.isDevBuild) error.errorCode ?? '',
-        ].join('\n');
-        onLogicError(errorMessage, error);
-        break;
       case ErrorType.serverUnExpected:
-        showErrorDialog(coreL10n.serverMaintenance);
-        break;
       case ErrorType.internalServerError:
-        showErrorDialog(coreL10n.technicalIssues);
-        break;
       case ErrorType.restricted:
-        showErrorDialog(coreL10n.requestRestricted);
-        break;
       case ErrorType.dataParsing:
-        showErrorDialog(
-          [
-            coreL10n.dataParsingError,
-            if (kDebugMode) error.message,
-          ].join('\n'),
-        );
+        showErrorDialog(message);
         break;
       default:
         break;
+    }
+  }
+
+  String getErrorMsg(ErrorData error) {
+    final isDevEnv = Config.instance.appConfig.isDevBuild;
+
+    String buildErrorMessage(String? message, String? errorCode) {
+      return [
+        message ?? coreL10n.technicalIssues,
+        if (errorCode.isNotNullOrEmpty && isDevEnv) errorCode!,
+      ].join('\n');
+    }
+
+    switch (error.type) {
+      case ErrorType.unauthorized:
+        return error.message ?? coreL10n.sessionExpired;
+      case ErrorType.badResponse:
+        final isBadRequest = error.statusCode != null &&
+            error.statusCode! >= 400 &&
+            error.statusCode! < 500;
+        return isBadRequest || isDevEnv
+            ? buildErrorMessage(error.message, error.errorCode)
+            : coreL10n.technicalIssues;
+      case ErrorType.timeout:
+        return error.message ?? coreL10n.connectionTimeout;
+      case ErrorType.noInternet:
+        return coreL10n.technicalIssues;
+      case ErrorType.internalServerError:
+      case ErrorType.unknown:
+        return isDevEnv
+            ? buildErrorMessage(error.message, error.errorCode)
+            : coreL10n.technicalIssues;
+      case ErrorType.serverUnExpected:
+        return error.message ?? coreL10n.serverMaintenance;
+      case ErrorType.restricted:
+        return error.message ?? coreL10n.requestRestricted;
+      case ErrorType.dataParsing:
+        return [
+          coreL10n.dataParsingError,
+          if (isDevEnv) error.message,
+        ].join('\n');
+      default:
+        return isDevEnv
+            ? (error.message ?? coreL10n.technicalIssues)
+            : coreL10n.technicalIssues;
     }
   }
 

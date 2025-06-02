@@ -35,7 +35,7 @@ class HorizontalImages extends StatelessWidget {
                     onTap: () => openImageGallery(
                       context: context,
                       images: images,
-                      forcusIndex: index,
+                      focusIndex: index,
                       heroTag: '$hashCode $runtimeType $index $e',
                     ),
                     child: AspectRatio(

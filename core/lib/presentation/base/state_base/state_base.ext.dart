@@ -50,11 +50,15 @@ extension StateBaseExtention on CoreStateBase {
   }
 }
 
-void showToast(BuildContext context, String message) {
+void showToast(
+  BuildContext context,
+  String message, {
+  Toast? toastLength = Toast.LENGTH_SHORT,
+}) {
   Fluttertoast.cancel();
   Fluttertoast.showToast(
     msg: message,
-    toastLength: Toast.LENGTH_SHORT,
+    toastLength: toastLength,
     gravity: ToastGravity.CENTER,
     timeInSecForIosWeb: 1,
     backgroundColor: context.themeColor.secondary,

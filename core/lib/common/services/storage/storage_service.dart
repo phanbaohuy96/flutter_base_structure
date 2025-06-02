@@ -1,18 +1,23 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart' as dio hide ProgressCallback;
 import 'package:flutter/material.dart';
 
 import '../../../core.dart';
 
 part 'storage_service.impl.dart';
 
+typedef ProgressCallback = void Function(int count, int total);
+
 abstract class StorageService {
   Future<CloudFile?> uploadFile(
     File file, {
-    bool autoCompressImage = true,
+    String? mimeType,
+    bool autoCompressImage = false,
     CompressImageOption compressImageOption = const CompressImageOption(),
+    dio.CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   });
 
   Future<CloudFile?> uploadBytes(
@@ -20,18 +25,23 @@ abstract class StorageService {
     String name, {
     String? filePath,
     String? mimeType,
-    bool autoCompressImage = true,
+    bool autoCompressImage = false,
     CompressImageOption compressImageOption = const CompressImageOption(),
+    dio.CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   });
 
   Future<CloudFile?> uploadImageBytes(
     Uint8List bytes,
     String name, {
-    bool autoCompressImage = true,
+    String? mimeType,
+    bool autoCompressImage = false,
     CompressImageOption compressImageOption = const CompressImageOption(),
+    dio.CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   });
 
-  String getAssetUrl(String id);
+  String getAssetUrl(String reference);
 }
 
 class StorageAssetProvider {

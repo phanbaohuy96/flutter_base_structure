@@ -5,9 +5,9 @@
   "confirm": "Confirm",
   "noInternet": "Connection errors.\nPlease check your network connection and try again",
   "technicalIssues": "Oops! .There seems to be a technical problem.\nPlease check your connection or try again later",
-  "requestRestricted": "Request sent too many times\\nPlease wait a moment and try again.",
+  "requestRestricted": "Request sent too many times\nPlease wait a moment and try again.",
   "serverMaintenance": "Server is unavailable at this time. Please try again later.",
-  "connectionTimeout": "Connection timmed out.",
+  "connectionTimeout": "Connection timed out.",
   "unknownError": "Something went wrong.\nPlease try again later",
   "dataParsingError": "Data parsing error, please try again later",
   "sessionExpired": "Your session is expired. Please log in again!",
@@ -65,5 +65,9 @@
   "choosePhoto": "Select photo",
   "choosePhotoOrVideo": "Select media",
   "chooseVideo": "Select video",
-  "pleaseEnableGPS": "Please enable location to continue the experience"
+  "pleaseEnableGPS": "Please enable location to continue the experience",
+  "required": "Required",
+  "optional": "Optional",
+  "fileSizeOverXMB": "The file is too large. Maximum allowed size is {x}MB.",
+  "errorWhenUploading": "An error occurred when uploading"
 }

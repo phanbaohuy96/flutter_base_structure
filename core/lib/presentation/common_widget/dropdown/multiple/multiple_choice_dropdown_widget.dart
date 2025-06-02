@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core.dart';
-import '../../shared/input_decoration_factory.dart';
 
 part 'multiple_choice_dropdown_controller.dart';
 
 class MultipleChoiceDropdownWidget<T> extends StatefulWidget {
   final String? title;
   final TextStyle? titleStyle;
+  final TitleMode titleMode;
   final bool required;
   final List<T> items;
   final List<T>? selected;
@@ -37,8 +37,9 @@ class MultipleChoiceDropdownWidget<T> extends StatefulWidget {
   final BorderRadius? borderRadius;
 
   MultipleChoiceDropdownWidget({
-    this.title,
     this.titleStyle,
+    this.title,
+    this.titleMode = TitleMode.above,
     this.controller,
     required this.itemBuilder,
     required this.valueBuilder,
@@ -151,7 +152,7 @@ class _MultipleChoiceDropdownWidgetState<T>
   Widget build(BuildContext context) {
     final themeData = context.theme;
     final textTheme = context.textTheme;
-    return ValueListenableBuilder<MultipleChoiceDropdownData<T>>(
+    final dropdown = ValueListenableBuilder<MultipleChoiceDropdownData<T>>(
       valueListenable: _controller!,
       builder: (ctx, value, w) {
         final body = DropdownButtonFormField<T>(
@@ -200,7 +201,10 @@ class _MultipleChoiceDropdownWidgetState<T>
             context: context,
             hint: widget.hint,
             hintStyle: widget.hintStyle,
-            title: widget.title,
+            title: switch (widget.titleMode) {
+              TitleMode.floating => widget.title,
+              _ => null,
+            },
             required: widget.required,
             titleStyle: widget.titleStyle,
             errorText: value.validation,
@@ -260,6 +264,32 @@ class _MultipleChoiceDropdownWidgetState<T>
             ],
           ),
         );
+      },
+    );
+
+    return AvailabilityWidget(
+      enable: widget.enable,
+      child: switch (widget.titleMode) {
+        TitleMode.floating => dropdown,
+        _ => Builder(
+            builder: (context) {
+              if (widget.title.isNullOrEmpty) {
+                return dropdown;
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InputTitleWidget(
+                    title: widget.title,
+                    required: widget.required,
+                  ),
+                  const SizedBox(height: 8),
+                  dropdown,
+                ],
+              );
+            },
+          ),
       },
     );
   }

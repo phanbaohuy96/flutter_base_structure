@@ -10,10 +10,11 @@ class SystemHeaderProvider extends HeaderProvider {
   SystemHeaderProvider();
 
   @override
-  Map<String, String> build() {
+  Future<Map<String, String>> build() async {
     return {
-      RequestHeaderKey.osplatform.key:
-          kIsWeb ? 'web-app' : Platform.operatingSystem,
+      // Check if web platform then we don't include to os-platform in request
+      // header to prevent CORS error
+      if (!kIsWeb) RequestHeaderKey.osplatform.key: Platform.operatingSystem,
     };
   }
 }

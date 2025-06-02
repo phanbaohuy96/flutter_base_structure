@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart' as path;
 import 'package:video_thumbnail/video_thumbnail.dart';
@@ -19,6 +19,9 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
 
   /// Call when addAll
   Function(List<MediaPicked>)? onMediaPicked;
+
+  /// Call when removed media picked
+  Function(MediaPicked, dynamic error, StackTrace stackTrace)? onUploadError;
 
   /// Allow multiple pick
   bool allowMultiple;
@@ -46,7 +49,12 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
         (insert) => !value.any((value) => insert.key == value.key),
       ),
     ];
-    onMediaPicked?.call(value);
+  }
+
+  void set(Iterable<MediaPicked> medias) {
+    value = [
+      ...medias,
+    ];
   }
 
   void remove(MediaPicked media) {
@@ -84,24 +92,24 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
   ) async {
     final file = media.mediaFile!;
     try {
+      _updateMedia(media.copyWith(hasError: false));
       final cloudFile = await storageService.uploadBytes(
         file.bytes ?? await File(file.path!).readAsBytes(),
         media.fileName ?? file.path?.split('/').last ?? '',
-        mimeType: media.mimetype,
+        mimeType: media.mimetype ?? file.mimeType,
         filePath: file.path,
       );
       _updateMedia(
         media.copyWith(
           isInUploadProgress: false,
           cloudFile: () => cloudFile,
+          hasError: false,
         ),
       );
-    } catch (e, stackTrace) {
-      // value = [...value.where((e) => e.key != media.key)];
-      logUtils
-        ..e('_uploadMedia', e, stackTrace)
-        ..d('retry upload media');
-      // await _uploadMedia(media);
+    } catch (e, s) {
+      final m = media.copyWith(hasError: true);
+      _updateMedia(m);
+      onUploadError?.call(m, e, s);
     }
   }
 
@@ -141,6 +149,7 @@ class MediaPicked extends Equatable {
   final FilePicked? mediaFile;
   final String? mimetype;
   final bool isInUploadProgress;
+  final bool hasError;
   Uint8List? videoThumbnail;
   final int? index;
   final CloudFile? cloudFile;
@@ -150,6 +159,7 @@ class MediaPicked extends Equatable {
     this.mediaFile,
     this.mimetype,
     this.isInUploadProgress = false,
+    this.hasError = false,
     this.videoThumbnail,
     this.index,
     this.cloudFile,
@@ -162,6 +172,7 @@ class MediaPicked extends Equatable {
     ValueGetter<FilePicked?>? mediaFile,
     ValueGetter<String?>? mimetype,
     bool? isInUploadProgress,
+    bool? hasError,
     ValueGetter<Uint8List?>? videoThumbnail,
     ValueGetter<int?>? index,
     ValueGetter<CloudFile?>? cloudFile,
@@ -171,6 +182,7 @@ class MediaPicked extends Equatable {
       mediaFile: mediaFile != null ? mediaFile() : this.mediaFile,
       mimetype: mimetype != null ? mimetype() : this.mimetype,
       isInUploadProgress: isInUploadProgress ?? this.isInUploadProgress,
+      hasError: hasError ?? this.hasError,
       videoThumbnail:
           videoThumbnail != null ? videoThumbnail() : this.videoThumbnail,
       index: index != null ? index() : this.index,
@@ -179,6 +191,7 @@ class MediaPicked extends Equatable {
   }
 
   bool get isLoading => isInUploadProgress;
+  bool get isUploadError => hasError;
   bool get isEmpty => mediaFile == null && url.isNullOrEmpty;
   String? get fileName =>
       mediaFile?.name ?? mediaFile?.path?.let(path.basename);
@@ -214,7 +227,7 @@ class MediaPicked extends Equatable {
 
 class MediaPickerWidget extends StatefulWidget {
   final MediaPickerController controller;
-  final void Function(MediaPicked)? onMediaPicked;
+  final void Function(List<MediaPicked>)? onMediaPicked;
   final void Function(MediaPicked)? onTap;
   final String? pickDialogTitle;
   final String? pickDialogMessage;
@@ -222,9 +235,16 @@ class MediaPickerWidget extends StatefulWidget {
   final MediaType mediaType;
   final bool Function(List<MediaPicked>)? canBeDeleteWhen;
   final int? maxMedia;
+  final int? minimumRequired;
   final int crossAxisCount;
   final Color? foregroundColor;
   final Color? backgroundColor;
+  final ErrorBoxController? errorController;
+  final double? maxSizePerFileInMB;
+  final Radius? borderRadius;
+  final BorderSide? emptyBorderSide;
+  final double mainAxisSpacing;
+  final double crossAxisSpacing;
 
   const MediaPickerWidget({
     Key? key,
@@ -237,20 +257,47 @@ class MediaPickerWidget extends StatefulWidget {
     this.autoUpload = true,
     this.canBeDeleteWhen,
     this.maxMedia,
+    this.minimumRequired,
     this.crossAxisCount = 4,
     this.foregroundColor,
     this.backgroundColor,
+    this.errorController,
+    this.maxSizePerFileInMB,
+    this.borderRadius,
+    this.mainAxisSpacing = 8,
+    this.crossAxisSpacing = 8,
+    this.emptyBorderSide = const BorderSide(color: Colors.grey, width: 1),
   }) : super(key: key);
 
   @override
   _MediaPickerWidgetState createState() => _MediaPickerWidgetState();
 }
 
-class _MediaPickerWidgetState extends State<MediaPickerWidget> {
+class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
+    with StorageServiceMixin {
   final _emptyState = MediaPicked(key: const Uuid().v4());
   late CoreLocalizations l10n;
 
-  double get borderRadius => 8;
+  Radius? get borderRadius => widget.borderRadius;
+
+  @override
+  void didUpdateWidget(covariant MediaPickerWidget oldWidget) {
+    widget.controller.onUploadError ??= _onUploadError;
+    super.didUpdateWidget(oldWidget);
+  }
+
+  void _onUploadError(MediaPicked p1, dynamic error, StackTrace stackTrace) {
+    final errorData = ErrorData.fromObject(error: error);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          errorData?.let(getErrorMsg) ??
+              error?.toString() ??
+              context.coreL10n.errorWhenUploading,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -267,8 +314,8 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
           crossAxisCount: widget.crossAxisCount,
           childAspectRatio: 1.0,
           padding: EdgeInsets.zero,
-          mainAxisSpacing: 18.0,
-          crossAxisSpacing: 20.0,
+          mainAxisSpacing: widget.mainAxisSpacing,
+          crossAxisSpacing: widget.crossAxisSpacing,
           children: [
             ...[...medias, if (canAdd) _emptyState].map<Widget>((media) {
               if (media.isEmpty) {
@@ -287,40 +334,66 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
       padding: const EdgeInsets.only(top: 6, right: 6),
       child: Material(
         color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(borderRadius),
+        borderRadius: borderRadius?.let(BorderRadius.all),
         child: InkWell(
           onTap: _showMediaPickerActionDialog,
-          borderRadius: BorderRadius.circular(borderRadius),
-          child: DottedBorder(
-            color: widget.foregroundColor ?? context.themeColor.primary,
-            strokeWidth: 1,
-            dashPattern: const [5, 3],
-            strokeCap: StrokeCap.round,
-            borderType: BorderType.RRect,
-            radius: const Radius.circular(8),
-            child: Container(
-              alignment: Alignment.center,
-              color: widget.backgroundColor ??
-                  context.themeColor.primary.withAlpha((0.09 * 255).round()),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.camera_alt_outlined,
-                    size: 22,
-                    color: widget.foregroundColor ?? context.themeColor.primary,
-                  ),
-                  if (widget.maxMedia != null)
-                    Text(
-                      '${(widget.maxMedia ?? 0) - medias.length}/${widget.maxMedia}',
-                      style: context.textTheme.bodyMedium?.copyWith(
+          borderRadius: borderRadius?.let(BorderRadius.all),
+          child: AnimatedBuilder(
+            animation: Listenable.merge(
+              [if (widget.errorController != null) widget.errorController!],
+            ),
+            builder: (context, child) {
+              final hasError = widget.errorController?.value != null;
+              return DottedBorder(
+                color: hasError
+                    ? Colors.red
+                    : widget.emptyBorderSide?.color ??
+                        widget.foregroundColor ??
+                        context.themeColor.primary,
+                strokeWidth: widget.emptyBorderSide?.width ?? 1,
+                dashPattern: const [5, 5],
+                strokeCap: StrokeCap.round,
+                borderType: BorderType.RRect,
+                radius: borderRadius ?? const Radius.circular(0),
+                child: Container(
+                  alignment: Alignment.center,
+                  color: widget.backgroundColor ??
+                      context.themeColor.primary
+                          .withAlpha((0.09 * 255).round()),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.camera_alt_outlined,
+                        size: 22,
                         color: widget.foregroundColor ??
                             context.themeColor.primary,
                       ),
-                    ),
-                ],
-              ),
-            ),
+                      if (widget.maxMedia != null)
+                        Text(
+                          '${(widget.maxMedia ?? 0) - medias.length}/${widget.maxMedia}',
+                          style: context.textTheme.bodyMedium?.copyWith(
+                            color: widget.foregroundColor ??
+                                context.themeColor.primary,
+                          ),
+                        ),
+                      if (widget.minimumRequired != null)
+                        Builder(
+                          builder: (context) {
+                            return Text(
+                              '''(${medias.length < widget.minimumRequired! ? context.coreL10n.required : context.coreL10n.optional})''',
+                              style: context.textTheme.labelSmall?.copyWith(
+                                color: widget.foregroundColor ??
+                                    context.themeColor.primary,
+                              ),
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -328,8 +401,40 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
   }
 
   Widget _buildMedia(MediaPicked media, bool canBeDelete) {
+    final loadingOrErrorWidget = Container(
+      decoration: BoxDecoration(
+        color: Colors.white38,
+        borderRadius: borderRadius?.let(BorderRadius.all),
+      ),
+      alignment: Alignment.center,
+      child: media.isUploadError
+          ? IconButton(
+              onPressed: () {
+                /// do a retry
+                widget.controller._uploadMedia(
+                  media,
+                );
+              },
+              icon: const Icon(
+                Icons.rotate_right,
+                size: 28,
+              ),
+            )
+          : const Loading(
+              brightness: Brightness.light,
+              radius: 12,
+            ),
+    );
     return GestureDetector(
-      onTap: () => widget.onTap?.call(media),
+      onTap: () {
+        if (widget.onTap != null) {
+          widget.onTap?.call(media);
+        } else {
+          if (!media.isVideo) {
+            viewMedia(media);
+          }
+        }
+      },
       child: LayoutBuilder(
         builder: (context, constraints) {
           return Stack(
@@ -338,7 +443,8 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(borderRadius),
+                  borderRadius: borderRadius?.let(BorderRadius.all) ??
+                      BorderRadius.circular(0),
                   child: Builder(
                     builder: (context) {
                       if (media.isVideo) {
@@ -363,7 +469,7 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                                       decoration: BoxDecoration(
                                         color: Colors.white38,
                                         borderRadius:
-                                            BorderRadius.circular(borderRadius),
+                                            borderRadius?.let(BorderRadius.all),
                                       ),
                                       child: const Loading(
                                         brightness: Brightness.light,
@@ -378,20 +484,8 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                                     size: 32,
                                   ),
                                 ),
-                                if (media.isLoading)
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.white38,
-                                      borderRadius: BorderRadius.circular(
-                                        borderRadius,
-                                      ),
-                                    ),
-                                    alignment: Alignment.center,
-                                    child: const Loading(
-                                      brightness: Brightness.light,
-                                      radius: 12,
-                                    ),
-                                  ),
+                                if (media.isLoading || media.isUploadError)
+                                  loadingOrErrorWidget,
                               ],
                             );
                           },
@@ -431,20 +525,8 @@ class _MediaPickerWidgetState extends State<MediaPickerWidget> {
                                 );
                               },
                             ),
-                            if (media.isLoading)
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white38,
-                                  borderRadius: BorderRadius.circular(
-                                    borderRadius,
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                child: const Loading(
-                                  brightness: Brightness.light,
-                                  radius: 12,
-                                ),
-                              ),
+                            if (media.isLoading || media.isUploadError)
+                              loadingOrErrorWidget,
                           ],
                         ),
                       );
@@ -514,7 +596,8 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
           .pickFiles(
             type: widget.mediaType.fileType,
             dialogTitle: _dialogTitle,
-            allowMultiple: widget.controller.allowMultiple,
+            allowMultiple: widget.controller.allowMultiple &&
+                ((widget.maxMedia ?? 0) - widget.controller.value.length) > 1,
           )
           .catchError(
             (error, stackTrace) => logUtils.eCatch(
@@ -536,27 +619,51 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
   }
 
   Future<void> _openCamera() async {
-    if (await PermissionService().requestPermission(
-      Permission.camera,
-      context,
-    )) {
-      final pickedFile = await PickFileHelper().takePicture().catchError(
-            (error, stackTrace) => logUtils.eCatch<FilePicked?>(
-              'PickFileHelper.takePicture',
-              error,
-              stackTrace,
-            ),
-          );
-
-      if (pickedFile != null &&
-          (pickedFile.path.isNotNullOrEmpty || pickedFile.bytes != null)) {
-        clearLiveCachedImages();
-        _onMediaPicked([pickedFile]);
+    if (!kIsWeb) {
+      final granted = await PermissionService().requestPermission(
+        Permission.camera,
+        context,
+      );
+      if (!granted) {
+        return;
       }
+    }
+    final pickedFile = await PickFileHelper().takePicture().catchError(
+          (error, stackTrace) => logUtils.eCatch<FilePicked?>(
+            'PickFileHelper.takePicture',
+            error,
+            stackTrace,
+          ),
+        );
+
+    if (pickedFile != null && pickedFile.valid) {
+      clearLiveCachedImages();
+      _onMediaPicked([pickedFile]);
     }
   }
 
   void _onMediaPicked(List<FilePicked> filePicked) {
+    final validFile = <FilePicked>[];
+
+    final maxSize = widget.maxSizePerFileInMB ?? double.infinity;
+    for (final file in filePicked) {
+      if (file.sizeInMB > maxSize) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              context.coreL10n.fileSizeOverXMB(maxSize.toStringAsMaxFixed(2)),
+            ),
+          ),
+        );
+        continue;
+      }
+      validFile.add(file);
+    }
+
+    if (validFile.isEmpty) {
+      return;
+    }
+
     final existedFiles = widget.controller.value;
     final currentIndex = existedFiles.isNotEmpty
         ? (existedFiles.reduce((value, element) {
@@ -567,14 +674,15 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
                 0) +
             1
         : 0;
+
     widget.controller.addAll(
       [
-        ...filePicked
+        ...validFile
             .mapIndex(
           (e, i) => MediaPicked(
             key: const Uuid().v4(),
             mediaFile: e,
-            mimetype: lookupMimeType(e.path ?? ''),
+            mimetype: e.mimeType ?? lookupMimeType(e.path ?? ''),
             index: currentIndex + i,
           ),
         )
@@ -590,6 +698,8 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
     if (widget.autoUpload) {
       widget.controller.uploadUnstagedMedias();
     }
+    widget.onMediaPicked?.call(widget.controller.value);
+    widget.controller.onMediaPicked?.call(widget.controller.value);
   }
 
   String get _dialogTitle {
@@ -606,5 +716,19 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
       case MediaType.both:
         return l10n.choosePhotoOrVideo;
     }
+  }
+
+  void viewMedia(MediaPicked media) {
+    if (media.mediaFile == null && media.url.isNullOrEmpty) {
+      return;
+    }
+    final uri = media.url.isNotNullOrEmpty
+        ? storageAssetProvider.url(media.url!)
+        : media.mediaFile!.path;
+
+    openImageGallery(
+      context: context,
+      images: [uri!],
+    );
   }
 }

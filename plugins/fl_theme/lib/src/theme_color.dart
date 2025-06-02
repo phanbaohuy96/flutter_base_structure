@@ -132,6 +132,9 @@ class ThemeColor {
   /// It is [OutlinedButton.foregroundColor] and [OutlinedButton.side.color]
   final Color outlineButtonColor;
 
+  /// It is [OutlinedButton.backgroundColor]
+  final Color outlineButtonBackgroundColor;
+
   /// It is [OutlinedButton.foregroundColor] and [OutlinedButton.side.color]
   /// when disabled
   final Color outlineButtonDisableColor;
@@ -174,6 +177,7 @@ class ThemeColor {
     this.elevatedBtnForegroundDisableColor,
     this.elevatedBtnBackgroundDisableColor,
     Color? outlineButtonColor,
+    Color? outlineButtonBackgroundColor,
     Color? outlineButtonDisableColor,
     Color? displayText,
     Color? headlineText,
@@ -220,6 +224,8 @@ class ThemeColor {
         textButtonDisableColor = textButtonDisableColor ?? disableColor,
         elevatedBtnBackgroundColor = elevatedBtnBackgroundColor ?? primary,
         outlineButtonColor = outlineButtonColor ?? primary,
+        outlineButtonBackgroundColor =
+            outlineButtonBackgroundColor ?? Colors.transparent,
         outlineButtonDisableColor = outlineButtonDisableColor ?? disableColor,
         displayText = displayText ??
             (brightness == Brightness.light

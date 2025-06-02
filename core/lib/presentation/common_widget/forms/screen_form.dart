@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../../../core.dart';
@@ -32,6 +30,8 @@ class ScreenForm extends StatefulWidget {
     this.floatingActionButtonLocation =
         FloatingActionButtonLocation.miniEndDocked,
     this.bottomNavigationBar,
+    this.endDrawer,
+    this.drawer,
   }) : super(key: key);
 
   final String? title;
@@ -76,6 +76,9 @@ class ScreenForm extends StatefulWidget {
   final FloatingActionButtonLocation? floatingActionButtonLocation;
 
   final Widget? bottomNavigationBar;
+
+  final Widget? endDrawer;
+  final Widget? drawer;
 
   @override
   _ScreenFormState createState() => _ScreenFormState();
@@ -131,6 +134,8 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
     return Scaffold(
       backgroundColor: widget.bgColor,
       resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+      drawer: widget.drawer,
+      endDrawer: widget.endDrawer,
       body: GestureDetector(
         onTap: () => CoreCommonFunction().hideKeyBoard(context),
         child: Column(
@@ -193,14 +198,11 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
           ],
         ),
       ),
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top,
+      ),
       child: Column(
         children: [
-          SizedBox(
-            height: max(
-              MediaQuery.of(context).padding.top,
-              24,
-            ),
-          ),
           if (showAppBar)
             Stack(
               alignment: AlignmentDirectional.center,

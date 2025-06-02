@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../../../../../common/utils.dart';
 import 'date_format.dart';
 import 'datetime_util.dart';
 import 'i18n_model.dart';
@@ -163,7 +164,8 @@ class DatePickerModel extends CommonPickerModel {
   void _fillLeftLists() {
     leftList = List.generate(maxTime.year - minTime.year + 1, (int index) {
       // print('LEFT LIST... ${minTime.year + index}${_localeYear()}');
-      return '${minTime.year + index}${_localeYear()}';
+      final year = minTime.year + index;
+      return '${_calendarYear(year)}${_localeYear()}';
     });
   }
 
@@ -342,6 +344,14 @@ class DatePickerModel extends CommonPickerModel {
       return '년';
     } else {
       return '';
+    }
+  }
+
+  String _calendarYear(int year) {
+    if (CalendarHelper.isBuddhist) {
+      return '${year + 543}';
+    } else {
+      return '$year';
     }
   }
 

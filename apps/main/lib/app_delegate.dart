@@ -34,7 +34,7 @@ class AppDelegate {
         DeviceOrientation.portraitDown,
       ]);
 
-      runApp(const MainApplization());
+      runApp(const MainApplication());
     }, (Object error, StackTrace stack) {
       logUtils.e('Error from runZonedGuarded', error, stack);
     });

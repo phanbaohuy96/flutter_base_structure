@@ -2,31 +2,32 @@ part of '../preferences_helper.dart';
 
 @Injectable(as: CorePreferencesHelper)
 class CorePreferencesHelperImpl extends CorePreferencesHelper {
-  final SharedPreferences _prefs;
+  final SharedPreferences _pref;
+  final FlutterSecureStorage _secureStorage;
 
-  CorePreferencesHelperImpl(this._prefs);
+  CorePreferencesHelperImpl(this._pref, this._secureStorage);
 
   @override
   int? getTheme() {
-    return _prefs.getInt(CorePreferencesKey.theme);
+    return _pref.getInt(CorePreferencesKey.theme);
   }
 
   @override
   Future<bool?> setTheme(int themeMode) async {
-    return _prefs.setInt(CorePreferencesKey.theme, themeMode);
+    return _pref.setInt(CorePreferencesKey.theme, themeMode);
   }
 
   @override
   String? getLocalization() {
-    return _prefs.getString(CorePreferencesKey.localization);
+    return _pref.getString(CorePreferencesKey.localization);
   }
 
   @override
   Future<bool?> saveLocalization(String? locale) async {
     if (locale == null) {
-      return _prefs.remove(CorePreferencesKey.localization);
+      return _pref.remove(CorePreferencesKey.localization);
     }
-    return _prefs.setString(CorePreferencesKey.localization, locale);
+    return _pref.setString(CorePreferencesKey.localization, locale);
   }
 
   @override
@@ -35,7 +36,7 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
     final locale = getLocalization();
     final isLaunched = !isFirstLaunch();
 
-    await _prefs.clear();
+    await _pref.clear();
 
     final result = await Future.wait([
       saveLocalization(locale),
@@ -48,23 +49,27 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
 
   @override
   bool isFirstLaunch() {
-    return _prefs.getString(CorePreferencesKey.isLaunched).isNullOrEmpty ==
-        true;
+    return _pref.getString(CorePreferencesKey.isLaunched).isNullOrEmpty == true;
   }
 
   @override
   Future<bool?> markLaunched() async {
-    return _prefs.setString(CorePreferencesKey.isLaunched, 'yes');
+    return _pref.setString(CorePreferencesKey.isLaunched, 'yes');
   }
 
   @override
   Future<bool?> unMarkLaunched() {
-    return _prefs.remove(CorePreferencesKey.isLaunched);
+    return _pref.remove(CorePreferencesKey.isLaunched);
   }
 
+  UserToken? _memCacheToken;
+
   @override
-  UserToken? get token {
-    final source = _prefs.getString(CorePreferencesKey.token);
+  Future<UserToken?> get token async {
+    if (_memCacheToken != null) {
+      return _memCacheToken;
+    }
+    final source = await _secureStorage.read(key: CorePreferencesKey.token);
 
     if (source.isNullOrEmpty == true) {
       return null;
@@ -78,14 +83,45 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
   }
 
   @override
-  Future<bool?> setToken(UserToken? value) {
-    logUtils.i('setToken', value);
+  Future setToken(UserToken? value) async {
+    _memCacheToken = value;
     if (value == null) {
-      return _prefs.remove(CorePreferencesKey.token);
+      return _secureStorage.delete(key: CorePreferencesKey.token);
     }
-    return _prefs.setString(
-      CorePreferencesKey.token,
-      jsonEncode(value.toJson()),
+    return _secureStorage.write(
+      key: CorePreferencesKey.token,
+      value: jsonEncode(value.toJson()),
+    );
+  }
+
+  @override
+  bool? get allowCookieConsent =>
+      _pref.getBool(CorePreferencesKey.cookieConsent);
+
+  @override
+  Future<bool?> setCookieConsentAccepted(bool? accepted) {
+    if (accepted == null) {
+      return _pref.remove(CorePreferencesKey.cookieConsent);
+    }
+    return _pref.setBool(
+      CorePreferencesKey.cookieConsent,
+      accepted,
+    );
+  }
+
+  @override
+  DateTime? get lastDayShowCookieConsent => DateTime.tryParse(
+        _pref.getString(CorePreferencesKey.lastDayShowCookieConsent) ?? '',
+      );
+
+  @override
+  Future<bool?> setLastDayShowCookieConsent(DateTime? today) {
+    if (today == null) {
+      return _pref.remove(CorePreferencesKey.lastDayShowCookieConsent);
+    }
+    return _pref.setString(
+      CorePreferencesKey.lastDayShowCookieConsent,
+      today.toIso8601String(),
     );
   }
 }

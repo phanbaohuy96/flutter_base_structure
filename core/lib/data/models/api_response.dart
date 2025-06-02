@@ -50,7 +50,7 @@ class ApiResponse<T> {
     ].any((e) => e)) {
       return false;
     }
-    return _data != null;
+    return true;
   }
 
   T _getData() {

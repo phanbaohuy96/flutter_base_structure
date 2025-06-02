@@ -62,6 +62,8 @@ class FilePicked {
   /// determined.
   final int size;
 
+  double get sizeInMB => size / 1024.0 / 1024.0;
+
   /// The platform identifier for the original file, refers to an [Uri](https://developer.android.com/reference/android/net/Uri) on Android and
   /// to a [NSURL](https://developer.apple.com/documentation/foundation/nsurl) on iOS.
   /// Is set to `null` on all other platforms since those are all already
@@ -105,6 +107,26 @@ class FilePicked {
 
   @override
   String toString() {
-    return '''FilePicked(${kIsWeb ? '' : 'path $path'}, name: $name, bytes: $bytes, size: $size)''';
+    return '''FilePicked(path: $path, name: $name, size: $size, identifier: $identifier, mimeType: $mimeType, bytes: ${bytes != null})''';
+  }
+
+  bool get valid => bytes != null || path.isNotNullOrEmpty;
+
+  FilePicked copyWith({
+    ValueGetter<String?>? path,
+    String? name,
+    ValueGetter<Uint8List?>? bytes,
+    int? size,
+    ValueGetter<String?>? identifier,
+    ValueGetter<String?>? mimeType,
+  }) {
+    return FilePicked(
+      path: path != null ? path() : this.path,
+      name: name ?? this.name,
+      bytes: bytes != null ? bytes() : this.bytes,
+      size: size ?? this.size,
+      identifier: identifier != null ? identifier() : this.identifier,
+      mimeType: mimeType != null ? mimeType() : this.mimeType,
+    );
   }
 }

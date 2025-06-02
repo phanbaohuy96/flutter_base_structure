@@ -215,6 +215,10 @@ Future<T?> showModal<T>(
   void Function()? onClose,
   bool useSafeArea = false,
   Color? backgroundColor,
+  bool showTitleDivider = false,
+  bool isDismissible = true,
+  bool enableDrag = true,
+  RouteSettings? routeSettings,
 }) {
   return showModalBottomSheet<T>(
     context: context,
@@ -222,6 +226,9 @@ Future<T?> showModal<T>(
     backgroundColor: Colors.transparent,
     isScrollControlled: true,
     useSafeArea: useSafeArea,
+    routeSettings: routeSettings,
+    isDismissible: isDismissible,
+    enableDrag: enableDrag,
     builder: (_) {
       return injector<ThemeDialog>(param1: context).buildModalBottomSheet(
         body: body,
@@ -230,6 +237,7 @@ Future<T?> showModal<T>(
         title: title,
         useRootNavigator: useRootNavigator,
         backgroundColor: backgroundColor,
+        showTitleDivider: showTitleDivider,
       );
     },
   );
@@ -245,7 +253,7 @@ Future<T?> showActionDialog<T>(
   bool dimissWhenSelect = true,
   String? titleBottomBtn,
 }) {
-  if (kIsWeb || Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
