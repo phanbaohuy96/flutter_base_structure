@@ -13,10 +13,7 @@ final commonModuleRes = {
     'state': commonModuleState,
     'event': commonModuleEvent,
   },
-  'views': {
-    'screen': commonModuleScreen,
-    'action': commonModuleAction,
-  },
+  'views': {'screen': commonModuleScreen, 'action': commonModuleAction},
   'module': commonModule,
   'route': commonModuleRoute,
   'coordinator': commonModuleCoordinator,

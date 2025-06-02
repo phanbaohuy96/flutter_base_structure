@@ -5,7 +5,7 @@ void main(List<String> args) {
   var parser = ArgParser();
   parser.addOption(
     'path',
-    callback: (path) => {generate_asset.removeUnusedAssets(args: args)},
+    callback: (path) => generate_asset.removeUnusedAssets(args: args),
   );
   parser.parse(args);
 }

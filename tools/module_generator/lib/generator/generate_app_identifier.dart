@@ -31,9 +31,7 @@ class PlatformConfigDocument<T extends ConfigDocument> {
     required this.document,
   });
 
-  static PlatformConfigDocument create(
-    MapEntry<String, dynamic> entry,
-  ) {
+  static PlatformConfigDocument create(MapEntry<String, dynamic> entry) {
     switch (entry.key.toLowerCase()) {
       case 'android':
         return PlatformConfigDocument<AndroidConfigDocument>(
@@ -57,10 +55,7 @@ class PlatformConfigDocument<T extends ConfigDocument> {
 
 class UnknowPlatformConfigDocument extends PlatformConfigDocument {
   UnknowPlatformConfigDocument()
-      : super(
-          configFilePath: '',
-          document: UnknowConfigDocument(),
-        );
+      : super(configFilePath: '', document: UnknowConfigDocument());
 }
 
 abstract class ConfigDocument {
@@ -96,7 +91,7 @@ class AndroidConfigDocument extends ConfigDocument {
 app.${e.key.toLowerCase()}.name=${e.value.name}
 app.${e.key.toLowerCase()}.package=${e.value.package}
 ''',
-      )
+      ),
     ].join('\n');
   }
 }
@@ -114,7 +109,7 @@ class IOSConfigDocument extends ConfigDocument {
 ${e.key.toUpperCase()}_APP_DISPLAY_NAME=${e.value.name}
 ${e.key.toUpperCase()}_PRODUCT_BUNDLE_IDENTIFIER=${e.value.package}
 ''',
-      )
+      ),
     ].join('\n');
   }
 }
