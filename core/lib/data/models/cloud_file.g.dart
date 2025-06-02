@@ -11,7 +11,7 @@ CloudFile _$CloudFileFromJson(Map<String, dynamic> json) => CloudFile(
       filenameDisk: asOrNull(json['filename_disk']),
       filenameDownload: asOrNull(json['filename_download']),
       url: asOrNull(json['url']),
-      mimeType: asOrNull(json['mime_type']),
+      mimeType: asOrNull(CloudFile._readMimeType(json, 'mime_type')),
       fileSize: asOrNull(json['filesize']),
     );
 

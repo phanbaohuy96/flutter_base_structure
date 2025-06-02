@@ -17,6 +17,8 @@ abstract class StorageRepository {
   Future<ApiResponse<CloudFile>> uploadFile(
     @Part(name: 'file') File file, {
     @Header('Authorization') String? authorization,
+    @SendProgress() ProgressCallback? onSendProgress,
+    @CancelRequest() CancelToken? cancelToken,
   });
 
   @POST('files')
@@ -24,5 +26,7 @@ abstract class StorageRepository {
   Future<ApiResponse<CloudFile>> uploadBytes(
     @Part(name: 'file') List<MultipartFile> files, {
     @Header('Authorization') String? authorization,
+    @SendProgress() ProgressCallback? onSendProgress,
+    @CancelRequest() CancelToken? cancelToken,
   });
 }

@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:io'
+    if (dart.library.html) 'package:extended_image_library/src/_platform_web.dart';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:fl_ui/fl_ui.dart';
@@ -20,88 +21,127 @@ class ImageZoom extends StatefulWidget {
 typedef DoubleClickAnimationListener = void Function();
 
 class _ImageZoomState extends State<ImageZoom> with TickerProviderStateMixin {
+  late final animationController = AnimationController(
+    duration: const Duration(milliseconds: 200),
+    vsync: this,
+  );
+
+  Animation? animation;
+
+  Function() animationListener = () {};
+
   @override
   Widget build(BuildContext context) {
-    final animationController = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-    );
-    Animation? animation;
-
-    Function() animationListener = () {};
-    dynamic widgetImage;
-    dynamic img;
-
     if (widget.url.contains('http')) {
-      widgetImage = ExtendedImage.network;
-      img = widget.url;
+      return _buildNetworkImage(
+        widget.url,
+      );
     } else if (widget.url.isLocalUrl) {
-      widgetImage = ExtendedImage.file;
-      img = File(widget.url);
+      return _buildImageFile(
+        widget.url,
+      );
     } else {
-      widgetImage = ExtendedImage.asset;
-      img = widget.url;
+      return _buildAssetImage(
+        widget.url,
+      );
     }
+  }
 
-    return widgetImage(
-      img,
+  Widget? loadStateChanged(ExtendedImageState state) {
+    if (state.extendedImageLoadState == LoadState.loading) {
+      return const Loading();
+    }
+    return null;
+  }
+
+  GestureConfig initGestureConfigHandler(ExtendedImageState state) {
+    return GestureConfig(
+      minScale: 0.9,
+      animationMinScale: 0.7,
+      maxScale: 4.0,
+      animationMaxScale: 4.5,
+      speed: 1.0,
+      inertialSpeed: 100.0,
+      initialScale: 1.0,
+      inPageView: false,
+      initialAlignment: InitialAlignment.center,
+      reverseMousePointerScrollDirection: true,
+      gestureDetailsIsChanged: (GestureDetails? details) {
+        //log(details?.totalScale);
+      },
+    );
+  }
+
+  void onDoubleTap(ExtendedImageGestureState state) {
+    ///you can use define pointerDownPosition as you can,
+    ///default value is double tap pointer down postion.
+    final pointerDownPosition = state.pointerDownPosition;
+    final begin = state.gestureDetails!.totalScale!;
+    double end;
+
+    animation?.removeListener(animationListener);
+    animationController
+      ..stop()
+      ..reset();
+
+    if (begin == 1) {
+      end = 3.0;
+    } else {
+      end = 1;
+    }
+    animationListener = () {
+      state.handleDoubleTap(
+        scale: animation!.value,
+        doubleTapPosition: pointerDownPosition,
+      );
+    };
+    animation =
+        animationController.drive(Tween<double>(begin: begin, end: end));
+
+    animation!.addListener(animationListener);
+
+    animationController.forward();
+  }
+
+  Widget _buildNetworkImage(String url) {
+    return ExtendedImage.network(
+      url,
       enableSlideOutPage: true,
       mode: ExtendedImageMode.gesture,
       fit: BoxFit.fitWidth,
+      cacheWidth: 1080,
       extendedImageGestureKey: GlobalKey<ExtendedImageGestureState>(),
-      loadStateChanged: (ExtendedImageState state) {
-        if (state.extendedImageLoadState == LoadState.loading) {
-          return const Loading();
-        }
-        return null;
-      },
-      initGestureConfigHandler: (ExtendedImageState state) {
-        return GestureConfig(
-          minScale: 0.9,
-          animationMinScale: 0.7,
-          maxScale: 4.0,
-          animationMaxScale: 4.5,
-          speed: 1.0,
-          inertialSpeed: 100.0,
-          initialScale: 1.0,
-          inPageView: false,
-          initialAlignment: InitialAlignment.center,
-          reverseMousePointerScrollDirection: true,
-          gestureDetailsIsChanged: (GestureDetails? details) {
-            //log(details?.totalScale);
-          },
-        );
-      },
-      onDoubleTap: (ExtendedImageGestureState state) {
-        ///you can use define pointerDownPosition as you can,
-        ///default value is double tap pointer down postion.
-        final pointerDownPosition = state.pointerDownPosition;
-        final begin = state.gestureDetails!.totalScale!;
-        double end;
+      loadStateChanged: loadStateChanged,
+      initGestureConfigHandler: initGestureConfigHandler,
+      onDoubleTap: onDoubleTap,
+    );
+  }
 
-        animation?.removeListener(animationListener);
-        animationController
-          ..stop()
-          ..reset();
+  Widget _buildImageFile(String url) {
+    return ExtendedImage.file(
+      File(widget.url),
+      enableSlideOutPage: true,
+      mode: ExtendedImageMode.gesture,
+      fit: BoxFit.fitWidth,
+      cacheWidth: 1080,
+      extendedImageGestureKey: GlobalKey<ExtendedImageGestureState>(),
+      loadStateChanged: loadStateChanged,
+      initGestureConfigHandler: initGestureConfigHandler,
+      onDoubleTap: onDoubleTap,
+    );
+  }
 
-        if (begin == 1) {
-          end = 3.0;
-        } else {
-          end = 1;
-        }
-        animationListener = () {
-          state.handleDoubleTap(
-            scale: animation!.value,
-            doubleTapPosition: pointerDownPosition,
-          );
-        };
-        animation =
-            animationController.drive(Tween<double>(begin: begin, end: end));
-
-        animation!.addListener(animationListener);
-
-        animationController.forward();
-      },
+  Widget _buildAssetImage(String url) {
+    return ExtendedImage.asset(
+      widget.url,
+      enableSlideOutPage: true,
+      mode: ExtendedImageMode.gesture,
+      fit: BoxFit.fitWidth,
+      cacheWidth: 1080,
+      extendedImageGestureKey: GlobalKey<ExtendedImageGestureState>(),
+      loadStateChanged: loadStateChanged,
+      initGestureConfigHandler: initGestureConfigHandler,
+      onDoubleTap: onDoubleTap,
     );
   }
 }

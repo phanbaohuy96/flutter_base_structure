@@ -105,7 +105,7 @@ class DateRangePickerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ..._buildDateSuggesstionSection(
+        ..._buildDateSuggestionSection(
           context,
           trans,
         ),
@@ -152,7 +152,7 @@ class DateRangePickerWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildDateSuggesstionSection(
+  List<Widget> _buildDateSuggestionSection(
     BuildContext context,
     CoreLocalizations trans,
   ) {
@@ -204,13 +204,13 @@ class DateRangePickerWidget extends StatelessWidget {
 class _DateRangePickerModal extends StatefulWidget {
   const _DateRangePickerModal({
     required this.initial,
-    this.defaulValue,
+    this.defaultValue,
     this.leftBtnLabel,
     this.rightBtnLabel,
   });
 
   final DateRange? initial;
-  final DateRange? defaulValue;
+  final DateRange? defaultValue;
   final String? leftBtnLabel;
   final String? rightBtnLabel;
 
@@ -343,14 +343,14 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
         FooterWidget(
           child: Row(
             children: [
-              if (widget.defaulValue != null) ...[
+              if (widget.defaultValue != null) ...[
                 Expanded(
                   child: ThemeButton.outline(
                     title: widget.leftBtnLabel ?? trans.reset,
                     onPressed: () {
                       Navigator.pop(
                         context,
-                        widget.defaulValue,
+                        widget.defaultValue,
                       );
                     },
                   ),
@@ -410,11 +410,12 @@ class DateRangePickerBuilder extends StatelessWidget {
             orElse: () => manualOption,
           );
     return InkWell(
-      child: builder(context, selected.value, _getLabel(trans, selected)),
+      child:
+          builder(context, selected.value, _getLabel(context, trans, selected)),
       onTap: () async {
         final d = await context.showDateRangePickerModal(
           initial: initial,
-          defaulValue: defaultValue,
+          defaultValue: defaultValue,
           leftBtnLabel: leftBtnLabel,
           rightBtnLabel: rightBtnLabel,
         );
@@ -426,12 +427,14 @@ class DateRangePickerBuilder extends StatelessWidget {
   }
 
   String _getLabel(
+    BuildContext context,
     CoreLocalizations trans,
     MapEntry<String, DateRange> selected,
   ) {
     final dateRange = selected.value;
     final timeStr = (dateRange.from ?? dateRange.to)?.toDateRangeString(
       endDate: dateRange.to ?? dateRange.from!,
+      locale: context.appDateLocale,
     );
     return [
       '${selected.key}',
@@ -523,7 +526,7 @@ class DateRangePickerLabel extends StatelessWidget {
 extension DateRangePickerExt on BuildContext {
   Future<DateRange?> showDateRangePickerModal({
     DateRange? initial,
-    DateRange? defaulValue,
+    DateRange? defaultValue,
     String? leftBtnLabel,
     String? rightBtnLabel,
   }) {
@@ -535,7 +538,7 @@ extension DateRangePickerExt on BuildContext {
         ),
         child: _DateRangePickerModal(
           initial: initial,
-          defaulValue: defaulValue,
+          defaultValue: defaultValue,
           leftBtnLabel: leftBtnLabel,
           rightBtnLabel: rightBtnLabel,
         ),

@@ -11,8 +11,8 @@ class AuthHeaderProvider extends HeaderProvider {
   );
 
   @override
-  Map<String, String> build() {
-    final token = localDataManager.token;
+  Future<Map<String, String>> build() async {
+    final token = await localDataManager.token;
     return {
       if (token != null) ...{
         RequestHeaderKey.authorization.key: token.authorization,

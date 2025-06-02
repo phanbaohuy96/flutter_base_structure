@@ -1,20 +1,27 @@
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
 
 import '../modules/auth/authentication_route.dart';
 
+@injectable
 class RouteGenerator {
-  Map<String, WidgetBuilder> _getAll(RouteSettings settings) => {
-        ...CoreRoute().getAll(settings),
-        ...AuthenticationRoute().getAll(settings),
-      };
+  RouteGenerator();
+
+  List<CustomRouter> get routers => [
+        ...CoreRoute().routers(),
+        ...AuthenticationRoute().routers(),
+      ];
 
   Route<dynamic>? generateRoute(
     RouteSettings settings, {
     bool supportUnknownRoute = true,
   }) {
-    final _builder = _getAll(settings)[settings.name!];
+    preResolveRouteParams(settings);
+
+    final _builder = findRouteBuilder(settings);
     if (_builder == null && supportUnknownRoute != true) {
       return null;
     }
@@ -31,6 +38,32 @@ class RouteGenerator {
       settings: settings,
     );
   }
+
+  WidgetBuilder? findRouteBuilder(RouteSettings settings) {
+    final uri = Uri.tryParse(settings.name ?? '');
+    if (uri == null) {
+      return null;
+    }
+
+    for (final route in routers) {
+      if (route.canLaunch(uri, settings.arguments)) {
+        return (context) => route.build(
+              context,
+              uri,
+              settings.arguments,
+            );
+      }
+    }
+    return null;
+  }
+
+  void preResolveRouteParams(RouteSettings settings) {
+    final uri = Uri.tryParse(settings.name ?? '');
+
+    if (uri == null) {
+      return;
+    }
+  }
 }
 
 Route buildFaderPageRoute<T>(WidgetBuilder builder, {RouteSettings? settings}) {
@@ -43,6 +76,14 @@ Route buildFaderPageRoute<T>(WidgetBuilder builder, {RouteSettings? settings}) {
 }
 
 Route buildRoute<T>(WidgetBuilder builder, {RouteSettings? settings}) {
+  if (kIsWeb) {
+    return MaterialPageRoute<T>(
+      builder: (context) => TextScaleFixed(
+        child: builder(context),
+      ),
+      settings: settings,
+    );
+  }
   return CupertinoPageRoute<T>(
     builder: (context) => TextScaleFixed(
       child: builder(context),

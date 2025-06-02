@@ -63,6 +63,8 @@ class TabPageWidget extends StatefulWidget {
   final double? tabBarHeight;
   final BoxDecoration? tabBarDecoration;
   final EdgeInsetsGeometry? tabBarPadding;
+  final bool allowAnimateToPage;
+  final bool? useMaterial3;
 
   const TabPageWidget({
     Key? key,
@@ -85,6 +87,8 @@ class TabPageWidget extends StatefulWidget {
     this.tabBarHeight,
     this.tabBarDecoration,
     this.tabBarPadding,
+    this.allowAnimateToPage = true,
+    this.useMaterial3,
   }) : super(key: key);
 
   @override
@@ -159,24 +163,48 @@ class _TabPageWidgetState extends State<TabPageWidget> {
                 tabBarHeight: widget.tabBarHeight,
                 tabBarDecoration: widget.tabBarDecoration,
                 tabBarMargin: widget.tabBarPadding,
-                child: TabBar(
-                  onTap: (index) => pageController.animateToPage(
-                    index,
-                    duration: const Duration(milliseconds: 200),
-                    curve: Curves.easeInOut,
-                  ),
-                  indicator: widget.indicator,
-                  indicatorPadding: widget.indicatorPadding ?? EdgeInsets.zero,
-                  labelColor: widget.labelColor,
-                  indicatorColor: widget.indicatorColor,
-                  unselectedLabelColor: widget.unselectedLabelColor,
-                  isScrollable: widget.isTabScrollable,
-                  tabs: [
-                    ...List.generate(
-                      widget.length,
-                      (index) => widget.tabBuilder(context, index),
-                    ),
-                  ],
+                child: Builder(
+                  builder: (context) {
+                    final tabBar = TabBar(
+                      onTap: (index) {
+                        if (widget.allowAnimateToPage) {
+                          pageController.animateToPage(
+                            index,
+                            duration: const Duration(milliseconds: 200),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          pageController.jumpToPage(
+                            index,
+                          );
+                        }
+                      },
+                      indicator: widget.indicator,
+                      indicatorPadding:
+                          widget.indicatorPadding ?? EdgeInsets.zero,
+                      labelColor: widget.labelColor,
+                      indicatorColor: widget.indicatorColor,
+                      unselectedLabelColor: widget.unselectedLabelColor,
+                      isScrollable: widget.isTabScrollable,
+                      tabs: [
+                        ...List.generate(
+                          widget.length,
+                          (index) => widget.tabBuilder(context, index),
+                        ),
+                      ],
+                    );
+
+                    if (widget.useMaterial3 == null) {
+                      return tabBar;
+                    }
+                    return Theme(
+                      data: Theme.of(context).copyWith(
+                        // ignore: deprecated_member_use
+                        useMaterial3: widget.useMaterial3,
+                      ),
+                      child: tabBar,
+                    );
+                  },
                 ),
               ),
               Expanded(

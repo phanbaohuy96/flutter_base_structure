@@ -1,5 +1,4 @@
-import '../../common/utils.dart';
-import '../../envs.dart';
+import '../../core.dart';
 
 class Config {
   static final Config instance = Config._();
@@ -31,17 +30,17 @@ class AppConfig {
   final String platformRole;
 
   AppConfig({
-    required this.envName,
-    required this.developmentMode,
-    required this.baseApiLayer,
-    required this.storageApiLayer,
-    required this.storageAssetLayer,
-    required this.baseGraphQLUrl,
-    required this.onesignalAppID,
-    required this.graphqlSocketUrl,
-    required this.graphqlApiKey,
-    required this.app,
-    required this.platformRole,
+    this.envName = '',
+    this.developmentMode = true,
+    this.baseApiLayer = '',
+    this.storageApiLayer = '',
+    this.storageAssetLayer = '',
+    this.baseGraphQLUrl = '',
+    this.onesignalAppID = '',
+    this.graphqlSocketUrl = '',
+    this.graphqlApiKey = '',
+    this.app = '',
+    this.platformRole = '',
   });
 
   bool get isDevBuild => envName == Env.devEnvName;

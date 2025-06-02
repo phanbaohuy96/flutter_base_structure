@@ -14,7 +14,7 @@ Future<DateTime?> showMyCustomDatePicker(
   final languageCode = Localizations.localeOf(context).languageCode;
   final locale = LocaleType.values.firstWhere(
     (element) => element.name == languageCode,
-    orElse: () => LocaleType.vi,
+    orElse: () => LocaleType.th,
   );
   return DatePicker().showPicker(
     context,

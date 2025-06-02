@@ -56,6 +56,10 @@ class _DevModeDashboardScreenState extends State<DevModeDashboardScreen> {
             child: const Text('Log Viewer'),
           ),
           TextButton(
+            onPressed: context.openNetWorkLogViewer,
+            child: const Text('Network Log Viewer'),
+          ),
+          TextButton(
             onPressed: context.viewDesignSystem,
             child: const Text('Design System'),
           ),

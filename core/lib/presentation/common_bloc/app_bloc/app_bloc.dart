@@ -16,10 +16,15 @@ class AppGlobalBloc extends Cubit<AppGlobalState> {
   }) {
     ClientInfo.languageCode =
         ldm.getLocalization() ?? AppLocale.defaultLocale.languageCode;
+
+    final locale = Locale(ClientInfo.languageCode);
+
+    CalendarHelper.setupCalendarByLocale(locale);
+
     final data = appData.copyWith(
       themeMode:
           ldm.getTheme()?.let((it) => ThemeMode.values[it]) ?? ThemeMode.light,
-      locale: Locale(ClientInfo.languageCode),
+      locale: locale,
     );
     return AppGlobalBloc._(ldm, data);
   }
@@ -78,6 +83,8 @@ class AppGlobalBloc extends Cubit<AppGlobalState> {
     }
 
     if (await localDataManager.saveLocalization(locale.languageCode) == true) {
+      await CalendarHelper.setupCalendarByLocale(locale);
+
       ClientInfo.languageCode = locale.languageCode;
       emit(state.copyWith(locale: locale));
       return true;

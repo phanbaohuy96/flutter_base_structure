@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../../../core.dart';
 
+enum TitleMode {
+  floating,
+  above,
+}
+
 class InputDecorationFactory {
   static InputDecoration build({
     required BuildContext context,
@@ -18,6 +23,7 @@ class InputDecorationFactory {
     double? suffixIconSize,
     bool? isDense,
     String? errorText,
+    TextStyle? errorStyle,
     Widget? prefixIcon,
     Widget? suffixIcon,
   }) {
@@ -47,10 +53,10 @@ class InputDecorationFactory {
       hintText: hint,
       hintStyle: hintStyle ?? appTextTheme.inputHint,
       errorText: errorText,
-      errorStyle: appTextTheme.inputError?.copyWith(
+      errorStyle: (errorStyle ?? appTextTheme.inputError)?.copyWith(
         fontSize: errorText?.isNotEmpty == true ? null : 1,
       ),
-      errorMaxLines: 2,
+      errorMaxLines: 4,
       suffixIcon: suffixIcon?.let(
         (it) => AvailabilityWidget(
           enable: enable,

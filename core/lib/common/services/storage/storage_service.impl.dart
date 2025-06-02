@@ -15,14 +15,18 @@ class StorageServiceImpl extends StorageService {
   @override
   Future<CloudFile?> uploadFile(
     File file, {
-    bool autoCompressImage = true,
+    String? mimeType,
+    bool autoCompressImage = false,
     CompressImageOption compressImageOption = const CompressImageOption(),
+    dio.CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   }) async {
+    final _mimeType = mimeType ?? lookupMimeType(file.path);
     final res = autoCompressImage
         ? await _compressFileIfImage(
             await file.readAsBytes(),
             filePath: file.path,
-            mimeType: lookupMimeType(file.path),
+            mimeType: _mimeType,
             option: compressImageOption,
           ).then(
             (bytes) => _storageRepository.uploadBytes(
@@ -30,8 +34,15 @@ class StorageServiceImpl extends StorageService {
                 dio.MultipartFile.fromBytes(
                   bytes.$1,
                   filename: file.path.split('/').last,
+                  contentType: _mimeType?.let(
+                    (it) {
+                      return dio.DioMediaType.parse(it);
+                    },
+                  ),
                 ),
               ],
+              cancelToken: cancelToken,
+              onSendProgress: onSendProgress,
             ),
           )
         : await _storageRepository.uploadFile(file);
@@ -45,8 +56,10 @@ class StorageServiceImpl extends StorageService {
     String name, {
     String? filePath,
     String? mimeType,
-    bool autoCompressImage = true,
+    bool autoCompressImage = false,
     CompressImageOption compressImageOption = const CompressImageOption(),
+    dio.CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   }) async {
     final res = autoCompressImage
         ? await _compressFileIfImage(
@@ -60,8 +73,15 @@ class StorageServiceImpl extends StorageService {
                 dio.MultipartFile.fromBytes(
                   bytes.$1,
                   filename: name,
+                  contentType: mimeType?.let(
+                    (it) {
+                      return dio.DioMediaType.parse(it);
+                    },
+                  ),
                 ),
               ],
+              cancelToken: cancelToken,
+              onSendProgress: onSendProgress,
             ),
           )
         : await _storageRepository.uploadBytes(
@@ -69,8 +89,15 @@ class StorageServiceImpl extends StorageService {
               dio.MultipartFile.fromBytes(
                 bytes,
                 filename: name,
+                contentType: mimeType?.let(
+                  (it) {
+                    return dio.DioMediaType.parse(it);
+                  },
+                ),
               ),
             ],
+            cancelToken: cancelToken,
+            onSendProgress: onSendProgress,
           );
 
     return res.data;
@@ -80,8 +107,11 @@ class StorageServiceImpl extends StorageService {
   Future<CloudFile?> uploadImageBytes(
     Uint8List bytes,
     String name, {
-    bool autoCompressImage = true,
+    String? mimeType,
+    bool autoCompressImage = false,
     CompressImageOption compressImageOption = const CompressImageOption(),
+    dio.CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
   }) async {
     final res = autoCompressImage
         ? await _compressHelper
@@ -95,8 +125,15 @@ class StorageServiceImpl extends StorageService {
                   dio.MultipartFile.fromBytes(
                     bytes.$1,
                     filename: name,
+                    contentType: mimeType?.let(
+                      (it) {
+                        return dio.DioMediaType.parse(it);
+                      },
+                    ),
                   ),
                 ],
+                cancelToken: cancelToken,
+                onSendProgress: onSendProgress,
               ),
             )
         : await _storageRepository.uploadBytes(
@@ -104,19 +141,24 @@ class StorageServiceImpl extends StorageService {
               dio.MultipartFile.fromBytes(
                 bytes,
                 filename: name,
+                contentType: mimeType?.let(
+                  (it) {
+                    return dio.DioMediaType.parse(it);
+                  },
+                ),
               ),
             ],
+            cancelToken: cancelToken,
+            onSendProgress: onSendProgress,
           );
 
     return res.data;
   }
 
   @override
-  String getAssetUrl(String id) {
-    return [
-      assetLayer,
-      id,
-    ].join('');
+  String getAssetUrl(String reference) {
+    final uri = Uri.parse(assetLayer);
+    return uri.resolve(reference).toString();
   }
 
   Future<(Uint8List image, String? mimeType)> _compressFileIfImage(

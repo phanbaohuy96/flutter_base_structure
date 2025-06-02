@@ -82,7 +82,7 @@ class UserToken {
 
   String get authorization => [
         if (type != null && type != TokenType.jwt) type?.value,
-        accessToken,
+        if (accessToken.isNotNullOrEmpty) accessToken,
       ].join(' ');
 
   bool get isValid => type != null && accessToken.isNotNullOrEmpty;

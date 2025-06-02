@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../common/constants/locale/app_locale.dart';
 import '../../common/constants/locale/date_locale.dart';
 import '../../common/constants/locale/datetime/en.dart';
-import '../../common/constants/locale/datetime/vi.dart';
+import '../../common/constants/locale/datetime/th.dart';
 import '../theme/export.dart';
 
 export 'package:fl_theme/src/extension.dart';
@@ -17,13 +17,20 @@ extension CorePresentationContextOnStateExt on State {
   ScreenFormTheme get screenFormTheme => context.screenFormTheme;
 
   MainPageFormTheme get mainPageFormTheme => context.mainPageFormTheme;
+
+  String get languageCode => context.languageCode;
 }
 
 extension CoreAppDateLocaleExt on BuildContext {
   AppDateLocale get appDateLocale {
-    return Localizations.localeOf(this).languageCode ==
-            AppLocale.en.languageCode
-        ? ENDateLocale().toAppDateLocale
-        : VIDateLocale().toAppDateLocale;
+    final languageCode = Localizations.localeOf(this).languageCode;
+    if (languageCode == AppLocale.th.languageCode) {
+      return THDateLocale().toAppDateLocale;
+    }
+    return ENDateLocale().toAppDateLocale;
   }
+
+  Locale get local => Localizations.localeOf(this);
+
+  String get languageCode => local.languageCode;
 }

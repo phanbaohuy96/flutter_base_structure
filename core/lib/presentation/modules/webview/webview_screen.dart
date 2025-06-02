@@ -19,11 +19,13 @@ class WebViewArgs {
   final String? url;
   final String? html;
   final String? title;
+  final String? assetPath;
 
   WebViewArgs({
     this.url,
     this.html,
     this.title,
+    this.assetPath,
   });
 
   WebViewArgs copyWith({
@@ -33,11 +35,13 @@ class WebViewArgs {
     String? openInExternalBrowser,
     String? copyLink,
     String? copied,
+    String? assetPath,
   }) {
     return WebViewArgs(
       url: url ?? this.url,
       html: html ?? this.html,
       title: title ?? this.title,
+      assetPath: assetPath ?? this.assetPath,
     );
   }
 
@@ -46,6 +50,7 @@ class WebViewArgs {
       'url': url,
       'html': html,
       'title': title,
+      'assetPath': assetPath,
     };
   }
 
@@ -54,6 +59,7 @@ class WebViewArgs {
       url: map['url'] != null ? map['url'] as String : null,
       html: map['html'] != null ? map['html'] as String : null,
       title: map['title'] != null ? map['title'] as String : null,
+      assetPath: map['assetPath'] != null ? map['assetPath'] as String : null,
     );
   }
 

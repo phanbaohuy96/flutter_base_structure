@@ -131,7 +131,7 @@ class _ImageSliderState extends State<ImageSlider> with StorageServiceMixin {
         },
       ).toList(),
       heroTag: heroTag,
-      forcusIndex: idx,
+      focusIndex: idx,
     );
   }
 }

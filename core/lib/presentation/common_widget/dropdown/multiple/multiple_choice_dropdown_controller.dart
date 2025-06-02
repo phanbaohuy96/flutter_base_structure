@@ -16,7 +16,7 @@ class MultipleChoiceDropdownController<V,
     notifyListeners();
   }
 
-  void resetValidaiton() {
+  void resetValidation() {
     value.validation = null;
     notifyListeners();
   }
@@ -24,7 +24,7 @@ class MultipleChoiceDropdownController<V,
   void setData(List<V> data) {
     if (data != value.value) {
       value.value = data;
-      resetValidaiton();
+      resetValidation();
     }
   }
 

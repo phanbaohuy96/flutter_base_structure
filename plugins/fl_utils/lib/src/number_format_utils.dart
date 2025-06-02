@@ -51,7 +51,7 @@ class DecimalInputFormatter extends NumberTextInputFormatter {
   DecimalInputFormatter({
     super.integerDigits = 10,
     super.decimalDigits = 2,
-    super.maxValue = '999999999.99',
+    super.maxValue = '9999999.99',
     super.decimalSeparator = '.',
     super.groupDigits = 3,
     super.groupSeparator = ',',

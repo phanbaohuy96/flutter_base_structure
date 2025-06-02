@@ -8,9 +8,12 @@ import '../../../common/utils.dart';
 import '../../theme/export.dart';
 import '../input_container/input_container.dart';
 
+typedef AutocompleteOptionBuilder<T> = Widget Function(T option);
+
 class AutoCompleteField<T extends Object> extends StatefulWidget {
   final AutocompleteOptionToString<T> displayStringForOption;
-  final void Function(T) onSelected;
+  final AutocompleteOptionBuilder<T>? optionBuilder;
+  final void Function(T?) onSelected;
   final T? initialValue;
   final Future<Iterable<T>> Function(String text) fetch;
   final String? title;
@@ -25,6 +28,8 @@ class AutoCompleteField<T extends Object> extends StatefulWidget {
   final bool isLocalSearch;
   final void Function(String)? onTextChanged;
   final void Function()? onFocused;
+  final EdgeInsets scrollPadding;
+  final bool withClearButton;
 
   const AutoCompleteField({
     Key? key,
@@ -32,6 +37,7 @@ class AutoCompleteField<T extends Object> extends StatefulWidget {
     required this.onSelected,
     required this.fetch,
     this.initialValue,
+    this.optionBuilder,
     this.title,
     this.hint,
     this.suffixIcon,
@@ -44,6 +50,8 @@ class AutoCompleteField<T extends Object> extends StatefulWidget {
     this.isLocalSearch = false,
     this.onTextChanged,
     this.onFocused,
+    this.scrollPadding = const EdgeInsets.all(20),
+    this.withClearButton = true,
   }) : super(key: key);
 
   @override
@@ -147,7 +155,7 @@ class _AutoCompleteFieldState<T extends Object>
 
                 if (now.millisecondsSinceEpoch !=
                     _fecthingAt.millisecondsSinceEpoch) {
-                  // break unecessary fetch data request
+                  // break unnecessary fetch data request
                   return [];
                 }
                 return widget.fetch.call(textEditingValue.text).then((value) {
@@ -161,40 +169,53 @@ class _AutoCompleteFieldState<T extends Object>
                 focusNode,
                 onFieldSubmitted,
               ) {
-                return InputContainer(
-                  controller: _icText
-                    ..value.withValue(
-                      tdController: textEditingController,
-                      focusNode: focusNode,
-                    ),
-                  onSubmitted: (_) => onFieldSubmitted(),
-                  title: widget.title,
-                  hint: widget.hint,
-                  required: widget.required,
-                  suffixIcon: ValueListenableBuilder<bool>(
-                    valueListenable: _fetching,
-                    builder: (context, fetching, widget) {
-                      if (fetching && !this.widget.isLocalSearch) {
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8),
-                          child: Loading(
-                            brightness: Brightness.light,
-                            radius: 8,
-                          ),
-                        );
-                      }
-                      return widget!;
-                    },
-                    child: widget.suffixIcon,
-                  ),
-                  enable: widget.enable,
-                  withClearButton: false,
-                  onTextChanged: widget.onTextChanged,
+                return ValueListenableBuilder<bool>(
+                  valueListenable: _fetching,
+                  builder: (context, fetching, _) {
+                    return InputContainer(
+                      controller: _icText
+                        ..value.withValue(
+                          tdController: textEditingController,
+                          focusNode: focusNode,
+                        ),
+                      onSubmitted: (_) => onFieldSubmitted(),
+                      title: widget.title,
+                      hint: widget.hint,
+                      required: widget.required,
+                      validation: _icText.value.validation,
+                      scrollPadding: widget.scrollPadding,
+                      suffixIcon: Builder(
+                        builder: (context) {
+                          if (fetching && !widget.isLocalSearch) {
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 8),
+                              child: Loading(
+                                brightness: Brightness.light,
+                                radius: 8,
+                              ),
+                            );
+                          }
+                          return widget.suffixIcon ??
+                              const Icon(
+                                Icons.search,
+                                size: 18,
+                              );
+                        },
+                      ),
+                      enable: widget.enable,
+                      withClearButton: !fetching && widget.withClearButton,
+                      onClear: (hasFocus) {
+                        widget.onSelected.call(null);
+                      },
+                      onTextChanged: widget.onTextChanged,
+                    );
+                  },
                 );
               },
               optionsViewBuilder: (context, onSelected, options) =>
                   _AutocompleteOptions<T>(
                 displayStringForOption: widget.displayStringForOption,
+                optionBuilder: widget.optionBuilder,
                 onSelected: (option) {
                   _selected = option;
                   return onSelected(option);
@@ -222,6 +243,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
     required this.maxOptionsHeight,
     required this.maxOptionsWidth,
     this.selected,
+    this.optionBuilder,
   });
 
   final AutocompleteOptionToString<T> displayStringForOption;
@@ -232,6 +254,7 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
   final double maxOptionsHeight;
   final double maxOptionsWidth;
   final T? selected;
+  final AutocompleteOptionBuilder<T>? optionBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -267,10 +290,11 @@ class _AutocompleteOptions<T extends Object> extends StatelessWidget {
                     return Container(
                       color: highlight ? Theme.of(context).focusColor : null,
                       padding: const EdgeInsets.all(16.0),
-                      child: Text(
-                        displayStringForOption(option),
-                        style: textTheme.textInput,
-                      ),
+                      child: optionBuilder?.call(option) ??
+                          Text(
+                            displayStringForOption(option),
+                            style: textTheme.textInput,
+                          ),
                     );
                   },
                 ),

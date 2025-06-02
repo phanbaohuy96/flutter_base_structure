@@ -1,13 +1,13 @@
 {
-  "cancel": "Cancel",
-  "confirm": "Confirm",
-  "loading": "Loading",
-  "camera": "Camera",
-  "choosePhoto": "Select image",
-  "choosePhotoOrVideo": "Select image or video",
-  "chooseVideo": "Select video",
-  "close": "Close",
-  "gallery": "Gallery",
-  "selectPhoto": "Select photo",
-  "takePhoto": "Take a photo"
+  "cancel": "ยกเลิก",
+  "confirm": "ยืนยัน",
+  "loading": "กำลังโหลด",
+  "camera": "กล้องถ่ายรูป",
+  "choosePhoto": "เลือกรูปภาพ",
+  "choosePhotoOrVideo": "เลือกรูปภาพหรือวิดีโอ",
+  "chooseVideo": "เลือกวิดีโอ",
+  "close": "ปิด",
+  "gallery": "แกลเลอรี",
+  "selectPhoto": "เลือกรูปภาพ",
+  "takePhoto": "ถ่ายภาพ"
 }

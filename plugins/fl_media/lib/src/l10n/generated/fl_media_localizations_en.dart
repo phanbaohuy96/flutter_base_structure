@@ -3,8 +3,8 @@ import 'fl_media_localizations.dart';
 // ignore_for_file: type=lint
 
 /// The translations for English (`en`).
-class FlMeidaLocalizationsEn extends FlMeidaLocalizations {
-  FlMeidaLocalizationsEn([String locale = 'en']) : super(locale);
+class FlMediaLocalizationsEn extends FlMediaLocalizations {
+  FlMediaLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
   String get cancel => 'Cancel';

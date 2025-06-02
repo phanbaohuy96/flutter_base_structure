@@ -9,14 +9,9 @@ abstract class CoreBlocBase<E, S> extends Bloc<E, S> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    if (error is Exception) {
-      _notifyError(
-        ErrorData.fromException(exception: error),
-      );
-    } else if (error is Error) {
-      _notifyError(
-        ErrorData.fromError(error: error),
-      );
+    final errorData = ErrorData.fromObject(error: error);
+    if (errorData != null) {
+      _notifyError(errorData);
     } else {
       logUtils.e('onError', error, stackTrace);
       super.onError(error, stackTrace);

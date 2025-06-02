@@ -11,10 +11,11 @@ import 'image_zoom.dart';
 void openImageGallery({
   required BuildContext context,
   required List<String> images,
-  int forcusIndex = 0,
+  int focusIndex = 0,
   String? heroTag,
   bool rootNavigator = false,
   Function(String url)? onDownload,
+  List<Widget>? actions,
 }) {
   Navigator.of(context, rootNavigator: rootNavigator).push(
     PageRouteBuilder(
@@ -25,9 +26,10 @@ void openImageGallery({
         color: Colors.transparent,
         child: ImageGalleryWidget(
           images: images,
-          forcusIndex: forcusIndex,
+          focusIndex: focusIndex,
           heroTag: heroTag,
           onDownload: onDownload,
+          actions: actions,
         ),
       ),
       transitionsBuilder: (c, anim, a2, child) =>
@@ -41,15 +43,17 @@ class ImageGalleryWidget extends StatefulWidget {
   const ImageGalleryWidget({
     super.key,
     required this.images,
-    this.forcusIndex = 0,
+    this.focusIndex = 0,
     this.heroTag,
     this.onDownload,
+    this.actions,
   });
 
   final List<String> images;
-  final int forcusIndex;
+  final int focusIndex;
   final String? heroTag;
   final Function(String url)? onDownload;
+  final List<Widget>? actions;
 
   @override
   State<ImageGalleryWidget> createState() => _ImageGalleryWidgetState();
@@ -63,7 +67,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
   @override
   void initState() {
     _pageController = PageController(
-      initialPage: widget.forcusIndex,
+      initialPage: widget.focusIndex,
     );
     super.initState();
   }
@@ -131,7 +135,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
                   size: const Size(8, 8),
                   activeSize: const Size(8, 8),
                   colorActive: Colors.white,
-                  initialPage: widget.forcusIndex,
+                  initialPage: widget.focusIndex,
                 ),
               ),
             ),
@@ -140,6 +144,7 @@ class _ImageGalleryWidgetState extends State<ImageGalleryWidget> {
               right: 0,
               child: Row(
                 children: [
+                  ...?widget.actions,
                   if (widget.onDownload != null)
                     IconButton(
                       onPressed: () => widget.onDownload!(

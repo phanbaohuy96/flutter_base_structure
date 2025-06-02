@@ -9,11 +9,11 @@ final globalNavigatorKey = GlobalKey<NavigatorState>();
 
 class MyNavigatorObserver extends NavigatorObserver {
   /// A stream that broadcasts whenever the navigation history changes.
-  final StreamController<HistoryChange> _historyChangeStreamController =
+  final StreamController<RouteHistory> _historyChangeStreamController =
       StreamController.broadcast();
 
   /// Accessor to the history change stream.
-  Stream<HistoryChange> get historyChangeStream =>
+  Stream<RouteHistory> get historyChangeStream =>
       _historyChangeStreamController.stream;
 
   /// A list of all the past routes
@@ -42,7 +42,7 @@ class MyNavigatorObserver extends NavigatorObserver {
     _poppedRoutes.add(_history.last);
     _history.removeLast();
     _historyChangeStreamController.add(
-      HistoryChange(
+      RouteHistory(
         action: NavigationStackAction.pop,
         newRoute: route,
         oldRoute: previousRoute,
@@ -56,7 +56,7 @@ class MyNavigatorObserver extends NavigatorObserver {
     _history.add(route);
     _poppedRoutes.remove(route);
     _historyChangeStreamController.add(
-      HistoryChange(
+      RouteHistory(
         action: NavigationStackAction.push,
         newRoute: route,
         oldRoute: previousRoute,
@@ -69,7 +69,7 @@ class MyNavigatorObserver extends NavigatorObserver {
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _history.remove(route);
     _historyChangeStreamController.add(
-      HistoryChange(
+      RouteHistory(
         action: NavigationStackAction.remove,
         newRoute: route,
         oldRoute: previousRoute,
@@ -83,7 +83,7 @@ class MyNavigatorObserver extends NavigatorObserver {
     final oldRouteIndex = _history.indexOf(oldRoute);
     _history.replaceRange(oldRouteIndex, oldRouteIndex + 1, [newRoute]);
     _historyChangeStreamController.add(
-      HistoryChange(
+      RouteHistory(
         action: NavigationStackAction.replace,
         newRoute: newRoute,
         oldRoute: oldRoute,
@@ -103,13 +103,13 @@ class MyNavigatorObserver extends NavigatorObserver {
 
 /// A class that contains all data that needs to be
 /// broadcasted through the history change stream.
-class HistoryChange {
+class RouteHistory {
   final NavigationStackAction? action;
   final Route<dynamic>? newRoute;
   final Route<dynamic>? oldRoute;
   final List<Route<dynamic>?> routeStack;
 
-  HistoryChange({
+  RouteHistory({
     this.action,
     this.newRoute,
     this.oldRoute,

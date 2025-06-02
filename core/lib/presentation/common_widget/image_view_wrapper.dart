@@ -15,6 +15,7 @@ class ImageViewWrapper extends ImageView {
     super.alignment = Alignment.center,
     super.package,
     super.loadingRadius,
+    super.cacheWidth = 480,
   }) : super(
           source: injector<StorageAssetProvider>().url(source),
           placeHolder: coreImageConstant.icUserAvatar,
@@ -29,6 +30,7 @@ class ImageViewWrapper extends ImageView {
     super.alignment = Alignment.center,
     super.package,
     super.loadingRadius,
+    super.cacheWidth = 480,
   }) : super(
           source: injector<StorageAssetProvider>().url(source),
           placeHolder: coreImageConstant.icDefaultItem,
@@ -43,6 +45,7 @@ class ImageViewWrapper extends ImageView {
     super.alignment = Alignment.center,
     super.package,
     super.loadingRadius,
+    super.cacheWidth = 480,
   }) : super(
           source: injector<StorageAssetProvider>().url(source),
           placeHolder: coreImageConstant.icDefaultItem,

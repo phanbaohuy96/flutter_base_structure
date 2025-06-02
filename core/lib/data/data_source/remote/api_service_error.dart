@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'app_api_service.dart';
 
 enum ErrorType {
@@ -9,7 +8,7 @@ enum ErrorType {
   /// status code is 401
   unauthorized,
   unknown,
-  badRequest,
+  badResponse,
   serverUnExpected,
   internalServerError,
   restricted,
@@ -18,7 +17,7 @@ enum ErrorType {
 
 enum ErrorOrigin {
   dio,
-  grapghql,
+  graphql,
   firebase,
 }
 
@@ -38,6 +37,15 @@ class ErrorData {
     this.origin,
     this.responseData,
   });
+
+  static ErrorData? fromObject({required dynamic error}) {
+    if (error is Exception) {
+      return ErrorData.fromException(exception: error);
+    } else if (error is Error) {
+      return ErrorData.fromError(error: error);
+    }
+    return null;
+  }
 
   factory ErrorData.fromException({required Exception exception}) {
     if (exception is dio_p.DioException) {
@@ -65,11 +73,13 @@ class ErrorData {
         apiResponse.errorCode ?? apiResponse.error ?? apiResponse.errors;
 
     switch (error.type) {
-      case dio_p.DioExceptionType.receiveTimeout:
       case dio_p.DioExceptionType.sendTimeout:
       case dio_p.DioExceptionType.connectionTimeout:
       case dio_p.DioExceptionType.connectionError:
         type = ErrorType.timeout;
+        break;
+      case dio_p.DioExceptionType.receiveTimeout:
+        type = ErrorType.internalServerError;
         break;
       case dio_p.DioExceptionType.badResponse:
         message = apiResponse.msg ?? apiResponse.message;
@@ -78,7 +88,7 @@ class ErrorData {
             statusCode == 401) {
           type = ErrorType.unauthorized;
         } else {
-          type = ErrorType.badRequest;
+          type = ErrorType.badResponse;
         }
         break;
       case dio_p.DioExceptionType.cancel:

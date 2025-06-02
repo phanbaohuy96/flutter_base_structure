@@ -15,7 +15,7 @@ class CloudFile {
   final String? filenameDownload;
   @JsonKey(name: 'url', fromJson: asOrNull)
   final String? url;
-  @JsonKey(name: 'mime_type', fromJson: asOrNull)
+  @JsonKey(name: 'mime_type', fromJson: asOrNull, readValue: _readMimeType)
   final String? mimeType;
   @JsonKey(name: 'filesize', fromJson: asOrNull)
   final double? fileSize; //bytes
@@ -51,5 +51,14 @@ class CloudFile {
       mimeType: mimeType != null ? mimeType() : this.mimeType,
       fileSize: fileSize != null ? fileSize() : this.fileSize,
     );
+  }
+
+  static Object? _readMimeType(Map p1, String p2) {
+    if (p1[p2] is String) {
+      return p1[p2];
+    } else if (p1['type'] is String) {
+      return p1['type'];
+    }
+    return null;
   }
 }

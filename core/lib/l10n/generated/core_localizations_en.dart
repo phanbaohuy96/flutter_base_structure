@@ -28,14 +28,14 @@ class CoreLocalizationsEn extends CoreLocalizations {
 
   @override
   String get requestRestricted =>
-      'Request sent too many times\\nPlease wait a moment and try again.';
+      'Request sent too many times\nPlease wait a moment and try again.';
 
   @override
   String get serverMaintenance =>
       'Server is unavailable at this time. Please try again later.';
 
   @override
-  String get connectionTimeout => 'Connection timmed out.';
+  String get connectionTimeout => 'Connection timed out.';
 
   @override
   String get unknownError => 'Something went wrong.\nPlease try again later';
@@ -222,4 +222,18 @@ class CoreLocalizationsEn extends CoreLocalizations {
   @override
   String get pleaseEnableGPS =>
       'Please enable location to continue the experience';
+
+  @override
+  String get required => 'Required';
+
+  @override
+  String get optional => 'Optional';
+
+  @override
+  String fileSizeOverXMB(Object x) {
+    return 'The file is too large. Maximum allowed size is ${x}MB.';
+  }
+
+  @override
+  String get errorWhenUploading => 'An error occurred when uploading';
 }

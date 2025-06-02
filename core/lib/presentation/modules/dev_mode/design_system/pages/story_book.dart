@@ -85,7 +85,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                         onTap: (p0) => openImageGallery(
                           context: context,
                           images: banners,
-                          forcusIndex: banners.indexOf(p0),
+                          focusIndex: banners.indexOf(p0),
                         ),
                         autoPlayInterval: const Duration(seconds: 2),
                       ),
@@ -366,7 +366,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 borderRadius: BorderRadius.circular(12),
                 controller: controller,
                 normalBorderColor: themeColor.dividerColor,
-                errorPadding: EdgeInsets.zero,
+                errorTextPadding: EdgeInsets.zero,
                 child: const Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: 16,

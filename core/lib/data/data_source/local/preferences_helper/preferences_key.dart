@@ -7,4 +7,6 @@ class CorePreferencesKey {
   static const String appSettings = 'appSettings';
   static const String onboardingSkipped = 'onboardingSkipped';
   static const String organization = 'organization';
+  static const String cookieConsent = 'cookie-consent';
+  static const String lastDayShowCookieConsent = 'last-day-show-cookie-consent';
 }
