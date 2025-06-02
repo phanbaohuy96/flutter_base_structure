@@ -1,0 +1,157 @@
+name: flutter_core
+description: VNS Flutter Core
+
+version: 1.0.0+1
+version_staging: 1.0.0+1
+version_prod: 1.0.0+1
+
+publish_to: none
+
+environment:
+  sdk: '>=3.3.1 <4.0.0'
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # language
+  flutter_localizations:
+    sdk: flutter
+
+  # base
+  flutter_native_splash: ^2.2.8
+  core:
+    path: ../../core
+
+  mobile_scanner: ^5.2.3
+  image: ^4.0.17
+  path_provider: ^2.1.2
+  permission_handler: ^11.0.1
+  image_picker: ^1.1.2
+  dio: ^5.4.0
+  http:
+  rxdart: ^0.28.0
+  intl:
+
+  # utils
+  date_format: ^2.0.2
+  vibration: ^3.1.3
+  collection: ^1.19.0
+
+  # data
+  freezed: ^2.4.5
+  data_source:
+    path: ../../modules/data_source
+
+  #ui
+  fl_chart: 0.69.0
+  gap: ^3.0.1
+  flutter_sticky_header: ^0.7.0
+  camerawesome: 2.1.0
+  google_mlkit_face_detection: ^0.11.0
+  speech_to_text: ^7.0.0
+  pin_code_fields: ^8.0.1
+
+  #image
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
+
+  
+
+dev_dependencies:
+  #test
+  flutter_test:
+    sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  test: ^1.24.3
+  mockito: ^5.4.0
+
+  build_runner: ^2.0.4
+  retrofit_generator: ^9.1.2
+  hive_generator: ^2.0.1
+  json_serializable: 6.8.0
+  injectable_generator: ^2.6.2
+  module_generator:
+    path: ../../tools/module_generator
+
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  # generate: true
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/svg/
+    - assets/images/png/
+    - assets/images/
+    
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Thin.ttf
+          weight: 100
+        - asset: assets/fonts/Poppins-ThinItalic.ttf
+          weight: 100
+          style: italic
+          
+        - asset: assets/fonts/Poppins-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Poppins-ExtraLightItalic.ttf
+          weight: 200
+          style: italic
+
+        - asset: assets/fonts/Poppins-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Poppins-LightItalic.ttf
+          weight: 300
+          style: italic
+
+        - asset: assets/fonts/Poppins-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Poppins-Italic.ttf
+          weight: 400
+          style: italic
+
+        - asset: assets/fonts/Poppins-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Poppins-MediumItalic.ttf
+          weight: 500
+          style: italic
+
+        - asset: assets/fonts/Poppins-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Poppins-SemiBoldItalic.ttf
+          weight: 600
+          style: italic
+
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-BoldItalic.ttf
+          weight: 700
+          style: italic
+
+        - asset: assets/fonts/Poppins-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Poppins-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+
+        - asset: assets/fonts/Poppins-Black.ttf
+          weight: 900
+        - asset: assets/fonts/Poppins-BlackItalic.ttf
+          weight: 900
+          style: italic
+
+flutter_intl:
+  enabled: true

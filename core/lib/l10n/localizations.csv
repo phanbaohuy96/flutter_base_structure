@@ -1,0 +1,76 @@
+key,en,th
+inform,Inform,แจ้งเตือน
+ok,Ok,ตกลง
+cancel,Cancel,ยกเลิก
+confirm,Confirm,ยืนยัน
+noInternet,"Connection errors.
+Please check your network connection and try again","เกิดข้อผิดพลาดในการเชื่อมต่อ โปรดตรวจสอบการเชื่อมต่อเครือข่ายของคุณและลองใหม่อีกครั้ง"
+technicalIssues,"Oops! .There seems to be a technical problem.
+Please check your connection or try again later","ขออภัย เกิดปัญหาทางเทคนิค โปรดตรวจสอบการเชื่อมต่อของคุณหรือลองใหม่ภายหลัง"
+requestRestricted,"Request sent too many times
+Please wait a moment and try again.","มีการส่งคำขอมากเกินไป โปรดรอสักครู่แล้วลองใหม่อีกครั้ง"
+serverMaintenance,Server is unavailable at this time. Please try again later.,ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ในขณะนี้ โปรดลองใหม่ภายหลัง
+connectionTimeout,Connection timed out.,หมดเวลาการเชื่อมต่อ
+unknownError,"Something went wrong.
+Please try again later","เกิดข้อผิดพลาด โปรดลองใหม่ภายหลัง"
+dataParsingError,"Data parsing error, please try again later","เกิดข้อผิดพลาดในการประมวลผลข้อมูล โปรดลองใหม่ภายหลัง"
+sessionExpired,Your session is expired. Please log in again!,เซสชันของคุณหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง
+loading,Loading,กำลังโหลด
+male,Male,ชาย
+female,Female,หญิง
+close,Close,ปิด
+error,Error,ข้อผิดพลาด
+search,Search,ค้นหา
+warning,Warning,คำเตือน
+haveNoPermission,No access. Please go to settings and grant permission to the app to continue.,ไม่สามารถเข้าถึงได้ โปรดไปที่การตั้งค่าและให้สิทธิ์การเข้าถึงแอปเพื่อดำเนินการต่อ
+openSetting,Open Setting,เปิดการตั้งค่า
+openInExternalBrowser,External Browser,เบราว์เซอร์ภายนอก
+copyLink,Copy link,คัดลอกลิงก์
+copied,Copied,คัดลอกแล้ว
+featureUnderDevelopment,Feature under development,ฟีเจอร์อยู่ระหว่างการพัฒนา
+requestPermission,Request permission,ขอสิทธิ์การเข้าถึง
+firebaseAuthExceptionTypeAccountExistsWithDifferentCredential,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
+firebaseAuthExceptionTypeInvalidCredential,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
+firebaseAuthExceptionTypeOperationNotAllowed,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
+firebaseAuthExceptionTypeUserDisabled,The user associated with this credential has been disabled.,บัญชีผู้ใช้ที่เกี่ยวข้องกับข้อมูลรับรองนี้ถูกปิดใช้งาน
+firebaseAuthExceptionTypeUserNotFound,User not found. Please check your credentials and try again.,ไม่พบบัญชีผู้ใช้ โปรดตรวจสอบข้อมูลรับรองและลองใหม่อีกครั้ง
+firebaseAuthExceptionTypeInvalidVerificationCode,Invalid verification code.,รหัสยืนยันไม่ถูกต้อง
+firebaseAuthExceptionTypeInvalidVerificationId,Invalid verification ID.,รหัสยืนยันตัวตนไม่ถูกต้อง
+firebaseAuthExceptionTypeWrongPassword,Wrong password. Please check your credentials and try again.,รหัสผ่านไม่ถูกต้อง โปรดตรวจสอบข้อมูลรับรองและลองใหม่อีกครั้ง
+firebaseAuthExceptionTypeUnknown,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
+firebaseAuthExceptionSessionExpired,The OTP has expired. Please re-send the new OTP to try again.,รหัส OTP หมดอายุแล้ว โปรดส่งรหัสใหม่อีกครั้งเพื่อดำเนินการ
+today,Today,วันนี้
+yesterday,Yesterday,เมื่อวานนี้
+thisWeek,This week,สัปดาห์นี้
+weekAgo,Week ago,เมื่อสัปดาห์ที่แล้ว
+thisMonth,This month,เดือนนี้
+monthAgo,Month ago,เมื่อเดือนที่แล้ว
+selectDate,Select date,เลือกวันที่
+fromDate,From date,จากวันที่
+toDate,To date,ถึงวันที่
+month,Month,เดือน
+threeDaysAgo,3 days ago,เมื่อ 3 วันที่แล้ว
+sevenDaysAgo,7 days ago,เมื่อ 7 วันที่แล้ว
+thirtyDaysAgo,30 days ago,เมื่อ 30 วันที่แล้ว
+thisQuarter,This quarter,ไตรมาสนี้
+quarterAgo,Quarter ago,เมื่อไตรมาสที่แล้ว
+thisYear,This year,ปีนี้
+yearAgo,Year ago,เมื่อปีที่แล้ว
+selectTimePeriod,Select time period,เลือกช่วงเวลา
+reset,Reset,รีเซ็ต
+apply,Apply,นำไปใช้
+manual,Manual,กำหนดเอง
+day,Day,วัน
+viewMore,See more,ดูเพิ่มเติม
+seeLess,See less,ดูน้อยลง
+fullTime,Full time,เต็มเวลา
+camera,Camera,กล้องถ่ายรูป
+gallery,Gallery,แกลเลอรี
+choosePhoto,Select photo,เลือกรูปภาพ
+choosePhotoOrVideo,Select media,เลือกสื่อ
+chooseVideo,Select video,เลือกวิดีโอ
+pleaseEnableGPS,Please enable location to continue the experience,กรุณาเปิดใช้งานตำแหน่งของคุณเพื่อดำเนินการต่อ
+required,Required,โปรดระบุ
+optional,Optional,ถ้ามี
+fileSizeOverXMB,"The file is too large. Maximum allowed size is {x}MB.","ไฟล์มีขนาดใหญ่เกินไป ขนาดสูงสุดที่อนุญาตคือ {x}MB"
+errorWhenUploading,An error occurred when uploading,An error occurred when uploading

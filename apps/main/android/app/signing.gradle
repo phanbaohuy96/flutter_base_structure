@@ -1,0 +1,22 @@
+android {
+    signingConfigs {
+        dev {
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+        }
+        staging {
+            storeFile file(STAGING_STORE_FILE)
+            storePassword STAGING_STORE_PASSWORD
+            keyAlias STAGING_KEY_ALIAS
+            keyPassword STAGING_KEY_PASSWORD
+        }
+        prod {
+            storeFile file(PROD_STORE_FILE)
+            storePassword PROD_STORE_PASSWORD
+            keyAlias PROD_KEY_ALIAS
+            keyPassword PROD_KEY_PASSWORD
+        }
+    }
+}
