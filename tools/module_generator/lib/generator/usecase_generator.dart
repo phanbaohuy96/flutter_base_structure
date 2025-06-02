@@ -21,7 +21,7 @@ Future<bool> generateUsecase() async {
       3 => 'listing',
       _ => throw UnsupportedError(
           'Usecase with $selection currently not supported',
-        )
+        ),
     }]!,
     inputModuleName: inputModuleName,
     inputModuleDir: inputModuleDir,

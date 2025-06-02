@@ -50,6 +50,32 @@ Future<void> generateAppLocalizations({
   }
 }
 
+Future<void> generateSwapColumn({
+  required List<List<dynamic>> localizations,
+  required String outputPath,
+  int? firstColIdx,
+  int? secondColIdx,
+}) async {
+  final _localizations = <List<dynamic>>[];
+  for (final e in localizations) {
+    _localizations.add([...e]..swap(firstColIdx ?? 1, secondColIdx ?? 2));
+  }
+
+  var csv = ListToCsvConverter(
+    eol: Platform.isMacOS ? '\n' : defaultEol,
+  ).convert(_localizations);
+
+  await FilesHelper.writeFile(pathFile: outputPath, content: csv);
+}
+
+extension SwappableList<E> on List<E> {
+  void swap(int first, int second) {
+    final temp = this[first];
+    this[first] = this[second];
+    this[second] = temp;
+  }
+}
+
 Future<void> generateAppLocalizationsCSVfile({
   required String filesPath,
   required String outputPath,
@@ -70,8 +96,9 @@ Future<void> generateAppLocalizationsCSVfile({
   }
 
   for (final f in entities.whereType<File>()) {
-    var isValidExtension = validExtension
-        .any((extension) => path.extension(f.path).contains(extension));
+    var isValidExtension = validExtension.any(
+      (extension) => path.extension(f.path).contains(extension),
+    );
 
     if (isValidExtension) {
       final fileName = f.path.split('/').last.split('.').first;
@@ -108,10 +135,7 @@ Future<void> generateAppLocalizationsCSVfile({
     eol: Platform.isMacOS ? '\n' : defaultEol,
   ).convert(listRows);
 
-  await FilesHelper.writeFile(
-    pathFile: outputPath,
-    content: csv,
-  );
+  await FilesHelper.writeFile(pathFile: outputPath, content: csv);
 }
 
 Future<void> checkUnusedL10n({

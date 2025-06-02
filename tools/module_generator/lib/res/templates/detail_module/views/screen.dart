@@ -48,6 +48,11 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
     super.hideLoading();
   }
 
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     _themeData = context.theme;

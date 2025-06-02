@@ -8,9 +8,7 @@ class InputHelper {
     return text;
   }
 
-  static Future<String> enterRequired({
-    required String message,
-  }) async {
+  static Future<String> enterRequired({required String message}) async {
     var text = '';
     while (text.isEmpty) {
       text = await enterText(message).then((value) => value ?? '');
@@ -30,11 +28,9 @@ class InputHelper {
   }) async {
     var inputModuleDir = await InputHelper.enterText(
       '$message (default: $defaultDir): ',
-    ).then(
-      (value) {
-        return value?.replaceAll("'", '') ?? '';
-      },
-    );
+    ).then((value) {
+      return value?.replaceAll("'", '') ?? '';
+    });
     return inputModuleDir.isEmpty ? defaultDir : inputModuleDir;
   }
 }

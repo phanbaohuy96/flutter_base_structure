@@ -62,9 +62,11 @@ $content''');
     var files = <FileSystemEntity>[];
     var completer = Completer<List<FileSystemEntity>>();
     var lister = dir.list(recursive: false);
-    lister.listen((file) => files.add(file),
-        // should also register onError
-        onDone: () => completer.complete(files));
+    lister.listen(
+      (file) => files.add(file),
+      // should also register onError
+      onDone: () => completer.complete(files),
+    );
     return completer.future;
   }
 }
@@ -74,9 +76,7 @@ class YamlWriter {
   final int spaces;
 
   /// Initialize the writer with the amount of [spaces] per level.
-  YamlWriter({
-    this.spaces = 2,
-  });
+  YamlWriter({this.spaces = 2});
 
   /// Write a dart structure to a YAML string. [yaml] should be a [Map] or [List].
   String write(dynamic yaml) {
@@ -92,9 +92,11 @@ class YamlWriter {
     } else if (yaml is Map) {
       lines.addAll(_writeMap(yaml, indent: indent));
     } else if (yaml is String) {
-      lines.add(yaml.contains(' ')
-          ? "\"${yaml.replaceAll("\"", "\\\"")}\""
-          : "${yaml.replaceAll("\"", "\\\"")}");
+      lines.add(
+        yaml.contains(' ')
+            ? "\"${yaml.replaceAll("\"", "\\\"")}\""
+            : "${yaml.replaceAll("\"", "\\\"")}",
+      );
     } else {
       lines.add(yaml.toString());
     }
@@ -124,16 +126,12 @@ class YamlWriter {
     for (var key in yaml.keys) {
       var value = yaml[key];
       if (value is bool) {
-        lines.add(
-          '${_indent(indent)}${key.toString()}: $value',
-        );
+        lines.add('${_indent(indent)}${key.toString()}: $value');
       } else {
-        lines.addAll(
-          [
-            '${_indent(indent)}${key.toString()}:',
-            '${_writeInternal(value, indent: indent + 1)}'
-          ],
-        );
+        lines.addAll([
+          '${_indent(indent)}${key.toString()}:',
+          '${_writeInternal(value, indent: indent + 1)}',
+        ]);
       }
     }
 
