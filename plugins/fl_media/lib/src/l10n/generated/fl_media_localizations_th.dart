@@ -3,39 +3,39 @@ import 'fl_media_localizations.dart';
 // ignore_for_file: type=lint
 
 /// The translations for Thai (`th`).
-class FlMeidaLocalizationsTh extends FlMeidaLocalizations {
-  FlMeidaLocalizationsTh([String locale = 'th']) : super(locale);
+class FlMediaLocalizationsTh extends FlMediaLocalizations {
+  FlMediaLocalizationsTh([String locale = 'th']) : super(locale);
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'ยกเลิก';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'ยืนยัน';
 
   @override
-  String get loading => 'Loading';
+  String get loading => 'กำลังโหลด';
 
   @override
-  String get camera => 'Camera';
+  String get camera => 'กล้องถ่ายรูป';
 
   @override
-  String get choosePhoto => 'Select image';
+  String get choosePhoto => 'เลือกรูปภาพ';
 
   @override
-  String get choosePhotoOrVideo => 'Select image or video';
+  String get choosePhotoOrVideo => 'เลือกรูปภาพหรือวิดีโอ';
 
   @override
-  String get chooseVideo => 'Select video';
+  String get chooseVideo => 'เลือกวิดีโอ';
 
   @override
-  String get close => 'Close';
+  String get close => 'ปิด';
 
   @override
-  String get gallery => 'Gallery';
+  String get gallery => 'แกลเลอรี';
 
   @override
-  String get selectPhoto => 'Select photo';
+  String get selectPhoto => 'เลือกรูปภาพ';
 
   @override
-  String get takePhoto => 'Take a photo';
+  String get takePhoto => 'ถ่ายภาพ';
 }

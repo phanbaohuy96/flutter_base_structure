@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'date_utils.dart';
 import 'number_format_utils.dart';
 import 'phone_number_utils.dart';
 
@@ -57,6 +56,8 @@ extension ExtendedIterable<E> on Iterable<E> {
 extension NullableStringIsNullOrEmptyExtension on String? {
   /// Returns `true` if the String is either null or empty.
   bool get isNullOrEmpty => this?.isEmpty ?? true;
+
+  String? get trimOrNull => this?.trim();
 }
 
 extension CoreNullableStringExtension on String? {
@@ -291,16 +292,6 @@ extension DistanceExt on double? {
       return '--';
     }
     return (this! / 1000).toStringAsFixed(1);
-  }
-}
-
-extension DateTimeConverter on int? {
-  String toFullDateTime() {
-    if (this == null) {
-      return '';
-    }
-    final dt = DateTime.fromMillisecondsSinceEpoch(this!);
-    return dt.toLocalHHnnddmmyyyy();
   }
 }
 

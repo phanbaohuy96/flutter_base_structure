@@ -12,6 +12,16 @@
             ],
         },
         {
+            "name": "Dev Debug - Web",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main_dev.dart",
+            "args": [
+                "--web-port",
+                "3000"
+            ],
+        },
+        {
             "name": "Dev Release",
             "request": "launch",
             "type": "dart",

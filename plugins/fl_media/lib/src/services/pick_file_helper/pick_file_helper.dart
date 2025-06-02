@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart' as f_picker;
+import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
 
 export 'package:image_picker/image_picker.dart' show CameraDevice;
 
@@ -42,9 +44,9 @@ class PickFileHelper {
     String? initialDirectory,
     FileType type = FileType.any,
     List<String>? allowedExtensions,
-    bool allowCompression = true,
+    int compressionQuality = 0,
     bool allowMultiple = false,
-    bool withData = false,
+    bool? withData,
     bool withReadStream = false,
     bool lockParentWindow = false,
   }) async {
@@ -53,9 +55,9 @@ class PickFileHelper {
       initialDirectory: initialDirectory,
       type: type.filePickerType,
       allowedExtensions: allowedExtensions,
-      allowCompression: allowCompression,
+      compressionQuality: compressionQuality,
       allowMultiple: allowMultiple,
-      withData: withData,
+      withData: withData ?? kIsWeb,
       withReadStream: withReadStream,
       lockParentWindow: lockParentWindow,
     );
@@ -66,6 +68,20 @@ class PickFileHelper {
   Future<FilePicked?> takePicture([
     CameraDevice preferredCameraDevice = CameraDevice.rear,
   ]) async {
+    /// Do a cheat for [Platform.isIOS] on [kDebugMode]
+    ///
+    /// There are no camera service available.
+    if (kDebugMode && !kIsWeb && Platform.isIOS) {
+      return PickFileHelper()
+          .pickFiles(
+            allowMultiple: false,
+            type: FileType.image,
+          )
+          .then(
+            (value) => CoreListExtension(value).firstOrNull,
+          );
+    }
+
     final picker = ImagePicker();
     final result = await picker.pickImage(
       source: ImageSource.camera,

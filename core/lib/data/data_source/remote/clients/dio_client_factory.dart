@@ -15,8 +15,14 @@ class DioClientFactory {
     final dio = dio_p.Dio(
       dio_p.BaseOptions(
         followRedirects: false,
-        receiveTimeout: const Duration(seconds: 30000),
-        sendTimeout: const Duration(seconds: 30000),
+
+        /// In Web platform we disable timeout to avoid the warning from DIO
+        /// Ref: https://github.com/cfug/dio/issues/2255
+        receiveTimeout: const Duration(seconds: 300),
+
+        /// In Web platform we disable timeout to avoid the warning from DIO
+        /// Ref: https://github.com/cfug/dio/issues/2255
+        sendTimeout: const Duration(seconds: 300),
         baseUrl: baseUrl,
       ),
     );
@@ -49,7 +55,7 @@ class DioClientFactory {
     // );
     dio.interceptors.add(
       LoggerInterceptor(
-        ignoreReponseDataLog: (response) {
+        ignoreResponseDataLog: (response) {
           // return response.requestOptions.path == ApiContract.administrative;
           return false;
         },
@@ -63,6 +69,8 @@ class DioClientFactory {
       ),
     );
 
+    // Enable cookies
+    dio.options.extra['withCredentials'] = true;
     return dio;
   }
 }

@@ -1,4 +1,4 @@
-output-class: FlMeidaLocalizations
+output-class: FlMediaLocalizations
 synthetic-package: false
 format: true
 arb-dir: lib/src/l10n

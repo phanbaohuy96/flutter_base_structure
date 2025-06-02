@@ -1,19 +1,46 @@
-import 'package:flutter/material.dart';
-
+import '../../route/route.dart';
 import 'dashboard/dev_mode_dashboard_screen.dart';
 import 'design_system/design_system_screen.dart';
 import 'log_viewer/log_viewer_screen.dart';
+import 'log_viewer/network/network_log_detail_screen.dart';
+import 'log_viewer/network/network_log_viewer_screen.dart';
 
-class DevModeRoute {
-  Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
-        DevModeDashboardScreen.routeName: (context) {
+class DevModeRoute extends IRoute {
+  @override
+  List<CustomRouter> routers() {
+    return [
+      CustomRouter(
+        path: DevModeDashboardScreen.routeName,
+        builder: (context, uri, extra) {
           return const DevModeDashboardScreen();
         },
-        LogViewerScreen.routeName: (context) {
+      ),
+      CustomRouter(
+        path: LogViewerScreen.routeName,
+        builder: (context, uri, extra) {
           return const LogViewerScreen();
         },
-        DesignSystemScreen.routeName: (context) {
+      ),
+      CustomRouter(
+        path: NetworkLogViewerScreen.routeName,
+        builder: (context, uri, extra) {
+          return const NetworkLogViewerScreen();
+        },
+      ),
+      CustomRouter(
+        path: NetworkLogDetailScreen.routeName,
+        builder: (context, uri, extra) {
+          return NetworkLogDetailScreen(
+            log: extra,
+          );
+        },
+      ),
+      CustomRouter(
+        path: DesignSystemScreen.routeName,
+        builder: (context, uri, extra) {
           return const DesignSystemScreen();
         },
-      };
+      ),
+    ];
+  }
 }

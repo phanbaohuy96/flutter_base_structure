@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart' as locator;
 import 'package:injectable/injectable.dart';
 
@@ -14,11 +15,14 @@ class LocationCubit extends Cubit<LocationState> {
   StreamSubscription? _serviceStatusStream;
 
   LocationCubit(this._locationService) : super(LocationInitial()) {
-    _serviceStatusStream = _locationService.serviceStatusStream.listen((event) {
-      if (event == locator.ServiceStatus.enabled) {
-        refreshLocation();
-      }
-    });
+    if (!kIsWeb) {
+      _serviceStatusStream =
+          _locationService.serviceStatusStream.listen((event) {
+        if (event == locator.ServiceStatus.enabled) {
+          refreshLocation();
+        }
+      });
+    }
   }
 
   Stream<Location?> refreshLocation() async* {

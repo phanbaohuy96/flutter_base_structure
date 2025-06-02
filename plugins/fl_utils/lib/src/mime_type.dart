@@ -1,10 +1,19 @@
-enum MimeType { image, svgImage, pdf, xlsx, docx, unknow }
+enum MimeType { image, jpg, jpeg, png, svg, pdf, xlsx, docx, unknown }
 
 extension MimeTypeExt on String? {
   MimeType get mimeType {
     if (this?.contains('image') == true) {
       if (this!.contains('svg')) {
-        return MimeType.svgImage;
+        return MimeType.svg;
+      }
+      if (this!.contains('jpg')) {
+        return MimeType.jpg;
+      }
+      if (this!.contains('jpeg')) {
+        return MimeType.jpeg;
+      }
+      if (this!.contains('png')) {
+        return MimeType.png;
       }
       return MimeType.image;
     } else if (this?.contains('sheet') == true) {
@@ -15,6 +24,6 @@ extension MimeTypeExt on String? {
         this?.contains('document') == true) {
       return MimeType.docx;
     }
-    return MimeType.unknow;
+    return MimeType.unknown;
   }
 }

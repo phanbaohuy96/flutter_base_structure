@@ -1,0 +1,87 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+apply from: 'signing.gradle'
+
+android {
+    namespace 'net.vnsilicon.core'
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions { 
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }   
+    
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+
+    defaultConfig {
+        minSdkVersion 26
+        targetSdkVersion 35
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        profile {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "app"
+
+    productFlavors {
+        def appSpecificProps = new Properties()
+        def appSpecificPropsFile = rootProject.file('app_specific.properties')
+        if (appSpecificPropsFile.exists()) {
+            appSpecificPropsFile.withReader('UTF-8') { reader ->
+                appSpecificProps.load(reader)
+            }
+        }
+
+        dev {
+            applicationId appSpecificProps.getProperty('app.dev.package')
+            resValue "string", "app_name", appSpecificProps.getProperty('app.dev.name')
+            signingConfig signingConfigs.dev
+        }
+        staging {
+            applicationId appSpecificProps.getProperty('app.staging.package')
+            resValue "string", "app_name", appSpecificProps.getProperty('app.staging.name')
+            signingConfig signingConfigs.staging
+        }
+        prod {
+            applicationId appSpecificProps.getProperty('app.prod.package')
+            resValue "string", "app_name", appSpecificProps.getProperty('app.prod.name')
+            signingConfig signingConfigs.prod
+        }
+    }
+    lint {
+        checkReleaseBuilds false
+        disable 'InvalidPackage'
+    }
+}
+
+flutter {
+    source '../..'
+}

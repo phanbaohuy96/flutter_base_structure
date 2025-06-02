@@ -33,9 +33,7 @@ Future<void> generateAppLocalizations() async {
   final fields = await input
       .transform(utf8.decoder)
       .transform(
-        CsvToListConverter(
-          eol: Platform.isMacOS ? '\n' : defaultEol,
-        ),
+        CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
       )
       .toList();
 
@@ -48,6 +46,41 @@ Future<void> generateAppLocalizations() async {
     outputPath: outputPath as String,
     filenameTemplate: filenameTemplate,
     fileExtension: fileExtension,
+  );
+}
+
+Future<void> generateSwapColumn({int? firstColIdx, int? secondColIdx}) async {
+  var filePath = 'l10n.yaml';
+  if (!File(filePath).existsSync()) {
+    _showYamlError();
+
+    return;
+  }
+
+  final yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
+
+  final csvPath = yamlMap['resource-file']?.toString() ?? '';
+
+  if (!File(csvPath).existsSync()) {
+    print('''Localizations csv file is not exist!''');
+
+    return;
+  }
+
+  final input = File(csvPath).openRead();
+
+  final fields = await input
+      .transform(utf8.decoder)
+      .transform(
+        CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
+      )
+      .toList();
+
+  await generate_app_localizations.generateSwapColumn(
+    localizations: fields,
+    outputPath: csvPath,
+    firstColIdx: firstColIdx,
+    secondColIdx: secondColIdx,
   );
 }
 
@@ -94,7 +127,9 @@ void _showYamlError() {
   print('''Please setting up an internation­alization for your app first''');
   print('''##########################################
 ##### Reference #####''');
-  print('''
-  https://docs.flutter.dev/development/accessibility-and-localization/internationalization''');
+  print(
+    '''
+  https://docs.flutter.dev/development/accessibility-and-localization/internationalization''',
+  );
   print('##########################################');
 }

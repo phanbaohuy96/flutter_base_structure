@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../common.dart';
@@ -9,9 +10,11 @@ class SystemHeaderProvider extends HeaderProvider {
   SystemHeaderProvider();
 
   @override
-  Map<String, String> build() {
+  Future<Map<String, String>> build() async {
     return {
-      RequestHeaderKey.osplatform.key: Platform.operatingSystem,
+      // Check if web platform then we don't include to os-platform in request
+      // header to prevent CORS error
+      if (!kIsWeb) RequestHeaderKey.osplatform.key: Platform.operatingSystem,
     };
   }
 }

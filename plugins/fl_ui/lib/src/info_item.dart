@@ -1,3 +1,4 @@
+import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'item_devider.dart';
@@ -36,7 +37,7 @@ class InfoItem extends StatelessWidget {
     this.color,
     this.divider = ItemDivider.space,
     this.dividerColor,
-    this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
     this.titleStyle,
     this.valueStyle,
     this.titleFlex = 1,
@@ -77,8 +78,7 @@ class InfoItem extends StatelessWidget {
                 border: divider == ItemDivider.line
                     ? Border(
                         bottom: BorderSide(
-                          color: dividerColor ??
-                              Colors.grey.withAlpha((0.1 * 255).round()),
+                          color: dividerColor ?? theme.dividerColor,
                           width: 1,
                         ),
                       )
@@ -88,22 +88,20 @@ class InfoItem extends StatelessWidget {
                 crossAxisAlignment: crossAxisAlignment,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Builder(
-                    builder: (context) {
-                      final tw = title is Widget
-                          ? title
-                          : Text(
-                              title,
-                              style: titleStyle ?? textTheme.labelLarge,
-                            );
-                      if (titleFlex != null) {
-                        return Expanded(
-                          flex: titleFlex!,
-                          child: tw,
-                        );
-                      }
-                      return tw;
-                    },
+                  DefaultTextStyle(
+                    style: titleStyle ?? textTheme.labelLarge!,
+                    child: Builder(
+                      builder: (context) {
+                        final tw = title is Widget ? title : Text(title);
+                        if (titleFlex != null) {
+                          return Expanded(
+                            flex: titleFlex!,
+                            child: tw,
+                          );
+                        }
+                        return tw;
+                      },
+                    ),
                   ),
                   if (required == true)
                     const Text(
@@ -111,23 +109,27 @@ class InfoItem extends StatelessWidget {
                       style: TextStyle(color: Colors.red),
                     ),
                   SizedBox(width: spacer),
-                  Builder(
-                    builder: (context) {
-                      final vw = value is Widget
-                          ? value
-                          : Text(
-                              value ?? '--',
-                              style: valueStyle ?? textTheme.bodyMedium,
-                              textAlign: TextAlign.end,
-                            );
-                      if (valueFlex != null) {
-                        return Expanded(
-                          flex: valueFlex!,
-                          child: vw,
-                        );
-                      }
-                      return vw;
-                    },
+                  DefaultTextStyle(
+                    style: valueStyle ?? textTheme.bodyMedium!,
+                    child: Builder(
+                      builder: (context) {
+                        final vw = value is Widget
+                            ? value
+                            : Text(
+                                asOrNull(value, '')!.isNotEmpty == true
+                                    ? value!
+                                    : '--',
+                                textAlign: TextAlign.end,
+                              );
+                        if (valueFlex != null) {
+                          return Expanded(
+                            flex: valueFlex!,
+                            child: vw,
+                          );
+                        }
+                        return vw;
+                      },
+                    ),
                   ),
                 ],
               ),

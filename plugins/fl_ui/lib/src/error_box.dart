@@ -4,41 +4,89 @@ import 'package:flutter/material.dart';
 import 'box_color.dart';
 import 'custom_stepper.dart';
 
-class ErrorBox extends StatelessWidget {
-  final ErrorBoxController controller;
+class ErrorBox extends StatefulWidget {
+  final ErrorBoxController? controller;
   final Widget child;
-  final EdgeInsetsGeometry errorPadding;
+  final EdgeInsetsGeometry errorTextPadding;
+  final EdgeInsetsGeometry? errorBoxPadding;
   final TextStyle? errorStyle;
   final BorderRadius borderRadius;
   final Color normalBorderColor;
+  final String? validation;
 
   const ErrorBox({
     Key? key,
     required this.child,
-    required this.controller,
+    this.controller,
     this.errorStyle,
     this.borderRadius = BorderRadius.zero,
     this.normalBorderColor = Colors.transparent,
-    this.errorPadding = const EdgeInsets.only(top: 8),
+    this.errorBoxPadding,
+    this.errorTextPadding = const EdgeInsets.only(top: 8),
+    this.validation,
   }) : super(key: key);
+
+  @override
+  State<ErrorBox> createState() => _ErrorBoxState();
+}
+
+class _ErrorBoxState extends State<ErrorBox> {
+  ErrorBoxController? controller;
+
+  @override
+  void initState() {
+    controller = widget.controller ??
+        ErrorBoxController(
+          value: widget.validation,
+        );
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant ErrorBox oldWidget) {
+    if (oldWidget.controller == null) {
+      controller?.dispose();
+    }
+    controller = widget.controller ??
+        ErrorBoxController(
+          value: widget.validation,
+        );
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      controller?.dispose();
+    }
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Focus(
-      focusNode: controller.focusNode,
+      focusNode: controller!.focusNode,
+      onFocusChange: (value) {
+        Scrollable.ensureVisible(
+          context,
+          duration: const Duration(milliseconds: 250),
+        );
+      },
       child: ValueListenableBuilder<String?>(
-        valueListenable: controller,
+        valueListenable: controller!,
         builder: (context, value, child) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
             children: [
               HighlightBoxColor(
-                padding: EdgeInsets.zero,
-                borderRadius: borderRadius,
+                padding: value != null
+                    ? widget.errorBoxPadding ?? EdgeInsets.zero
+                    : EdgeInsets.zero,
+                borderRadius: widget.borderRadius,
                 bgColor: Colors.transparent,
                 borderColor:
-                    value.isNullOrEmpty ? normalBorderColor : Colors.red,
+                    value == null ? widget.normalBorderColor : Colors.red,
                 child: child,
               ),
               Builder(
@@ -50,10 +98,10 @@ class ErrorBox extends StatelessWidget {
                     begin: const Offset(0.0, -1),
                     duration: const Duration(milliseconds: 500),
                     child: Padding(
-                      padding: errorPadding,
+                      padding: widget.errorTextPadding,
                       child: Text(
                         value!,
-                        style: errorStyle ??
+                        style: widget.errorStyle ??
                             Theme.of(context).textTheme.labelMedium?.copyWith(
                                   color: Colors.red,
                                 ),
@@ -65,14 +113,14 @@ class ErrorBox extends StatelessWidget {
             ],
           );
         },
-        child: child,
+        child: widget.child,
       ),
     );
   }
 }
 
 class ErrorBoxController extends ValueNotifier<String?> {
-  ErrorBoxController({String? value}) : super(null);
+  ErrorBoxController({String? value}) : super(value);
 
   final _focusNode = FocusNode();
 
@@ -88,4 +136,6 @@ class ErrorBoxController extends ValueNotifier<String?> {
     value = null;
     notifyListeners();
   }
+
+  bool get hasError => value != null;
 }

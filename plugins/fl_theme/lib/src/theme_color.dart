@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 
@@ -131,6 +132,9 @@ class ThemeColor {
   /// It is [OutlinedButton.foregroundColor] and [OutlinedButton.side.color]
   final Color outlineButtonColor;
 
+  /// It is [OutlinedButton.backgroundColor]
+  final Color outlineButtonBackgroundColor;
+
   /// It is [OutlinedButton.foregroundColor] and [OutlinedButton.side.color]
   /// when disabled
   final Color outlineButtonDisableColor;
@@ -173,6 +177,7 @@ class ThemeColor {
     this.elevatedBtnForegroundDisableColor,
     this.elevatedBtnBackgroundDisableColor,
     Color? outlineButtonColor,
+    Color? outlineButtonBackgroundColor,
     Color? outlineButtonDisableColor,
     Color? displayText,
     Color? headlineText,
@@ -219,6 +224,8 @@ class ThemeColor {
         textButtonDisableColor = textButtonDisableColor ?? disableColor,
         elevatedBtnBackgroundColor = elevatedBtnBackgroundColor ?? primary,
         outlineButtonColor = outlineButtonColor ?? primary,
+        outlineButtonBackgroundColor =
+            outlineButtonBackgroundColor ?? Colors.transparent,
         outlineButtonDisableColor = outlineButtonDisableColor ?? disableColor,
         displayText = displayText ??
             (brightness == Brightness.light
@@ -278,11 +285,17 @@ class ThemeColor {
   final green33B64F = const Color(0xFF33B64F);
 
   void setLightStatusBar() {
+    if (kIsWeb) {
+      return;
+    }
     FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   }
 
   void setDarkStatusBar() {
+    if (kIsWeb) {
+      return;
+    }
     FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   }

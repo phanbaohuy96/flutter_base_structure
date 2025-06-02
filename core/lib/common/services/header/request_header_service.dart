@@ -35,7 +35,7 @@ abstract class RequestHeaderService {
 
   List<HeaderProvider> get interceptors => _providers;
 
-  Map<String, String> get requestHeaders;
+  Future<Map<String, String>> get requestHeaders;
 
   void addProvider(HeaderProvider provider) {
     if (!_providers.contains(provider)) {
@@ -60,5 +60,5 @@ abstract class RequestHeaderService {
 }
 
 abstract class HeaderProvider {
-  Map<String, String> build();
+  Future<Map<String, String>> build();
 }

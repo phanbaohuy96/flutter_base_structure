@@ -554,7 +554,7 @@ abstract class ThemeDialog {
     Function()? onClose,
   }) {
     final theme = context.theme;
-    if (kIsWeb || Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       return AlertDialog(
         title: RichText(
           text: TextSpan(
@@ -681,12 +681,13 @@ abstract class ThemeDialog {
     void Function()? onClose,
     Color? backgroundColor,
     bool resizeToAvoidBottomInset = true,
+    bool showTitleDivider = true,
   }) {
     final theme = context.theme;
 
-    final mediaData = MediaQuery.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
+        final mediaData = MediaQuery.of(context);
         final maxContentSize =
             constraints.maxHeight - mediaData.padding.top - 120;
         return Padding(
@@ -751,7 +752,7 @@ abstract class ThemeDialog {
                           const SizedBox(width: 8),
                         ],
                       ),
-                      const Divider(),
+                      if (showTitleDivider) const Divider(),
                     ] else
                       const SizedBox(
                         height: 4,

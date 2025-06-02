@@ -10,10 +10,10 @@ import 'fl_media_localizations_th.dart';
 
 // ignore_for_file: type=lint
 
-/// Callers can lookup localized strings with an instance of FlMeidaLocalizations
-/// returned by `FlMeidaLocalizations.of(context)`.
+/// Callers can lookup localized strings with an instance of FlMediaLocalizations
+/// returned by `FlMediaLocalizations.of(context)`.
 ///
-/// Applications need to include `FlMeidaLocalizations.delegate()` in their app's
+/// Applications need to include `FlMediaLocalizations.delegate()` in their app's
 /// `localizationDelegates` list, and the locales they support in the app's
 /// `supportedLocales` list. For example:
 ///
@@ -21,8 +21,8 @@ import 'fl_media_localizations_th.dart';
 /// import 'generated/fl_media_localizations.dart';
 ///
 /// return MaterialApp(
-///   localizationsDelegates: FlMeidaLocalizations.localizationsDelegates,
-///   supportedLocales: FlMeidaLocalizations.supportedLocales,
+///   localizationsDelegates: FlMediaLocalizations.localizationsDelegates,
+///   supportedLocales: FlMediaLocalizations.supportedLocales,
 ///   home: MyApplicationHome(),
 /// );
 /// ```
@@ -59,21 +59,21 @@ import 'fl_media_localizations_th.dart';
 /// Select and expand the newly-created Localizations item then, for each
 /// locale your application supports, add a new item and select the locale
 /// you wish to add from the pop-up menu in the Value field. This list should
-/// be consistent with the languages listed in the FlMeidaLocalizations.supportedLocales
+/// be consistent with the languages listed in the FlMediaLocalizations.supportedLocales
 /// property.
-abstract class FlMeidaLocalizations {
-  FlMeidaLocalizations(String locale)
+abstract class FlMediaLocalizations {
+  FlMediaLocalizations(String locale)
       : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
-  static FlMeidaLocalizations? of(BuildContext context) {
-    return Localizations.of<FlMeidaLocalizations>(
-        context, FlMeidaLocalizations);
+  static FlMediaLocalizations? of(BuildContext context) {
+    return Localizations.of<FlMediaLocalizations>(
+        context, FlMediaLocalizations);
   }
 
-  static const LocalizationsDelegate<FlMeidaLocalizations> delegate =
-      _FlMeidaLocalizationsDelegate();
+  static const LocalizationsDelegate<FlMediaLocalizations> delegate =
+      _FlMediaLocalizationsDelegate();
 
   /// A list of this localizations delegate along with the default localizations
   /// delegates.
@@ -166,14 +166,14 @@ abstract class FlMeidaLocalizations {
   String get takePhoto;
 }
 
-class _FlMeidaLocalizationsDelegate
-    extends LocalizationsDelegate<FlMeidaLocalizations> {
-  const _FlMeidaLocalizationsDelegate();
+class _FlMediaLocalizationsDelegate
+    extends LocalizationsDelegate<FlMediaLocalizations> {
+  const _FlMediaLocalizationsDelegate();
 
   @override
-  Future<FlMeidaLocalizations> load(Locale locale) {
-    return SynchronousFuture<FlMeidaLocalizations>(
-        lookupFlMeidaLocalizations(locale));
+  Future<FlMediaLocalizations> load(Locale locale) {
+    return SynchronousFuture<FlMediaLocalizations>(
+        lookupFlMediaLocalizations(locale));
   }
 
   @override
@@ -181,20 +181,20 @@ class _FlMeidaLocalizationsDelegate
       <String>['en', 'th'].contains(locale.languageCode);
 
   @override
-  bool shouldReload(_FlMeidaLocalizationsDelegate old) => false;
+  bool shouldReload(_FlMediaLocalizationsDelegate old) => false;
 }
 
-FlMeidaLocalizations lookupFlMeidaLocalizations(Locale locale) {
+FlMediaLocalizations lookupFlMediaLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'en':
-      return FlMeidaLocalizationsEn();
+      return FlMediaLocalizationsEn();
     case 'th':
-      return FlMeidaLocalizationsTh();
+      return FlMediaLocalizationsTh();
   }
 
   throw FlutterError(
-      'FlMeidaLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'FlMediaLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
       'an issue with the localizations generation tool. Please file an issue '
       'on GitHub with a reproducible sample app and the gen-l10n configuration '
       'that was used.');

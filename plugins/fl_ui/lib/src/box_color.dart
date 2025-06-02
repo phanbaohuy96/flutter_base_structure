@@ -181,8 +181,8 @@ class StatusBox extends StatelessWidget {
       color: bgColor ?? Colors.grey[200]!,
       borderRadius: BorderRadius.circular(32),
       padding: const EdgeInsets.symmetric(
-        vertical: 4,
-        horizontal: 12,
+        vertical: 2,
+        horizontal: 8,
       ),
       border: hasBorder
           ? Border.all(
@@ -194,7 +194,7 @@ class StatusBox extends StatelessWidget {
       alignment: Alignment.center,
       child: Text(
         status ?? '--',
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: textColor ?? color ?? Colors.grey,
               fontWeight: FontWeight.w600,
             ),

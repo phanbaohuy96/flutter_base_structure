@@ -18,7 +18,7 @@ Future<void> showModuleGeneratorMenu() async {
     MenuItem.repositoryGenerator.index: 'Generate repository',
     MenuItem.usecase.index: 'Generate Usecase',
     MenuItem.model.index: 'Generate model template',
-    MenuItem.exit.index: 'Exit'
+    MenuItem.exit.index: 'Exit',
   };
 
   while (true) {

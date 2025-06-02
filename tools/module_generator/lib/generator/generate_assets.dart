@@ -34,15 +34,15 @@ Future<void> generateAsset({
 
     final entities = await dir.list().toList();
     for (final f in entities.whereType<File>()) {
-      var isValidExtension = validExtension
-          .any((extension) => path.extension(f.path).contains(extension));
+      var isValidExtension = validExtension.any(
+        (extension) => path.extension(f.path).contains(extension),
+      );
       if (isValidExtension) {
         final fileName = f.path.split('/').last.split('.').first;
 
-        listAssets.add(AssetFile(
-          variableName: camelCase(fileName),
-          filePath: f.path,
-        ));
+        listAssets.add(
+          AssetFile(variableName: camelCase(fileName), filePath: f.path),
+        );
       }
     }
   }
@@ -117,7 +117,8 @@ Future<void> generateAsset({
   await FilesHelper.writeFile(
     pathFile: '${output}rive_assets.dart',
     content: _generateRiveContentFile(
-        riveAssetsRes.replaceFirst(contentKey, riveContentFile)),
+      riveAssetsRes.replaceFirst(contentKey, riveContentFile),
+    ),
   );
 
   await FilesHelper.writeFile(
@@ -139,10 +140,9 @@ Future<void> removeUnusedAssets({
     for (final f in entities.whereType<File>()) {
       final fileName = f.path.split('/').last.split('.').first;
 
-      listAssets.add(AssetFile(
-        variableName: camelCase(fileName),
-        filePath: f.path,
-      ));
+      listAssets.add(
+        AssetFile(variableName: camelCase(fileName), filePath: f.path),
+      );
     }
   }
   listAssets.sort((a, b) => a.variableName.compareTo(b.variableName));
@@ -152,20 +152,17 @@ Future<void> removeUnusedAssets({
   for (final a in listAssets) {
     final variable = a.variableName;
     if (['.png', '.jpg', '.jpeg'].any((ext) => a.filePath.contains(ext))) {
-      imageAssetFile.add(AssetFile(
-        variableName: 'Assets.image.$variable',
-        filePath: a.filePath,
-      ));
+      imageAssetFile.add(
+        AssetFile(variableName: 'Assets.image.$variable', filePath: a.filePath),
+      );
     } else if (['.svg'].any((ext) => a.filePath.contains(ext))) {
-      svgAssetFile.add(AssetFile(
-        variableName: 'Assets.svg.$variable',
-        filePath: a.filePath,
-      ));
+      svgAssetFile.add(
+        AssetFile(variableName: 'Assets.svg.$variable', filePath: a.filePath),
+      );
     } else if (['.DS_Store'].every((ext) => !a.filePath.contains(ext))) {
-      otherAssetFile.add(AssetFile(
-        variableName: 'Assets.other.$variable',
-        filePath: a.filePath,
-      ));
+      otherAssetFile.add(
+        AssetFile(variableName: 'Assets.other.$variable', filePath: a.filePath),
+      );
     }
   }
 
@@ -217,11 +214,7 @@ Future<void> removeUnusedAssets({
     await File(other.filePath).delete();
   }
 
-  await generateAsset(
-    paths: resPaths,
-    output: output,
-    root: root,
-  );
+  await generateAsset(paths: resPaths, output: output, root: root);
 }
 
 Future<List<File>> _getAllDartFilePathsInDir(String dir) async {
