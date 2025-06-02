@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +31,16 @@ abstract class CoreAppPreferenceData {
   bool isFirstLaunch();
 
   /// Token
-  UserToken? get token;
+  Future<UserToken?> get token;
 
-  Future<bool?> setToken(UserToken? value);
+  Future setToken(UserToken? value);
+
+  // Cookie - Consent
+  bool? get allowCookieConsent;
+
+  Future<bool?> setCookieConsentAccepted(bool? accepted);
+
+  DateTime? get lastDayShowCookieConsent;
+
+  Future<bool?> setLastDayShowCookieConsent(DateTime? today);
 }

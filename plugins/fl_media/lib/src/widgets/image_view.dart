@@ -20,6 +20,8 @@ class ImageView extends StatelessWidget {
     this.placeHolder,
     this.package,
     this.loadingRadius,
+    this.cacheWidth,
+    this.cacheHeight,
   });
 
   final String source;
@@ -31,6 +33,8 @@ class ImageView extends StatelessWidget {
   final String? placeHolder;
   final String? package;
   final double? loadingRadius;
+  final int? cacheWidth;
+  final int? cacheHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +68,8 @@ class ImageView extends StatelessWidget {
         color: color,
         alignment: alignment,
         loadingRadius: loadingRadius,
+        cacheWidth: cacheWidth,
+        cacheHeight: cacheHeight,
       );
     }
     if (image.contains('.svg')) {
@@ -106,6 +112,8 @@ class ExtendedNetworkImage extends StatelessWidget {
     this.brightness,
     this.cached = true,
     this.loadingRadius,
+    this.cacheWidth,
+    this.cacheHeight,
   });
 
   final String image;
@@ -120,6 +128,8 @@ class ExtendedNetworkImage extends StatelessWidget {
   final Brightness? brightness;
   final bool cached;
   final double? loadingRadius;
+  final int? cacheWidth;
+  final int? cacheHeight;
 
   @override
   Widget build(BuildContext context) {
@@ -131,6 +141,8 @@ class ExtendedNetworkImage extends StatelessWidget {
       color: color,
       alignment: alignment,
       cache: cached,
+      cacheWidth: cacheWidth,
+      cacheHeight: cacheHeight,
       loadStateChanged: (state) {
         switch (state.extendedImageLoadState) {
           case LoadState.loading:

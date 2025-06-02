@@ -53,6 +53,7 @@ class AppTheme {
     OutlinedButtonThemeBuilder outlinedButtonThemeBuilder =
         AppTheme._outlinedButtonThemeData,
     TabBarThemeBuilder tabBarThemeBuilder = AppTheme._tabBarTheme,
+    TargetPlatform? targetPlatform,
   }) {
     final _appTextTheme = appTextTheme ?? AppTextTheme.create(themeColor);
     final brightness = themeColor.brightness;
@@ -120,7 +121,7 @@ class AppTheme {
           surface: Colors.white,
           brightness: brightness,
         ),
-        platform: TargetPlatform.iOS,
+        platform: targetPlatform,
         extensions: [
           screenTheme,
           ThemeColorExtension(colors: themeColor),
@@ -215,6 +216,11 @@ class AppTheme {
             return themeColor.outlineButtonColor;
           },
         ),
+        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+          (Set<WidgetState> states) {
+            return themeColor.outlineButtonBackgroundColor;
+          },
+        ),
         side: WidgetStateProperty.resolveWith<BorderSide>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.disabled)) {
@@ -245,10 +251,15 @@ class AppTheme {
       borderSide: BorderSide(color: themeColor.primary, width: 1),
       borderRadius: const BorderRadius.all(Radius.circular(4.0)),
     );
+    final disabledBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: themeColor.disableColor, width: 1),
+      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+    );
     return InputDecorationTheme(
       border: border,
       enabledBorder: border,
       focusedBorder: focusedBorder,
+      disabledBorder: disabledBorder,
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: appTextTheme.inputTitle,
       floatingLabelStyle: appTextTheme.inputTitle,

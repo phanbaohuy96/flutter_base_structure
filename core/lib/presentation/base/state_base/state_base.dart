@@ -109,19 +109,17 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     errorTypeShowing = null;
   }
 
-  void showLoginRequired({String? message, Function()? onConfirmed}) {
-    showNoticeConfirmDialog(
+  Future showLoginRequired({String? message}) {
+    return showNoticeConfirmDialog(
       barrierDismissible: true,
       context: context,
       title: coreL10n.inform,
       message: message ?? coreL10n.sessionExpired,
-      onConfirmed: () {
+    ).then(
+      (value) {
         onCloseErrorDialog();
-        if (onConfirmed != null) {
-          onConfirmed.call();
-        }
+        return value;
       },
-      onCanceled: onCloseErrorDialog,
     );
   }
 
@@ -241,7 +239,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     String? message,
     Widget? icon,
     Duration duration = const Duration(seconds: 2),
-    Color backgroundColor = const Color(0xffE2F1E6),
+    Color backgroundColor = const Color(0xffF6E3E2),
     Color messageColor = Colors.black,
     FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
     EdgeInsets margin = const EdgeInsets.symmetric(

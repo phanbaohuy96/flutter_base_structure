@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../../../../common/utils.dart';
-import '../../../theme/export.dart';
-import '../../shared/input_decoration_factory.dart';
+import '../../../../core.dart';
 
 part 'dropdown_controller.dart';
 
 class DropdownWidget<T> extends StatefulWidget {
   final String? title;
   final TextStyle? titleStyle;
+  final TitleMode titleMode;
   final bool required;
   final T? selected;
   final List<T> items;
@@ -32,10 +31,12 @@ class DropdownWidget<T> extends StatefulWidget {
   final bool isExpanded;
   final Widget Function(T)? selectedItemBuilder;
   final BorderRadius? borderRadius;
+  final VoidCallback? onTap;
 
   DropdownWidget({
     this.title,
     this.titleStyle,
+    this.titleMode = TitleMode.above,
     required this.itemBuilder,
     required this.items,
     this.selected,
@@ -59,6 +60,7 @@ class DropdownWidget<T> extends StatefulWidget {
     this.isExpanded = true,
     this.selectedItemBuilder,
     this.borderRadius,
+    this.onTap,
   });
 
   @override
@@ -80,23 +82,27 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
 
   @override
   void didUpdateWidget(covariant DropdownWidget<T> oldWidget) {
-    _setupController();
+    _setupController(oldSelected: oldWidget.selected);
     super.didUpdateWidget(oldWidget);
   }
 
-  void _setupController() {
+  void _setupController({T? oldSelected}) {
     _controller = widget.controller ??
         _controller ??
         DropdownController<T, DropdownData<T>>(
           value: DropdownData<T>(),
         );
-    if (_controller!.data != widget.selected &&
-        (widget.selected == null ||
-            widget.items.any((e) => e == widget.selected))) {
-      _controller!.setData(widget.selected);
+    final initial = widget.selected != oldSelected
+        ? widget.selected
+        : widget.controller?.data ?? widget.selected;
+
+    if (initial != _controller!.data || initial != oldSelected) {
+      _controller!.setData(initial);
     }
-    if (!widget.items.any((e) => e == _controller!.data)) {
+
+    if (initial != null && !widget.items.any((e) => e == initial)) {
       _controller!.setData(null);
+      return;
     }
   }
 
@@ -112,7 +118,7 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
   @override
   Widget build(BuildContext context) {
     final themeData = context.theme;
-    return ValueListenableBuilder<DropdownData<T>>(
+    final dropdown = ValueListenableBuilder<DropdownData<T>>(
       valueListenable: _controller!,
       builder: (ctx, value, w) {
         return Theme(
@@ -160,11 +166,15 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             style: context.textTheme.textInput,
             isExpanded: widget.isExpanded,
             isDense: widget.isDense,
+            onTap: widget.onTap,
             decoration: InputDecorationFactory.build(
               context: context,
               hint: widget.hint,
               hintStyle: widget.hintStyle,
-              title: widget.title,
+              title: switch (widget.titleMode) {
+                TitleMode.floating => widget.title,
+                _ => null,
+              },
               required: widget.required,
               titleStyle: widget.titleStyle,
               errorText: value.validation,
@@ -176,6 +186,32 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             ),
           ),
         );
+      },
+    );
+
+    return AvailabilityWidget(
+      enable: widget.enable,
+      child: switch (widget.titleMode) {
+        TitleMode.floating => dropdown,
+        _ => Builder(
+            builder: (context) {
+              if (widget.title.isNullOrEmpty) {
+                return dropdown;
+              }
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InputTitleWidget(
+                    title: widget.title,
+                    required: widget.required,
+                  ),
+                  const SizedBox(height: 8),
+                  dropdown,
+                ],
+              );
+            },
+          ),
       },
     );
   }

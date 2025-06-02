@@ -3,6 +3,7 @@ part of 'input_container.dart';
 class InputContainerProperties {
   TextEditingController tdController;
   String? validation;
+  String? warning;
   bool isShowPassword;
   FocusNode focusNode;
 
@@ -20,6 +21,11 @@ class InputContainerProperties {
   }) {
     this.tdController = tdController ?? this.tdController;
     this.focusNode = focusNode ?? this.focusNode;
+  }
+
+  void dispose() {
+    tdController.dispose();
+    focusNode.dispose();
   }
 }
 
@@ -53,7 +59,9 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   }
 
   void resetValidation() {
-    value.validation = null;
+    value
+      ..validation = null
+      ..warning = null;
     notifyListeners();
   }
 
@@ -65,8 +73,21 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
     notifyListeners();
   }
 
+  void setWarning(String message, {bool needFocus = false}) {
+    if (needFocus) {
+      requestFocus();
+    }
+    value.warning = message;
+    notifyListeners();
+  }
+
   void clearError() {
     value.validation = null;
+    notifyListeners();
+  }
+
+  void clearWarning() {
+    value.warning = null;
     notifyListeners();
   }
 
@@ -96,5 +117,11 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   void clear() {
     value.tdController.clear();
     resetValidation();
+  }
+
+  @override
+  void dispose() {
+    value.dispose();
+    super.dispose();
   }
 }

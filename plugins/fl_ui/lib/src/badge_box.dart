@@ -7,6 +7,8 @@ class BadgeBox extends StatelessWidget {
   final Color backgroundColor;
   final Widget child;
   final badge.BadgePosition? badgePosition;
+  final int maxCount;
+
   const BadgeBox({
     Key? key,
     required this.count,
@@ -14,6 +16,7 @@ class BadgeBox extends StatelessWidget {
     this.countTextColor = Colors.white,
     this.backgroundColor = const Color(0xFFEC3505),
     this.badgePosition,
+    this.maxCount = 99,
   }) : super(key: key);
 
   @override
@@ -23,7 +26,7 @@ class BadgeBox extends StatelessWidget {
       badgeContent: Container(
         alignment: Alignment.center,
         child: Text(
-          '$count',
+          count > maxCount ? '$maxCount+' : '$count',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: countTextColor,
                 fontWeight: FontWeight.bold,

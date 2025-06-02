@@ -137,7 +137,7 @@ abstract class CoreLocalizations {
   /// No description provided for @requestRestricted.
   ///
   /// In en, this message translates to:
-  /// **'Request sent too many times\\nPlease wait a moment and try again.'**
+  /// **'Request sent too many times\nPlease wait a moment and try again.'**
   String get requestRestricted;
 
   /// No description provided for @serverMaintenance.
@@ -149,7 +149,7 @@ abstract class CoreLocalizations {
   /// No description provided for @connectionTimeout.
   ///
   /// In en, this message translates to:
-  /// **'Connection timmed out.'**
+  /// **'Connection timed out.'**
   String get connectionTimeout;
 
   /// No description provided for @unknownError.
@@ -499,6 +499,30 @@ abstract class CoreLocalizations {
   /// In en, this message translates to:
   /// **'Please enable location to continue the experience'**
   String get pleaseEnableGPS;
+
+  /// No description provided for @required.
+  ///
+  /// In en, this message translates to:
+  /// **'Required'**
+  String get required;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get optional;
+
+  /// No description provided for @fileSizeOverXMB.
+  ///
+  /// In en, this message translates to:
+  /// **'The file is too large. Maximum allowed size is {x}MB.'**
+  String fileSizeOverXMB(Object x);
+
+  /// No description provided for @errorWhenUploading.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred when uploading'**
+  String get errorWhenUploading;
 }
 
 class _CoreLocalizationsDelegate
