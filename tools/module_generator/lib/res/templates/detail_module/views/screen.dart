@@ -1,6 +1,7 @@
 import '../../../../common/definations.dart';
 
 const detailModuleScreen = '''import 'package:core/core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '$importPartKey../l10n/generated/app_localizations.dart';
@@ -15,6 +16,22 @@ class ${classNameKey}Args {
   final String? id;
 
   ${classNameKey}Args({this.initial, this.id});
+
+  factory ${classNameKey}Args.fromUrlParams(
+    Map<String, dynamic> queryParameters,
+  ) =>
+      ${classNameKey}Args(
+        id: asOrNull(queryParameters['id']),
+      );
+
+  dynamic get adaptive {
+    if (kIsWeb) {
+      return {
+        'id': initial?.id ?? id,
+      }..removeWhere((key, value) => value.isNullOrEmpty);
+    }
+    return this;
+  }
 }
 
 class ${classNameKey}Screen extends StatefulWidget {
