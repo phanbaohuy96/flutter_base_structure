@@ -3,9 +3,7 @@ import '../res/templates/detail_module/source.dart';
 import '../res/templates/usecase/source.dart';
 import 'module_generator_ext.dart';
 
-Future<void> generateDetailModule({
-  bool usecaseIncluded = true,
-}) async {
+Future<void> generateDetailModule({bool usecaseIncluded = true}) async {
   final inputModuleName = await InputHelper.enterName();
   var inputModuleDir = await InputHelper.enterDir();
 

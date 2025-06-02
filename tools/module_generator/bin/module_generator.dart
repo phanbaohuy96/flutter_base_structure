@@ -5,7 +5,7 @@ void main(List<String> args) {
   var parser = ArgParser();
   parser.addOption(
     'path',
-    callback: (path) => {module_generator.showModuleGeneratorMenu()},
+    callback: (path) => module_generator.showModuleGeneratorMenu(),
   );
   parser.parse(args);
 }

@@ -7,7 +7,7 @@ void main(List<String> args) {
 
   parser.addOption(
     'path',
-    callback: (path) => {generate_app_localizations.generateAppLocalizations()},
+    callback: (path) => generate_app_localizations.generateAppLocalizations(),
   );
 
   parser.parse(args);

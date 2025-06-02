@@ -11,10 +11,7 @@ class ExportFile {
   final String fileName;
   final String folder;
 
-  ExportFile({
-    required this.fileName,
-    required this.folder,
-  });
+  ExportFile({required this.fileName, required this.folder});
 
   factory ExportFile.fromMap(Map<dynamic, dynamic> map) {
     return ExportFile(
@@ -29,9 +26,7 @@ class ExportFile {
   String get filePath => '$folder$fileName';
 }
 
-Future<void> generateExport({
-  required List<YamlMap> config,
-}) async {
+Future<void> generateExport({required List<YamlMap> config}) async {
   final exportConfigs = config.map((e) => ExportFile.fromMap(e.value));
 
   for (final c in exportConfigs) {
@@ -39,13 +34,11 @@ Future<void> generateExport({
       ...(await getFilesFromDirector(c.folder)).map((e) {
         final cleanPath = e.replaceFirst(c.folder, '');
         return path.posix.joinAll(path.split(cleanPath));
-      })
+      }),
     ]..sort();
 
     contents
-      ..removeWhere(
-        (e) => e.contains('''\'${c.fileName}\''''),
-      )
+      ..removeWhere((e) => e.contains('''\'${c.fileName}\''''))
       ..add('');
 
     await FilesHelper.writeFile(

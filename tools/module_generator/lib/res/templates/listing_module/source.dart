@@ -13,10 +13,7 @@ final listingModuleRes = {
     'state': listingModuleState,
     'event': listingModuleEvent,
   },
-  'views': {
-    'screen': listingModuleScreen,
-    'action': listingModuleAction,
-  },
+  'views': {'screen': listingModuleScreen, 'action': listingModuleAction},
   'module': listingModule,
   'route': listingModuleRoute,
   'coordinator': listingModuleCoordinator,

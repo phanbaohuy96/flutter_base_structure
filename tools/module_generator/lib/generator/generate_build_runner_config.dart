@@ -19,28 +19,22 @@ Future<void> generateBuildRunnerConfig({
   final builderConfigs = <List<String>, (RegExp, List<String>)>{
     [
       'injectable_generator:injectable_builder',
-      'injectable_generator:injectable_config_builder'
+      'injectable_generator:injectable_config_builder',
     ]: (RegExp('\\b(package:injectable)\\b', caseSensitive: false), []),
-    [
-      'retrofit_generator',
-    ]: (RegExp('\\b(package:retrofit)\\b', caseSensitive: false), []),
+    ['retrofit_generator']: (
+      RegExp('\\b(package:retrofit)\\b', caseSensitive: false),
+      [],
+    ),
   };
 
   for (final f in allDartFiles) {
     final lines = await f.readAsLines();
-    final posixPath = path.posix.joinAll(
-      path.split(f.path),
-    );
+    final posixPath = path.posix.joinAll(path.split(f.path));
     for (final builder in builderConfigs.entries) {
-      if (lines.any(
-        (line) => builder.value.$1.hasMatch(line),
-      )) {
+      if (lines.any((line) => builder.value.$1.hasMatch(line))) {
         builderConfigs[builder.key] = (
           builder.value.$1,
-          [
-            ...builder.value.$2,
-            posixPath,
-          ]
+          [...builder.value.$2, posixPath],
         );
       }
     }
@@ -51,10 +45,7 @@ Future<void> generateBuildRunnerConfig({
       _updateBulders(
         _buildRunnerConfig,
         key,
-        builder.value.$2
-          ..sort(
-            (a, b) => a.compareTo(b),
-          ),
+        builder.value.$2..sort((a, b) => a.compareTo(b)),
       );
     }
   }
@@ -80,13 +71,8 @@ Map _updateBulders(Map config, String id, List value) {
   if (config['targets']['\$default']['builders'] == null) {
     config['targets']['\$default']['builders'] = {};
   }
-  return config['targets']['\$default']['builders'][id] = value.isEmpty
-      ? {
-          'enabled': false,
-        }
-      : {
-          'generate_for': value,
-        };
+  return config['targets']['\$default']['builders'][id] =
+      value.isEmpty ? {'enabled': false} : {'generate_for': value};
 }
 
 Future<List<File>> _getAllDartFilePathsInDir(String dir) async {
