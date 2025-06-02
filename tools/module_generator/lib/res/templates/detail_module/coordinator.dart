@@ -15,7 +15,7 @@ extension ${classNameKey}Coordinator on BuildContext {
       ${classNameKey}Screen.routeName,
       arguments: ${classNameKey}Args(
         initial: object,
-      ),
+      ).adaptive,
     );
   }
 
@@ -28,7 +28,7 @@ extension ${classNameKey}Coordinator on BuildContext {
       ${classNameKey}Screen.routeName,
       arguments: ${classNameKey}Args(
         id: id,
-      ),
+      ).adaptive,
     );
   }
 }
