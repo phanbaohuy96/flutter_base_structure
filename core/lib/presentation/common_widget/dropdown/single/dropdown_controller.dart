@@ -16,7 +16,7 @@ class DropdownController<V, T extends DropdownData<V>>
     notifyListeners();
   }
 
-  void resetValidaiton() {
+  void resetValidation() {
     value.validation = null;
     notifyListeners();
   }
@@ -24,7 +24,7 @@ class DropdownController<V, T extends DropdownData<V>>
   void setData(V? data) {
     if (data != value.value) {
       value.value = data;
-      resetValidaiton();
+      resetValidation();
     }
   }
 

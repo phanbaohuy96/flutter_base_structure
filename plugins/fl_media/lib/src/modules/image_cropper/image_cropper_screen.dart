@@ -29,7 +29,7 @@ class _ImageCropperScreenState extends State<ImageCropperScreen> {
   final GlobalKey<ExtendedImageEditorState> editorKey =
       GlobalKey<ExtendedImageEditorState>();
 
-  late FlMeidaLocalizations localization;
+  late FlMediaLocalizations localization;
   var _isLoadingShowing = false;
   void showLoading({bool dismissOnTap = false}) {
     if (!_isLoadingShowing) {

@@ -8,14 +8,14 @@ import 'modules/auth/signin/views/signin_screen.dart';
 import 'route/route.dart';
 import 'theme/theme.dart';
 
-class MainApplization extends StatefulWidget {
-  const MainApplization({Key? key}) : super(key: key);
+class MainApplication extends StatefulWidget {
+  const MainApplication({Key? key}) : super(key: key);
 
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MainApplization>
+class _MyAppState extends State<MainApplication>
     with WidgetsBindingObserver, AfterLayoutMixin {
   final themeSetting = MainAppTheme.normal();
 
@@ -79,7 +79,7 @@ class _MyAppState extends State<MainApplization>
             themeMode: state.themeMode,
             debugShowCheckedModeBanner: false,
             localizationsDelegates: const [
-              FlMeidaLocalizations.delegate,
+              FlMediaLocalizations.delegate,
               CoreLocalizations.delegate,
               AppLocalizations.delegate,
               GlobalMaterialLocalizations.delegate,
@@ -88,14 +88,19 @@ class _MyAppState extends State<MainApplization>
             ],
             supportedLocales: AppLocale.supportedLocales,
             locale: state.locale,
-            onGenerateRoute: RouteGenerator().generateRoute,
+            onGenerateRoute: (s) => injector<RouteGenerator>().generateRoute(
+              s,
+              supportUnknownRoute: false,
+            ),
             navigatorObservers: [myNavigatorObserver],
             navigatorKey: globalNavigatorKey,
             initialRoute: SignInScreen.routeName,
             builder: EasyLoading.init(
               builder: (_, child) {
-                return TextScaleFixed(
-                  child: child ?? const SizedBox(),
+                return MobileSizeLayoutConstraints(
+                  child: TextScaleFixed(
+                    child: child ?? const SizedBox(),
+                  ),
                 );
               },
             ),

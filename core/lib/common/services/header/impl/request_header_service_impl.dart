@@ -6,16 +6,16 @@ class RequestHeaderServiceImpl extends RequestHeaderService {
   }) : super(providers);
 
   @override
-  Map<String, String> get requestHeaders {
+  Future<Map<String, String>> get requestHeaders async {
     return {
-      ...defaulHeader,
+      ...defaultHeader,
       for (final interceptor in interceptors) ...<String, String>{
-        ...interceptor.build()..removeWhere((key, value) => value.isEmpty),
+        ...await interceptor.build(),
       },
     };
   }
 
-  Map<String, String> get defaulHeader => {
+  Map<String, String> get defaultHeader => {
         RequestHeaderKey.contentType.key: 'application/json',
         RequestHeaderKey.accept.key: 'application/json',
       };

@@ -6,10 +6,10 @@ import 'generated/fl_media_localizations_en.dart';
 export 'generated/fl_media_localizations.dart';
 
 extension CoreLocalizationOnContextExt on BuildContext {
-  FlMeidaLocalizations get flMediaL10n =>
-      FlMeidaLocalizations.of(this) ?? FlMeidaLocalizationsEn();
+  FlMediaLocalizations get flMediaL10n =>
+      FlMediaLocalizations.of(this) ?? FlMediaLocalizationsEn();
 }
 
-extension FlMeidaLocalizationsLocalizationOnStateExt on State {
-  FlMeidaLocalizations get flMediaL10n => context.flMediaL10n;
+extension FlMediaLocalizationsLocalizationOnStateExt on State {
+  FlMediaLocalizations get flMediaL10n => context.flMediaL10n;
 }

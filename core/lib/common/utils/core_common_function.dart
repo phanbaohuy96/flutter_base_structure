@@ -3,6 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../utils.dart';
 
+export 'package:url_launcher/url_launcher.dart' show LaunchMode;
+
 class CoreCommonFunction extends CommonFunction {
   String wrapStyleHtmlContent(String htmlContent, {bool isCenter = false}) {
     return '''<!DOCTYPE html>
@@ -219,6 +221,16 @@ class CoreCommonFunction extends CommonFunction {
       }
       return Future.value(false);
     });
+  }
+
+  Future<bool> launchUri(
+    String uri, {
+    LaunchMode mode = LaunchMode.externalApplication,
+  }) {
+    return launchUrl(
+      Uri.parse(uri),
+      mode: mode,
+    );
   }
 
   Future<bool> tryTel(String phone) {

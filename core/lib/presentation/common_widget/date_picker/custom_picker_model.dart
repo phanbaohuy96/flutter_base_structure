@@ -14,8 +14,10 @@ class DateDDMMYYYModel extends CommonPickerModel {
     DateTime? minTime,
     LocaleType? locale,
   }) : super(locale: locale) {
-    this.maxTime = maxTime ?? DateTime(2099, 12, 31);
-    this.minTime = minTime ?? DateTime(1900, 1, 1);
+    this.maxTime =
+        maxTime ?? DateTime.now().add(const Duration(days: 365 * 100));
+    this.minTime =
+        minTime ?? DateTime.now().subtract(const Duration(days: 365 * 20));
 
     currentTime = currentTime ?? DateTime.now();
     if (currentTime.compareTo(this.maxTime) > 0) {
@@ -78,7 +80,8 @@ class DateDDMMYYYModel extends CommonPickerModel {
   void _fillRightLists() {
     rightList = List.generate(maxTime.year - minTime.year + 1, (int index) {
       // print('LEFT LIST... ${minTime.year + index}${_localeYear()}');
-      return '${minTime.year + index}${_localeYear()}';
+      final year = minTime.year + index;
+      return '${_calendarYear(year)}${_localeYear()}';
     });
   }
 
@@ -339,7 +342,9 @@ class DateMMYYYModel extends CommonPickerModel {
   void _fillRightLists() {
     rightList = List.generate(maxTime.year - minTime.year + 1, (int index) {
       // print('LEFT LIST... ${minTime.year + index}${_localeYear()}');
-      return '${minTime.year + index}${_localeYear()}';
+
+      final year = minTime.year + index;
+      return '${_calendarYear(year)}${_localeYear()}';
     });
   }
 
@@ -670,5 +675,13 @@ class MyTimePickerModel extends CommonPickerModel {
             currentMiddleIndex(),
             currentRightIndex(),
           );
+  }
+}
+
+String _calendarYear(int year) {
+  if (CalendarHelper.isBuddhist) {
+    return '${year + 543}';
+  } else {
+    return '$year';
   }
 }

@@ -21,8 +21,17 @@ T? asOrNull<T>(dynamic value, [T? defaultValue]) {
       if (tType == 'String' && value is String) {
         return value as T;
       }
-      if (tType == 'DateTime' && value is String) {
-        return DateTime.tryParse(value)?.toLocal() as T?;
+      // Dart issue: https://github.com/dart-lang/sdk/issues/46373
+      if (tType == 'DateTime') {
+        if (value is String) {
+          return DateTime.tryParse(value)?.toLocal() as T?;
+        }
+
+        if (value is num) {
+          return DateTime.fromMillisecondsSinceEpoch(
+            (value * 1000).toInt(),
+          ) as T?;
+        }
       }
       if (value is num) {
         if (tType == 'double') {
@@ -46,6 +55,38 @@ T? asOrNull<T>(dynamic value, [T? defaultValue]) {
     }
   }
   return defaultValue;
+}
+
+T? asDateOrNull<T>(dynamic value, [T? defaultValue]) {
+  if (value is T) {
+    return value;
+  }
+  if (value != null) {
+    try {
+      if (value is String) {
+        return DateTime.tryParse(value)?.toLocal() as T?;
+      }
+
+      if (value is num) {
+        return DateTime.fromMillisecondsSinceEpoch(
+          (value * 1000).toInt(),
+        ) as T?;
+      }
+    } catch (e, stackTrace) {
+      debugPrint('asOrNullTest: $e $stackTrace');
+      if (kDebugMode) {
+        rethrow;
+      }
+    }
+  }
+  return defaultValue;
+}
+
+Object? readAsMapOrNull(Map p1, String p2) {
+  if (p1[p2] is Map) {
+    return p1[p2];
+  }
+  return null;
 }
 
 String? parseDuration(Duration? duration) {

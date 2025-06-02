@@ -9,7 +9,7 @@ class LanguageHeaderProvider extends HeaderProvider {
   LanguageHeaderProvider(this.localDataManager);
 
   @override
-  Map<String, String> build() {
+  Future<Map<String, String>> build() async {
     final languageCode = localDataManager.getLocalization() ??
         AppLocale.defaultLocale.languageCode;
     return {

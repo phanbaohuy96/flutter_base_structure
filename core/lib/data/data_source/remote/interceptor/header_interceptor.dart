@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import '../../../../common/services/header/request_header_service.dart';
+import '../../../../core.dart';
 
 class HeaderInterceptor extends Interceptor {
   final RequestHeaderService requestHeaderService;
@@ -8,13 +8,20 @@ class HeaderInterceptor extends Interceptor {
   HeaderInterceptor({required this.requestHeaderService});
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  Future onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    final requestHeaders = await requestHeaderService.requestHeaders;
     options.headers = {
-      ...requestHeaderService.requestHeaders,
+      ...requestHeaders,
 
       // Allow overriding headers from request
       ...options.headers,
     };
+    options.headers.removeWhere(
+      (key, value) => value == null || (value is String && value.isNullOrEmpty),
+    );
     super.onRequest(options, handler);
   }
 }

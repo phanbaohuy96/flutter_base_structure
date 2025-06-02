@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart' as f_picker;
+import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mime/mime.dart';
@@ -43,28 +46,10 @@ class PickFileHelper {
     List<String>? allowedExtensions,
     int compressionQuality = 0,
     bool allowMultiple = false,
-    bool withData = false,
+    bool? withData,
     bool withReadStream = false,
     bool lockParentWindow = false,
   }) async {
-    if (kIsWeb) {
-      /// This helper class addresses a limitation with the `file_picker`
-      /// package, which currently does not support web platforms.
-      /// As a temporary workaround, the [ImagePicker] package is used for
-      /// file picking functionality on the web.
-      ///
-      /// For more details, refer to the related issue on GitHub:
-      /// https://github.com/miguelpruivo/flutter_file_picker/issues/876
-      final picker = ImagePicker();
-      final result = await picker.pickImage(
-        source: ImageSource.gallery,
-      );
-
-      return [
-        if (result != null) await FilePicked.fromXFile(result),
-      ];
-    }
-
     final result = await f_picker.FilePicker.platform.pickFiles(
       dialogTitle: dialogTitle,
       initialDirectory: initialDirectory,
@@ -72,7 +57,7 @@ class PickFileHelper {
       allowedExtensions: allowedExtensions,
       compressionQuality: compressionQuality,
       allowMultiple: allowMultiple,
-      withData: withData,
+      withData: withData ?? kIsWeb,
       withReadStream: withReadStream,
       lockParentWindow: lockParentWindow,
     );
@@ -83,6 +68,20 @@ class PickFileHelper {
   Future<FilePicked?> takePicture([
     CameraDevice preferredCameraDevice = CameraDevice.rear,
   ]) async {
+    /// Do a cheat for [Platform.isIOS] on [kDebugMode]
+    ///
+    /// There are no camera service available.
+    if (kDebugMode && !kIsWeb && Platform.isIOS) {
+      return PickFileHelper()
+          .pickFiles(
+            allowMultiple: false,
+            type: FileType.image,
+          )
+          .then(
+            (value) => CoreListExtension(value).firstOrNull,
+          );
+    }
+
     final picker = ImagePicker();
     final result = await picker.pickImage(
       source: ImageSource.camera,

@@ -7,219 +7,234 @@ class CoreLocalizationsTh extends CoreLocalizations {
   CoreLocalizationsTh([String locale = 'th']) : super(locale);
 
   @override
-  String get inform => 'Inform';
+  String get inform => 'แจ้งเตือน';
 
   @override
-  String get ok => 'Ok';
+  String get ok => 'ตกลง';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'ยกเลิก';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'ยืนยัน';
 
   @override
   String get noInternet =>
-      'Connection errors.\nPlease check your network connection and try again';
+      'เกิดข้อผิดพลาดในการเชื่อมต่อ โปรดตรวจสอบการเชื่อมต่อเครือข่ายของคุณและลองใหม่อีกครั้ง';
 
   @override
   String get technicalIssues =>
-      'Oops! .There seems to be a technical problem.\nPlease check your connection or try again later';
+      'ขออภัย เกิดปัญหาทางเทคนิค โปรดตรวจสอบการเชื่อมต่อของคุณหรือลองใหม่ภายหลัง';
 
   @override
   String get requestRestricted =>
-      'Request sent too many times\\nPlease wait a moment and try again.';
+      'มีการส่งคำขอมากเกินไป โปรดรอสักครู่แล้วลองใหม่อีกครั้ง';
 
   @override
   String get serverMaintenance =>
-      'Server is unavailable at this time. Please try again later.';
+      'ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ในขณะนี้ โปรดลองใหม่ภายหลัง';
 
   @override
-  String get connectionTimeout => 'Connection timmed out.';
+  String get connectionTimeout => 'หมดเวลาการเชื่อมต่อ';
 
   @override
-  String get unknownError => 'Something went wrong.\nPlease try again later';
+  String get unknownError => 'เกิดข้อผิดพลาด โปรดลองใหม่ภายหลัง';
 
   @override
-  String get dataParsingError => 'Data parsing error, please try again later';
+  String get dataParsingError =>
+      'เกิดข้อผิดพลาดในการประมวลผลข้อมูล โปรดลองใหม่ภายหลัง';
 
   @override
-  String get sessionExpired => 'Your session is expired. Please log in again!';
+  String get sessionExpired =>
+      'เซสชันของคุณหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง';
 
   @override
-  String get loading => 'Loading';
+  String get loading => 'กำลังโหลด';
 
   @override
-  String get male => 'Male';
+  String get male => 'ชาย';
 
   @override
-  String get female => 'Female';
+  String get female => 'หญิง';
 
   @override
-  String get close => 'Close';
+  String get close => 'ปิด';
 
   @override
-  String get error => 'Error';
+  String get error => 'ข้อผิดพลาด';
 
   @override
-  String get search => 'Search';
+  String get search => 'ค้นหา';
 
   @override
-  String get warning => 'Warning';
+  String get warning => 'คำเตือน';
 
   @override
   String get haveNoPermission =>
-      'No access. Please go to settings and grant permission to the app to continue.';
+      'ไม่สามารถเข้าถึงได้ โปรดไปที่การตั้งค่าและให้สิทธิ์การเข้าถึงแอปเพื่อดำเนินการต่อ';
 
   @override
-  String get openSetting => 'Open Setting';
+  String get openSetting => 'เปิดการตั้งค่า';
 
   @override
-  String get openInExternalBrowser => 'External Browser';
+  String get openInExternalBrowser => 'เบราว์เซอร์ภายนอก';
 
   @override
-  String get copyLink => 'Copy link';
+  String get copyLink => 'คัดลอกลิงก์';
 
   @override
-  String get copied => 'Copied';
+  String get copied => 'คัดลอกแล้ว';
 
   @override
-  String get featureUnderDevelopment => 'Feature under development';
+  String get featureUnderDevelopment => 'ฟีเจอร์อยู่ระหว่างการพัฒนา';
 
   @override
-  String get requestPermission => 'Request permission';
+  String get requestPermission => 'ขอสิทธิ์การเข้าถึง';
 
   @override
   String get firebaseAuthExceptionTypeAccountExistsWithDifferentCredential =>
-      'An error occurred while signing in.';
+      'เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้';
 
   @override
   String get firebaseAuthExceptionTypeInvalidCredential =>
-      'An error occurred while signing in.';
+      'เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้';
 
   @override
   String get firebaseAuthExceptionTypeOperationNotAllowed =>
-      'An error occurred while signing in.';
+      'เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้';
 
   @override
   String get firebaseAuthExceptionTypeUserDisabled =>
-      'The user associated with this credential has been disabled.';
+      'บัญชีผู้ใช้ที่เกี่ยวข้องกับข้อมูลรับรองนี้ถูกปิดใช้งาน';
 
   @override
   String get firebaseAuthExceptionTypeUserNotFound =>
-      'User not found. Please check your credentials and try again.';
+      'ไม่พบบัญชีผู้ใช้ โปรดตรวจสอบข้อมูลรับรองและลองใหม่อีกครั้ง';
 
   @override
   String get firebaseAuthExceptionTypeInvalidVerificationCode =>
-      'Invalid verification code.';
+      'รหัสยืนยันไม่ถูกต้อง';
 
   @override
   String get firebaseAuthExceptionTypeInvalidVerificationId =>
-      'Invalid verification ID.';
+      'รหัสยืนยันตัวตนไม่ถูกต้อง';
 
   @override
   String get firebaseAuthExceptionTypeWrongPassword =>
-      'Wrong password. Please check your credentials and try again.';
+      'รหัสผ่านไม่ถูกต้อง โปรดตรวจสอบข้อมูลรับรองและลองใหม่อีกครั้ง';
 
   @override
   String get firebaseAuthExceptionTypeUnknown =>
-      'An error occurred while signing in.';
+      'เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้';
 
   @override
   String get firebaseAuthExceptionSessionExpired =>
-      'The OTP has expired. Please re-send the new OTP to try again.';
+      'รหัส OTP หมดอายุแล้ว โปรดส่งรหัสใหม่อีกครั้งเพื่อดำเนินการ';
 
   @override
-  String get today => 'Today';
+  String get today => 'วันนี้';
 
   @override
-  String get yesterday => 'Yesterday';
+  String get yesterday => 'เมื่อวานนี้';
 
   @override
-  String get thisWeek => 'This week';
+  String get thisWeek => 'สัปดาห์นี้';
 
   @override
-  String get weekAgo => 'Week ago';
+  String get weekAgo => 'เมื่อสัปดาห์ที่แล้ว';
 
   @override
-  String get thisMonth => 'This month';
+  String get thisMonth => 'เดือนนี้';
 
   @override
-  String get monthAgo => 'Month ago';
+  String get monthAgo => 'เมื่อเดือนที่แล้ว';
 
   @override
-  String get selectDate => 'Select date';
+  String get selectDate => 'เลือกวันที่';
 
   @override
-  String get fromDate => 'From date';
+  String get fromDate => 'จากวันที่';
 
   @override
-  String get toDate => 'To date';
+  String get toDate => 'ถึงวันที่';
 
   @override
-  String get month => 'Month';
+  String get month => 'เดือน';
 
   @override
-  String get threeDaysAgo => '3 days ago';
+  String get threeDaysAgo => 'เมื่อ 3 วันที่แล้ว';
 
   @override
-  String get sevenDaysAgo => '7 days ago';
+  String get sevenDaysAgo => 'เมื่อ 7 วันที่แล้ว';
 
   @override
-  String get thirtyDaysAgo => '30 days ago';
+  String get thirtyDaysAgo => 'เมื่อ 30 วันที่แล้ว';
 
   @override
-  String get thisQuarter => 'This quarter';
+  String get thisQuarter => 'ไตรมาสนี้';
 
   @override
-  String get quarterAgo => 'Quarter ago';
+  String get quarterAgo => 'เมื่อไตรมาสที่แล้ว';
 
   @override
-  String get thisYear => 'This year';
+  String get thisYear => 'ปีนี้';
 
   @override
-  String get yearAgo => 'Year ago';
+  String get yearAgo => 'เมื่อปีที่แล้ว';
 
   @override
-  String get selectTimePeriod => 'Select time period';
+  String get selectTimePeriod => 'เลือกช่วงเวลา';
 
   @override
-  String get reset => 'Reset';
+  String get reset => 'รีเซ็ต';
 
   @override
-  String get apply => 'Apply';
+  String get apply => 'นำไปใช้';
 
   @override
-  String get manual => 'Manual';
+  String get manual => 'กำหนดเอง';
 
   @override
-  String get day => 'Day';
+  String get day => 'วัน';
 
   @override
-  String get viewMore => 'See more';
+  String get viewMore => 'ดูเพิ่มเติม';
 
   @override
-  String get seeLess => 'See less';
+  String get seeLess => 'ดูน้อยลง';
 
   @override
-  String get fullTime => 'Full time';
+  String get fullTime => 'เต็มเวลา';
 
   @override
-  String get camera => 'Camera';
+  String get camera => 'กล้องถ่ายรูป';
 
   @override
-  String get gallery => 'Gallery';
+  String get gallery => 'แกลเลอรี';
 
   @override
-  String get choosePhoto => 'Select photo';
+  String get choosePhoto => 'เลือกรูปภาพ';
 
   @override
-  String get choosePhotoOrVideo => 'Select media';
+  String get choosePhotoOrVideo => 'เลือกสื่อ';
 
   @override
-  String get chooseVideo => 'Select video';
+  String get chooseVideo => 'เลือกวิดีโอ';
 
   @override
-  String get pleaseEnableGPS =>
-      'Please enable location to continue the experience';
+  String get pleaseEnableGPS => 'กรุณาเปิดใช้งานตำแหน่งของคุณเพื่อดำเนินการต่อ';
+
+  @override
+  String get required => 'โปรดระบุ';
+
+  @override
+  String get optional => 'ถ้ามี';
+
+  @override
+  String fileSizeOverXMB(Object x) {
+    return 'ไฟล์มีขนาดใหญ่เกินไป ขนาดสูงสุดที่อนุญาตคือ ${x}MB';
+  }
+
+  @override
+  String get errorWhenUploading => 'An error occurred when uploading';
 }

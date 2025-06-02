@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../core.dart';
-import '../shared/input_decoration_factory.dart';
 
 part 'input_container.controller.dart';
 
@@ -21,7 +20,10 @@ class InputContainer extends StatefulWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool enable;
   final String? title;
+  final TitleMode titleMode;
   final TextStyle? titleStyle;
+  final String? validation;
+  final String? warning;
   final bool required;
   final Color? fillColor;
   final Widget? prefixIcon;
@@ -69,6 +71,7 @@ class InputContainer extends StatefulWidget {
     this.enable = true,
     this.title,
     this.titleStyle,
+    this.titleMode = TitleMode.above,
     this.required = false,
     this.fillColor,
     this.prefixIcon,
@@ -92,6 +95,8 @@ class InputContainer extends StatefulWidget {
     this.isDense,
     this.scrollPadding = const EdgeInsets.all(20),
     this.text,
+    this.validation,
+    this.warning,
     this.autofocus = false,
     this.onFocusChanged,
     this.iconClear,
@@ -135,6 +140,23 @@ class _InputContainerState extends State<InputContainer> {
         }
       } else {
         _controller!.text = widget.text;
+      }
+    }
+    if (widget.validation != null &&
+        _controller!.value.validation != widget.validation) {
+      if (widget.validation!.isEmpty) {
+        _controller!.clearError();
+      } else {
+        _controller!.setError(widget.validation!);
+      }
+    }
+
+    if (widget.warning != null &&
+        _controller!.value.warning != widget.warning) {
+      if (widget.warning!.isEmpty) {
+        _controller!.clearWarning();
+      } else {
+        _controller!.setWarning(widget.warning!);
       }
     }
     _controller!.value.focusNode
@@ -183,7 +205,10 @@ class _InputContainerState extends State<InputContainer> {
           autofocus: widget.autofocus,
           decoration: InputDecorationFactory.build(
             context: context,
-            title: widget.title,
+            title: switch (widget.titleMode) {
+              TitleMode.floating => widget.title,
+              _ => null,
+            },
             enable: widget.enable,
             required: widget.required,
             prefixIconPadding: widget.prefixIconPadding,
@@ -191,7 +216,11 @@ class _InputContainerState extends State<InputContainer> {
             prefixIconSize: widget.prefixIconSize,
             suffixIconSize: widget.suffixIconSize,
             hintStyle: widget.hintStyle ?? appTextTheme.inputHint,
-            errorText: value.validation,
+            hint: widget.hint,
+            errorText: value.validation ?? value.warning,
+            errorStyle: appTextTheme.inputError?.copyWith(
+              color: value.validation != null ? null : Colors.orange,
+            ),
             suffixIcon: _getSuffixIcon(),
             prefixIcon: _getPrefixIcon(),
             isDense: widget.isDense,
@@ -208,7 +237,7 @@ class _InputContainerState extends State<InputContainer> {
           onChanged: (text) {
             _showPrefixFilterFn(text);
 
-            if (value.validation != null) {
+            if (value.validation != null || value.warning != null) {
               widget.controller?.resetValidation();
             }
             widget.onTextChanged?.call(text);
@@ -233,7 +262,28 @@ class _InputContainerState extends State<InputContainer> {
               alignLabelWithHint: widget.maxLines != null,
             ),
           ),
-          child: textField,
+          child: switch (widget.titleMode) {
+            TitleMode.floating => textField,
+            _ => Builder(
+                builder: (context) {
+                  if (widget.title.isNullOrEmpty) {
+                    return textField;
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      InputTitleWidget(
+                        title: widget.title,
+                        required: widget.required,
+                      ),
+                      const SizedBox(height: 8),
+                      textField,
+                    ],
+                  );
+                },
+              ),
+          },
         );
       },
     );
@@ -256,12 +306,6 @@ class _InputContainerState extends State<InputContainer> {
       return ValueListenableBuilder<TextEditingValue>(
         valueListenable: _controller!.value.tdController,
         builder: (context, value, child) {
-          if (value.text.isEmpty && widget.suffixIcon != null) {
-            return Padding(
-              padding: padding,
-              child: widget.suffixIcon,
-            );
-          }
           if (!widget.enable || widget.readOnly) {
             return widget.suffixIcon?.let(
                   (it) {
@@ -290,7 +334,7 @@ class _InputContainerState extends State<InputContainer> {
               widget.onClear?.call(_controller!.value.focusNode.hasFocus);
             },
             child: Padding(
-              padding: padding,
+              padding: padding.add(const EdgeInsets.only(right: 8)),
               child: widget.iconClear ??
                   Icon(
                     Iconsax.close_circle,

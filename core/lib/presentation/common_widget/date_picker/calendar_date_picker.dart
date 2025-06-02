@@ -120,7 +120,7 @@ class _DateInputCalendarPickerState extends State<DateInputCalendarPicker> {
             children: [
               Expanded(
                 child: Text(
-                  select?.toddmmyyyy() ?? widget.hint ?? '',
+                  select?.ddmmyyyy ?? widget.hint ?? '',
                   style: select != null
                       ? textTheme.textInput
                       : textTheme.inputHint,
@@ -272,7 +272,7 @@ class _WeekInputCalendarPickerState extends State<WeekInputCalendarPicker> {
               Expanded(
                 child: Text(
                   select != null
-                      ? '''${select!.from!.toddmmyyyy()} - ${select!.to!.toddmmyyyy()}'''
+                      ? '''${select!.from!.ddmmyyyy} - ${select!.to!.ddmmyyyy}'''
                       : widget.hint ?? '',
                   style: select != null
                       ? textTheme.textInput
@@ -331,8 +331,8 @@ class TableCalendarDatePicker extends StatelessWidget {
       rangeStartDay: rangeStart,
       availableGestures: availableGestures,
       rangeEndDay: rangeEnd,
-      firstDay: DateTime.utc(2000, 01, 01),
-      lastDay: DateTime.utc(2099, 12, 31),
+      firstDay: DateTime.now().subtract(const Duration(days: 365 * 20)),
+      lastDay: DateTime.now().add(const Duration(days: 365 * 100)),
       focusedDay: value ?? DateTime.now(),
       currentDay: value ?? DateTime.now(),
       availableCalendarFormats: {

@@ -1,13 +1,18 @@
-import 'package:flutter/material.dart';
-
+import '../../route/route.dart';
 import 'document_viewer_screen.dart';
 
-class DocumentViewerRoute {
-  Map<String, WidgetBuilder> getAll(RouteSettings settings) => {
-        DocumentViewerScreen.routeName: (context) {
+class DocumentViewerRoute extends IRoute {
+  @override
+  List<CustomRouter> routers() {
+    return [
+      CustomRouter(
+        path: DocumentViewerScreen.routeName,
+        builder: (context, uri, extra) {
           return DocumentViewerScreen(
-            args: settings.arguments as DocumentViewerArgs,
+            args: extra as DocumentViewerArgs,
           );
         },
-      };
+      ),
+    ];
+  }
 }
