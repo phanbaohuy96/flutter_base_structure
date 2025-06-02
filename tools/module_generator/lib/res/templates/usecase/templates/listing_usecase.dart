@@ -11,8 +11,6 @@ import 'package:injectable/injectable.dart';
 
 import '../../entities/filter/${moduleNameKey}_filter.entity.dart';
 
-part 'packaging_usecase.impl.dart';
-
 part '${moduleNameKey}_usecase.impl.dart';
 
 abstract class ${classNameKey}Usecase {

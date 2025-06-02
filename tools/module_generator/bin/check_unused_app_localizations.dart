@@ -8,7 +8,7 @@ void main(List<String> args) {
 
   parser.addOption(
     'path',
-    callback: (path) => {generator.checkUnusedL10n()},
+    callback: (path) => generator.checkUnusedL10n(),
   );
 
   parser.parse(args);

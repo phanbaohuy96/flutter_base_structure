@@ -8,7 +8,7 @@ void main(List<String> args) {
   parser.addOption(
     'path',
     callback: (path) =>
-        {generate_app_localizations.generateAppLocalizationsCSVFile()},
+        generate_app_localizations.generateAppLocalizationsCSVFile(),
   );
 
   parser.parse(args);

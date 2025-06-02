@@ -13,10 +13,7 @@ final detailModuleRes = {
     'state': detailModuleState,
     'event': detailModuleEvent,
   },
-  'views': {
-    'screen': detailModuleScreen,
-    'action': detailModuleAction,
-  },
+  'views': {'screen': detailModuleScreen, 'action': detailModuleAction},
   'module': detailModule,
   'route': detailModuleRoute,
   'coordinator': detailModuleCoordinator,

@@ -5,7 +5,7 @@ void main(List<String> args) {
   var parser = ArgParser();
   parser.addOption(
     'path',
-    callback: (path) => {generate_export.generateExport(args: args)},
+    callback: (path) => generate_export.generateExport(args: args),
   );
   parser.parse(args);
 }
