@@ -16,11 +16,6 @@ class AuthenticationRoute extends IRoute {
             child: const SignInScreen(),
           );
         },
-        verifier: (uri, extra) {
-          return uri.path.startsWith(
-            SignInScreen.routeName,
-          );
-        },
       ),
     ];
   }

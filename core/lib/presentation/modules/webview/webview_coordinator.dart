@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../common/utils.dart';
@@ -14,14 +13,6 @@ extension WebViewCoordinator on BuildContext {
     String? assetPath,
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    if (!kIsWeb) {
-      if (kDebugMode) {
-        throw UnsupportedError(
-          'This web view is not supported on Web Platform',
-        );
-      }
-      return Future.value(null);
-    }
     return pushBehavior.push(
       this,
       WebViewScreen.routeName,
@@ -29,7 +20,7 @@ extension WebViewCoordinator on BuildContext {
         url: url,
         html: html,
         title: title,
-      ),
+      ).adaptiveArguments,
     );
   }
 }

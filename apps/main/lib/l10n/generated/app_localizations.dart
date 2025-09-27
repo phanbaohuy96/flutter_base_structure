@@ -63,7 +63,7 @@ import 'app_localizations_th.dart';
 /// property.
 abstract class AppLocalizations {
   AppLocalizations(String locale)
-      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class AppLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('th')
+    Locale('th'),
   ];
 
   /// No description provided for @inform.
@@ -164,17 +164,35 @@ abstract class AppLocalizations {
   /// **'Please select a role before logging in.'**
   String get pleaseSelectARoleBeforeLoginMsg;
 
-  /// No description provided for @thisRoleIsNotSupportedYet.
+  /// No description provided for @backToHomepage.
   ///
   /// In en, this message translates to:
-  /// **'This role is not supported yet.'**
-  String get thisRoleIsNotSupportedYet;
+  /// **'Back to Homepage'**
+  String get backToHomepage;
+
+  /// No description provided for @pageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'404 - Page Not Found'**
+  String get pageNotFound;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
 
   /// No description provided for @loginFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to fetch user info'**
   String get loginFailed;
+
+  /// No description provided for @thisRoleIsNotSupportedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This role is not supported yet.'**
+  String get thisRoleIsNotSupportedYet;
 }
 
 class _AppLocalizationsDelegate
@@ -204,8 +222,9 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-      'an issue with the localizations generation tool. Please file an issue '
-      'on GitHub with a reproducible sample app and the gen-l10n configuration '
-      'that was used.');
+    'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+    'an issue with the localizations generation tool. Please file an issue '
+    'on GitHub with a reproducible sample app and the gen-l10n configuration '
+    'that was used.',
+  );
 }

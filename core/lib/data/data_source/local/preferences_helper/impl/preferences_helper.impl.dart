@@ -36,7 +36,10 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
     final locale = getLocalization();
     final isLaunched = !isFirstLaunch();
 
-    await _pref.clear();
+    await Future.wait([
+      _pref.clear(),
+      _secureStorage.deleteAll(),
+    ]);
 
     final result = await Future.wait([
       saveLocalization(locale),
@@ -123,5 +126,17 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
       CorePreferencesKey.lastDayShowCookieConsent,
       today.toIso8601String(),
     );
+  }
+
+  @override
+  String? get domainReplacement =>
+      _pref.getString(CorePreferencesKey.domainReplacement);
+
+  @override
+  Future<bool?> setDomainReplacement(String? domain) {
+    if (domain == null) {
+      return _pref.remove(CorePreferencesKey.domainReplacement);
+    }
+    return _pref.setString(CorePreferencesKey.domainReplacement, domain);
   }
 }

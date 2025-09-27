@@ -24,6 +24,7 @@ class InputContainer extends StatefulWidget {
   final TextStyle? titleStyle;
   final String? validation;
   final String? warning;
+  final String? helperText;
   final bool required;
   final Color? fillColor;
   final Widget? prefixIcon;
@@ -97,6 +98,7 @@ class InputContainer extends StatefulWidget {
     this.text,
     this.validation,
     this.warning,
+    this.helperText,
     this.autofocus = false,
     this.onFocusChanged,
     this.iconClear,
@@ -129,7 +131,7 @@ class _InputContainerState extends State<InputContainer> {
         widget.controller ?? _controller ?? InputContainerController();
     if (widget.text != null && _controller!.text != widget.text) {
       if (widget.keyboardType?.index == TextInputType.number.index) {
-        /// Incase input type is number
+        /// In-case input type is number
         /// on editing allow user keep the decimal separate
         /// eg: if user input `12` then input decimal separate '.'
         /// the text changed maybe format it to 12 but the same value with `12.`
@@ -165,13 +167,39 @@ class _InputContainerState extends State<InputContainer> {
   }
 
   void onFocusChanged() {
-    if (_controller!.value.focusNode.hasFocus && widget.selectAllWhenFocus) {
+    final hasFocus = _controller!.value.focusNode.hasFocus == true;
+    if (hasFocus && widget.selectAllWhenFocus) {
       _controller!.selection = TextSelection(
         baseOffset: 0,
         extentOffset: _controller!.text.length,
       );
     }
-    widget.onFocusChanged?.call(_controller!.value.focusNode.hasFocus);
+    widget.onFocusChanged?.call(hasFocus);
+
+    /// On web platform we have an issue that when keyboard appears sometime
+    /// that make the whole page move up.
+    /// So the [Scaffold.resizeToAvoidBottomInset] need to be set to false
+    /// then we do make sure the input field is visible
+    if (hasFocus && isAndroidBrowser) {
+      // Delay 300ms for keyboard to appear
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        _ensureVisible,
+      );
+    }
+  }
+
+  void _ensureVisible() {
+    if (!mounted) {
+      return;
+    }
+    Scrollable.ensureVisible(
+      context,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+      alignment: 0.5,
+    );
   }
 
   @override
@@ -205,6 +233,7 @@ class _InputContainerState extends State<InputContainer> {
           autofocus: widget.autofocus,
           decoration: InputDecorationFactory.build(
             context: context,
+            titleMode: widget.titleMode,
             title: switch (widget.titleMode) {
               TitleMode.floating => widget.title,
               _ => null,
@@ -217,10 +246,19 @@ class _InputContainerState extends State<InputContainer> {
             suffixIconSize: widget.suffixIconSize,
             hintStyle: widget.hintStyle ?? appTextTheme.inputHint,
             hint: widget.hint,
-            errorText: value.validation ?? value.warning,
+            errorText: switch (widget.titleMode) {
+              TitleMode.floating => value.validation ?? value.warning,
+              // set error text to empty to enable error decoration
+              _ => (value.validation ?? value.warning) != null ? '' : null,
+            },
             errorStyle: appTextTheme.inputError?.copyWith(
               color: value.validation != null ? null : Colors.orange,
             ),
+            helperText: switch (widget.titleMode) {
+              TitleMode.floating => widget.helperText,
+              // set error text to empty to enable error decoration
+              _ => null,
+            },
             suffixIcon: _getSuffixIcon(),
             prefixIcon: _getPrefixIcon(),
             isDense: widget.isDense,
@@ -269,6 +307,8 @@ class _InputContainerState extends State<InputContainer> {
                   if (widget.title.isNullOrEmpty) {
                     return textField;
                   }
+
+                  const spacing = 8.0;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
@@ -277,8 +317,24 @@ class _InputContainerState extends State<InputContainer> {
                         title: widget.title,
                         required: widget.required,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: spacing),
                       textField,
+                      ValueListenableBuilder(
+                        valueListenable: _controller!,
+                        builder: (context, value, child) {
+                          return InputHelperError(
+                            padding: const EdgeInsets.only(top: spacing),
+                            validation: value.validation ?? value.warning,
+                            style: appTextTheme.inputError?.copyWith(
+                              color: value.validation != null
+                                  ? null
+                                  : Colors.orange,
+                            ),
+                            helper: widget.helperText,
+                            helperStyle: appTextTheme.helper,
+                          );
+                        },
+                      ),
                     ],
                   );
                 },
@@ -337,7 +393,7 @@ class _InputContainerState extends State<InputContainer> {
               padding: padding.add(const EdgeInsets.only(right: 8)),
               child: widget.iconClear ??
                   Icon(
-                    Iconsax.close_circle,
+                    Icons.close_rounded,
                     size: widget.suffixIconSize,
                   ),
             ),

@@ -45,7 +45,7 @@ class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
       /// 'limit': limit,
       /// 'page': page,
     ).then(
-      (value) => [...value.data],
+      (value) => [...?value.data],
     ),
   );
 

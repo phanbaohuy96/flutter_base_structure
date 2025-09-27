@@ -1,17 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../common/constants/locale/app_locale.dart';
+import '../../common/utils.dart';
 
 part 'localization_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class LocalizationModel {
   @JsonKey(name: 'th')
-  String? th;
+  final String? th;
   @JsonKey(name: 'en')
-  String? en;
+  final String? en;
 
-  LocalizationModel({
+  const LocalizationModel({
     this.th,
     this.en,
   });
@@ -39,4 +40,10 @@ class LocalizationModel {
       _$LocalizationModelFromJson(json);
 
   Map<String, dynamic> toJson() => _$LocalizationModelToJson(this);
+
+  bool isLike(String text) {
+    final keywords = text.removeDiacritic.toLowerCase();
+    return (th?.toLowerCase().removeDiacritic.contains(keywords) ?? false) ||
+        (en?.toLowerCase().removeDiacritic.contains(keywords) ?? false);
+  }
 }

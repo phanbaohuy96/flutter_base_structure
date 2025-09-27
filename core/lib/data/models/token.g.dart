@@ -8,7 +8,7 @@ part of 'token.dart';
 
 UserToken _$UserTokenFromJson(Map<String, dynamic> json) => UserToken(
       accessToken: asOrNull(json['access_token']),
-      refreshRoken: asOrNull(json['refresh_token']),
+      refreshToken: asOrNull(json['refresh_token']),
       type: $enumDecodeNullable(_$TokenTypeEnumMap, json['token_type'],
           unknownValue: JsonKey.nullForUndefinedEnumValue),
       scope: asOrNull(json['scope']),
@@ -18,7 +18,7 @@ UserToken _$UserTokenFromJson(Map<String, dynamic> json) => UserToken(
 
 Map<String, dynamic> _$UserTokenToJson(UserToken instance) => <String, dynamic>{
       'access_token': instance.accessToken,
-      'refresh_token': instance.refreshRoken,
+      'refresh_token': instance.refreshToken,
       'token_type': _$TokenTypeEnumMap[instance.type],
       'expires_in': instance.expireIn,
       'scope': instance.scope,

@@ -13,11 +13,6 @@ class HtmlViewerRoute extends IRoute {
             params: args,
           );
         },
-        verifier: (uri, extra) {
-          return uri.path.startsWith(
-            HtmlViewerScreen.routeName,
-          );
-        },
       ),
     ];
   }

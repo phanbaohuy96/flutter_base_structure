@@ -3,16 +3,18 @@ description: A new Flutter Theme project.
 version: 1.0.0
 homepage:
 
+publish_to: none
+
 environment:
   sdk: '>=3.3.1 <4.0.0'
-  flutter: ">=3.24.0"
+  flutter: ">=3.32.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_statusbarcolor_ns: ^0.6.0
-  
+  fl_utils:
+    path: ../fl_utils
 
   pedantic: ^1.11.1
 

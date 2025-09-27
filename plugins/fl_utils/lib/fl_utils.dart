@@ -1,6 +1,7 @@
 library fl_utils;
 
 export 'src/common_function.dart';
+export 'src/condition_builder.dart';
 export 'src/data_checker.dart';
 export 'src/debouncer.dart';
 export 'src/encrypt.dart';

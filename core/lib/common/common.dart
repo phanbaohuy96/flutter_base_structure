@@ -25,6 +25,7 @@ export 'services/network_log/network_log.dart';
 export 'services/network_log/network_log_service.dart';
 export 'services/permission_service.dart';
 export 'services/storage/storage_service.dart';
+export 'universal/universal.dart';
 export 'utils.dart';
 export 'utils/bloc_utils.dart';
 export 'utils/color_utils.dart';

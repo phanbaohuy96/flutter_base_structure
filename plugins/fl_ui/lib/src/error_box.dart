@@ -96,7 +96,7 @@ class _ErrorBoxState extends State<ErrorBox> {
                   }
                   return AnimatedSlideBox(
                     begin: const Offset(0.0, -1),
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 167),
                     child: Padding(
                       padding: widget.errorTextPadding,
                       child: Text(
@@ -129,7 +129,7 @@ class ErrorBoxController extends ValueNotifier<String?> {
   void setError(String message) {
     value = message;
     notifyListeners();
-    _focusNode.requestFocus();
+    requestFocus();
   }
 
   void clear() {
@@ -138,4 +138,8 @@ class ErrorBoxController extends ValueNotifier<String?> {
   }
 
   bool get hasError => value != null;
+
+  void requestFocus() {
+    _focusNode.requestFocus();
+  }
 }

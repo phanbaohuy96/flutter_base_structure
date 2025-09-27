@@ -16,9 +16,11 @@ class ImageViewWrapper extends ImageView {
     super.package,
     super.loadingRadius,
     super.cacheWidth = 480,
+    String? placeHolder,
+    super.errorPlaceHolder,
   }) : super(
           source: injector<StorageAssetProvider>().url(source),
-          placeHolder: coreImageConstant.icUserAvatar,
+          placeHolder: placeHolder ?? coreImageConstant.icUserAvatar,
         );
 
   ImageViewWrapper.item(
@@ -31,9 +33,11 @@ class ImageViewWrapper extends ImageView {
     super.package,
     super.loadingRadius,
     super.cacheWidth = 480,
+    String? placeHolder,
+    super.errorPlaceHolder,
   }) : super(
           source: injector<StorageAssetProvider>().url(source),
-          placeHolder: coreImageConstant.icDefaultItem,
+          placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
         );
 
   ImageViewWrapper.banner(
@@ -46,9 +50,11 @@ class ImageViewWrapper extends ImageView {
     super.package,
     super.loadingRadius,
     super.cacheWidth = 480,
+    String? placeHolder,
+    super.errorPlaceHolder,
   }) : super(
           source: injector<StorageAssetProvider>().url(source),
-          placeHolder: coreImageConstant.icDefaultItem,
+          placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
         );
 
   static ImageViewProviderFactory provider(String source) =>

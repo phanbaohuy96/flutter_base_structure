@@ -156,6 +156,10 @@ class AppTextTheme extends TextTheme {
   /// Default using [TextTheme.labelLarge]
   final TextStyle? buttonText;
 
+  /// Default using [AppTextTheme.titleTiny] or [TextTheme.titleSmall]
+  /// with color is [Colors.red]
+  final TextStyle? helper;
+
   AppTextTheme({
     super.displayLarge,
     super.displayMedium,
@@ -178,6 +182,7 @@ class AppTextTheme extends TextTheme {
     TextStyle? inputRequired,
     TextStyle? inputHint,
     TextStyle? inputError,
+    TextStyle? helper,
     TextStyle? buttonText,
   })  : titleTiny = titleTiny ??
             titleSmall?.copyWith(
@@ -197,6 +202,7 @@ class AppTextTheme extends TextTheme {
             (titleTiny ?? titleSmall)?.copyWith(
               color: Colors.red,
             ),
+        helper = helper ?? bodySmall,
         buttonText = buttonText ?? labelLarge;
 
   factory AppTextTheme.create(ThemeColor themeColor) {

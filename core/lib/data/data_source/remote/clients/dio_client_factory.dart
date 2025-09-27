@@ -2,6 +2,7 @@ import 'package:dio/dio.dart' as dio_p;
 
 import '../../../../common/services/header/request_header_service.dart';
 import '../../local/local_data_manager.dart';
+import '../interceptor/domain_interceptor.dart';
 import '../interceptor/header_interceptor.dart';
 import '../interceptor/logger_interceptor.dart';
 import '../interceptor/retry_interceptor.dart';
@@ -28,6 +29,12 @@ class DioClientFactory {
     );
 
     dio.options.headers.clear();
+
+    dio.interceptors.add(
+      DomainInterceptor(
+        localDataManager: localDataManager,
+      ),
+    );
 
     dio.interceptors.add(
       HeaderInterceptor(

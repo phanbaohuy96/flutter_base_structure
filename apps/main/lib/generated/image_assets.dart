@@ -6,6 +6,12 @@ part of 'assets.dart';
 class ImageAssets {
   ImageAssets();
 
+  // [apps/main/assets/images/png/empty_search_state.png]
+  final String emptySearchState = 'assets/images/png/empty_search_state.png';
+
   // [apps/main/assets/images/png/logo.png]
   final String logo = 'assets/images/png/logo.png';
+
+  // [apps/main/assets/images/native_splash_icon.png]
+  final String nativeSplashIcon = 'assets/images/native_splash_icon.png';
 }

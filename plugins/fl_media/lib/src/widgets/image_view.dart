@@ -18,6 +18,7 @@ class ImageView extends StatelessWidget {
     this.color,
     this.alignment = Alignment.center,
     this.placeHolder,
+    this.errorPlaceHolder,
     this.package,
     this.loadingRadius,
     this.cacheWidth,
@@ -31,6 +32,7 @@ class ImageView extends StatelessWidget {
   final Color? color;
   final Alignment alignment;
   final String? placeHolder;
+  final String? errorPlaceHolder;
   final String? package;
   final double? loadingRadius;
   final int? cacheWidth;
@@ -70,6 +72,18 @@ class ImageView extends StatelessWidget {
         loadingRadius: loadingRadius,
         cacheWidth: cacheWidth,
         cacheHeight: cacheHeight,
+        errorBuilder: ConditionBuilder.on(
+          condition: () => errorPlaceHolder.isNotNullOrEmpty,
+          value: () => (_) => ImageView(
+                source: errorPlaceHolder!,
+                width: width,
+                height: height,
+                fit: fit,
+                color: color,
+                alignment: alignment,
+                package: package,
+              ),
+        ).build(orElse: () => null),
       );
     }
     if (image.contains('.svg')) {

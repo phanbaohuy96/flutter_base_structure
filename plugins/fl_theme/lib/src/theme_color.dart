@@ -1,6 +1,5 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+import 'package:flutter/services.dart';
 
 import 'utils/extension.dart';
 
@@ -220,7 +219,7 @@ class ThemeColor {
             (brightness == Brightness.light
                 ? Colors.grey.shade300
                 : Colors.grey.shade800),
-        textButtonColor = textButtonColor ?? schemeAction ?? primary,
+        textButtonColor = textButtonColor ?? primary,
         textButtonDisableColor = textButtonDisableColor ?? disableColor,
         elevatedBtnBackgroundColor = elevatedBtnBackgroundColor ?? primary,
         outlineButtonColor = outlineButtonColor ?? primary,
@@ -285,19 +284,23 @@ class ThemeColor {
   final green33B64F = const Color(0xFF33B64F);
 
   void setLightStatusBar() {
-    if (kIsWeb) {
-      return;
-    }
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
   }
 
   void setDarkStatusBar() {
-    if (kIsWeb) {
-      return;
-    }
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
+        statusBarBrightness: Brightness.light,
+      ),
+    );
   }
 
   ThemeColor lerp(
