@@ -46,9 +46,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
-const String _Staging = 'Staging';
-const String _Production = 'Production';
-const String _Development = 'Development';
+const String _DEV = 'DEV';
+const String _STAG = 'STAG';
+const String _SANDBOX = 'SANDBOX';
+const String _PROD = 'PROD';
 
 class CorePackageModule extends _i526.MicroPackageModule {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -72,18 +73,21 @@ class CorePackageModule extends _i526.MicroPackageModule {
         () => datasourceModule.secureStorage);
     gh.lazySingleton<_i581.LocationService>(
         () => serviceModule.locationService());
+    gh.factory<_i417.LogUtils>(
+      () => logUtilsModule.devLogUtils,
+      registerFor: {
+        _DEV,
+        _STAG,
+      },
+    );
     gh.factory<_i263.LocationCubit>(
         () => _i263.LocationCubit(gh<_i494.LocationService>()));
     gh.factory<_i417.LogUtils>(
-      () => logUtilsModule.prodLogUlils,
+      () => logUtilsModule.prodLogUtils,
       registerFor: {
-        _Staging,
-        _Production,
+        _SANDBOX,
+        _PROD,
       },
-    );
-    gh.factory<_i417.LogUtils>(
-      () => logUtilsModule.devLogUlils,
-      registerFor: {_Development},
     );
     gh.factoryParam<_i288.ThemeDialog, _i719.BuildContext, dynamic>((
       context,

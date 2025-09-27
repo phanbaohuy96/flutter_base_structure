@@ -13,7 +13,6 @@ class AppConfigHeaderProvider extends HeaderProvider {
     return <String, String>{
       RequestHeaderKey.platform.key: appConfig.platformRole,
       RequestHeaderKey.apiKey.key: appConfig.graphqlApiKey,
-      'x-source-channel': '/fe/m-client',
     };
   }
 }

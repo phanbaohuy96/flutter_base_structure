@@ -1,7 +1,7 @@
 part of 'state_base.dart';
 
 extension StateBaseExtention on CoreStateBase {
-  void hideKeyBoard() => CoreCommonFunction().hideKeyBoard(context);
+  void hideKeyBoard() => CoreCommonFunction().hideKeyboard(context);
 
   Size get device => MediaQuery.of(context).size;
 

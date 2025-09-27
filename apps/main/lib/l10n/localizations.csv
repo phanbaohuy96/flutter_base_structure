@@ -1,14 +1,17 @@
 key,en,th
-inform,Inform,Inform
-ok,Ok,Ok
-cancel,Cancel,Cancel
-confirm,Confirm,Confirm
-skip,Skip,Skip
-close,Close,Close
-loginRequired,Please login to continue,Please login to continue
-login,Login,Login
-userRole,User role,User role
+inform,Inform,แจ้งเตือน
+ok,Ok,ตกลง
+cancel,Cancel,ยกเลิก
+confirm,Confirm,ยืนยัน
+skip,Skip,ข้าม
+close,Close,ปิด
+loginRequired,Please login to continue,กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ
+login,Login,เข้าสู่ระบบ
+userRole,User role,บทบาทผู้ใช้
 poweredByVNS,Powered by VNS,Powered by VNS
-pleaseSelectARoleBeforeLoginMsg,Please select a role before logging in.,Please select a role before logging in.
-thisRoleIsNotSupportedYet,This role is not supported yet.,This role is not supported yet.
-loginFailed,Failed to fetch user info,Failed to fetch user info
+pleaseSelectARoleBeforeLoginMsg,Please select a role before logging in.,กรุณาเลือกบทบาทก่อนเข้าสู่ระบบ
+backToHomepage,Back to Homepage,กลับสู่หน้าแรก
+pageNotFound,"404 - Page Not Found","404 - ไม่พบหน้าที่ต้องการ"
+back,Back,ย้อนกลับ
+loginFailed,Failed to fetch user info,ไม่สามารถดึงข้อมูลผู้ใช้ได้
+thisRoleIsNotSupportedYet,This role is not supported yet.,บทบาทนี้ยังไม่รองรับ

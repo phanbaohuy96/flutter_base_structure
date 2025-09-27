@@ -288,15 +288,17 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
 
   void _onUploadError(MediaPicked p1, dynamic error, StackTrace stackTrace) {
     final errorData = ErrorData.fromObject(error: error);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          errorData?.let(getErrorMsg) ??
-              error?.toString() ??
-              context.coreL10n.errorWhenUploading,
+    if (errorData == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            context.coreL10n.errorWhenUploading,
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      onError(errorData);
+    }
   }
 
   @override
@@ -369,25 +371,18 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
                         color: widget.foregroundColor ??
                             context.themeColor.primary,
                       ),
-                      if (widget.maxMedia != null)
+                      if (widget.maxMedia != null && widget.maxMedia! > 1)
                         Text(
-                          '${(widget.maxMedia ?? 0) - medias.length}/${widget.maxMedia}',
+                          '${medias.length}/${widget.maxMedia}',
                           style: context.textTheme.bodyMedium?.copyWith(
                             color: widget.foregroundColor ??
                                 context.themeColor.primary,
                           ),
                         ),
                       if (widget.minimumRequired != null)
-                        Builder(
-                          builder: (context) {
-                            return Text(
-                              '''(${medias.length < widget.minimumRequired! ? context.coreL10n.required : context.coreL10n.optional})''',
-                              style: context.textTheme.labelSmall?.copyWith(
-                                color: widget.foregroundColor ??
-                                    context.themeColor.primary,
-                              ),
-                            );
-                          },
+                        Text(
+                          '''(${medias.length < widget.minimumRequired! ? context.coreL10n.required : context.coreL10n.optional})''',
+                          style: context.textTheme.labelSmall,
                         ),
                     ],
                   ),
@@ -597,7 +592,8 @@ extension MediaPickerWidgetAction on _MediaPickerWidgetState {
             type: widget.mediaType.fileType,
             dialogTitle: _dialogTitle,
             allowMultiple: widget.controller.allowMultiple &&
-                ((widget.maxMedia ?? 0) - widget.controller.value.length) > 1,
+                (widget.maxMedia == null ||
+                    (widget.maxMedia! - widget.controller.value.length) > 1),
           )
           .catchError(
             (error, stackTrace) => logUtils.eCatch(

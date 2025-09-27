@@ -24,8 +24,16 @@ class InputContainerProperties {
   }
 
   void dispose() {
-    tdController.dispose();
-    focusNode.dispose();
+    try {
+      tdController.dispose();
+    } catch (e) {
+      // Ignore any errors during disposal
+    }
+    try {
+      focusNode.dispose();
+    } catch (e) {
+      // Ignore any errors during disposal
+    }
   }
 }
 

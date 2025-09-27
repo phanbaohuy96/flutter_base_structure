@@ -12,7 +12,7 @@ part 'storage_repository.g.dart';
 abstract class StorageRepository {
   factory StorageRepository(Dio dio, {String baseUrl}) = _StorageRepository;
 
-  @POST('files')
+  @POST('/files')
   @MultiPart()
   Future<ApiResponse<CloudFile>> uploadFile(
     @Part(name: 'file') File file, {
@@ -21,7 +21,7 @@ abstract class StorageRepository {
     @CancelRequest() CancelToken? cancelToken,
   });
 
-  @POST('files')
+  @POST('/files')
   @MultiPart()
   Future<ApiResponse<CloudFile>> uploadBytes(
     @Part(name: 'file') List<MultipartFile> files, {

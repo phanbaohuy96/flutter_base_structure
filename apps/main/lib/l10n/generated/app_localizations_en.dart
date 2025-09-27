@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -41,8 +43,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please select a role before logging in.';
 
   @override
-  String get thisRoleIsNotSupportedYet => 'This role is not supported yet.';
+  String get backToHomepage => 'Back to Homepage';
+
+  @override
+  String get pageNotFound => '404 - Page Not Found';
+
+  @override
+  String get back => 'Back';
 
   @override
   String get loginFailed => 'Failed to fetch user info';
+
+  @override
+  String get thisRoleIsNotSupportedYet => 'This role is not supported yet.';
 }

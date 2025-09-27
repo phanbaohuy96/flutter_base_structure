@@ -117,8 +117,50 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
 
   @override
   Widget build(BuildContext context) {
+    return AvailabilityWidget(
+      enable: widget.enable,
+      child: switch (widget.titleMode) {
+        TitleMode.floating => _buildDropdown(),
+        _ => _buildCustomTitle(),
+      },
+    );
+  }
+
+  Widget _buildCustomTitle() {
+    return Builder(
+      builder: (context) {
+        if (widget.title.isNullOrEmpty) {
+          return _buildDropdown();
+        }
+        const spacing = 8.0;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            InputTitleWidget(
+              title: widget.title,
+              required: widget.required,
+            ),
+            const SizedBox(height: spacing),
+            _buildDropdown(),
+            ValueListenableBuilder(
+              valueListenable: _controller!,
+              builder: (context, value, child) {
+                return InputHelperError(
+                  validation: value.validation,
+                  padding: const EdgeInsets.only(top: spacing),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDropdown() {
     final themeData = context.theme;
-    final dropdown = ValueListenableBuilder<DropdownData<T>>(
+    return ValueListenableBuilder<DropdownData<T>>(
       valueListenable: _controller!,
       builder: (ctx, value, w) {
         return Theme(
@@ -143,41 +185,68 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
                 child: widget.itemBuilder(e),
               );
             }).toList(),
-            selectedItemBuilder: widget.selectedItemBuilder != null
-                ? (context) => widget.items
-                    .map((e) => widget.selectedItemBuilder!(e))
-                    .toList()
-                : null,
-            onChanged: !widget.enable
-                ? null
-                : (value) {
-                    _controller!.setData(value);
-                    widget.onChanged?.call(value);
-                  },
+            selectedItemBuilder: ConditionBuilder.on(
+              condition: () => widget.selectedItemBuilder != null,
+              value: () => (context) => widget.items
+                  .map((e) => widget.selectedItemBuilder!(e))
+                  .toList(),
+            ).build(
+              orElse: () => null,
+            ),
+            onChanged: ConditionBuilder.on(
+              condition: () => widget.enable,
+              value: () => (value) {
+                _controller!.setData(value);
+                widget.onChanged?.call(value);
+              },
+            ).build(
+              orElse: () => null,
+            ),
             iconSize: 24,
-            icon: !widget.enable
-                ? const SizedBox()
-                : widget.suffixIcon ??
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      color:
-                          widget.iconColor ?? context.themeColor.schemeAction,
-                    ),
+            icon: ConditionBuilder.on(
+              condition: () => widget.enable,
+              value: () => ConditionBuilder.on(
+                condition: () => widget.suffixIcon != null,
+                value: () => widget.suffixIcon,
+              ).build(
+                orElse: () => Icon(
+                  Icons.keyboard_arrow_down,
+                  color: widget.iconColor ?? context.themeColor.schemeAction,
+                ),
+              ),
+            ).build(
+              orElse: SizedBox.shrink,
+            ),
             style: context.textTheme.textInput,
             isExpanded: widget.isExpanded,
             isDense: widget.isDense,
             onTap: widget.onTap,
+            hint: widget.hint?.let((hint) {
+              return Text(
+                hint,
+                style: widget.hintStyle ?? context.textTheme.inputHint,
+              );
+            }),
             decoration: InputDecorationFactory.build(
               context: context,
+              titleMode: widget.titleMode,
               hint: widget.hint,
               hintStyle: widget.hintStyle,
-              title: switch (widget.titleMode) {
-                TitleMode.floating => widget.title,
-                _ => null,
-              },
+              title: ConditionBuilder.on(
+                condition: () => widget.titleMode == TitleMode.floating,
+                value: () => widget.title,
+              ).build(
+                orElse: () => null,
+              ),
               required: widget.required,
               titleStyle: widget.titleStyle,
-              errorText: value.validation,
+              errorText: ConditionBuilder.on(
+                condition: () => widget.titleMode == TitleMode.floating,
+                value: () => value.validation,
+              ).build(
+                // set error text to empty to enable error decoration
+                orElse: () => value.validation != null ? '' : null,
+              ),
               prefixIcon: _getPrefixIcon(),
               prefixIconSize: prefixIconSize,
               prefixIconPadding: widget.prefixIconPadding,
@@ -186,32 +255,6 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             ),
           ),
         );
-      },
-    );
-
-    return AvailabilityWidget(
-      enable: widget.enable,
-      child: switch (widget.titleMode) {
-        TitleMode.floating => dropdown,
-        _ => Builder(
-            builder: (context) {
-              if (widget.title.isNullOrEmpty) {
-                return dropdown;
-              }
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InputTitleWidget(
-                    title: widget.title,
-                    required: widget.required,
-                  ),
-                  const SizedBox(height: 8),
-                  dropdown,
-                ],
-              );
-            },
-          ),
       },
     );
   }

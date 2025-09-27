@@ -10,7 +10,7 @@ apply from: 'signing.gradle'
 android {
     namespace 'net.vnsilicon.core'
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
     compileOptions { 
         sourceCompatibility JavaVersion.VERSION_17
@@ -25,7 +25,6 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-
     defaultConfig {
         minSdkVersion 26
         targetSdkVersion 35
@@ -36,6 +35,9 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            // Optimize debug builds
+            crunchPngs false
+            minifyEnabled false
         }
         profile {
             minifyEnabled true
@@ -60,20 +62,44 @@ android {
             }
         }
 
+        // Check if custom signing configs are available
+        def hasCustomSigning = project.android.signingConfigs.findByName('dev') != null
+
         dev {
             applicationId appSpecificProps.getProperty('app.dev.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.dev.name')
-            signingConfig signingConfigs.dev
+            if (hasCustomSigning) {
+                signingConfig signingConfigs.dev
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
         staging {
             applicationId appSpecificProps.getProperty('app.staging.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.staging.name')
-            signingConfig signingConfigs.staging
+            if (hasCustomSigning) {
+                signingConfig signingConfigs.staging
+            } else {
+                signingConfig signingConfigs.debug
+            }
+        }
+        sandbox {
+            applicationId appSpecificProps.getProperty('app.sandbox.package')
+            resValue "string", "app_name", appSpecificProps.getProperty('app.sandbox.name')
+            if (hasCustomSigning) {
+                signingConfig signingConfigs.sandbox
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
         prod {
             applicationId appSpecificProps.getProperty('app.prod.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.prod.name')
-            signingConfig signingConfigs.prod
+            if (hasCustomSigning) {
+                signingConfig signingConfigs.prod
+            } else {
+                signingConfig signingConfigs.debug
+            }
         }
     }
     lint {

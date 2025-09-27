@@ -5,7 +5,7 @@ class WebViewRoute extends IRoute {
   @override
   List<CustomRouter> routers() {
     return [
-      CustomRouter(
+      CustomRouter<WebViewArgs>(
         path: WebViewScreen.routeName,
         builder: (context, uri, extra) {
           final args = extra as WebViewArgs?;
@@ -13,11 +13,7 @@ class WebViewRoute extends IRoute {
             params: args,
           );
         },
-        verifier: (uri, extra) {
-          return uri.path.startsWith(
-            WebViewScreen.routeName,
-          );
-        },
+        extraFromUrlQueries: WebViewArgs.fromUrlParams,
       ),
     ];
   }

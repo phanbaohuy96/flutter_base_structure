@@ -9,6 +9,7 @@ export 'data_source/remote/app_api_service.dart';
 export 'data_source/remote/clients/dio_client_factory.dart';
 export 'data_source/remote/data_repository.dart';
 export 'data_source/remote/interceptor/auth_interceptor.dart';
+export 'data_source/remote/interceptor/domain_interceptor.dart';
 export 'data_source/remote/interceptor/header_interceptor.dart';
 export 'data_source/remote/interceptor/logger_interceptor.dart';
 export 'data_source/remote/interceptor/retry_interceptor.dart';

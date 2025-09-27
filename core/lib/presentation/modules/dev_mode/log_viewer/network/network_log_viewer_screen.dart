@@ -27,23 +27,22 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
     return ScreenForm(
       title: 'Network Log Viewer',
       actions: [_rightButton()],
-      child: Container(
-        color: context.theme.primaryColor,
-        child: ListView.separated(
-          padding: EdgeInsets.zero,
-          itemBuilder: (context, index) {
-            final log = logs[index];
-            return InkWell(
-              onTap: () => _viewLogDetail(log),
-              onDoubleTap: () => _copyCURL(log),
-              child: NetworkLogItem(
-                log: log,
-              ),
-            );
-          },
-          separatorBuilder: (_, __) => const SizedBox(height: 16),
-          itemCount: logs.length,
-        ),
+      hasBottomBorderRadius: true,
+      bgColor: context.theme.primaryColor,
+      child: ListView.separated(
+        padding: EdgeInsets.zero,
+        itemBuilder: (context, index) {
+          final log = logs[index];
+          return InkWell(
+            onTap: () => _viewLogDetail(log),
+            onDoubleTap: () => _copyCURL(log),
+            child: NetworkLogItem(
+              log: log,
+            ),
+          );
+        },
+        separatorBuilder: (_, __) => const SizedBox(height: 16),
+        itemCount: logs.length,
       ),
     );
   }
@@ -165,6 +164,7 @@ class NetworkLogItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      color: context.theme.canvasColor,
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(

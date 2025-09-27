@@ -139,7 +139,7 @@ class _DateInputCalendarPickerState extends State<DateInputCalendarPicker> {
                         color: widget.iconColor ?? context.themeColor.primary,
                       )
                     : Icon(
-                        Iconsax.calendar_1,
+                        Icons.calendar_month_outlined,
                         size: 22,
                         color: widget.iconColor ?? context.themeColor.primary,
                       ),
