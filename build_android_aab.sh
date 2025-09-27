@@ -19,23 +19,20 @@ The module must be contain dist_config.sh file.
 Example for dist_config.sh file:
 -----------------------------------------------------------------
 # Dev
-dev_main="lib/main_dev.dart" #required
-
-# Demo Version
-demo_main="lib/main_demo.dart" #required
+DEV_MAIN="lib/main_dev.dart" #required
 
 # Staging
-staging_main="lib/main_staging.dart" #required
+STAGING_MAIN="lib/main_staging.dart" #required
 
 # Prod
-prod_main="lib/main.dart" #required
+PROD_MAIN="lib/main.dart" #required
 -----------------------------------------------------------------
 
 NOTE: The optional value must not be empty if not provided. Input any place holder value.
 
 OPTIONS:
 
--e,     --env       Environment [dev, demo, staging, prod] *
+-e,     --env       Environment [dev, staging, sandbox, prod] *
 -a,     --app       Valid values are [<app-name>, all] *
 --clean             Using this option to cleaning the project
 -h,     --help      Display this usage message and exit
@@ -96,7 +93,7 @@ if [ -z "$ENV" ] || [ -z "$APP" ]; then
 fi
 
 # Check that ENV is valid
-if [ "$ENV" != "dev" ] && [ "$ENV" != "demo" ]&& [ "$ENV" != "staging" ] && [ "$ENV" != "prod" ]; then
+if [ "$ENV" != "dev" ] && [ "$ENV" != "staging" ] && [ "$ENV" != "sandbox" ] && [ "$ENV" != "prod" ]; then
     echoColor $RED "Invalid ENV: $ENV. Valid values are dev, [dev, demo, staging, prod]."
     exit 1
 fi
@@ -143,28 +140,28 @@ function build_aab {
     done
 
     local VERSION=""
+    local DART_DEFINE_FROM_FILE=""
+
     case $flavor in
         "dev")
             VERSION=$version
-            MAIN=$dev_main
-            ;;
-
-        "demo")
-            VERSION=$version_demo
-            MAIN=$demo_main
+            MAIN=$DEV_MAIN
+            DART_DEFINE_FROM_FILE=$DEV_DART_DEFINE_FROM_FILE
             ;;
 
         "staging")
             VERSION=$version_staging
-            MAIN=$staging_main
+            MAIN=$STAGING_MAIN
+            DART_DEFINE_FROM_FILE=$STAGING_DART_DEFINE_FROM_FILE
             ;;
 
         "prod")
             VERSION=$version_prod
-            MAIN=$prod_main
+            MAIN=$PROD_MAIN
+            DART_DEFINE_FROM_FILE=$PROD_DART_DEFINE_FROM_FILE
             ;;
         *)
-            echo -n "UNKNOW Flavor"
+            echo -n "UNKNOWN Flavor"
             ;;
     esac
 
@@ -190,14 +187,16 @@ function build_aab {
     flavor:      $flavor
     main:        $MAIN
     version:     $VERSION
+    config_map:  $DART_DEFINE_FROM_FILE
 "
 
     run_flutter_command build appbundle\
      --flavor $flavor\
-     --release\
-     --target=$MAIN\
-     --build-name=$BUILD_NAME\
-     --build-number=$BUILD_NUMBER
+     --release \
+     --target=$MAIN \
+     --build-name=$BUILD_NAME \
+     --build-number=$BUILD_NUMBER \
+     --dart-define-from-file=$DART_DEFINE_FROM_FILE
 }
 
 setup_flutter_command
@@ -221,7 +220,7 @@ if [[ "all" == $APP ]];then
             clean_folder
         fi
 
-        build_aab -f $ENV
+        build_aab --flavor $ENV
 
         cd "$ROOT_DIR"
     done

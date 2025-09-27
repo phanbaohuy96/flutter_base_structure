@@ -17,7 +17,7 @@ allprojects {
 }
 
 buildscript {
-    ext.kotlin_version = '1.8.20'
+    ext.kotlin_version = '1.9.23'
 }
 
 rootProject.buildDir = '../build'

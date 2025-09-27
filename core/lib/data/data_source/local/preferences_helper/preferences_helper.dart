@@ -43,4 +43,9 @@ abstract class CoreAppPreferenceData {
   DateTime? get lastDayShowCookieConsent;
 
   Future<bool?> setLastDayShowCookieConsent(DateTime? today);
+
+  // Development
+  String? get domainReplacement;
+
+  Future<bool?> setDomainReplacement(String? domain);
 }

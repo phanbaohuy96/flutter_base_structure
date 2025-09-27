@@ -21,7 +21,7 @@ class UserToken {
   @JsonKey(name: 'access_token', fromJson: asOrNull)
   final String? accessToken;
   @JsonKey(name: 'refresh_token', fromJson: asOrNull)
-  final String? refreshRoken;
+  final String? refreshToken;
   @JsonKey(
     name: 'token_type',
     unknownEnumValue: JsonKey.nullForUndefinedEnumValue,
@@ -36,7 +36,7 @@ class UserToken {
 
   UserToken({
     this.accessToken,
-    this.refreshRoken,
+    this.refreshToken,
     this.type,
     this.scope,
     this.expireIn,
@@ -45,7 +45,7 @@ class UserToken {
 
   UserToken copyWith({
     ValueGetter<String?>? accessToken,
-    ValueGetter<String?>? refreshRoken,
+    ValueGetter<String?>? refreshToken,
     ValueGetter<TokenType?>? type,
     ValueGetter<int?>? expireIn,
     ValueGetter<List<String>?>? scope,
@@ -53,7 +53,7 @@ class UserToken {
   }) {
     return UserToken(
       accessToken: accessToken != null ? accessToken() : this.accessToken,
-      refreshRoken: refreshRoken != null ? refreshRoken() : this.refreshRoken,
+      refreshToken: refreshToken != null ? refreshToken() : this.refreshToken,
       type: type != null ? type() : this.type,
       expireIn: expireIn != null ? expireIn() : this.expireIn,
       scope: scope != null ? scope() : this.scope,
@@ -91,7 +91,7 @@ class UserToken {
   String toString() {
     return '''Token(
   token: $accessToken, 
-  refreshRoken: $refreshRoken, 
+  refreshToken: $refreshToken, 
   type: $type, 
   expireIn: $expireIn, 
   scope: $scope,

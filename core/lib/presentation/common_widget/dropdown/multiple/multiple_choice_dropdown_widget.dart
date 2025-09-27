@@ -199,6 +199,7 @@ class _MultipleChoiceDropdownWidgetState<T>
           autovalidateMode: AutovalidateMode.disabled,
           decoration: InputDecorationFactory.build(
             context: context,
+            titleMode: widget.titleMode,
             hint: widget.hint,
             hintStyle: widget.hintStyle,
             title: switch (widget.titleMode) {
@@ -207,7 +208,11 @@ class _MultipleChoiceDropdownWidgetState<T>
             },
             required: widget.required,
             titleStyle: widget.titleStyle,
-            errorText: value.validation,
+            errorText: switch (widget.titleMode) {
+              TitleMode.floating => value.validation,
+              // set error text to empty to enable error decoration
+              _ => value.validation != null ? '' : null,
+            },
             prefixIcon: _getPrefixIcon(),
             prefixIconSize: prefixIconSize,
             prefixIconPadding: widget.prefixIconPadding,
@@ -276,6 +281,7 @@ class _MultipleChoiceDropdownWidgetState<T>
               if (widget.title.isNullOrEmpty) {
                 return dropdown;
               }
+              const spacing = 8.0;
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
@@ -284,8 +290,17 @@ class _MultipleChoiceDropdownWidgetState<T>
                     title: widget.title,
                     required: widget.required,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: spacing),
                   dropdown,
+                  ValueListenableBuilder(
+                    valueListenable: _controller!,
+                    builder: (context, value, child) {
+                      return InputHelperError(
+                        validation: value.validation,
+                        padding: const EdgeInsets.only(top: spacing),
+                      );
+                    },
+                  ),
                 ],
               );
             },

@@ -11,6 +11,7 @@ class InputDecorationFactory {
   static InputDecoration build({
     required BuildContext context,
     required bool enable,
+    required TitleMode titleMode,
     String? title,
     String? hint,
     TextStyle? titleStyle,
@@ -24,11 +25,15 @@ class InputDecorationFactory {
     bool? isDense,
     String? errorText,
     TextStyle? errorStyle,
+    String? helperText,
+    TextStyle? helperStyle,
     Widget? prefixIcon,
     Widget? suffixIcon,
   }) {
     final appTextTheme = context.textTheme;
     final behavior = context.theme.inputDecorationTheme.floatingLabelBehavior;
+    const validationMaxLines = 4;
+    final errorBorder = context.theme.inputDecorationTheme.errorBorder;
     return InputDecoration(
       label: title.isNotNullOrEmpty
           ? InputTitleWidget(
@@ -56,7 +61,18 @@ class InputDecorationFactory {
       errorStyle: (errorStyle ?? appTextTheme.inputError)?.copyWith(
         fontSize: errorText?.isNotEmpty == true ? null : 1,
       ),
-      errorMaxLines: 4,
+      errorMaxLines: validationMaxLines,
+      errorBorder: errorBorder?.copyWith(
+        borderSide: BorderSide(
+          width: errorBorder.borderSide.width,
+          color: errorStyle?.color ?? errorBorder.borderSide.color,
+        ),
+      ),
+      suffixIconColor: errorText != null ? errorStyle?.color : null,
+      helperText: helperText,
+      helperStyle: (helperStyle ?? appTextTheme.helper)?.copyWith(
+        color: appTextTheme.inputTitle?.color,
+      ),
       suffixIcon: suffixIcon?.let(
         (it) => AvailabilityWidget(
           enable: enable,

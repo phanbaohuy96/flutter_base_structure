@@ -99,7 +99,6 @@ linter:
     - unnecessary_parenthesis
     - unnecessary_this
     - unrelated_type_equality_checks
-    - unsafe_html
     - use_full_hex_values_for_flutter_colors
     - use_rethrow_when_possible
     - use_setters_to_change_properties

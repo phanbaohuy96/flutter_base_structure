@@ -9,13 +9,16 @@ extension DateUtilsExtention on DateTime {
   String customFormat(
     List<String> format, {
     DateLocale locale = const EnglishDateLocale(),
+    bool useCalendarFormat = true,
   }) {
     return formatDate(
       toLocal(),
       [
-        ...format.map(
-          (e) => e == yyyy ? calendarYearStr : e,
-        ),
+        ...useCalendarFormat
+            ? format.map(
+                (e) => e == yyyy ? calendarYearStr : e,
+              )
+            : format,
       ],
       locale: locale,
     );

@@ -24,7 +24,7 @@ typedef OutlinedButtonThemeBuilder = OutlinedButtonThemeData Function({
   required AppTextTheme textTheme,
 });
 
-typedef TabBarThemeBuilder = TabBarTheme Function({
+typedef TabBarThemeBuilder = TabBarThemeData Function({
   required AppTextTheme textTheme,
   required ThemeColor themeColor,
 });
@@ -73,7 +73,6 @@ class AppTheme {
         unselectedWidgetColor: themeColor.disableColor,
         splashColor: themeColor.splashColor,
         shadowColor: themeColor.shadowColor,
-        indicatorColor: themeColor.selected,
         inputDecorationTheme: inputDecorationThemeBuilder(
           themeColor: themeColor,
           appTextTheme: _appTextTheme,
@@ -142,7 +141,7 @@ class AppTheme {
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         padding: EdgeInsets.zero,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
       ).copyWith(
         foregroundColor: WidgetStateProperty.resolveWith<Color?>(
@@ -150,7 +149,7 @@ class AppTheme {
             if (states.contains(WidgetState.disabled)) {
               return themeColor.textButtonDisableColor;
             }
-            return themeColor.schemeAction;
+            return themeColor.textButtonColor;
           },
         ),
       ),
@@ -168,7 +167,7 @@ class AppTheme {
         minimumSize: const Size(88, 40),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
         elevation: 0,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -204,7 +203,7 @@ class AppTheme {
         textStyle: textTheme.buttonText,
         shadowColor: themeColor.splashColor,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(4)),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ).copyWith(
@@ -245,15 +244,15 @@ class AppTheme {
   }) {
     final border = OutlineInputBorder(
       borderSide: BorderSide(color: themeColor.borderColor, width: 1),
-      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
     );
     final focusedBorder = OutlineInputBorder(
       borderSide: BorderSide(color: themeColor.primary, width: 1),
-      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
     );
     final disabledBorder = OutlineInputBorder(
       borderSide: BorderSide(color: themeColor.disableColor, width: 1),
-      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
     );
     return InputDecorationTheme(
       border: border,
@@ -270,11 +269,11 @@ class AppTheme {
     );
   }
 
-  static TabBarTheme _tabBarTheme({
+  static TabBarThemeData _tabBarTheme({
     required AppTextTheme textTheme,
     required ThemeColor themeColor,
   }) {
-    return TabBarTheme(
+    return TabBarThemeData(
       labelStyle: textTheme.bodyMedium?.copyWith(
         fontWeight: FontWeight.w600,
       ),

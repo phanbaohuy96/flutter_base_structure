@@ -1,4 +1,5 @@
 class CorePreferencesKey {
+  static const String domainReplacement = 'domain-replacement';
   static const String theme = 'theme_mode';
   static const String localization = 'locale';
   static const String isLaunched = 'isLaunched';

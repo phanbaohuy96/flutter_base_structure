@@ -30,6 +30,9 @@
     ],
     "app main generate: generate_app_identifier": [
       "apps/main/app_identifier.yaml"
+    ],
+    "plugins fl_media: generate_app_localizations": [
+      "plugins/fl_media/lib/src/l10n/localizations.csv"
     ]
   },
   "explorer.fileNesting.enabled": true,
@@ -41,6 +44,23 @@
     ".gitignore": ".gitattributes, .gitmodules, .gitmessage, .mailmap, .git-blame*",
     "readme.*": "authors, backers.md, changelog*, citation*, code_of_conduct.md, codeowners, contributing.md, contributors, copying, credits, governance.md, history.md, license*, maintainers, readme*, security.md, sponsors.md",
     "*.dart": "$(capture).g.dart, $(capture).freezed.dart, $(capture).gr.dart",
+    "scripts.sh": "*.sh",
     "mason.yaml": "mason-lock.json"
   },
+  "cSpell.words": [
+    "chewie",
+    "configureondemand",
+    "dartx",
+    "elif",
+    "inappwebview",
+    "interps",
+    "jvmargs",
+    "pdfx",
+    "Pngs",
+    "rxdart",
+    "Schyler",
+    "sprintf",
+    "vnsilicon"
+  ],
+  "dart.flutterSdkPath": ".fvm/versions/3.32.8"
 }

@@ -11,29 +11,40 @@ ApiResponse<T> _$ApiResponseFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     ApiResponse<T>(
-      errorCode: asOrNull(json['error_code']),
-      error: asOrNull(json['error']),
-      errors: asOrNull(json['errors']),
-      msg: asOrNull(json['msg']),
+      code: asOrNull(json['code']),
       message: asOrNull(json['message']),
+      messageKey: asOrNull(json['message_key']),
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
     );
 
 Map<String, dynamic> _$ApiResponseToJson<T>(
   ApiResponse<T> instance,
   Object? Function(T value) toJsonT,
-) =>
-    <String, dynamic>{
-      'error_code': instance.errorCode,
-      'error': instance.error,
-      'errors': instance.errors,
-      'msg': instance.msg,
-      'message': instance.message,
-      'data': toJsonT(instance.data),
-    };
+) {
+  final val = <String, dynamic>{
+    'code': instance.code,
+    'message': instance.message,
+    'message_key': instance.messageKey,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('data', _$nullableGenericToJson(instance.data, toJsonT));
+  return val;
+}
 
 T? _$nullableGenericFromJson<T>(
   Object? input,
   T Function(Object? json) fromJson,
 ) =>
     input == null ? null : fromJson(input);
+
+Object? _$nullableGenericToJson<T>(
+  T? input,
+  Object? Function(T value) toJson,
+) =>
+    input == null ? null : toJson(input);

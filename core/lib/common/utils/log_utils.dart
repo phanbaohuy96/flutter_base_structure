@@ -8,11 +8,11 @@ final logUtils = injector<LogUtils>();
 
 @module
 abstract class LogUtilsModule {
-  @Injectable(env: [Env.devEnvName])
-  LogUtils get devLogUlils => LogUtils();
+  @Injectable(env: [Env.devEnvName, Env.stagingEnvName])
+  LogUtils get devLogUtils => LogUtils();
 
-  @Injectable(env: [Env.stagingEnvName, Env.prodEnvName])
-  LogUtils get prodLogUlils => LogUtils(
+  @Injectable(env: [Env.sanboxEnvName, Env.prodEnvName])
+  LogUtils get prodLogUtils => LogUtils(
         cacheToView: false,
       );
 }

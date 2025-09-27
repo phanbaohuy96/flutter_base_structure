@@ -7,6 +7,7 @@ import 'package:path/path.dart' as path;
 
 import '../common/common_function.dart';
 import '../common/file_helper.dart';
+import '../generate_app_localizations.dart' as generate_app_localizations;
 
 Future<void> generateAppLocalizations({
   required List<List<dynamic>> localizations,
@@ -139,27 +140,25 @@ Future<void> generateAppLocalizationsCSVfile({
 }
 
 Future<void> checkUnusedL10n({
-  required String arbPath,
+  required String resourcePath,
   required String dartPath,
+  bool shouldRemove = false,
 }) async {
-  final arbDir = Directory(arbPath);
+  final input = File(resourcePath).openRead();
+
+  final fields = await input
+      .transform(utf8.decoder)
+      .transform(
+        CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
+      )
+      .toList();
+
   final dartDir = Directory(dartPath);
 
-  final allArbKeys = <String>{};
+  final allArbKeys = <String>{
+    for (final row in fields.skip(1)) row.first.toString().trim(),
+  };
   final usedKeys = <String>{};
-
-  // Read all .arb files and collect keys
-  final arbFiles = arbDir.listSync().where((f) => f.path.endsWith('.arb'));
-  for (final file in arbFiles) {
-    final content = File(file.path).readAsStringSync();
-    final map = jsonDecode(content) as Map<String, dynamic>;
-    for (final key in map.keys) {
-      // Skip metadata keys like "@key"
-      if (!key.startsWith('@')) {
-        allArbKeys.add(key);
-      }
-    }
-  }
 
   // Search Dart files for usage of localization keys
   final dartFiles =
@@ -184,11 +183,38 @@ Future<void> checkUnusedL10n({
 
   if (unusedKeys.isEmpty) {
     print('✅ No unused localization keys found.');
+    return;
   } else {
     print('⚠️ Unused localization keys:');
     for (final key in unusedKeys) {
       print('  - $key');
     }
-    exitCode = 1; // optional: fail build
+  }
+
+  // Optionally remove unused keys from .arb files
+  if (shouldRemove) {
+    var csv = ListToCsvConverter(
+      eol: Platform.isMacOS ? '\n' : defaultEol,
+    ).convert(
+      [
+        fields.first,
+        ...fields.skip(1).where((row) => usedKeys.contains(row.first)),
+      ],
+    );
+
+    await FilesHelper.writeFile(pathFile: resourcePath, content: csv);
+
+    await generate_app_localizations.generateAppLocalizations();
+
+    print('Updated $resourcePath by removing unused keys.');
+
+    // Run flutter gen-l10n command to regenerate localization files
+    final result = await Process.run('flutter', ['gen-l10n', '--format']);
+    if (result.exitCode == 0) {
+      print('Successfully regenerated localization files.');
+    } else {
+      print('Error regenerating localization files:');
+      print(result.stderr);
+    }
   }
 }
