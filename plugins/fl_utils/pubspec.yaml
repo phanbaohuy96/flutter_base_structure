@@ -5,14 +5,14 @@ homepage:
 
 environment:
   sdk: '>=3.3.1 <4.0.0'
-  flutter: ">=3.24.0"
+  flutter: ">=3.32.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   flutter_multi_formatter: ^2.12.4
-  logger: ^1.0.0
+  logger: 2.6.1
   date_format: ^2.0.2
   timeago: ^3.1.0
   encrypt: ^5.0.1

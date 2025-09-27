@@ -85,7 +85,7 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
           const SizedBox(height: 30),
           DropdownWidget<UserModel>(
             title: trans.userRole,
-            itemBuilder: (p0) => Text(p0.fullName),
+            itemBuilder: (p0) => Text(p0.name ?? '--'),
             items: state.users,
             onChanged: state.users.isNotEmpty ? _onRoleChanged : null,
           ),

@@ -48,14 +48,14 @@ class PlatformConfigDocument<T extends ConfigDocument> {
           ),
         );
       default:
-        return UnknowPlatformConfigDocument();
+        return UnknownPlatformConfigDocument();
     }
   }
 }
 
-class UnknowPlatformConfigDocument extends PlatformConfigDocument {
-  UnknowPlatformConfigDocument()
-      : super(configFilePath: '', document: UnknowConfigDocument());
+class UnknownPlatformConfigDocument extends PlatformConfigDocument {
+  UnknownPlatformConfigDocument()
+      : super(configFilePath: '', document: UnknownConfigDocument());
 }
 
 abstract class ConfigDocument {
@@ -73,7 +73,7 @@ abstract class ConfigDocument {
   }
 }
 
-class UnknowConfigDocument extends ConfigDocument {
+class UnknownConfigDocument extends ConfigDocument {
   @override
   String get contentFile => '';
 }

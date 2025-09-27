@@ -1,4 +1,5 @@
 export 'common/constants/server_constants.dart';
+export 'common/data_parser.dart';
 export 'data/data.dart';
 export 'data/data_source/api_contract.dart';
 export 'data/data_source/rest_api_repository.dart';

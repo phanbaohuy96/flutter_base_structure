@@ -170,7 +170,7 @@ Future<T?> showNoticeConfirmWithReasonDialog<T>({
       return GestureDetector(
         onTap: () {
           if (_icReasonCtr.value.focusNode.hasFocus) {
-            CoreCommonFunction().hideKeyBoard(context);
+            CoreCommonFunction().hideKeyboard(context);
           } else if (barrierDismissible) {
             Navigator.of(context, rootNavigator: useRootNavigator).pop(
               _icReasonCtr.text,
@@ -316,7 +316,7 @@ Future<T?> showNoticeConfirmWithValidateDialog<T>({
       return GestureDetector(
         onTap: () {
           if (_icReasonCtr.value.focusNode.hasFocus) {
-            CoreCommonFunction().hideKeyBoard(context);
+            CoreCommonFunction().hideKeyboard(context);
           } else if (barrierDismissible) {
             Navigator.of(context, rootNavigator: useRootNavigator).pop();
           }

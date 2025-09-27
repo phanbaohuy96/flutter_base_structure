@@ -104,7 +104,9 @@ Future<void> generateAppLocalizationsCSVFile() async {
   );
 }
 
-Future<void> checkUnusedL10n() async {
+Future<void> checkUnusedL10n({
+  bool shouldRemove = false,
+}) async {
   var filePath = 'l10n.yaml';
   if (!File(filePath).existsSync()) {
     _showYamlError();
@@ -115,16 +117,22 @@ Future<void> checkUnusedL10n() async {
   final yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
 
   final arbPath =
-      (yamlMap['arb-dir'] is String) ? yamlMap['arb-dir'] : 'assets/languages';
+      (yamlMap['resource-file'] is String) ? yamlMap['resource-file'] : null;
 
+  if (arbPath == null || arbPath.isEmpty) {
+    print('''Resource file path is not set in l10n.yaml''');
+
+    return;
+  }
   await generate_app_localizations.checkUnusedL10n(
-    arbPath: arbPath,
+    resourcePath: arbPath,
     dartPath: 'lib',
+    shouldRemove: shouldRemove,
   );
 }
 
 void _showYamlError() {
-  print('''Please setting up an internation­alization for your app first''');
+  print('''Please setting up an internationalization for your app first''');
   print('''##########################################
 ##### Reference #####''');
   print(

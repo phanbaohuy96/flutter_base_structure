@@ -72,11 +72,14 @@ class CoreLocalDataManager implements CoreAppPreferenceData, CoreLocalHiveData {
 
   @override
   Future setToken(UserToken? value) {
-    if (kIsWeb) {
+    /// On safari, apple isn't allow the cross-site to set the cookie
+    /// So on [kDebugMode] we allow to them to save token into local storage
+    if (kIsWeb && !kDebugMode) {
       /// On the web platform, saving the user token locally is not supported
       /// due to security concerns.
       ///
       /// Instead, consider using credential cookies for authentication purposes
+      ///
       return Future.value(false);
     }
     return _preferencesHelper.setToken(value);
@@ -97,5 +100,13 @@ class CoreLocalDataManager implements CoreAppPreferenceData, CoreLocalHiveData {
   @override
   Future<bool?> setLastDayShowCookieConsent(DateTime? today) {
     return _preferencesHelper.setLastDayShowCookieConsent(today);
+  }
+
+  @override
+  String? get domainReplacement => _preferencesHelper.domainReplacement;
+
+  @override
+  Future<bool?> setDomainReplacement(String? domain) {
+    return _preferencesHelper.setDomainReplacement(domain);
   }
 }

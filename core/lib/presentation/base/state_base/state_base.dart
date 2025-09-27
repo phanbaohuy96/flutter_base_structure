@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -20,6 +19,9 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
   List<CoreBlocBase> get subBlocs => [];
 
   bool get willHandleError => true;
+
+  CoreLocalDataManager get coreLocalDataManager =>
+      injector.get<CoreLocalDataManager>();
 
   @override
   @mustCallSuper
@@ -141,7 +143,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     showLoading();
     await Future.wait(
       [
-        injector.get<CoreLocalDataManager>().clearData(),
+        coreLocalDataManager.clearData(),
       ],
     );
     hideLoading();
@@ -158,14 +160,12 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  Future showFlushBar({
-    String? title,
-    String? message,
+  void showFlushBar({
+    required String message,
     Widget? icon,
     Duration duration = const Duration(seconds: 2),
-    Color backgroundColor = Colors.black87,
+    Color? backgroundColor,
     Color? messageColor,
-    FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
     EdgeInsets margin = const EdgeInsets.symmetric(
       horizontal: 24,
     ),
@@ -177,31 +177,32 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     double borderWidth = 1,
     Color? borderColor,
   }) {
-    return Flushbar(
-      title: title,
+    return FlashyFlushbar(
+      leadingWidget: icon ?? const SizedBox.shrink(),
       message: message,
-      messageColor: messageColor,
       duration: duration,
-      backgroundColor: backgroundColor,
-      flushbarPosition: flushbarPosition,
       margin: margin,
+      horizontalPadding: padding,
       borderRadius: borderRadius,
-      padding: padding,
-      icon: icon,
-      flushbarStyle: FlushbarStyle.FLOATING,
-      borderWidth: borderWidth,
-      borderColor: borderColor,
-    ).show(globalNavigatorKey.currentContext ?? context);
+      backgroundColor: backgroundColor ?? context.theme.colorScheme.secondary,
+      trailingWidget: const IconButton(
+        icon: Icon(
+          Icons.close,
+          color: Colors.black,
+          size: 24,
+        ),
+        onPressed: FlashyFlushbar.cancel,
+      ),
+      animationDuration: const Duration(milliseconds: 300),
+    ).show();
   }
 
-  Future showSuccessFlushBar({
-    String? title,
-    String? message,
+  void showSuccessFlushBar({
+    required String message,
     Widget? icon,
     Duration duration = const Duration(seconds: 2),
     Color backgroundColor = const Color(0xffE2F1E6),
     Color messageColor = Colors.black,
-    FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
     EdgeInsets margin = const EdgeInsets.symmetric(
       horizontal: 24,
     ),
@@ -214,13 +215,20 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     Color borderColor = Colors.green,
   }) {
     return showFlushBar(
-      title: title,
       message: message,
       messageColor: messageColor,
       duration: duration,
       backgroundColor: backgroundColor,
-      flushbarPosition: flushbarPosition,
-      margin: margin,
+      margin: margin.let(
+        (it) {
+          if (kIsWeb) {
+            return it.copyWith(
+              top: 16,
+            );
+          }
+          return it;
+        },
+      ),
       borderRadius: borderRadius,
       padding: padding,
       icon: icon ??
@@ -234,14 +242,12 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  Future showErrorFlushBar({
-    String? title,
-    String? message,
+  void showErrorFlushBar({
+    required String message,
     Widget? icon,
     Duration duration = const Duration(seconds: 2),
     Color backgroundColor = const Color(0xffF6E3E2),
     Color messageColor = Colors.black,
-    FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
     EdgeInsets margin = const EdgeInsets.symmetric(
       horizontal: 24,
     ),
@@ -254,12 +260,10 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
     Color borderColor = Colors.red,
   }) {
     return showFlushBar(
-      title: title,
       message: message,
       messageColor: messageColor,
       duration: duration,
       backgroundColor: backgroundColor,
-      flushbarPosition: flushbarPosition,
       margin: margin,
       borderRadius: borderRadius,
       padding: padding,

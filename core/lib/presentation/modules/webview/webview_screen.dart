@@ -1,14 +1,8 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-// Import for Android features.
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-// Import for iOS features.
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../../../core.dart';
 import '../../../l10n/localization_ext.dart';
@@ -28,45 +22,27 @@ class WebViewArgs {
     this.assetPath,
   });
 
-  WebViewArgs copyWith({
-    String? url,
-    String? html,
-    String? title,
-    String? openInExternalBrowser,
-    String? copyLink,
-    String? copied,
-    String? assetPath,
-  }) {
-    return WebViewArgs(
-      url: url ?? this.url,
-      html: html ?? this.html,
-      title: title ?? this.title,
-      assetPath: assetPath ?? this.assetPath,
-    );
+  factory WebViewArgs.fromUrlParams(
+    Map<String, dynamic> queryParameters,
+  ) =>
+      WebViewArgs(
+        url: asOrNull(queryParameters['url']),
+        html: asOrNull(queryParameters['html']),
+        title: asOrNull(queryParameters['title']),
+        assetPath: asOrNull(queryParameters['assetPath']),
+      );
+
+  dynamic get adaptiveArguments {
+    if (kIsWeb) {
+      return {
+        'url': url != null ? Uri.encodeComponent(url!) : null,
+        'html': html,
+        'title': title,
+        'assetPath': assetPath,
+      }..removeWhere((key, value) => value.isNullOrEmpty);
+    }
+    return this;
   }
-
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'url': url,
-      'html': html,
-      'title': title,
-      'assetPath': assetPath,
-    };
-  }
-
-  factory WebViewArgs.fromMap(Map<String, dynamic> map) {
-    return WebViewArgs(
-      url: map['url'] != null ? map['url'] as String : null,
-      html: map['html'] != null ? map['html'] as String : null,
-      title: map['title'] != null ? map['title'] as String : null,
-      assetPath: map['assetPath'] != null ? map['assetPath'] as String : null,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory WebViewArgs.fromJson(String source) =>
-      WebViewArgs.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 class WebViewScreen extends StatefulWidget {
@@ -75,20 +51,16 @@ class WebViewScreen extends StatefulWidget {
   const WebViewScreen({
     Key? key,
     this.params,
-    this.hasBorder = true,
   }) : super(key: key);
 
   final WebViewArgs? params;
-  final bool? hasBorder;
 
   @override
   _WebViewScreenState createState() => _WebViewScreenState();
 }
 
 class _WebViewScreenState extends State<WebViewScreen> with AfterLayoutMixin {
-  // final bool _pageCreated = false;
-  // final bool _pageLoading = true;
-  late final WebViewController _controller;
+  double progress = -1;
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -96,94 +68,85 @@ class _WebViewScreenState extends State<WebViewScreen> with AfterLayoutMixin {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    late final PlatformWebViewControllerCreationParams params;
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
-
-    final controller = WebViewController.fromPlatformCreationParams(params)
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            debugPrint('WebView is loading (progress : $progress%)');
-          },
-          onPageStarted: (String url) {
-            debugPrint('Page started loading: $url');
-          },
-          onPageFinished: (String url) {
-            debugPrint('Page finished loading: $url');
-          },
-          onWebResourceError: (WebResourceError error) {
-            debugPrint('''Page resource error:
-code: ${error.errorCode}
-description: ${error.description}
-errorType: ${error.errorType}
-isForMainFrame: ${error.isForMainFrame}''');
-          },
-          onNavigationRequest: (NavigationRequest request) {
-            if (request.url.uri.hasAbsolutePath) {
-              if (!request.url.startsWith('http')) {
-                launchUrl(
-                  Uri.parse(request.url),
-                  mode: LaunchMode.externalApplication,
-                );
-
-                return NavigationDecision.prevent;
-              } else {
-                return NavigationDecision.navigate;
-              }
-            } else {
-              return NavigationDecision.navigate;
-            }
-          },
-        ),
-      )
-      ..addJavaScriptChannel(
-        'Toaster',
-        onMessageReceived: (JavaScriptMessage message) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message.message)),
-          );
-        },
-      );
-    if (url.isNotNullOrEmpty) {
-      controller.loadRequest(Uri.parse(url!));
-    } else {
-      controller.loadHtmlString(htmlContent);
-    }
-    // ..loadRequest(Uri.parse());
-
-    // #docregion platform_features
-    if (controller.platform is AndroidWebViewController) {
-      AndroidWebViewController.enableDebugging(true);
-      (controller.platform as AndroidWebViewController)
-          .setMediaPlaybackRequiresUserGesture(false);
-    }
-    // #enddocregion platform_features
-
-    _controller = controller;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ScreenForm(
       title: widget.params?.title,
-      hasBottomBorderRadius: widget.hasBorder,
       actions: [
         if (url != null) _rightButton(),
       ],
-      child: WebViewWidget(
-        controller: _controller,
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: InAppWebView(
+              initialSettings: InAppWebViewSettings(
+                useShouldOverrideUrlLoading: true,
+                mediaPlaybackRequiresUserGesture: false,
+                javaScriptEnabled: true,
+                supportZoom: false,
+                // Android-specific settings
+                useHybridComposition: true,
+                // iOS-specific settings
+                allowsInlineMediaPlayback: true,
+              ),
+              initialUrlRequest: url.isNotNullOrEmpty
+                  ? URLRequest(url: WebUri.uri(Uri.parse(url!)))
+                  : null,
+              initialData: url.isNullOrEmpty && htmlContent.isNotEmpty
+                  ? InAppWebViewInitialData(data: htmlContent)
+                  : null,
+              onWebViewCreated: (controller) {
+                controller.addJavaScriptHandler(
+                  handlerName: 'Toaster',
+                  callback: (args) {
+                    if (args.isNotEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(args[0])),
+                      );
+                    }
+                  },
+                );
+              },
+              onLoadStart: (controller, url) {
+                debugPrint('Page started loading: $url');
+              },
+              onLoadStop: (controller, url) {
+                debugPrint('Page finished loading: $url');
+              },
+              onProgressChanged: (controller, progress) {
+                setState(() {
+                  this.progress = progress / 100;
+                });
+                debugPrint('WebView is loading (progress : $progress%)');
+              },
+              shouldOverrideUrlLoading: (controller, navigationAction) async {
+                final url = navigationAction.request.url;
+
+                if (url != null &&
+                    url.hasAbsolutePath &&
+                    !url.scheme.startsWith('http')) {
+                  await launchUrl(
+                    url,
+                    mode: LaunchMode.externalApplication,
+                  );
+                  return NavigationActionPolicy.CANCEL;
+                }
+
+                return NavigationActionPolicy.ALLOW;
+              },
+              onReceivedError: (controller, request, error) {
+                debugPrint('''Page resource error:
+            description: ${error.description}
+            type: ${error.type}''');
+              },
+            ),
+          ),
+          Center(
+            child: Visibility(
+              visible: progress < 1.0 && progress != -1,
+              child: const Loading(),
+            ),
+          ),
+        ],
       ),
     );
   }

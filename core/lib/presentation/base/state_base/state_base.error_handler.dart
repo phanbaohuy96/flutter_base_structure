@@ -73,7 +73,7 @@ extension StateBaseErrorHandlerExt on CoreStateBase {
       case ErrorType.timeout:
         return error.message ?? coreL10n.connectionTimeout;
       case ErrorType.noInternet:
-        return coreL10n.technicalIssues;
+        return coreL10n.noInternet;
       case ErrorType.internalServerError:
       case ErrorType.unknown:
         return isDevEnv

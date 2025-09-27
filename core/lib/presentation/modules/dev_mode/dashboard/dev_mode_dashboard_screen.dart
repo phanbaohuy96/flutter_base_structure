@@ -37,7 +37,7 @@ class _DevModeDashboardScreenState extends State<DevModeDashboardScreen> {
             Theme.of(context).brightness == Brightness.dark
                 ? Icons.nightlight
                 : Icons.wb_sunny,
-            color: context.theme.primaryColor,
+            color: context.theme.appBarTheme.foregroundColor,
           ),
           onPressed: () {
             if (Theme.of(context).brightness == Brightness.light) {
@@ -62,6 +62,10 @@ class _DevModeDashboardScreenState extends State<DevModeDashboardScreen> {
           TextButton(
             onPressed: context.viewDesignSystem,
             child: const Text('Design System'),
+          ),
+          TextButton(
+            onPressed: context.openAppConfig,
+            child: const Text('App Config'),
           ),
         ],
       ),

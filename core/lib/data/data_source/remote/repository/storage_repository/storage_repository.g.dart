@@ -49,7 +49,7 @@ class _StorageRepository implements StorageRepository {
     )
         .compose(
           _dio.options,
-          'files',
+          '/files',
           queryParameters: queryParameters,
           data: _data,
           cancelToken: cancelToken,
@@ -96,7 +96,7 @@ class _StorageRepository implements StorageRepository {
     )
         .compose(
           _dio.options,
-          'files',
+          '/files',
           queryParameters: queryParameters,
           data: _data,
           cancelToken: cancelToken,

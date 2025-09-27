@@ -69,20 +69,21 @@ class ErrorData {
     responseData = error.response?.data;
     message = error.message;
     statusCode = error.response?.statusCode;
-    errorCode =
-        apiResponse.errorCode ?? apiResponse.error ?? apiResponse.errors;
+    errorCode = apiResponse.messageKey;
 
     switch (error.type) {
       case dio_p.DioExceptionType.sendTimeout:
       case dio_p.DioExceptionType.connectionTimeout:
-      case dio_p.DioExceptionType.connectionError:
         type = ErrorType.timeout;
+        break;
+      case dio_p.DioExceptionType.connectionError:
+        type = ErrorType.noInternet;
         break;
       case dio_p.DioExceptionType.receiveTimeout:
         type = ErrorType.internalServerError;
         break;
       case dio_p.DioExceptionType.badResponse:
-        message = apiResponse.msg ?? apiResponse.message;
+        message = apiResponse.message;
         if (errorCode == ServerErrorCode.invalidToken ||
             errorCode == ServerErrorCode.userNotFound ||
             statusCode == 401) {
