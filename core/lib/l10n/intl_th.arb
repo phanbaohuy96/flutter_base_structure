@@ -69,5 +69,8 @@
   "required": "โปรดระบุ",
   "optional": "ถ้ามี",
   "fileSizeOverXMB": "ไฟล์มีขนาดใหญ่เกินไป ขนาดสูงสุดที่อนุญาตคือ {x}MB",
-  "errorWhenUploading": "An error occurred when uploading"
+  "errorWhenUploading": "เกิดข้อผิดพลาดขณะอัปโหลด",
+  "onlyImageAllowed": "อนุญาตเฉพาะไฟล์รูปภาพ",
+  "onlyVideoAllowed": "อนุญาตเฉพาะไฟล์วิดีโอ",
+  "onlyImageOrVideoAllowed": "อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ"
 }
