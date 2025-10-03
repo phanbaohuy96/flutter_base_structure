@@ -63,7 +63,7 @@ import 'core_localizations_th.dart';
 /// property.
 abstract class CoreLocalizations {
   CoreLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -86,16 +86,16 @@ abstract class CoreLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('th'),
+    Locale('th')
   ];
 
   /// No description provided for @inform.
@@ -523,6 +523,24 @@ abstract class CoreLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred when uploading'**
   String get errorWhenUploading;
+
+  /// No description provided for @onlyImageAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only image files are allowed.'**
+  String get onlyImageAllowed;
+
+  /// No description provided for @onlyVideoAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only video files are allowed.'**
+  String get onlyVideoAllowed;
+
+  /// No description provided for @onlyImageOrVideoAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only image or video files are allowed.'**
+  String get onlyImageOrVideoAllowed;
 }
 
 class _CoreLocalizationsDelegate
@@ -532,8 +550,7 @@ class _CoreLocalizationsDelegate
   @override
   Future<CoreLocalizations> load(Locale locale) {
     return SynchronousFuture<CoreLocalizations>(
-      lookupCoreLocalizations(locale),
-    );
+        lookupCoreLocalizations(locale));
   }
 
   @override
@@ -554,9 +571,8 @@ CoreLocalizations lookupCoreLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-    'CoreLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
-  );
+      'CoreLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }
