@@ -63,15 +63,13 @@ import 'fl_media_localizations_th.dart';
 /// property.
 abstract class FlMediaLocalizations {
   FlMediaLocalizations(String locale)
-    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
   static FlMediaLocalizations? of(BuildContext context) {
     return Localizations.of<FlMediaLocalizations>(
-      context,
-      FlMediaLocalizations,
-    );
+        context, FlMediaLocalizations);
   }
 
   static const LocalizationsDelegate<FlMediaLocalizations> delegate =
@@ -89,16 +87,16 @@ abstract class FlMediaLocalizations {
   /// of delegates is preferred or required.
   static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
       <LocalizationsDelegate<dynamic>>[
-        delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ];
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('th'),
+    Locale('th')
   ];
 
   /// No description provided for @cancel.
@@ -175,8 +173,7 @@ class _FlMediaLocalizationsDelegate
   @override
   Future<FlMediaLocalizations> load(Locale locale) {
     return SynchronousFuture<FlMediaLocalizations>(
-      lookupFlMediaLocalizations(locale),
-    );
+        lookupFlMediaLocalizations(locale));
   }
 
   @override
@@ -197,9 +194,8 @@ FlMediaLocalizations lookupFlMediaLocalizations(Locale locale) {
   }
 
   throw FlutterError(
-    'FlMediaLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
-    'an issue with the localizations generation tool. Please file an issue '
-    'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.',
-  );
+      'FlMediaLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
 }

@@ -238,5 +238,14 @@ class CoreLocalizationsTh extends CoreLocalizations {
   }
 
   @override
-  String get errorWhenUploading => 'An error occurred when uploading';
+  String get errorWhenUploading => 'เกิดข้อผิดพลาดขณะอัปโหลด';
+
+  @override
+  String get onlyImageAllowed => 'อนุญาตเฉพาะไฟล์รูปภาพ';
+
+  @override
+  String get onlyVideoAllowed => 'อนุญาตเฉพาะไฟล์วิดีโอ';
+
+  @override
+  String get onlyImageOrVideoAllowed => 'อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ';
 }

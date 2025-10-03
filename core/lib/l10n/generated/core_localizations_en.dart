@@ -238,4 +238,14 @@ class CoreLocalizationsEn extends CoreLocalizations {
 
   @override
   String get errorWhenUploading => 'An error occurred when uploading';
+
+  @override
+  String get onlyImageAllowed => 'Only image files are allowed.';
+
+  @override
+  String get onlyVideoAllowed => 'Only video files are allowed.';
+
+  @override
+  String get onlyImageOrVideoAllowed =>
+      'Only image or video files are allowed.';
 }
