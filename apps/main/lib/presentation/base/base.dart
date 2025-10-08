@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../data/data_source/local/local_data_manager.dart';
 import '../../di/di.dart';
-import '../extentions/extention.dart';
 import '../modules/auth/authentication_coordinator.dart';
 
 export 'package:core/presentation/base/base.dart';
