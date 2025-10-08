@@ -109,7 +109,8 @@ void showFlushBar({
     horizontalPadding: padding,
     borderRadius: borderRadius,
     backgroundColor: backgroundColor ??
-        globalNavigatorKey.currentContext!.theme.colorScheme.secondary,
+        globalNavigatorKey.currentContext?.theme.colorScheme.secondary ??
+        Colors.white,
     trailingWidget: const IconButton(
       icon: Icon(Icons.close, color: Colors.black, size: 24),
       onPressed: FlashyFlushbar.cancel,
