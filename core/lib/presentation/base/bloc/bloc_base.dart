@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../core.dart';
-import '../delegate.dart';
 
 abstract class CoreBlocBase<E, S> extends Bloc<E, S> with CoreDelegate {
   CoreBlocBase(S s) : super(s);
