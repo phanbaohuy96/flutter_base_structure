@@ -49,6 +49,8 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
   final _refreshController = RefreshController(initialRefresh: true);
 
   @override
+  CoreDelegate get delegate => bloc;
+
   ${classNameKey}Bloc get bloc => BlocProvider.of(context);
 
   late ThemeData _themeData;
