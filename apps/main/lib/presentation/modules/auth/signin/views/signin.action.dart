@@ -4,6 +4,6 @@ extension SignInAction on SignInScreenState {
   void loginSuccessCallback(
     AuthSuccessResponse response,
   ) {
-    showSnackBar(message: 'Login Success');
+    showSnackBar(context: context, message: 'Login Success');
   }
 }

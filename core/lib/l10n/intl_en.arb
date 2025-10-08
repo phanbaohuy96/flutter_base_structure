@@ -14,7 +14,10 @@
   "loading": "Loading",
   "male": "Male",
   "female": "Female",
+  "skip": "Skip",
   "close": "Close",
+  "loginRequired": "Please login to continue",
+  "login": "Login",
   "error": "Error",
   "search": "Search",
   "warning": "Warning",
@@ -72,5 +75,6 @@
   "errorWhenUploading": "An error occurred when uploading",
   "onlyImageAllowed": "Only image files are allowed.",
   "onlyVideoAllowed": "Only video files are allowed.",
-  "onlyImageOrVideoAllowed": "Only image or video files are allowed."
+  "onlyImageOrVideoAllowed": "Only image or video files are allowed.",
+  "loggingOut": "Logging out..."
 }

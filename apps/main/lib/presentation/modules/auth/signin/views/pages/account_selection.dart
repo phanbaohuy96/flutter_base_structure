@@ -22,6 +22,8 @@ class AccountSelection extends StatefulWidget {
 
 class _AccountSelectionState extends StateBase<AccountSelection> {
   @override
+  CoreDelegate get delegate => bloc;
+
   SigninBloc get bloc => BlocProvider.of(context);
 
   @override
@@ -115,7 +117,10 @@ extension on _AccountSelectionState {
   Future _handleLogin() async {
     final selectedUser = bloc.state.selectedUser;
     if (selectedUser == null) {
-      showSnackBar(message: trans.pleaseSelectARoleBeforeLoginMsg);
+      showSnackBar(
+        context: context,
+        message: trans.pleaseSelectARoleBeforeLoginMsg,
+      );
       return;
     }
     showLoading();
@@ -126,11 +131,14 @@ extension on _AccountSelectionState {
 
     switch (result.result) {
       case LoginResultType.failed:
-        showSnackBar(message: trans.loginFailed);
+        showSnackBar(context: context, message: trans.loginFailed);
         break;
 
       case LoginResultType.unsupportedRole:
-        showSnackBar(message: trans.thisRoleIsNotSupportedYet);
+        showSnackBar(
+          context: context,
+          message: trans.thisRoleIsNotSupportedYet,
+        );
         break;
       default:
     }

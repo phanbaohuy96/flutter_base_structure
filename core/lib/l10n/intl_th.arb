@@ -14,7 +14,10 @@
   "loading": "กำลังโหลด",
   "male": "ชาย",
   "female": "หญิง",
+  "skip": "ข้าม",
   "close": "ปิด",
+  "loginRequired": "กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ",
+  "login": "เข้าสู่ระบบ",
   "error": "ข้อผิดพลาด",
   "search": "ค้นหา",
   "warning": "คำเตือน",
@@ -72,5 +75,6 @@
   "errorWhenUploading": "เกิดข้อผิดพลาดขณะอัปโหลด",
   "onlyImageAllowed": "อนุญาตเฉพาะไฟล์รูปภาพ",
   "onlyVideoAllowed": "อนุญาตเฉพาะไฟล์วิดีโอ",
-  "onlyImageOrVideoAllowed": "อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ"
+  "onlyImageOrVideoAllowed": "อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ",
+  "loggingOut": "กำลังออกจากระบบ..."
 }

@@ -58,7 +58,16 @@ class CoreLocalizationsEn extends CoreLocalizations {
   String get female => 'Female';
 
   @override
+  String get skip => 'Skip';
+
+  @override
   String get close => 'Close';
+
+  @override
+  String get loginRequired => 'Please login to continue';
+
+  @override
+  String get login => 'Login';
 
   @override
   String get error => 'Error';
@@ -248,4 +257,7 @@ class CoreLocalizationsEn extends CoreLocalizations {
   @override
   String get onlyImageOrVideoAllowed =>
       'Only image or video files are allowed.';
+
+  @override
+  String get loggingOut => 'Logging out...';
 }

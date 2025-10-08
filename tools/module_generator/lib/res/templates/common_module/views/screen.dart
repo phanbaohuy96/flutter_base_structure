@@ -21,6 +21,8 @@ class ${classNameKey}Screen extends StatefulWidget {
 
 class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
   @override
+  CoreDelegate get delegate => bloc;
+
   ${classNameKey}Bloc get bloc => BlocProvider.of(context);
 
   late ThemeData _themeData;
