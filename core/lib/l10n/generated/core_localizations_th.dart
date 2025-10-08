@@ -60,7 +60,16 @@ class CoreLocalizationsTh extends CoreLocalizations {
   String get female => 'หญิง';
 
   @override
+  String get skip => 'ข้าม';
+
+  @override
   String get close => 'ปิด';
+
+  @override
+  String get loginRequired => 'กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ';
+
+  @override
+  String get login => 'เข้าสู่ระบบ';
 
   @override
   String get error => 'ข้อผิดพลาด';
@@ -248,4 +257,7 @@ class CoreLocalizationsTh extends CoreLocalizations {
 
   @override
   String get onlyImageOrVideoAllowed => 'อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ';
+
+  @override
+  String get loggingOut => 'กำลังออกจากระบบ...';
 }
