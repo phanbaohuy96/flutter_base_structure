@@ -87,7 +87,6 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar({
 
 /// Shows customizable flush bar notification
 void showFlushBar({
-  required BuildContext context,
   required String message,
   Widget? icon,
   Duration duration = const Duration(seconds: 2),
@@ -109,7 +108,8 @@ void showFlushBar({
     margin: _adjustFlushBarMarginForWeb(margin),
     horizontalPadding: padding,
     borderRadius: borderRadius,
-    backgroundColor: backgroundColor ?? context.theme.colorScheme.secondary,
+    backgroundColor: backgroundColor ??
+        globalNavigatorKey.currentContext!.theme.colorScheme.secondary,
     trailingWidget: const IconButton(
       icon: Icon(Icons.close, color: Colors.black, size: 24),
       onPressed: FlashyFlushbar.cancel,
@@ -125,7 +125,6 @@ EdgeInsets _adjustFlushBarMarginForWeb(EdgeInsets margin) {
 
 /// Shows success notification
 void showSuccessFlushBar({
-  required BuildContext context,
   required String message,
   Widget? icon,
   Duration duration = const Duration(seconds: 2),
@@ -138,7 +137,6 @@ void showSuccessFlushBar({
   Color borderColor = Colors.green,
 }) {
   showFlushBar(
-    context: context,
     message: message,
     messageColor: messageColor,
     duration: duration,
@@ -155,7 +153,6 @@ void showSuccessFlushBar({
 
 /// Shows error notification
 void showErrorFlushBar({
-  required BuildContext context,
   required String message,
   Widget? icon,
   Duration duration = const Duration(seconds: 2),
@@ -168,7 +165,6 @@ void showErrorFlushBar({
   Color borderColor = Colors.red,
 }) {
   showFlushBar(
-    context: context,
     message: message,
     messageColor: messageColor,
     duration: duration,
