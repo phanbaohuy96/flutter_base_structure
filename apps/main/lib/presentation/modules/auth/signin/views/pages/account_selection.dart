@@ -22,7 +22,9 @@ class AccountSelection extends StatefulWidget {
 
 class _AccountSelectionState extends StateBase<AccountSelection> {
   @override
-  SigninBloc get delegate => BlocProvider.of(context);
+  CoreDelegate get delegate => bloc;
+
+  SigninBloc get bloc => BlocProvider.of(context);
 
   @override
   bool get willHandleError => false;
@@ -109,11 +111,11 @@ extension on _AccountSelectionState {
   }
 
   void _onRoleChanged(UserModel? user) {
-    delegate.add(UpdateSelectedUserModelEvent(user));
+    bloc.add(UpdateSelectedUserModelEvent(user));
   }
 
   Future _handleLogin() async {
-    final selectedUser = delegate.state.selectedUser;
+    final selectedUser = bloc.state.selectedUser;
     if (selectedUser == null) {
       showSnackBar(
         context: context,
@@ -123,7 +125,7 @@ extension on _AccountSelectionState {
     }
     showLoading();
     final completer = Completer<AuthResponse>();
-    delegate.add(LoginEvent(completer));
+    bloc.add(LoginEvent(completer));
 
     final result = await completer.future;
 

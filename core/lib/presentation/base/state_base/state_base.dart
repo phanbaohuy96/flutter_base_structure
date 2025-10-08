@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../core.dart';
 import '../../../l10n/localization_ext.dart';
-import '../delegate.dart';
 import 'mixin.dart';
 
 part 'state_base.error_handler.dart';
