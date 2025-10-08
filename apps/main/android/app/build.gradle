@@ -62,13 +62,10 @@ android {
             }
         }
 
-        // Check if custom signing configs are available
-        def hasCustomSigning = project.android.signingConfigs.findByName('dev') != null
-
         dev {
             applicationId appSpecificProps.getProperty('app.dev.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.dev.name')
-            if (hasCustomSigning) {
+            if (hasValidDevKeystore) {
                 signingConfig signingConfigs.dev
             } else {
                 signingConfig signingConfigs.debug
@@ -77,7 +74,7 @@ android {
         staging {
             applicationId appSpecificProps.getProperty('app.staging.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.staging.name')
-            if (hasCustomSigning) {
+            if (hasValidStagingKeystore) {
                 signingConfig signingConfigs.staging
             } else {
                 signingConfig signingConfigs.debug
@@ -86,7 +83,7 @@ android {
         sandbox {
             applicationId appSpecificProps.getProperty('app.sandbox.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.sandbox.name')
-            if (hasCustomSigning) {
+            if (hasValidSandboxKeystore) {
                 signingConfig signingConfigs.sandbox
             } else {
                 signingConfig signingConfigs.debug
@@ -95,7 +92,7 @@ android {
         prod {
             applicationId appSpecificProps.getProperty('app.prod.package')
             resValue "string", "app_name", appSpecificProps.getProperty('app.prod.name')
-            if (hasCustomSigning) {
+            if (hasValidProdKeystore) {
                 signingConfig signingConfigs.prod
             } else {
                 signingConfig signingConfigs.debug
