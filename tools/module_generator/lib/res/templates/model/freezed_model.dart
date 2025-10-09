@@ -1,4 +1,4 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
 const freezedModel = '''// ignore_for_file: invalid_annotation_target
 

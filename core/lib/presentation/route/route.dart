@@ -1,3 +1,4 @@
+import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -169,7 +170,7 @@ class CustomRouter<T> {
       return pathVerify!(uri);
     }
 
-    return uri.path.isNotEmpty && uri.path.startsWith(path);
+    return uri.path.isNotEmpty && uri.path.paramCase.startsWith(path.paramCase);
   }
 }
 
