@@ -1,4 +1,4 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
 final detailModuleCoordinator = '''import 'package:core/core.dart';
 import 'package:flutter/material.dart';

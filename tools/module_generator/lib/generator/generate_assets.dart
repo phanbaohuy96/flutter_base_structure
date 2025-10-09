@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:yaml/yaml.dart';
 
 import '../common/common_function.dart';
-import '../common/definations.dart';
+import '../common/definitions.dart';
 import '../common/file_helper.dart';
 import '../res/templates/asset/assets.dart';
 import '../res/templates/asset/audio_assets.dart';

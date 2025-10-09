@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 /// Temlate for common usecase
 const listingUsecase = '''import 'dart:async';

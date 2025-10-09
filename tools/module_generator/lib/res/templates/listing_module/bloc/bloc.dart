@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const listingModuleBloc = '''import 'dart:async';
 
