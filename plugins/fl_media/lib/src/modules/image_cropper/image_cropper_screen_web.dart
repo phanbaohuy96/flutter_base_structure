@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class ImageCropperScreen extends StatelessWidget {
-  static String routeName = '/image_cropper';
+  static String routeName = '/image-cropper';
   final File imagefile;
 
   const ImageCropperScreen({

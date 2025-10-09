@@ -9,7 +9,7 @@ import '../../../extentions/extention.dart';
 import '../devmode_coordinator.dart';
 
 class DevModeDashboardScreen extends StatefulWidget {
-  static String routeName = '/devmode_dashboard';
+  static String routeName = '/devmode-dashboard';
   const DevModeDashboardScreen({super.key});
 
   @override

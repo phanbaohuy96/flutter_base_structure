@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import '../../../../../core.dart';
 
 class NetworkLogViewerScreen extends StatefulWidget {
-  static String routeName = '/network_log_viewer';
+  static String routeName = '/network-log-viewer';
 
   const NetworkLogViewerScreen({Key? key}) : super(key: key);
 

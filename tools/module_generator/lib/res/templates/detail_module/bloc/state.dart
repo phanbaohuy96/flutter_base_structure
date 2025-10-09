@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const detailModuleState = '''// ignore_for_file: unused_element
 part of '${moduleNameKey}_bloc.dart';

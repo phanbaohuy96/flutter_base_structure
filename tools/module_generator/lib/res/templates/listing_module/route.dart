@@ -1,4 +1,4 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
 const listingModuleRoute = '''import 'package:core/core.dart';
 
