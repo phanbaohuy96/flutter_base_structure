@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const commonModuleAction = '''part of '${moduleNameKey}_screen.dart';
 
