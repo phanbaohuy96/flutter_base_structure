@@ -2,6 +2,11 @@ part of '../base.dart';
 
 abstract class StateBase<T extends StatefulWidget> extends CoreStateBase<T> {
   @override
+  CoreDelegate? get delegate => bloc;
+
+  AppBlocBase? get bloc => null;
+
+  @override
   void backToAuth({
     Function()? onSuccess,
     Function()? onSkip,
