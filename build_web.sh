@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e  # Exit immediately if any command exits with a non-zero status
+
 . ./parse_yaml.sh
 . ./echo_color.sh
 
@@ -20,6 +22,17 @@ usage() {
 '
     exit 1
 }
+
+# Error handler function
+error_handler() {
+    local exit_code=$?
+    local line_number=$1
+    echoColor $RED "❌ Script failed at line $line_number with exit code $exit_code"
+    exit $exit_code
+}
+
+# Set up error trap
+trap 'error_handler $LINENO' ERR
 
 # Build args
 MAIN=""
@@ -192,7 +205,10 @@ distribution() {
 "
     fi
 
-    flutter pub get
+    flutter pub get || {
+        echoColor $RED "❌ flutter pub get failed"
+        exit 1
+    }
 
     flutter build web \
      --base-href=$BASE_HREF \
@@ -202,9 +218,15 @@ distribution() {
      --build-number=$BUILD_NUMBER \
      --no-tree-shake-icons \
      --no-source-maps \
-     --dart-define-from-file=$DART_DEFINE_FROM_FILE
+     --dart-define-from-file=$DART_DEFINE_FROM_FILE || {
+        echoColor $RED "❌ flutter build web failed"
+        exit 1
+    }
 
-    cd build/web || { echo "❌ build/web not found. Run flutter build web first."; exit 1; }
+    cd build/web || { 
+        echoColor $RED "❌ build/web not found. Flutter build web failed."
+        exit 1
+    }
 
     # Determine correct sed -i command based on OS
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -216,23 +238,44 @@ distribution() {
     fi
 
     # Step 1: Rename main.dart.js
-    MAIN_HASH=$(sha256sum main.dart.js | cut -d ' ' -f1)
+    MAIN_HASH=$(sha256sum main.dart.js | cut -d ' ' -f1) || {
+        echoColor $RED "❌ Failed to generate hash for main.dart.js"
+        exit 1
+    }
     NEW_MAIN="main.dart.${MAIN_HASH:0:8}.js"
     echo "🔁 Renaming main.dart.js → $NEW_MAIN"
-    eval $SED_CMD "s/main\.dart\.js/${NEW_MAIN}/g" flutter_bootstrap.js
-    mv main.dart.js "$NEW_MAIN"
+    eval $SED_CMD "s/main\.dart\.js/${NEW_MAIN}/g" flutter_bootstrap.js || {
+        echoColor $RED "❌ Failed to update flutter_bootstrap.js"
+        exit 1
+    }
+    mv main.dart.js "$NEW_MAIN" || {
+        echoColor $RED "❌ Failed to rename main.dart.js"
+        exit 1
+    }
 
     # Step 2: Rename flutter_bootstrap.js
-    BOOTSTRAP_HASH=$(sha256sum flutter_bootstrap.js | cut -d ' ' -f1)
+    BOOTSTRAP_HASH=$(sha256sum flutter_bootstrap.js | cut -d ' ' -f1) || {
+        echoColor $RED "❌ Failed to generate hash for flutter_bootstrap.js"
+        exit 1
+    }
     NEW_BOOTSTRAP="flutter_bootstrap.${BOOTSTRAP_HASH:0:8}.js"
     echo "🔁 Renaming flutter_bootstrap.js → $NEW_BOOTSTRAP"
-    eval $SED_CMD "s/flutter_bootstrap\.js/${NEW_BOOTSTRAP}/g" index.html
-    mv flutter_bootstrap.js "$NEW_BOOTSTRAP"
+    eval $SED_CMD "s/flutter_bootstrap\.js/${NEW_BOOTSTRAP}/g" index.html || {
+        echoColor $RED "❌ Failed to update index.html"
+        exit 1
+    }
+    mv flutter_bootstrap.js "$NEW_BOOTSTRAP" || {
+        echoColor $RED "❌ Failed to rename flutter_bootstrap.js"
+        exit 1
+    }
 
     echo "✅ Done. Assets hashed and references updated."
 
     # Step 3: Update meta Open Graph Image
-    sed "${SED_INPLACE[@]}" "s|__APP_DOMAIN__|$APP_DOMAIN|g" index.html
+    sed "${SED_INPLACE[@]}" "s|__APP_DOMAIN__|$APP_DOMAIN|g" index.html || {
+        echoColor $RED "❌ Failed to inject APP_DOMAIN into index.html"
+        exit 1
+    }
     echo "✅ Injected APP_DOMAIN into og:image: $APP_DOMAIN"
 
     # back to the root of the app
@@ -243,7 +286,6 @@ distribution() {
     if [[ $result == 0 ]]; then
         echoColor $GREEN "apps/$(basename "$PWD")/build/web"
     fi
-
 
     add_dist_status -s $result -a "build_web $flavor" -t "--"
 
@@ -257,7 +299,10 @@ if [[ "all" == $APP ]]; then
         BASEDIR=$(dirname "$line")
         echoColor $YELLOW "\n===> Distribute $ENV on [$BASEDIR]..."
 
-        cd "$BASEDIR"
+        cd "$BASEDIR" || {
+            echoColor $RED "❌ Failed to change directory to $BASEDIR"
+            exit 1
+        }
 
         if [ $NEED_TO_CLEAN == true ]; then
             clean_folder
@@ -265,11 +310,17 @@ if [[ "all" == $APP ]]; then
 
         distribution
 
-        cd "$ROOT_DIR"
+        cd "$ROOT_DIR" || {
+            echoColor $RED "❌ Failed to return to root directory"
+            exit 1
+        }
     done
 else
     if [ -f "./apps/$APP/dist_config.sh" ] && [ -d "./apps/$APP" ]; then
-        cd apps/$APP
+        cd apps/$APP || {
+            echoColor $RED "❌ Failed to change directory to apps/$APP"
+            exit 1
+        }
 
         if [[ $NEED_TO_CLEAN == true ]]; then
             clean_folder
