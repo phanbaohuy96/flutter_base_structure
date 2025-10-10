@@ -15,16 +15,21 @@ extension StringExtension on String {
     int? partCount,
     String? modelName,
   }) {
-    final c1 = replaceAll(classNameKey, className)
-        .replaceAll(moduleNameKey, moduleName)
-        .replaceAll(modelNameKey, modelName ?? '');
-    if (partCount != null) {
-      return c1.replaceAll(
-        importPartKey,
-        List.generate(partCount, (index) => '../').join(''),
-      );
-    }
-    return c1;
+    final replacements = <String, String>{
+      classNameKey: className,
+      moduleNameKey: moduleName,
+      modelNameKey: modelName ?? '',
+      routeNameKey: moduleName.paramCase,
+      if (partCount != null)
+        importPartKey: List.generate(partCount, (index) => '../').join(''),
+    };
+
+    // Create pattern with word boundaries for exact matches
+    final pattern =
+        replacements.keys.map((key) => RegExp.escape(key)).join('|');
+    final regex = RegExp('($pattern)');
+
+    return replaceAllMapped(regex, (match) => replacements[match.group(0)]!);
   }
 }
 
