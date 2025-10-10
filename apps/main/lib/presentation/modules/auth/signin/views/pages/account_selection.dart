@@ -22,8 +22,6 @@ class AccountSelection extends StatefulWidget {
 
 class _AccountSelectionState extends StateBase<AccountSelection> {
   @override
-  CoreDelegate get delegate => bloc;
-
   SigninBloc get bloc => BlocProvider.of(context);
 
   @override

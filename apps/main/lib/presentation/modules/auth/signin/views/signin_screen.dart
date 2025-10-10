@@ -24,8 +24,6 @@ class SignInScreen extends StatefulWidget {
 
 class SignInScreenState extends StateBase<SignInScreen> {
   @override
-  CoreDelegate get delegate => bloc;
-
   SigninBloc get bloc => BlocProvider.of(context);
 
   late ThemeData _themeData;
