@@ -1,5 +1,4 @@
 import '../../../../common/definitions.dart';
-import '../../../../common/utils.dart';
 
 final detailModuleScreen = '''import 'package:core/core.dart';
 import 'package:flutter/foundation.dart';
@@ -36,7 +35,7 @@ class ${classNameKey}Args {
 }
 
 class ${classNameKey}Screen extends StatefulWidget {
-  static String routeName = '/${moduleNameKey.paramCase}';
+  static String routeName = '/$routeNameKey';
 
   const ${classNameKey}Screen({Key? key, this.args}) : super(key: key);
   
