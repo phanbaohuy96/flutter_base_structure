@@ -116,8 +116,8 @@ class _MyAppState extends State<MainApplication>
       initialRoute: SignInScreen.routeName,
       builder: EasyLoading.init(
         builder: (_, child) {
-          return FlashyFlushbarProvider(
-            child: MobileSizeLayoutConstraints(
+          return MobileSizeLayoutConstraints(
+            child: FlashyFlushbarProvider(
               child: TextScaleFixed(
                 child: child ?? const SizedBox(),
               ),
