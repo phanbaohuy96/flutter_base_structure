@@ -227,9 +227,8 @@ The **Mobile Flutter Core** template is a modular, scalable, and maintainable so
 ---
 
 ### **Documentation**
-- [Base Project Structure](https://bks-team.atlassian.net/wiki/x/rADoAw)
-   - [Core](https://bks-team.atlassian.net/wiki/x/moH2Aw)
-- [Clean Code Architecture](https://bks-team.atlassian.net/wiki/x/VoH2Aw)
-- [Generator Tool Documentation](https://bks-team.atlassian.net/wiki/x/rADpAw)
-- [Best Practices and Performance Optimization](https://bks-team.atlassian.net/wiki/x/tgDoAw)
-- [App Distribution Script Documentation](https://bks-team.atlassian.net/wiki/x/wADoAw)
+- [Base Project Structure](https://vns-site.atlassian.net/wiki/x/kQBiAw)
+   - [Core](https://vns-site.atlassian.net/wiki/x/UQBiAw)
+- [Clean Code Architecture](https://vns-site.atlassian.net/wiki/x/lwBiAw)
+- [Generator Tool Documentation](https://vns-site.atlassian.net/wiki/x/PABiAw)
+- [App Distribution Script Documentation](https://vns-site.atlassian.net/wiki/x/OgBiAw)
