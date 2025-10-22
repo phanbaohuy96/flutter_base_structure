@@ -2,14 +2,15 @@ part of 'webview_screen.dart';
 
 extension WebviewAction on _WebViewScreenState {
   String? get url {
-    if (widget.params?.url?.isNotEmpty != true) {
+    final paramUrl = widget.params?.url?.let(Uri.decodeComponent);
+    if (paramUrl?.isNotEmpty != true) {
       return null;
     }
-    if (widget.params?.url?.startsWith('http://') == false &&
-        widget.params?.url?.startsWith('https://') == false) {
-      return 'http://${widget.params?.url}';
+    if (paramUrl?.startsWith('http://') == false &&
+        paramUrl?.startsWith('https://') == false) {
+      return 'http://$paramUrl';
     } else {
-      return widget.params?.url;
+      return paramUrl;
     }
   }
 

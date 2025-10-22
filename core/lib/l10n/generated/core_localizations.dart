@@ -188,11 +188,29 @@ abstract class CoreLocalizations {
   /// **'Female'**
   String get female;
 
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
   /// No description provided for @close.
   ///
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @loginRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Please login to continue'**
+  String get loginRequired;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
 
   /// No description provided for @error.
   ///
@@ -523,6 +541,30 @@ abstract class CoreLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred when uploading'**
   String get errorWhenUploading;
+
+  /// No description provided for @onlyImageAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only image files are allowed.'**
+  String get onlyImageAllowed;
+
+  /// No description provided for @onlyVideoAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only video files are allowed.'**
+  String get onlyVideoAllowed;
+
+  /// No description provided for @onlyImageOrVideoAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Only image or video files are allowed.'**
+  String get onlyImageOrVideoAllowed;
+
+  /// No description provided for @loggingOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Logging out...'**
+  String get loggingOut;
 }
 
 class _CoreLocalizationsDelegate

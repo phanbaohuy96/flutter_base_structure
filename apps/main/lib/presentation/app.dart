@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '../di/di.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'modules/auth/signin/views/signin_screen.dart';
+import 'modules/page_not_found/page_note_found.dart';
 import 'route/route.dart';
 import 'theme/theme.dart';
 
@@ -73,36 +74,53 @@ class _MyAppState extends State<MainApplication>
       ],
       child: BlocBuilder<AppGlobalBloc, AppGlobalState>(
         builder: (context, state) {
-          return MaterialApp(
-            theme: state.lightTheme?.theme,
-            darkTheme: state.darkTheme?.theme,
-            themeMode: state.themeMode,
-            debugShowCheckedModeBanner: false,
-            localizationsDelegates: const [
-              FlMediaLocalizations.delegate,
-              CoreLocalizations.delegate,
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: AppLocale.supportedLocales,
-            locale: state.locale,
-            onGenerateRoute: (s) => injector<RouteGenerator>().generateRoute(
-              s,
-              supportUnknownRoute: false,
-            ),
-            navigatorObservers: [myNavigatorObserver],
-            navigatorKey: globalNavigatorKey,
-            initialRoute: SignInScreen.routeName,
-            builder: EasyLoading.init(
-              builder: (_, child) {
-                return MobileSizeLayoutConstraints(
-                  child: TextScaleFixed(
-                    child: child ?? const SizedBox(),
-                  ),
-                );
-              },
+          return _buildApplication(state, context);
+        },
+      ),
+    );
+  }
+
+  MaterialApp _buildApplication(AppGlobalState state, BuildContext context) {
+    return MaterialApp(
+      title: 'eGap',
+      scrollBehavior: const MobileLikeScrollBehavior(),
+      theme: state.lightTheme?.theme,
+      darkTheme: state.darkTheme?.theme,
+      themeMode: state.themeMode,
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const [
+        FlMediaLocalizations.delegate,
+        CoreLocalizations.delegate,
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: AppLocale.supportedLocales,
+      locale: state.locale,
+      onGenerateRoute: (settings) => injector<RouteGenerator>().generateRoute(
+        context,
+        settings,
+        supportUnknownRoute: false,
+      ),
+      onUnknownRoute: (settings) {
+        return buildRoute(
+          (_) => const NotFoundPage(),
+          settings: settings,
+        );
+      },
+      navigatorObservers: [
+        myNavigatorObserver,
+      ],
+      navigatorKey: globalNavigatorKey,
+      initialRoute: SignInScreen.routeName,
+      builder: EasyLoading.init(
+        builder: (_, child) {
+          return MobileSizeLayoutConstraints(
+            child: FlashyFlushbarProvider(
+              child: TextScaleFixed(
+                child: child ?? const SizedBox(),
+              ),
             ),
           );
         },

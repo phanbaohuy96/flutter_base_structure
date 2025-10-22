@@ -164,17 +164,35 @@ abstract class AppLocalizations {
   /// **'Please select a role before logging in.'**
   String get pleaseSelectARoleBeforeLoginMsg;
 
-  /// No description provided for @thisRoleIsNotSupportedYet.
+  /// No description provided for @backToHomepage.
   ///
   /// In en, this message translates to:
-  /// **'This role is not supported yet.'**
-  String get thisRoleIsNotSupportedYet;
+  /// **'Back to Homepage'**
+  String get backToHomepage;
+
+  /// No description provided for @pageNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'404 - Page Not Found'**
+  String get pageNotFound;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
 
   /// No description provided for @loginFailed.
   ///
   /// In en, this message translates to:
   /// **'Failed to fetch user info'**
   String get loginFailed;
+
+  /// No description provided for @thisRoleIsNotSupportedYet.
+  ///
+  /// In en, this message translates to:
+  /// **'This role is not supported yet.'**
+  String get thisRoleIsNotSupportedYet;
 }
 
 class _AppLocalizationsDelegate

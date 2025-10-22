@@ -110,7 +110,10 @@ class InfoItem extends StatelessWidget {
                     ),
                   SizedBox(width: spacer),
                   DefaultTextStyle(
-                    style: valueStyle ?? textTheme.bodyMedium!,
+                    style: valueStyle ??
+                        textTheme.bodyMedium!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                     child: Builder(
                       builder: (context) {
                         final vw = value is Widget

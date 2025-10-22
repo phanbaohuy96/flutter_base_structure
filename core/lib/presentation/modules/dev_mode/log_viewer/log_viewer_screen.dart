@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 
 import '../../../../common/utils.dart';
+import '../../../base/state_base/state_base.dart';
 import '../../../common_widget/forms/screen_form.dart';
 import '../../../extentions/context_extention.dart';
 
 class LogViewerScreen extends StatefulWidget {
-  static String routeName = '/log_viewer';
+  static String routeName = '/log-viewer';
 
   const LogViewerScreen({Key? key}) : super(key: key);
 
@@ -28,41 +30,37 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
     return ScreenForm(
       title: 'Log Viewer',
       actions: [_rightButton()],
-      child: Container(
-        color: context.theme.primaryColor,
-        child: ListView.separated(
-          padding: EdgeInsets.zero,
-          itemBuilder: (context, index) {
-            final log = logs[index];
-            final logStr = log.logStrings.join('\n');
-            return InkWell(
-              onTap: () => _viewLogDetail(log),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: 1,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Text(
-                    logStr,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: log.level.color,
-                    ),
-                  ),
+      child: ListView.separated(
+        padding: EdgeInsets.zero,
+        itemBuilder: (context, index) {
+          final log = logs[index];
+          final logStr = log.logStr;
+          return GestureDetector(
+            onTap: () => _viewLogDetail(log),
+            onDoubleTap: () {
+              Clipboard.setData(ClipboardData(text: logStr));
+              showToast(context, 'Log copied to clipboard');
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 8,
+              ),
+              child: Text(
+                logStr,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: log.level.color,
                 ),
               ),
-            );
-          },
-          separatorBuilder: (_, __) => const SizedBox(height: 16),
-          itemCount: logs.length,
+            ),
+          );
+        },
+        separatorBuilder: (_, __) => const Divider(
+          height: 16,
+          thickness: 1,
         ),
+        itemCount: logs.length,
       ),
     );
   }
@@ -178,22 +176,17 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
   }
 
   void _viewLogDetail(AppLog log) {
-    final logStr = log.logStrings.join('\n').replaceAll(
-      '''┌───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────''',
-      '''┌───────────────''',
-    ).replaceAll(
-      '''┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄''',
-      '''┄┄┄┄┄┄┄┄┄┄┄┄┄┄''',
-    ).replaceAll(
-      '''└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────''',
-      '''└───────────────''',
-    );
+    final logStr = log.logStr;
     showDialog(
       context: context,
       builder: (context) {
         return Material(
           color: Colors.transparent,
-          child: InkWell(
+          child: GestureDetector(
+            onDoubleTap: () {
+              Clipboard.setData(ClipboardData(text: logStr));
+              showToast(context, 'Log copied to clipboard');
+            },
             onTap: () {
               Navigator.pop(context);
             },

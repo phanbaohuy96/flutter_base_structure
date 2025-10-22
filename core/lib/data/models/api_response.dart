@@ -6,27 +6,21 @@ part 'api_response.g.dart';
 
 @JsonSerializable(genericArgumentFactories: true)
 class ApiResponse<T> {
-  @JsonKey(name: 'error_code', fromJson: asOrNull)
-  final String? errorCode;
-  @JsonKey(name: 'error', fromJson: asOrNull)
-  final String? error;
-  @JsonKey(name: 'errors', fromJson: asOrNull)
-  final String? errors;
-  @JsonKey(name: 'msg', fromJson: asOrNull)
-  final String? msg;
+  @JsonKey(name: 'code', fromJson: asOrNull)
+  final int? code;
   @JsonKey(name: 'message', fromJson: asOrNull)
   final String? message;
+  @JsonKey(name: 'message_key', fromJson: asOrNull)
+  final String? messageKey;
   @JsonKey(name: 'data', includeIfNull: false)
-  final T? _data;
+  final T? data;
 
   ApiResponse({
-    this.errorCode,
-    this.error,
-    this.errors,
-    this.msg,
+    this.code,
     this.message,
-    T? data,
-  }) : _data = data;
+    this.messageKey,
+    this.data,
+  });
 
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
@@ -40,20 +34,14 @@ class ApiResponse<T> {
   Map<String, dynamic> toJson(Object Function(T value) toJsonT) =>
       _$ApiResponseToJson(this, toJsonT);
 
-  T get data => _getData();
-
   bool get success {
+    final _code = code ?? 0;
     if ([
-      error.isNotNullOrEmpty,
-      errors.isNotNullOrEmpty,
-      errorCode.isNotNullOrEmpty,
+      _code < 200,
+      _code >= 300,
     ].any((e) => e)) {
       return false;
     }
     return true;
-  }
-
-  T _getData() {
-    return _data as T;
   }
 }

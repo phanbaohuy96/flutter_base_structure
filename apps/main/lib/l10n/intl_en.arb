@@ -10,6 +10,9 @@
   "userRole": "User role",
   "poweredByVNS": "Powered by VNS",
   "pleaseSelectARoleBeforeLoginMsg": "Please select a role before logging in.",
-  "thisRoleIsNotSupportedYet": "This role is not supported yet.",
-  "loginFailed": "Failed to fetch user info"
+  "backToHomepage": "Back to Homepage",
+  "pageNotFound": "404 - Page Not Found",
+  "back": "Back",
+  "loginFailed": "Failed to fetch user info",
+  "thisRoleIsNotSupportedYet": "This role is not supported yet."
 }

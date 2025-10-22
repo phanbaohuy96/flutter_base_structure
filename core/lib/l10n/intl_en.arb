@@ -14,7 +14,10 @@
   "loading": "Loading",
   "male": "Male",
   "female": "Female",
+  "skip": "Skip",
   "close": "Close",
+  "loginRequired": "Please login to continue",
+  "login": "Login",
   "error": "Error",
   "search": "Search",
   "warning": "Warning",
@@ -69,5 +72,9 @@
   "required": "Required",
   "optional": "Optional",
   "fileSizeOverXMB": "The file is too large. Maximum allowed size is {x}MB.",
-  "errorWhenUploading": "An error occurred when uploading"
+  "errorWhenUploading": "An error occurred when uploading",
+  "onlyImageAllowed": "Only image files are allowed.",
+  "onlyVideoAllowed": "Only video files are allowed.",
+  "onlyImageOrVideoAllowed": "Only image or video files are allowed.",
+  "loggingOut": "Logging out..."
 }

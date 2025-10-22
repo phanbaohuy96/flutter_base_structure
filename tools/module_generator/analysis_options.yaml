@@ -28,7 +28,6 @@ linter:
     - close_sinks
     - comment_references
     - only_throw_errors
-    - package_api_docs
     - prefer_single_quotes
     - sort_child_properties_last
     - prefer_relative_imports

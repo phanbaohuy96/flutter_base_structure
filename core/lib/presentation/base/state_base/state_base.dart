@@ -1,276 +1,204 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../../../core.dart';
-import '../../../di/core_micro.dart';
 import '../../../l10n/localization_ext.dart';
+import 'mixin.dart';
 
 part 'state_base.error_handler.dart';
 part 'state_base.ext.dart';
 
-abstract class CoreStateBase<T extends StatefulWidget> extends State<T> {
+/// Base state class that provides common functionality for all stateful widgets
+/// in the application including error handling, loading states,
+/// and notifications.
+abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
+    with StateBaseInjectedMixin {
   ErrorType? errorTypeShowing;
 
   bool get isLoading => EasyLoading.isShow;
 
-  CoreBlocBase? get bloc => null;
+  /// Override this to provide bloc instance for error handling
+  CoreDelegate? get delegate => null;
 
-  List<CoreBlocBase> get subBlocs => [];
-
+  /// Override this to disable automatic error handling
   bool get willHandleError => true;
 
   @override
   @mustCallSuper
   void initState() {
     super.initState();
-    logUtils.d('[${T.toString()}] initState');
-    if (willHandleError) {
-      bloc?.addErrorHandler(onError);
-    }
-    for (final bl in subBlocs) {
-      bl.addErrorHandler(onError);
-    }
-  }
-
-  @override
-  @mustCallSuper
-  void didChangeDependencies() {
-    super.didChangeDependencies();
+    _logLifecycle('initState');
+    _setupDelegate();
   }
 
   @override
   @mustCallSuper
   void dispose() {
-    logUtils.d('[${T.toString()}] dispose');
+    _logLifecycle('dispose');
     super.dispose();
   }
 
-  void showLoading({bool? dismissOnTap, String? status}) {
+  /// Logs lifecycle events with consistent formatting
+  void _logLifecycle(String event) {
+    logUtils.d('[${T.toString()}] $event');
+  }
+
+  /// Sets up delegate handlers for error and loading management
+  void _setupDelegate() {
+    if (willHandleError) {
+      delegate?.addErrorHandler(onError);
+    }
+    delegate?.addLoadingHandler(invokeLoading);
+  }
+
+  /// Shows loading indicator with customizable options
+  void showLoading({
+    bool? dismissOnTap,
+    String? status,
+    EasyLoadingMaskType maskType = EasyLoadingMaskType.clear,
+  }) {
     EasyLoading.show(
       status: status ?? coreL10n.loading,
-      indicator: const Loading(
-        brightness: Brightness.dark,
-      ),
+      indicator: const Loading(brightness: Brightness.dark),
       dismissOnTap: dismissOnTap ?? kDebugMode,
-      maskType: EasyLoadingMaskType.clear,
+      maskType: maskType,
     );
   }
 
+  /// Hides loading indicator if currently showing
   void hideLoading() {
     if (EasyLoading.isShow) {
       EasyLoading.dismiss();
     }
   }
 
-  void onError(ErrorData err) {
-    var error = err;
-    if (error.origin == ErrorOrigin.firebase && error.errorCode != null) {
-      final firebaseAuthExceptionType =
-          FirebaseAuthExceptionTypeExt.fromString(error.errorCode!);
-
-      error = error.copyWith(
-        //Get localized message, if it's null take the original
-        message: firebaseAuthExceptionType?.localizedErrorMessage(
-          context,
-        ),
-      );
+  void invokeLoading(bool isLoading) {
+    if (isLoading) {
+      showLoading();
+    } else {
+      hideLoading();
     }
-
-    hideLoading();
-    _onError(error);
   }
 
-  void showLoginNoticeDialog({
-    required Function() onSuccess,
-    Function()? onSkip,
-  }) {}
+  /// Handles errors with Firebase-specific processing
+  void onError(ErrorData error) {
+    final processedError = _processFirebaseError(error);
+    hideLoading();
+    _onError(processedError);
+  }
 
+  /// Processes Firebase authentication errors
+  ErrorData _processFirebaseError(ErrorData error) {
+    if (error.origin != ErrorOrigin.firebase || error.errorCode == null) {
+      return error;
+    }
+
+    final firebaseAuthExceptionType =
+        FirebaseAuthExceptionTypeExt.fromString(error.errorCode!);
+
+    if (firebaseAuthExceptionType == null) {
+      return error;
+    }
+
+    final localizedMessage =
+        firebaseAuthExceptionType.localizedErrorMessage(context);
+    return error.copyWith(message: localizedMessage);
+  }
+
+  /// Handles unauthorized errors - triggers auth flow
   void backToAuth({
-    Function()? onSuccess,
-    Function()? onSkip,
-  }) {}
+    VoidCallback? onSuccess,
+    VoidCallback? onSkip,
+  }) {
+    logUtils.w(
+      '''There is no backToAuth implementation. Please override it in subclass if needed.''',
+    );
+  }
 
-  void showErrorDialog(String? message, {Function()? onClose}) {
+  /// Shows error dialog with consistent styling
+  void showErrorDialog(
+    String? message,
+    ErrorData error, {
+    VoidCallback? onClose,
+  }) {
+    errorTypeShowing = error.type;
+
+    final displayMessage =
+        message?.isNotEmpty == true ? message! : coreL10n.technicalIssues;
+
     showNoticeErrorDialog(
       context: context,
-      message:
-          message?.isNotEmpty != true ? coreL10n.technicalIssues : message!,
+      message: displayMessage,
       onClose: () {
-        onCloseErrorDialog();
+        _onCloseErrorDialog();
         onClose?.call();
       },
     );
   }
 
-  @mustCallSuper
-  void onCloseErrorDialog() {
+  /// Resets error state
+  void _onCloseErrorDialog() {
     errorTypeShowing = null;
   }
 
-  Future showLoginRequired({String? message}) {
+  /// Public method to close error dialog
+  @mustCallSuper
+  void onCloseErrorDialog() => _onCloseErrorDialog();
+
+  /// Shows login required dialog
+  Future<dynamic> showLoginRequired({
+    String? message,
+    required ErrorData error,
+  }) {
+    errorTypeShowing = error.type;
+
     return showNoticeConfirmDialog(
-      barrierDismissible: true,
       context: context,
+      message: coreL10n.loginRequired,
       title: coreL10n.inform,
-      message: message ?? coreL10n.sessionExpired,
-    ).then(
-      (value) {
-        onCloseErrorDialog();
-        return value;
-      },
-    );
+      rightBtn: coreL10n.login,
+      leftBtn: coreL10n.skip,
+      onConfirmed: backToAuth,
+    ).then((value) {
+      _onCloseErrorDialog();
+      return value;
+    });
   }
 
+  /// Shows no internet connection notification
   void showNoInternetDialog() {
-    showSnackBar(message: coreL10n.noInternet);
-    onCloseErrorDialog.call();
+    showSnackBar(
+      context: context,
+      message: coreL10n.noInternet,
+    );
   }
 
-  void onLogicError(String? message, ErrorData error) {
-    showErrorDialog(message);
+  /// Handles logic errors
+  void onClientError(String? message, ErrorData error) {
+    showErrorDialog(message, error);
   }
 
-  Widget baseLoading() {
-    return const Loading();
-  }
+  /// Returns base loading widget
+  Widget get loading => const Loading();
 
+  /// Performs logout operation
   Future<void> doLogout() async {
-    logUtils.i('doLogout');
-    showLoading();
-    await Future.wait(
-      [
-        injector.get<CoreLocalDataManager>().clearData(),
-      ],
-    );
-    hideLoading();
-  }
+    logUtils.i('Performing logout');
 
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar({
-    required String message,
-  }) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    return ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
+    try {
+      showLoading(status: coreL10n.loggingOut);
 
-  Future showFlushBar({
-    String? title,
-    String? message,
-    Widget? icon,
-    Duration duration = const Duration(seconds: 2),
-    Color backgroundColor = Colors.black87,
-    Color? messageColor,
-    FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
-    EdgeInsets margin = const EdgeInsets.symmetric(
-      horizontal: 24,
-    ),
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(8)),
-    EdgeInsets padding = const EdgeInsets.symmetric(
-      vertical: 16,
-      horizontal: 12,
-    ),
-    double borderWidth = 1,
-    Color? borderColor,
-  }) {
-    return Flushbar(
-      title: title,
-      message: message,
-      messageColor: messageColor,
-      duration: duration,
-      backgroundColor: backgroundColor,
-      flushbarPosition: flushbarPosition,
-      margin: margin,
-      borderRadius: borderRadius,
-      padding: padding,
-      icon: icon,
-      flushbarStyle: FlushbarStyle.FLOATING,
-      borderWidth: borderWidth,
-      borderColor: borderColor,
-    ).show(globalNavigatorKey.currentContext ?? context);
-  }
+      await Future.wait([
+        coreLocalDataManager.clearData(),
+      ]);
 
-  Future showSuccessFlushBar({
-    String? title,
-    String? message,
-    Widget? icon,
-    Duration duration = const Duration(seconds: 2),
-    Color backgroundColor = const Color(0xffE2F1E6),
-    Color messageColor = Colors.black,
-    FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
-    EdgeInsets margin = const EdgeInsets.symmetric(
-      horizontal: 24,
-    ),
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(8)),
-    EdgeInsets padding = const EdgeInsets.symmetric(
-      vertical: 16,
-      horizontal: 12,
-    ),
-    double borderWidth = 1,
-    Color borderColor = Colors.green,
-  }) {
-    return showFlushBar(
-      title: title,
-      message: message,
-      messageColor: messageColor,
-      duration: duration,
-      backgroundColor: backgroundColor,
-      flushbarPosition: flushbarPosition,
-      margin: margin,
-      borderRadius: borderRadius,
-      padding: padding,
-      icon: icon ??
-          const Icon(
-            Icons.check_circle_outline,
-            color: Colors.green,
-            size: 24,
-          ),
-      borderWidth: borderWidth,
-      borderColor: borderColor,
-    );
-  }
-
-  Future showErrorFlushBar({
-    String? title,
-    String? message,
-    Widget? icon,
-    Duration duration = const Duration(seconds: 2),
-    Color backgroundColor = const Color(0xffF6E3E2),
-    Color messageColor = Colors.black,
-    FlushbarPosition flushbarPosition = FlushbarPosition.TOP,
-    EdgeInsets margin = const EdgeInsets.symmetric(
-      horizontal: 24,
-    ),
-    BorderRadius borderRadius = const BorderRadius.all(Radius.circular(8)),
-    EdgeInsets padding = const EdgeInsets.symmetric(
-      vertical: 16,
-      horizontal: 12,
-    ),
-    double borderWidth = 1,
-    Color borderColor = Colors.red,
-  }) {
-    return showFlushBar(
-      title: title,
-      message: message,
-      messageColor: messageColor,
-      duration: duration,
-      backgroundColor: backgroundColor,
-      flushbarPosition: flushbarPosition,
-      margin: margin,
-      borderRadius: borderRadius,
-      padding: padding,
-      icon: icon ??
-          const Icon(
-            Icons.close,
-            color: Colors.red,
-            size: 24,
-          ),
-      borderWidth: borderWidth,
-      borderColor: borderColor,
-    );
+      logUtils.i('Logout completed successfully');
+    } catch (e) {
+      logUtils.e('Logout failed: $e');
+      rethrow;
+    } finally {
+      hideLoading();
+    }
   }
 }

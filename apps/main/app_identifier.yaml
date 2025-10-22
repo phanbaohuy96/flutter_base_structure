@@ -7,6 +7,9 @@ android:
   staging:
     package: net.vnsilicon.core.staging
     name: Flutter STAGING
+  sandbox:
+    package: net.vnsilicon.core.sandbox
+    name: Flutter SANDBOX
   prod:
     package: net.vnsilicon.core
     name: Flutter Core
@@ -17,6 +20,9 @@ ios:
   staging:
     package: net.vnsilicon.core.staging
     name: Flutter STAGING
+  sandbox:
+    package: net.vnsilicon.core.sandbox
+    name: Flutter SANDBOX
   prod:
     package: net.vnsilicon.core
     name: Flutter Core

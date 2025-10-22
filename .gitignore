@@ -17,7 +17,6 @@ node_modules
 .idea/
 **/.gradle
 local.properties
-*.lock
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -34,26 +33,40 @@ local.properties
 .pub/
 **/build/
 .firebase
+*.env
 
 # Symbolication related
 app.*.symbols
+**/.symlinks/**
+**/Pods/**
 
-# Obfuscation related
-app.*.map.json
+## Generated files and user-specific settings (do not commit)
+**/GeneratedPluginRegistrant.java
+
+# android
+**/android/gradle/wrapper/gradle-wrapper.jar
+**/android/gradlew
+**/android/gradlew.bat
+**/android/keystores/keystore.properties
 
 # Android Studio will place build artifacts here
 **/android/app/debug
 **/android/app/profile
 **/android/app/release
 
-# Web related
-.core/lib/generated_plugin_registrant.dart
+# iOS
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/UserInterfaceState.xcuserstate
+**/xcschememanagement.plist
+**/Generated.xcconfig
+**/Flutter.podspec
+
+# Obfuscation related
+app.*.map.json
 
 # Exceptions to above rules.
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
-
-# Flutter generator
-# *.g.dart
 
 # Fastlane
 **/report.xml
@@ -64,3 +77,10 @@ app.*.map.json
 .fvm/
 .fvmrc
 .fvm_cache
+
+# Coverage related
+**/coverage
+.test_coverage.dart
+*.lcov
+*.info
+test/.test_coverage.dart

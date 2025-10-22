@@ -1,5 +1,6 @@
 library core;
 
+export 'package:auto_size_text/auto_size_text.dart';
 export 'package:badges/badges.dart';
 export 'package:bloc_concurrency/bloc_concurrency.dart';
 export 'package:carousel_slider/carousel_slider.dart';
@@ -11,6 +12,7 @@ export 'package:fl_media/fl_media.dart';
 export 'package:fl_theme/fl_theme.dart';
 export 'package:fl_ui/fl_ui.dart';
 export 'package:fl_utils/fl_utils.dart';
+export 'package:flashy_flushbar/flashy_flushbar.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:flutter_easyloading/flutter_easyloading.dart';
 export 'package:flutter_svg/flutter_svg.dart';
@@ -19,7 +21,6 @@ export 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
     hide ImageSource;
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:hive_flutter/hive_flutter.dart';
-export 'package:iconsax/iconsax.dart';
 export 'package:logger/logger.dart';
 export 'package:mime/mime.dart';
 export 'package:pedantic/pedantic.dart';

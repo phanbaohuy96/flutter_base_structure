@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'core_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -56,7 +58,16 @@ class CoreLocalizationsEn extends CoreLocalizations {
   String get female => 'Female';
 
   @override
+  String get skip => 'Skip';
+
+  @override
   String get close => 'Close';
+
+  @override
+  String get loginRequired => 'Please login to continue';
+
+  @override
+  String get login => 'Login';
 
   @override
   String get error => 'Error';
@@ -236,4 +247,17 @@ class CoreLocalizationsEn extends CoreLocalizations {
 
   @override
   String get errorWhenUploading => 'An error occurred when uploading';
+
+  @override
+  String get onlyImageAllowed => 'Only image files are allowed.';
+
+  @override
+  String get onlyVideoAllowed => 'Only video files are allowed.';
+
+  @override
+  String get onlyImageOrVideoAllowed =>
+      'Only image or video files are allowed.';
+
+  @override
+  String get loggingOut => 'Logging out...';
 }

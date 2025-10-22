@@ -1,4 +1,4 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
 const detailModuleRoute = '''import 'package:core/core.dart';
 
@@ -10,7 +10,7 @@ class ${classNameKey}Route extends IRoute {
   @override
   List<CustomRouter> routers() {
     return [
-      CustomRouter(
+      CustomRouter<${classNameKey}Args>(
         path: ${classNameKey}Screen.routeName,
         builder: (context, uri, extra) {
           final args = asOrNull<${classNameKey}Args>(extra);
@@ -19,20 +19,7 @@ class ${classNameKey}Route extends IRoute {
             child: ${classNameKey}Screen(args: args),
           );
         },
-        verifier: (uri, extra) {
-          return uri.path.startsWith(
-            ${classNameKey}Screen.routeName,
-          );
-        },
-        extraBuilder: (p0, uri, extra) {
-          if (extra is ${classNameKey}Args) {
-            return extra;
-          }
-
-          return ${classNameKey}Args.fromUrlParams(
-            uri.queryParameters as Map<String, dynamic>,
-          );
-        },
+        extraFromUrlQueries: ${classNameKey}Args.fromUrlParams,
       ),
     ];
   }

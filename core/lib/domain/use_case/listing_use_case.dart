@@ -8,13 +8,13 @@ class ListingUseCase<T, P> {
   late var _pagination = Pagination(limit: fetchLimit);
   final _data = <T>[];
 
-  final int? _fetchLimit;
+  final int _fetchLimit;
 
-  int get fetchLimit => _fetchLimit ?? PaginationConstant.lowLimit;
+  int get fetchLimit => _fetchLimit;
 
   ListingUseCase(
     this._getPaginationData, [
-    this._fetchLimit,
+    this._fetchLimit = PaginationConstant.lowLimit,
   ]);
 
   Pagination get pagination => _pagination;

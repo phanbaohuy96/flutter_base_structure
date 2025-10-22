@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'app_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -7,42 +9,51 @@ class AppLocalizationsTh extends AppLocalizations {
   AppLocalizationsTh([String locale = 'th']) : super(locale);
 
   @override
-  String get inform => 'Inform';
+  String get inform => 'แจ้งเตือน';
 
   @override
-  String get ok => 'Ok';
+  String get ok => 'ตกลง';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'ยกเลิก';
 
   @override
-  String get confirm => 'Confirm';
+  String get confirm => 'ยืนยัน';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'ข้าม';
 
   @override
-  String get close => 'Close';
+  String get close => 'ปิด';
 
   @override
-  String get loginRequired => 'Please login to continue';
+  String get loginRequired => 'กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ';
 
   @override
-  String get login => 'Login';
+  String get login => 'เข้าสู่ระบบ';
 
   @override
-  String get userRole => 'User role';
+  String get userRole => 'บทบาทผู้ใช้';
 
   @override
   String get poweredByVNS => 'Powered by VNS';
 
   @override
   String get pleaseSelectARoleBeforeLoginMsg =>
-      'Please select a role before logging in.';
+      'กรุณาเลือกบทบาทก่อนเข้าสู่ระบบ';
 
   @override
-  String get thisRoleIsNotSupportedYet => 'This role is not supported yet.';
+  String get backToHomepage => 'กลับสู่หน้าแรก';
 
   @override
-  String get loginFailed => 'Failed to fetch user info';
+  String get pageNotFound => '404 - ไม่พบหน้าที่ต้องการ';
+
+  @override
+  String get back => 'ย้อนกลับ';
+
+  @override
+  String get loginFailed => 'ไม่สามารถดึงข้อมูลผู้ใช้ได้';
+
+  @override
+  String get thisRoleIsNotSupportedYet => 'บทบาทนี้ยังไม่รองรับ';
 }
