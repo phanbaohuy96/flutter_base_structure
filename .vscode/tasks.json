@@ -42,9 +42,14 @@
         // usage: cmd + shift + P -> Run Task -> <task_lable>
         //-----GIT-----------
         {
-            "label": "GIT: clean merged branches",
+            "label": "Git: Delete Stale Local Branches",
             "type": "shell",
-            "command": "git branch --merged | egrep -v \"(^\\*|main|master|prod/|develop|staging)\" | xargs git branch -d && git fetch --prune --all"
+            "command": "git fetch --prune && for branch in $(git for-each-ref --format='%(refname:short)' refs/heads/); do if ! git show-ref --verify --quiet refs/remotes/origin/$branch && [[ \"$branch\" != \"main\" && \"$branch\" != \"develop\" && \"$branch\" != release/* ]]; then git branch -D \"$branch\"; fi; done",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
         },
         //-----FLUTTER_PUB_GET-----
         {
