@@ -484,7 +484,7 @@ class DateRangePickerLabel extends StatelessWidget {
             WidgetSpan(
               child: prefixIcon ??
                   Icon(
-                    Iconsax.calendar_1,
+                    Icons.calendar_month_outlined,
                     size: (_textStyle?.fontSize ?? 0) * 1.3,
                     color: _textStyle?.color,
                   ),

@@ -1,6 +1,6 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
-const listingModuleScreen = '''import 'package:core/core.dart';
+final listingModuleScreen = '''import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import '$importPartKey../l10n/generated/app_localizations.dart';
@@ -11,7 +11,7 @@ import '../bloc/${moduleNameKey}_bloc.dart';
 part '$moduleNameKey.action.dart';
 
 class ${classNameKey}Screen extends StatefulWidget {
-  static String routeName = '/$moduleNameKey';
+  static String routeName = '/$routeNameKey';
   
   const ${classNameKey}Screen({Key? key}) : super(key: key);
 

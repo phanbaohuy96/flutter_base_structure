@@ -85,7 +85,7 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
           const SizedBox(height: 30),
           DropdownWidget<UserModel>(
             title: trans.userRole,
-            itemBuilder: (p0) => Text(p0.fullName),
+            itemBuilder: (p0) => Text(p0.name ?? '--'),
             items: state.users,
             onChanged: state.users.isNotEmpty ? _onRoleChanged : null,
           ),
@@ -115,7 +115,10 @@ extension on _AccountSelectionState {
   Future _handleLogin() async {
     final selectedUser = bloc.state.selectedUser;
     if (selectedUser == null) {
-      showSnackBar(message: trans.pleaseSelectARoleBeforeLoginMsg);
+      showSnackBar(
+        context: context,
+        message: trans.pleaseSelectARoleBeforeLoginMsg,
+      );
       return;
     }
     showLoading();
@@ -126,11 +129,14 @@ extension on _AccountSelectionState {
 
     switch (result.result) {
       case LoginResultType.failed:
-        showSnackBar(message: trans.loginFailed);
+        showSnackBar(context: context, message: trans.loginFailed);
         break;
 
       case LoginResultType.unsupportedRole:
-        showSnackBar(message: trans.thisRoleIsNotSupportedYet);
+        showSnackBar(
+          context: context,
+          message: trans.thisRoleIsNotSupportedYet,
+        );
         break;
       default:
     }

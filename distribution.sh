@@ -21,32 +21,42 @@ The module must be contain dist_config.sh file.
 Example for dist_config.sh file:
 -----------------------------------------------------------------
 # Dev
-dev_main="lib/main_dev.dart" #required
-dev_development_exportOptionsPlist="none" #optional
-dev_appstore_exportOptionsPlist="none" #optional
+DEV_MAIN="lib/main_dev.dart" #required
+DEV_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
+DEV_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
+DEV_DART_DEFINE_FROM_FILE="./.env" #required
 
 # Staging
-staging_main="lib/main_staging.dart" #required
-staging_development_exportOptionsPlist="none" #optional
-staging_appstore_exportOptionsPlist="none" #optional
+STAGING_MAIN="lib/main_staging.dart" #required
+STAGING_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
+STAGING_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
+STAGING_DART_DEFINE_FROM_FILE="./.env" #required
+
+# Sandbox
+SANDBOX_MAIN="lib/main_sandbox.dart" #required
+SANDBOX_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
+SANDBOX_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
+SANDBOX_DART_DEFINE_FROM_FILE="./.env" #required
 
 # Prod
-prod_main="lib/main.dart" #required
-prod_development_exportOptionsPlist="none" #optional
-prod_appstore_exportOptionsPlist="none" #optional
+PROD_MAIN="lib/main.dart" #required
+PROD_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
+PROD_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
+PROD_DART_DEFINE_FROM_FILE="./.env" #required
 -----------------------------------------------------------------
 
 NOTE: The optional value must not be empty if not provided. Input any place holder value.
 
 OPTIONS:
 
--e,     --env       Environment [dev, staging, prod] *
--p,     --platform  Valid values are [android, ios, all] *
--a,     --app       Valid values are [<app-name>, all] *
--t,     --target    Default using firebase target to distribute. Valid values are [firebase, appstore, all]
---clean             Using this option to cleaning the project
--h,     --help      Display this usage message and exit
--g,     --group     Valid values are [internal, external, all, custom]. Default value is all.
+-e,     --env               Environment [dev, staging, sandbox, prod] *
+-p,     --platform          Valid values are [android, ios, all] *
+-a,     --app               Valid values are [<app-name>, all] *
+-t,     --target            Default using firebase target to distribute. Valid values are [firebase, appstore, all]
+--clean                     Using this option to cleaning the project
+-h,     --help              Display this usage message and exit
+-g,     --group             Valid values are [internal, external, all, custom]. Default value is all.
+--dart-define-from-file     Override dart define from file config
 '
     exit 1
 }
@@ -63,6 +73,18 @@ TARGET=firebase
 
 # Default NEED_TO_CLEAN = false
 NEED_TO_CLEAN=false
+
+# Distribution args
+flavor=""
+main=""
+export_options=""
+appstore_export_options=""
+VERSION=""
+ios_internal_tester_group=""
+ios_external_tester_group=""
+android_internal_tester_group=""
+android_external_tester_group=""
+dart_define_from_file=""
 
 while [[ $# -gt 0 ]]; do
     key="$1"
@@ -102,6 +124,11 @@ while [[ $# -gt 0 ]]; do
         shift # past argument
         shift # past value
         ;;
+    --dart-define-from-file)
+        dart_define_from_file="$2"
+        shift # past argument
+        shift # past value
+        ;;
     *)
         usage
         shift
@@ -116,8 +143,8 @@ if [ -z "$ENV" ] || [ -z "$PLATFORM" ] || [ -z "$APP" ]; then
 fi
 
 # Check that ENV is valid
-if [ "$ENV" != "dev" ] && [ "$ENV" != "staging" ] && [ "$ENV" != "prod" ]; then
-    echoColor $RED "Invalid ENV: $ENV. Valid values are dev, [dev, staging, prod]."
+if [ "$ENV" != "dev" ] && [ "$ENV" != "staging" ] && [ "$ENV" != "sandbox" ] && [ "$ENV" != "prod" ]; then
+    echoColor $RED "Invalid ENV: $ENV. Valid values are dev, [dev, staging, sandbox, prod]."
     exit 1
 fi
 
@@ -305,22 +332,22 @@ upload_firebase() {
             shift # past argument
             shift # past value
             ;;
-        -iitg | --ios_internal_tester_group)
+        --ios_internal_tester_group)
             ios_internal_tester_group="$2"
             shift # past argument
             shift # past value
             ;;
-        -ietg | --ios_external_tester_group)
+        --ios_external_tester_group)
             ios_external_tester_group="$2"
             shift # past argument
             shift # past value
             ;;
-        -aitg | --android_internal_tester_group)
+        --android_internal_tester_group)
             android_internal_tester_group="$2"
             shift # past argument
             shift # past value
             ;;
-        -aetg | --android_external_tester_group)
+        --android_external_tester_group)
             android_external_tester_group="$2"
             shift # past argument
             shift # past value
@@ -432,6 +459,7 @@ build_android() {
     flavor:      $flavor
     main:        $main
     version:     $VERSION
+    config_map:  $dart_define_from_file
 "
 
     # Capture the start time
@@ -455,7 +483,13 @@ build_android() {
 
     rm -rf build/app/outputs/flutter-apk
 
-    run_flutter_command build apk --flavor $flavor --release --target=$main --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER
+    run_flutter_command build apk \
+     --flavor $flavor \
+     --release \
+     --target=$main \
+     --build-name=$BUILD_NAME \
+     --build-number=$BUILD_NUMBER \
+     --dart-define-from-file=$dart_define_from_file
 
     local result=$?
 
@@ -508,6 +542,7 @@ build_ios() {
     main:           $main
     export_options: $export_options
     version:        $VERSION
+    config_map:     $dart_define_from_file
 "
 
     # Capture the start time
@@ -532,9 +567,22 @@ build_ios() {
     rm -rf build/ios/ipa
 
     if [ "$export_options" == "" ] || [ ! -f "./$export_options" ]; then
-        run_flutter_command build ipa --flavor $flavor --release --target=lib/main.dart --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER
+        run_flutter_command build ipa \
+         --flavor $flavor \
+         --release \
+         --target=lib/main.dart \
+         --build-name=$BUILD_NAME \
+         --build-number=$BUILD_NUMBER \
+         --dart-define-from-file=$dart_define_from_file
     else
-        run_flutter_command build ipa --flavor $flavor --release --target=lib/main.dart --export-options-plist=$export_options --build-name=$BUILD_NAME --build-number=$BUILD_NUMBER
+        run_flutter_command build ipa \
+         --flavor $flavor \
+         --release \
+         --target=lib/main.dart \
+         --export-options-plist=$export_options \
+         --build-name=$BUILD_NAME \
+         --build-number=$BUILD_NUMBER \
+         --dart-define-from-file=$dart_define_from_file
     fi
 
     local result=$?
@@ -587,100 +635,126 @@ re_archive_ios() {
     return $result
 }
 
-deploy() {
-    local flavor=""
-    local main=""
-    local export_options=""
-    local appstore_export_options=""
-    local VERSION=""
-    local ios_internal_tester_group=""
-    local ios_external_tester_group=""
-    local android_internal_tester_group=""
-    local android_external_tester_group=""
+distribution() {
+    # Import config file
+    . ./dist_config.sh
 
-    while [[ $# -gt 0 ]]; do
-        case "$1" in
-        -f | --flavor)
-            flavor="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -m | --main)
-            main="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -e | --export-options)
-            export_options="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -ae | --appstore-export-options)
-            appstore_export_options="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -v | --version)
-            VERSION="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -iitg | --ios_internal_tester_group)
-            ios_internal_tester_group="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -ietg | --ios_external_tester_group)
-            ios_external_tester_group="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -aitg | --android_internal_tester_group)
-            android_internal_tester_group="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        -aetg | --android_external_tester_group)
-            android_external_tester_group="$2"
-            shift # past argument
-            shift # past value
-            ;;
-        esac
-    done
+    # Import project pubspec.yaml as config to get version
+    eval $(parse_yaml pubspec.yaml)
+
+    flavor=$ENV
+
+    if [[ "dev" == *"$ENV"* ]]; then
+        main=$DEV_MAIN
+        export_options=$DEV_DEVELOPMENT_EXPORT_OPTIONS_PLIST
+        appstore_export_options=$DEV_APPSTORE_EXPORT_OPTIONS_PLIST
+        version=$version
+        ios_internal_tester_group=$DEV_IOS_INTERNAL_TESTER_GROUP
+        ios_external_tester_group=$DEV_IOS_EXTERNAL_TESTER_GROUP
+        android_internal_tester_group=$DEV_ANDROID_INTERNAL_TESTER_GROUP
+        android_external_tester_group=$DEV_ANDROID_EXTERNAL_TESTER_GROUP
+        if [$dart_define_from_file == ""]; then
+            dart_define_from_file=$DEV_DART_DEFINE_FROM_FILE
+        fi
+    fi
+
+    if [[ "staging" == *"$ENV"* ]]; then
+        main=$STAGING_MAIN
+        export_options=$STAGING_DEVELOPMENT_EXPORT_OPTIONS_PLIST
+        appstore_export_options=$STAGING_APPSTORE_EXPORT_OPTIONS_PLIST
+        version=$version_staging
+        ios_internal_tester_group=$STAGING_IOS_INTERNAL_TESTER_GROUP
+        ios_external_tester_group=$STAGING_IOS_EXTERNAL_TESTER_GROUP
+        android_internal_tester_group=$STAGING_ANDROID_INTERNAL_TESTER_GROUP
+        android_external_tester_group=$STAGING_ANDROID_EXTERNAL_TESTER_GROUP
+        if [$dart_define_from_file == ""]; then
+            dart_define_from_file=$STAGING_DART_DEFINE_FROM_FILE
+        fi
+    fi
+
+    if [[ "sandbox" == *"$ENV"* ]]; then
+        main=$SANDBOX_MAIN
+        export_options=$SANDBOX_DEVELOPMENT_EXPORT_OPTIONS_PLIST
+        appstore_export_options=$SANDBOX_APPSTORE_EXPORT_OPTIONS_PLIST
+        version=$version_prod
+        ios_internal_tester_group=$SANDBOX_IOS_INTERNAL_TESTER_GROUP
+        ios_external_tester_group=$SANDBOX_IOS_EXTERNAL_TESTER_GROUP
+        android_internal_tester_group=$SANDBOX_ANDROID_INTERNAL_TESTER_GROUP
+        android_external_tester_group=$SANDBOX_ANDROID_EXTERNAL_TESTER_GROUP
+        if [$dart_define_from_file == ""]; then
+            dart_define_from_file=$SANDBOX_DART_DEFINE_FROM_FILE
+        fi
+    fi
+
+    if [[ "prod" == *"$ENV"* ]]; then
+        main=$PROD_MAIN
+        export_options=$STAGING_DEVELOPMENT_EXPORT_OPTIONS_PLIST
+        appstore_export_options=$STAGING_APPSTORE_EXPORT_OPTIONS_PLIST
+        version=$version_prod
+        ios_internal_tester_group=$PROD_IOS_INTERNAL_TESTER_GROUP
+        ios_external_tester_group=$PROD_IOS_EXTERNAL_TESTER_GROUP
+        android_internal_tester_group=$PROD_ANDROID_INTERNAL_TESTER_GROUP
+        android_external_tester_group=$PROD_ANDROID_EXTERNAL_TESTER_GROUP
+        if [$dart_define_from_file == ""]; then
+            dart_define_from_file=$PROD_DART_DEFINE_FROM_FILE
+        fi
+    fi
 
     if [[ "$PLATFORM" == "all" || "$PLATFORM" == "android" ]] && [ -d "android" ]; then
         if [ "$TARGET" == "firebase" ] || [ "$TARGET" == "all" ]; then
-            build_android -v $VERSION -f $flavor -m $main
+            build_android \
+             --version $version \
+             --flavor $flavor \
+             --main $main
 
             if [ $? -eq 0 ]; then
-                upload_firebase -f $flavor -p "android" --android_internal_tester_group $android_internal_tester_group --android_external_tester_group $android_external_tester_group
+                upload_firebase \
+                 --flavor $flavor \
+                 --platform "android" \
+                 --android_internal_tester_group $android_internal_tester_group \
+                 --android_external_tester_group $android_external_tester_group
             fi
         fi
     fi
     if [[ "$PLATFORM" == "all" || "$PLATFORM" == "ios" ]] && [ -d "ios" ]; then
 
         if [ "$TARGET" == "firebase" ]; then
-            build_ios -v $VERSION -f $flavor -m $main --export-options $export_options
+            build_ios \
+             --version $version \
+             --flavor $flavor \
+             --main $main \
+             --export-options $export_options
 
             if [ $? -eq 0 ]; then
-                upload_firebase -f $flavor -p "ios" --ios_internal_tester_group $ios_internal_tester_group --ios_external_tester_group $ios_external_tester_group
+                upload_firebase \
+                 --flavor $flavor \
+                 --platform "ios" \
+                 --ios_internal_tester_group $ios_internal_tester_group \
+                 --ios_external_tester_group $ios_external_tester_group
             fi
 
         elif [ "$TARGET" == "appstore" ]; then
-            build_ios -v $VERSION -f $flavor -m $main --export-options $appstore_export_options
+            build_ios \
+             --version $version \
+             --flavor $flavor \
+             --main $main \
+             --export-options $appstore_export_options
 
             if [ $? -eq 0 ]; then
                 upload_appstore
             fi
 
         elif [ "$TARGET" == "all" ]; then
-            build_ios -v $VERSION -f $flavor -m $main
+            build_ios \
+             --version $version \
+             --flavor $flavor \
+             --main $main
 
             if [ $? -eq 0 ]; then
                 re_archive_ios --export-options $export_options
 
                 if [ $? -eq 0 ]; then
-                    upload_firebase -f $flavor -p "ios"
+                    upload_firebase --flavor $flavor --platform "ios"
                 fi
 
                 re_archive_ios --export-options $appstore_export_options
@@ -690,26 +764,6 @@ deploy() {
                 fi
             fi
         fi
-    fi
-}
-
-distribution() {
-    # Import config file
-    . ./dist_config.sh
-
-    # Import project pubspec.yaml as config to get version
-    eval $(parse_yaml pubspec.yaml)
-
-    if [[ "dev" == *"$ENV"* ]]; then
-        deploy --flavor $ENV --main $dev_main --export-options $dev_development_exportOptionsPlist --appstore-export-options $dev_appstore_exportOptionsPlist --version $version --ios_internal_tester_group $dev_ios_internal_tester_group --ios_external_tester_group $dev_ios_external_tester_group --android_internal_tester_group $dev_android_internal_tester_group --android_external_tester_group $dev_android_external_tester_group
-    fi
-
-    if [[ "staging" == *"$ENV"* ]]; then
-        deploy --flavor $ENV --main $staging_main --export-options $staging_development_exportOptionsPlist --appstore-export-options $staging_appstore_exportOptionsPlist --version $version_staging --ios_internal_tester_group $staging_ios_internal_tester_group --ios_external_tester_group $staging_ios_external_tester_group --android_internal_tester_group $staging_android_internal_tester_group --android_external_tester_group $staging_android_external_tester_group
-    fi
-
-    if [[ "prod" == *"$ENV"* ]]; then
-        deploy --flavor $ENV --main $prod_main --export-options $prod_development_exportOptionsPlist --appstore-export-options $prod_appstore_exportOptionsPlist --version $version_prod --ios_internal_tester_group $prod_ios_internal_tester_group --ios_external_tester_group $prod_ios_external_tester_group --android_internal_tester_group $prod_android_internal_tester_group --android_external_tester_group $prod_android_external_tester_group
     fi
 }
 

@@ -2,28 +2,16 @@ part of '../base.dart';
 
 abstract class StateBase<T extends StatefulWidget> extends CoreStateBase<T> {
   @override
-  void showLoginNoticeDialog({
-    required Function() onSuccess,
-    Function()? onSkip,
-  }) {
-    final trans = translate(context);
-    showNoticeConfirmDialog(
-      context: context,
-      message: trans.loginRequired,
-      title: trans.inform,
-      rightBtn: trans.login,
-      leftBtn: trans.skip,
-      onConfirmed: () {
-        backToAuth(onSuccess: onSuccess, onSkip: onSkip);
-      },
-    );
-  }
+  CoreDelegate? get delegate => bloc;
+
+  AppBlocBase? get bloc => null;
 
   @override
   void backToAuth({
     Function()? onSuccess,
     Function()? onSkip,
   }) {
+    super.backToAuth(onSuccess: onSuccess, onSkip: onSkip);
     context.openSignIn().then((value) {
       if (value is bool && value) {
         onSuccess?.call();

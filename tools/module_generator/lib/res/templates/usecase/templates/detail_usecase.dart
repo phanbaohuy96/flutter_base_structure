@@ -1,4 +1,4 @@
-import '../../../../common/definations.dart';
+import '../../../../common/definitions.dart';
 
 const detailUsecase = '''import 'dart:async';
 
@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 part '${moduleNameKey}_usecase.impl.dart';
 
 abstract class ${classNameKey}Usecase {
-  Future<$modelNameKey> getDetailById(String id);
+  Future<$modelNameKey?> getDetailById(String id);
 }
 ''';
 
@@ -23,7 +23,7 @@ class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
   final ${classNameKey}Repository _repository;
 
   @override
-  Future<$modelNameKey> getDetailById(String id) async {
+  Future<$modelNameKey?> getDetailById(String id) async {
     return _repository.get$modelNameKey(id);
   }
 }''';

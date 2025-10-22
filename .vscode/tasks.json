@@ -44,7 +44,7 @@
         {
             "label": "GIT: clean merged branches",
             "type": "shell",
-            "command": "git branch --merged | egrep -v \"(^\\*|master|prod/|develop)\" | xargs git branch -d"
+            "command": "git branch --merged | egrep -v \"(^\\*|main|master|prod/|develop|staging)\" | xargs git branch -d && git fetch --prune --all"
         },
         //-----FLUTTER_PUB_GET-----
         {

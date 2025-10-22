@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
 import '../common/common_function.dart';
-import '../common/definations.dart';
+import '../common/definitions.dart';
 import '../common/file_helper.dart';
 import '../res/templates/asset/assets.dart';
+import '../res/templates/asset/audio_assets.dart';
+import '../res/templates/asset/gif_assets.dart';
 import '../res/templates/asset/image_assets.dart';
 import '../res/templates/asset/other_assets.dart';
 import '../res/templates/asset/rive_assets.dart';
@@ -25,8 +26,6 @@ Future<void> generateAsset({
   required String output,
   String? root,
 }) async {
-  final validExtension = ['png', 'jpg', 'jpeg', 'svg', 'riv', 'json'];
-
   await FilesHelper.createFolder(output);
   final listAssets = <AssetFile>[];
   for (final p in paths) {
@@ -34,22 +33,19 @@ Future<void> generateAsset({
 
     final entities = await dir.list().toList();
     for (final f in entities.whereType<File>()) {
-      var isValidExtension = validExtension.any(
-        (extension) => path.extension(f.path).contains(extension),
-      );
-      if (isValidExtension) {
-        final fileName = f.path.split('/').last.split('.').first;
+      final fileName = f.path.split('/').last.split('.').first;
 
-        listAssets.add(
-          AssetFile(variableName: camelCase(fileName), filePath: f.path),
-        );
-      }
+      listAssets.add(
+        AssetFile(variableName: camelCase(fileName), filePath: f.path),
+      );
     }
   }
   listAssets.sort((a, b) => a.variableName.compareTo(b.variableName));
   var svgContentFile = '';
+  var gifContentFile = '';
   var imageContentFile = '';
   var riveContentFile = '';
+  var audioContentFile = '';
   var otherContentFile = '';
   for (final a in listAssets) {
     var append = '';
@@ -66,6 +62,11 @@ Future<void> generateAsset({
       imageContentFile += append;
     } else if (['.svg'].any((ext) => a.filePath.contains(ext))) {
       svgContentFile += append;
+    } else if (['.gif'].any((ext) => a.filePath.contains(ext))) {
+      gifContentFile += append;
+    } else if (['.mp3', '.wav', '.ogg']
+        .any((ext) => a.filePath.contains(ext))) {
+      audioContentFile += append;
     } else if (['.riv'].any((ext) => a.filePath.contains(ext))) {
       if (riveContentFile.isEmpty) {
         final riveFilePath = 'rive.yaml';
@@ -119,6 +120,16 @@ Future<void> generateAsset({
     content: _generateRiveContentFile(
       riveAssetsRes.replaceFirst(contentKey, riveContentFile),
     ),
+  );
+
+  await FilesHelper.writeFile(
+    pathFile: '${output}audio_assets.dart',
+    content: audioAssetsRes.replaceFirst(contentKey, audioContentFile),
+  );
+
+  await FilesHelper.writeFile(
+    pathFile: '${output}gif_assets.dart',
+    content: gifAssetsRes.replaceFirst(contentKey, gifContentFile),
   );
 
   await FilesHelper.writeFile(

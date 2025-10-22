@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'core_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -58,7 +60,16 @@ class CoreLocalizationsTh extends CoreLocalizations {
   String get female => 'หญิง';
 
   @override
+  String get skip => 'ข้าม';
+
+  @override
   String get close => 'ปิด';
+
+  @override
+  String get loginRequired => 'กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ';
+
+  @override
+  String get login => 'เข้าสู่ระบบ';
 
   @override
   String get error => 'ข้อผิดพลาด';
@@ -236,5 +247,17 @@ class CoreLocalizationsTh extends CoreLocalizations {
   }
 
   @override
-  String get errorWhenUploading => 'An error occurred when uploading';
+  String get errorWhenUploading => 'เกิดข้อผิดพลาดขณะอัปโหลด';
+
+  @override
+  String get onlyImageAllowed => 'อนุญาตเฉพาะไฟล์รูปภาพ';
+
+  @override
+  String get onlyVideoAllowed => 'อนุญาตเฉพาะไฟล์วิดีโอ';
+
+  @override
+  String get onlyImageOrVideoAllowed => 'อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ';
+
+  @override
+  String get loggingOut => 'กำลังออกจากระบบ...';
 }

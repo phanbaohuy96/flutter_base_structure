@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import '../fl_utils.dart';
 
 class CommonFunction {
-  void hideKeyBoard(BuildContext context) {
+  void hideKeyboard(BuildContext context) {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 

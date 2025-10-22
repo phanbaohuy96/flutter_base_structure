@@ -1,22 +1,81 @@
+// Load keystore properties
+def keystorePropertiesFile = rootProject.file("keystores/keystore.properties")
+def keystoreProperties = new Properties()
+
+// Helper function to check if keystore config is valid
+def isValidKeystoreConfig = { prefix ->
+    def storeFile = keystoreProperties.getProperty("${prefix}_STORE_FILE")
+    def storePassword = keystoreProperties.getProperty("${prefix}_STORE_PASSWORD")
+    def keyAlias = keystoreProperties.getProperty("${prefix}_KEY_ALIAS")
+    def keyPassword = keystoreProperties.getProperty("${prefix}_KEY_PASSWORD")
+    
+    return storeFile != null && 
+           !storeFile.contains("placeholder") && 
+           storePassword != null && 
+           storePassword != "placeholder-value" &&
+           keyAlias != null &&
+           keyAlias != "placeholder-value" &&
+           keyPassword != null &&
+           keyPassword != "placeholder-value"
+}
+
+def hasValidKeystores = [:]
+
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    
+    // Check each environment keystore
+    hasValidKeystores['dev'] = isValidKeystoreConfig('DEV')
+    hasValidKeystores['staging'] = isValidKeystoreConfig('STAGING')
+    hasValidKeystores['sandbox'] = isValidKeystoreConfig('SANDBOX')
+    hasValidKeystores['prod'] = isValidKeystoreConfig('PROD')
+} else {
+    hasValidKeystores = [dev: false, staging: false, sandbox: false, prod: false]
+}
+
+def hasValidDevKeystore = hasValidKeystores['dev']
+def hasValidStagingKeystore = hasValidKeystores['staging']
+def hasValidSandboxKeystore = hasValidKeystores['sandbox']
+def hasValidProdKeystore = hasValidKeystores['prod']
+// Make variables available to build.gradle by setting them in ext
+ext.hasValidDevKeystore = hasValidDevKeystore
+ext.hasValidStagingKeystore = hasValidStagingKeystore
+ext.hasValidSandboxKeystore = hasValidSandboxKeystore
+ext.hasValidProdKeystore = hasValidProdKeystore
+
 android {
     signingConfigs {
-        dev {
-            storeFile file(STORE_FILE)
-            storePassword STORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
+        if (hasValidDevKeystore) {
+            dev {
+                storeFile file(keystoreProperties.getProperty("DEV_STORE_FILE"))
+                storePassword keystoreProperties.getProperty("DEV_STORE_PASSWORD")
+                keyAlias keystoreProperties.getProperty("DEV_KEY_ALIAS")
+                keyPassword keystoreProperties.getProperty("DEV_KEY_PASSWORD")
+            }
         }
-        staging {
-            storeFile file(STAGING_STORE_FILE)
-            storePassword STAGING_STORE_PASSWORD
-            keyAlias STAGING_KEY_ALIAS
-            keyPassword STAGING_KEY_PASSWORD
+        if (hasValidStagingKeystore) {
+            staging {
+                storeFile file(keystoreProperties.getProperty("STAGING_STORE_FILE"))
+                storePassword keystoreProperties.getProperty("STAGING_STORE_PASSWORD")
+                keyAlias keystoreProperties.getProperty("STAGING_KEY_ALIAS")
+                keyPassword keystoreProperties.getProperty("STAGING_KEY_PASSWORD")
+            }
         }
-        prod {
-            storeFile file(PROD_STORE_FILE)
-            storePassword PROD_STORE_PASSWORD
-            keyAlias PROD_KEY_ALIAS
-            keyPassword PROD_KEY_PASSWORD
+        if (hasValidSandboxKeystore) {
+            sandbox {
+                storeFile file(keystoreProperties.getProperty("SANDBOX_STORE_FILE"))
+                storePassword keystoreProperties.getProperty("SANDBOX_STORE_PASSWORD")
+                keyAlias keystoreProperties.getProperty("SANDBOX_KEY_ALIAS")
+                keyPassword keystoreProperties.getProperty("SANDBOX_KEY_PASSWORD")
+            }
+        }
+        if (hasValidProdKeystore) {
+            prod {
+                storeFile file(keystoreProperties.getProperty("PROD_STORE_FILE"))
+                storePassword keystoreProperties.getProperty("PROD_STORE_PASSWORD")
+                keyAlias keystoreProperties.getProperty("PROD_KEY_ALIAS")
+                keyPassword keystoreProperties.getProperty("PROD_KEY_PASSWORD")
+            }
         }
     }
 }

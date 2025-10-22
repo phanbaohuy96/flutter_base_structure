@@ -8,7 +8,7 @@ import 'pages/theme_color_page.dart';
 import 'pages/typography_page.dart';
 
 class DesignSystemScreen extends StatefulWidget {
-  static String routeName = '/devmode_design_system';
+  static String routeName = '/devmode-design-system';
 
   const DesignSystemScreen({Key? key}) : super(key: key);
 

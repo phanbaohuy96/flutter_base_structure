@@ -47,11 +47,25 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<true/>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>audio</string>
+		</array>
+		<key>io.flutter.embedded_views_preview</key>
+		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access camera access to take photos.</string>
+		<string>This app needs camera access to take photos of products.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access photo library access to save product photos.</string>
+		<string>This app needs photo library access to save product photos.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>$(APP_DISPLAY_NAME) would like to access photo library access to save product photos.</string>
+		<string>This app needs photo library access to save product photos.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+		<string>$(APP_DISPLAY_NAME) would like to access location service using for products information</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>$(APP_DISPLAY_NAME) would like to access location service using for products information</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>$(APP_DISPLAY_NAME) would like to access location service using for products information</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>$(APP_DISPLAY_NAME) would like to access the microphone for voice commands.</string>
 	</dict>
 </plist>

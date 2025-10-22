@@ -1,4 +1,5 @@
 import '../../route/route.dart';
+import 'app_config/app_config_screen.dart';
 import 'dashboard/dev_mode_dashboard_screen.dart';
 import 'design_system/design_system_screen.dart';
 import 'log_viewer/log_viewer_screen.dart';
@@ -39,6 +40,12 @@ class DevModeRoute extends IRoute {
         path: DesignSystemScreen.routeName,
         builder: (context, uri, extra) {
           return const DesignSystemScreen();
+        },
+      ),
+      CustomRouter(
+        path: AppConfigScreen.routeName,
+        builder: (context, uri, extra) {
+          return const AppConfigScreen();
         },
       ),
     ];

@@ -1,4 +1,4 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
 const detailModule = '''export '${moduleNameKey}_route.dart';
 export 'bloc/${moduleNameKey}_bloc.dart';

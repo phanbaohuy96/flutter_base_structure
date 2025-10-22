@@ -1,7 +1,6 @@
-import '../../../common/definations.dart';
+import '../../../common/definitions.dart';
 
-const listingModuleRoute = '''import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+const listingModuleRoute = '''import 'package:core/core.dart';
 
 import '$importPartKey/../../di/di.dart';
 import 'bloc/${moduleNameKey}_bloc.dart';
@@ -14,7 +13,6 @@ class ${classNameKey}Route extends IRoute {
       CustomRouter(
         path: ${classNameKey}Screen.routeName,
         builder: (context, uri, extra) {
-          final args = asOrNull<${classNameKey}Args>(extra);
           return BlocProvider<${classNameKey}Bloc>(
             create: (context) => injector(),
             child: const ${classNameKey}Screen(),

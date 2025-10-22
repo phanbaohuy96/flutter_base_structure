@@ -24,7 +24,7 @@ class DocumentViewerArgs {
 }
 
 class DocumentViewerScreen extends StatefulWidget {
-  static String routeName = '/document_viewer';
+  static String routeName = '/document-viewer';
   const DocumentViewerScreen({
     Key? key,
     required this.args,

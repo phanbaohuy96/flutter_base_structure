@@ -7,7 +7,8 @@ class Env {
   static const graphqlApiKey = 'graphqlApiKey';
   static const onesignalAppID = 'onesignalAppID';
 
-  static const devEnvName = 'Development';
-  static const stagingEnvName = 'Staging';
-  static const prodEnvName = 'Production';
+  static const devEnvName = 'DEV';
+  static const stagingEnvName = 'STAG';
+  static const sanboxEnvName = 'SANDBOX';
+  static const prodEnvName = 'PROD';
 }

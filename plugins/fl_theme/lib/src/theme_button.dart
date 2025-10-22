@@ -1,13 +1,12 @@
+import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/material.dart';
-
-import 'extension.dart';
 
 class ThemeButton {
   ThemeButton._();
 
   static Widget primary({
     Key? key,
-    required String title,
+    String? title,
     void Function()? onPressed,
     bool enable = true,
     Widget? prefixIcon,
@@ -15,24 +14,28 @@ class ThemeButton {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
     EdgeInsetsGeometry? padding,
     ButtonStyle? style,
+    double? prefixSpace = 8,
+    TextStyle? textStyle,
   }) =>
       ElevatedButton(
         key: key,
         onPressed: enable ? onPressed : null,
-        style: style ??
-            ElevatedButton.styleFrom(
-              minimumSize: minimumSize,
-              padding: padding,
-            ),
-        child: prefixIcon != null
-            ? Row(
-                mainAxisAlignment: mainAxisAlignment,
-                children: [prefixIcon, Container(child: Text(title))],
-              )
-            : Text(
-                title,
-                textAlign: TextAlign.center,
-              ),
+        style: ConditionBuilder.on(
+          condition: () => style != null,
+          value: () => style,
+        ).build(
+          orElse: () => ElevatedButton.styleFrom(
+            minimumSize: minimumSize,
+            padding: padding,
+            textStyle: textStyle,
+          ),
+        ),
+        child: _buildChild(
+          title: title,
+          prefixIcon: prefixIcon,
+          prefixSpace: prefixSpace,
+          mainAxisAlignment: mainAxisAlignment,
+        ),
       );
 
   static Widget secondary({
@@ -46,6 +49,7 @@ class ThemeButton {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
     EdgeInsetsGeometry? padding,
     ButtonStyle? style,
+    TextStyle? textStyle,
   }) =>
       outline(
         key: key,
@@ -58,83 +62,91 @@ class ThemeButton {
         padding: padding,
         style: style,
         prefixSpace: prefixSpace,
+        textStyle: textStyle,
       );
 
   static Widget outline({
     Key? key,
-    required String title,
+    String? title,
     void Function()? onPressed,
     bool enable = true,
     Widget? prefixIcon,
     Size minimumSize = const Size(88, 40),
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
     EdgeInsetsGeometry? padding,
-    Color? forgroundColor,
+    Color? foregroundColor,
     Color? backgroundColor,
     ButtonStyle? style,
+    TextStyle? textStyle,
     double? prefixSpace = 8,
-  }) =>
-      OutlinedButton(
-        key: key,
-        onPressed: enable ? onPressed : null,
-        style: style ??
-            ButtonStyle(
-              minimumSize: WidgetStateProperty.resolveWith<Size>(
-                (_) => minimumSize,
-              ),
-              padding: padding == null
-                  ? null
-                  : WidgetStateProperty.resolveWith<EdgeInsetsGeometry>(
-                      (_) => padding,
-                    ),
-              backgroundColor: backgroundColor == null
-                  ? null
-                  : WidgetStateProperty.resolveWith<Color?>(
-                      (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.disabled)) {
-                          return null;
-                        }
-                        return backgroundColor;
-                      },
-                    ),
-              foregroundColor: forgroundColor == null
-                  ? null
-                  : WidgetStateProperty.resolveWith<Color?>(
-                      (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.disabled)) {
-                          return null;
-                        }
-                        return forgroundColor;
-                      },
-                    ),
-              side: forgroundColor == null
-                  ? null
-                  : WidgetStateProperty.resolveWith<BorderSide?>(
-                      (Set<WidgetState> states) {
-                        if (states.contains(WidgetState.disabled)) {
-                          return null;
-                        }
-                        return BorderSide(
-                          color: forgroundColor,
-                          width: 1,
-                        );
-                      },
-                    ),
-            ),
-        child: prefixIcon != null
-            ? Row(
-                mainAxisAlignment: mainAxisAlignment,
-                children: [
-                  prefixIcon,
-                  SizedBox(width: prefixSpace),
-                  Text(title),
-                ],
-              )
-            : Text(
-                title,
-                textAlign: TextAlign.center,
-              ),
-      );
+  }) {
+    final defaultStyle = ButtonStyle(
+      minimumSize: WidgetStateProperty.resolveWith<Size>(
+        (_) => minimumSize,
+      ),
+      padding: ConditionBuilder.on(
+        condition: () => padding != null,
+        value: () => WidgetStateProperty.resolveWith<EdgeInsetsGeometry>(
+          (_) => padding!,
+        ),
+      ).build(orElse: () => null),
+      backgroundColor: ConditionBuilder.on(
+        condition: () => backgroundColor != null,
+        value: () => _resolveAndExcludeDisabledWith<Color?>(
+          (Set<WidgetState> states) {
+            return backgroundColor;
+          },
+        ),
+      ).build(orElse: () => null),
+      foregroundColor: ConditionBuilder.on(
+        condition: () => foregroundColor != null,
+        value: () => _resolveAndExcludeDisabledWith<Color?>(
+          (Set<WidgetState> states) {
+            return foregroundColor;
+          },
+        ),
+      ).build(orElse: () => null),
+      side: ConditionBuilder.on(
+        condition: () => foregroundColor != null,
+        value: () => _resolveAndExcludeDisabledWith<BorderSide?>(
+          (Set<WidgetState> states) {
+            return BorderSide(
+              color: foregroundColor!,
+              width: 1,
+            );
+          },
+        ),
+      ).build(
+        orElse: () => null,
+      ),
+      textStyle: ConditionBuilder.on(
+        condition: () => textStyle != null,
+        value: () => _resolveAndExcludeDisabledWith<TextStyle?>(
+          (Set<WidgetState> states) {
+            return textStyle;
+          },
+        ),
+      ).build(
+        orElse: () => null,
+      ),
+    );
+    return OutlinedButton(
+      key: key,
+      onPressed: enable ? onPressed : null,
+      style: ConditionBuilder.on(
+        condition: () => style != null,
+        value: () => style,
+      ).build(
+        orElse: () => defaultStyle,
+      ),
+      child: _buildChild(
+        title: title,
+        prefixIcon: prefixIcon,
+        prefixSpace: prefixSpace,
+        mainAxisAlignment: mainAxisAlignment,
+      ),
+    );
+  }
 
   static Widget text({
     Key? key,
@@ -159,59 +171,51 @@ class ThemeButton {
         ),
       );
 
-  static Widget custom({
-    Key? key,
-    required BuildContext context,
-    required String title,
-    void Function()? onPressed,
-    EdgeInsetsGeometry? padding,
-    Size minimumSize = const Size(88, 40),
-    bool enable = true,
-    Color? bgBtnColor,
-    BorderRadiusGeometry? borderRadius,
+  static Widget _buildChild({
+    String? title,
     Widget? prefixIcon,
-    Widget? surfixIcon,
-    Color? foregroundColor,
-  }) =>
-      ElevatedButton(
-        key: key,
-        onPressed: enable ? onPressed : null,
-        style: ElevatedButton.styleFrom(
-          minimumSize: minimumSize,
-          padding: padding,
-          backgroundColor: bgBtnColor,
-          textStyle: context.textTheme.buttonText,
-          shape: borderRadius != null
-              ? RoundedRectangleBorder(
-                  borderRadius: borderRadius,
-                )
-              : null,
-        ),
-        child: Row(
+    MainAxisAlignment mainAxisAlignment = MainAxisAlignment.center,
+    double? prefixSpace,
+  }) {
+    return ConditionBuilder<Widget>.from([
+      Conditional(
+        condition: () => prefixIcon != null && title != null,
+        value: () => Row(
+          mainAxisAlignment: mainAxisAlignment,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: RichText(
-                text: TextSpan(
-                  children: [
-                    if (prefixIcon != null)
-                      WidgetSpan(
-                        child: prefixIcon,
-                        alignment: PlaceholderAlignment.middle,
-                      ),
-                    TextSpan(
-                      text: title,
-                    ),
-                  ],
-                  style: context.textTheme.buttonText?.copyWith(
-                    color: foregroundColor,
-                  ),
-                ),
-                textAlign:
-                    surfixIcon != null ? TextAlign.start : TextAlign.center,
-              ),
-            ),
-            surfixIcon ?? const SizedBox(),
+            prefixIcon!,
+            SizedBox(width: prefixSpace),
+            Text(title!),
           ],
         ),
-      );
+      ),
+      Conditional(
+        condition: () => title != null,
+        value: () => Text(
+          title!,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      Conditional(
+        condition: () => prefixIcon != null,
+        value: () => prefixIcon!,
+      ),
+    ]).build(
+      orElse: () => const SizedBox.shrink(),
+    )!;
+  }
+
+  static WidgetStateProperty<T?> _resolveAndExcludeDisabledWith<T>(
+    WidgetPropertyResolver<T> callback,
+  ) {
+    return WidgetStateProperty.resolveWith<T?>(
+      (Set<WidgetState> states) {
+        if (states.contains(WidgetState.disabled)) {
+          return null;
+        }
+        return callback(states);
+      },
+    );
+  }
 }
