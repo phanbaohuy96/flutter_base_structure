@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../common/universal/universal.dart';
+
 class MobileSizeLayoutConstraints extends StatelessWidget {
   const MobileSizeLayoutConstraints({
     super.key,
@@ -13,7 +15,8 @@ class MobileSizeLayoutConstraints extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!kIsWeb) {
+    /// On mobile browsers, we want to use the full available width
+    if (!kIsWeb || (isAndroidBrowser && isIosBrowser)) {
       return child;
     }
 
@@ -43,8 +46,7 @@ class MobileSizeLayoutConstraints extends StatelessWidget {
       return Size(width, constraints.maxHeight);
     } else {
       // Screen is taller than target aspect ratio - constrain by width
-      final height = constraints.maxWidth / aspectRatio;
-      return Size(constraints.maxWidth, height);
+      return Size(constraints.maxWidth, constraints.maxHeight);
     }
   }
 }
