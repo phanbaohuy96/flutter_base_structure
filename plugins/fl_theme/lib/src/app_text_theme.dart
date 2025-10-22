@@ -205,88 +205,91 @@ class AppTextTheme extends TextTheme {
         helper = helper ?? bodySmall,
         buttonText = buttonText ?? labelLarge;
 
-  factory AppTextTheme.create(ThemeColor themeColor) {
+  factory AppTextTheme.create(
+    ThemeColor themeColor, {
+    TextStyle Function(TextStyle)? wrapper,
+  }) {
     return AppTextTheme(
       displayLarge: TextStyle(
         fontSize: 57,
         fontWeight: FontWeight.w600,
         color: themeColor.displayText,
-      ),
+      ).wrapper(wrapper),
       displayMedium: TextStyle(
         fontSize: 45,
         fontWeight: FontWeight.w600,
         color: themeColor.displayText,
-      ),
+      ).wrapper(wrapper),
       displaySmall: TextStyle(
         fontSize: 36,
         fontWeight: FontWeight.w600,
         color: themeColor.displayText,
-      ),
+      ).wrapper(wrapper),
       headlineLarge: TextStyle(
         fontSize: 32,
         fontWeight: FontWeight.w600,
         color: themeColor.headlineText,
-      ),
+      ).wrapper(wrapper),
       headlineMedium: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.w600,
         color: themeColor.headlineText,
-      ),
+      ).wrapper(wrapper),
       headlineSmall: TextStyle(
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: themeColor.headlineText,
-      ),
+      ).wrapper(wrapper),
       titleLarge: TextStyle(
         fontSize: 22,
         fontWeight: FontWeight.w600,
         color: themeColor.titleText,
-      ),
+      ).wrapper(wrapper),
       titleMedium: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: themeColor.titleText,
-      ),
+      ).wrapper(wrapper),
       titleSmall: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
         color: themeColor.titleText,
-      ),
+      ).wrapper(wrapper),
       titleTiny: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w600,
         color: themeColor.titleText,
-      ),
+      ).wrapper(wrapper),
       bodyLarge: TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.w400,
         color: themeColor.bodyText,
-      ),
+      ).wrapper(wrapper),
       bodyMedium: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: themeColor.bodyText,
-      ),
+      ).wrapper(wrapper),
       bodySmall: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: themeColor.bodyText,
-      ),
+      ).wrapper(wrapper),
       labelLarge: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         color: themeColor.lableText,
-      ),
+      ).wrapper(wrapper),
       labelMedium: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
         color: themeColor.lableText,
-      ),
+      ).wrapper(wrapper),
       labelSmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w500,
         color: themeColor.lableText,
-      ),
+      ).wrapper(wrapper),
     );
   }
 
@@ -365,5 +368,14 @@ class AppTextTheme extends TextTheme {
       inputError: inputError ?? this.inputError,
       buttonText: buttonText ?? this.buttonText,
     );
+  }
+}
+
+extension on TextStyle {
+  TextStyle wrapper(TextStyle Function(TextStyle p1)? wrapper) {
+    if (wrapper != null) {
+      return wrapper(this);
+    }
+    return this;
   }
 }
