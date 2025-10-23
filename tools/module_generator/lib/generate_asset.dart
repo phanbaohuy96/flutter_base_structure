@@ -5,64 +5,151 @@ import 'package:yaml/yaml.dart';
 
 import 'generator/generate_assets.dart' as generate_assets;
 
-Future<YamlMap?> readConfig() async {
-  var filePath = 'assets.yaml';
-  if (!File(filePath).existsSync()) {
-    filePath = 'pubspec.yaml';
+/// Configuration model for asset generation
+class AssetConfig {
+  final List<String> assetPaths;
+  final String outputPath;
+
+  const AssetConfig({
+    required this.assetPaths,
+    required this.outputPath,
+  });
+
+  factory AssetConfig.fromYaml(YamlMap config) {
+    final assets = config['assets'] as List?;
+    final assetsGenerated = config['assets_generated'] as String?;
+
+    if (assets == null || assetsGenerated == null) {
+      throw const ConfigException(
+          'Invalid configuration: missing assets or assets_generated');
+    }
+
+    return AssetConfig(
+      assetPaths: assets.map((e) => e.toString()).toList(),
+      outputPath: assetsGenerated,
+    );
   }
-  final yamlMap = loadYaml(await File(filePath).readAsString()) as Map;
-  final config = yamlMap['flutter'];
-  if (config['assets'] is! List ||
-      (config['assets_generated'] != null &&
-          config['assets_generated'] is! String)) {
-    _showAssetYamlError();
+}
+
+/// Custom exception for configuration errors
+class ConfigException implements Exception {
+  final String message;
+  const ConfigException(this.message);
+
+  @override
+  String toString() => 'ConfigException: $message';
+}
+
+/// Reads and merges configuration from pubspec.yaml and assets.yaml
+Future<YamlMap?> readConfig() async {
+  try {
+    final config = <String, dynamic>{};
+
+    // Read from pubspec.yaml first
+    await _mergeConfigFromFile('pubspec.yaml', config);
+
+    // Override with assets.yaml if exists
+    await _mergeConfigFromFile('assets.yaml', config);
+
+    // Validate required fields
+    if (!_isValidConfig(config)) {
+      _showAssetYamlError();
+      return null;
+    }
+
+    return YamlMap.wrap(config);
+  } catch (e) {
+    print('Error reading configuration: $e');
     return null;
   }
-  return config as YamlMap;
 }
 
-Future<void> generateAsset({required List<String> args}) async {
-  final config = await readConfig();
+/// Merges configuration from a YAML file into the existing config
+Future<void> _mergeConfigFromFile(
+    String filePath, Map<String, dynamic> config) async {
+  final file = File(filePath);
+  if (!file.existsSync()) return;
 
-  if (config != null) {
-    final paths = (config['assets'] as List).map((e) => e.toString()).toList();
-    final output = (config['assets_generated'] is String)
-        ? config['assets_generated']
-        : 'lib/generated/';
+  try {
+    final content = await file.readAsString();
+    final yamlMap = loadYaml(content) as Map?;
+    final flutterConfig = yamlMap?['flutter'] as Map?;
+
+    if (flutterConfig != null) {
+      config.addAll(Map<String, dynamic>.from(flutterConfig));
+    }
+  } catch (e) {
+    print('Warning: Failed to read $filePath: $e');
+  }
+}
+
+/// Validates the configuration structure
+bool _isValidConfig(Map<String, dynamic> config) {
+  return config['assets'] is List && config['assets_generated'] is String;
+}
+
+/// Generates assets based on configuration
+Future<void> generateAsset({required List<String> args}) async {
+  try {
+    final config = await readConfig();
+    if (config == null) return;
+
+    final assetConfig = AssetConfig.fromYaml(config);
+    final root = args.isNotEmpty ? args.first : null;
+
+    _logGenerationInfo(assetConfig);
 
     await generate_assets.generateAsset(
-      paths: paths,
-      output: output as String,
-      root: args.isNotEmpty ? args.first : null,
+      paths: assetConfig.assetPaths,
+      output: assetConfig.outputPath,
+      root: root,
     );
+  } catch (e) {
+    print('Error generating assets: $e');
   }
 }
 
+/// Removes unused assets based on configuration
 Future<void> removeUnusedAssets({required List<String> args}) async {
-  final config = await readConfig();
+  try {
+    final config = await readConfig();
+    if (config == null) return;
 
-  if (config != null) {
-    final paths = (config['assets'] as List).map((e) => e.toString()).toList();
-    final output = (config['assets_generated'] is String)
-        ? config['assets_generated']
-        : 'lib/generated/';
+    final assetConfig = AssetConfig.fromYaml(config);
+    final root = args.isNotEmpty ? args.first : null;
 
     await generate_assets.removeUnusedAssets(
-      resPaths: paths,
-      output: output as String,
-      root: args.isNotEmpty ? args.first : null,
+      resPaths: assetConfig.assetPaths,
+      output: assetConfig.outputPath,
+      root: root,
     );
+  } catch (e) {
+    print('Error removing unused assets: $e');
   }
 }
 
+/// Logs information about the asset generation process
+void _logGenerationInfo(AssetConfig config) {
+  print('Generating assets to ${config.outputPath}');
+  print('Generating assets from:');
+  for (final path in config.assetPaths) {
+    print(' - $path');
+  }
+}
+
+/// Shows error message and example configuration
 void _showAssetYamlError() {
-  print('''Please provide assets.yaml file''');
-  print('''##########################################
-##### Example content of assets.yaml #####''');
-  print('''flutter:
+  const errorMessage = '''
+Please provide assets.yaml file
+
+##########################################
+##### Example content of assets.yaml #####
+flutter:
   assets:
     - assets/svg/
     - assets/images/
-  assets_generated: lib/generated/''');
-  print('##########################################');
+  assets_generated: lib/generated/
+##########################################''';
+
+  print(errorMessage);
 }
