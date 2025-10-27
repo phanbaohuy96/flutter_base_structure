@@ -260,4 +260,22 @@ class CoreLocalizationsTh extends CoreLocalizations {
 
   @override
   String get loggingOut => 'กำลังออกจากระบบ...';
+
+  @override
+  String get failedToLoadContent => 'ไม่สามารถโหลดเนื้อหาได้';
+
+  @override
+  String get retry => 'ลองใหม่';
+
+  @override
+  String get downloadStarted => 'เริ่มดาวน์โหลด';
+
+  @override
+  String get failedToOpenExternalLink => 'ไม่สามารถเปิดลิงก์ภายนอกได้';
+
+  @override
+  String get downloadFailed => 'ดาวน์โหลดล้มเหลว';
+
+  @override
+  String get noContentToDisplay => 'ไม่มีเนื้อหาที่จะแสดง';
 }
