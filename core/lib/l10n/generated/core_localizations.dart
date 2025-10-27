@@ -565,6 +565,42 @@ abstract class CoreLocalizations {
   /// In en, this message translates to:
   /// **'Logging out...'**
   String get loggingOut;
+
+  /// No description provided for @failedToLoadContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load content'**
+  String get failedToLoadContent;
+
+  /// No description provided for @retry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No description provided for @downloadStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Download started'**
+  String get downloadStarted;
+
+  /// No description provided for @failedToOpenExternalLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to open external link'**
+  String get failedToOpenExternalLink;
+
+  /// No description provided for @downloadFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download failed'**
+  String get downloadFailed;
+
+  /// No description provided for @noContentToDisplay.
+  ///
+  /// In en, this message translates to:
+  /// **'No content to display'**
+  String get noContentToDisplay;
 }
 
 class _CoreLocalizationsDelegate

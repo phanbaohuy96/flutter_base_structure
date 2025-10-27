@@ -81,3 +81,9 @@ onlyImageAllowed,Only image files are allowed.,อนุญาตเฉพาะ
 onlyVideoAllowed,Only video files are allowed.,อนุญาตเฉพาะไฟล์วิดีโอ
 onlyImageOrVideoAllowed,Only image or video files are allowed.,อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ
 loggingOut,Logging out...,กำลังออกจากระบบ...
+failedToLoadContent,Failed to load content,ไม่สามารถโหลดเนื้อหาได้
+retry,Retry,ลองใหม่
+downloadStarted,Download started,เริ่มดาวน์โหลด
+failedToOpenExternalLink,Failed to open external link,ไม่สามารถเปิดลิงก์ภายนอกได้
+downloadFailed,Download failed,ดาวน์โหลดล้มเหลว
+noContentToDisplay,No content to display,ไม่มีเนื้อหาที่จะแสดง
