@@ -260,4 +260,22 @@ class CoreLocalizationsEn extends CoreLocalizations {
 
   @override
   String get loggingOut => 'Logging out...';
+
+  @override
+  String get failedToLoadContent => 'Failed to load content';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get downloadStarted => 'Download started';
+
+  @override
+  String get failedToOpenExternalLink => 'Failed to open external link';
+
+  @override
+  String get downloadFailed => 'Download failed';
+
+  @override
+  String get noContentToDisplay => 'No content to display';
 }

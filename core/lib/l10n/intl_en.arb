@@ -76,5 +76,11 @@
   "onlyImageAllowed": "Only image files are allowed.",
   "onlyVideoAllowed": "Only video files are allowed.",
   "onlyImageOrVideoAllowed": "Only image or video files are allowed.",
-  "loggingOut": "Logging out..."
+  "loggingOut": "Logging out...",
+  "failedToLoadContent": "Failed to load content",
+  "retry": "Retry",
+  "downloadStarted": "Download started",
+  "failedToOpenExternalLink": "Failed to open external link",
+  "downloadFailed": "Download failed",
+  "noContentToDisplay": "No content to display"
 }
