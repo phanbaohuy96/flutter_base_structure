@@ -76,5 +76,11 @@
   "onlyImageAllowed": "อนุญาตเฉพาะไฟล์รูปภาพ",
   "onlyVideoAllowed": "อนุญาตเฉพาะไฟล์วิดีโอ",
   "onlyImageOrVideoAllowed": "อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ",
-  "loggingOut": "กำลังออกจากระบบ..."
+  "loggingOut": "กำลังออกจากระบบ...",
+  "failedToLoadContent": "ไม่สามารถโหลดเนื้อหาได้",
+  "retry": "ลองใหม่",
+  "downloadStarted": "เริ่มดาวน์โหลด",
+  "failedToOpenExternalLink": "ไม่สามารถเปิดลิงก์ภายนอกได้",
+  "downloadFailed": "ดาวน์โหลดล้มเหลว",
+  "noContentToDisplay": "ไม่มีเนื้อหาที่จะแสดง"
 }
