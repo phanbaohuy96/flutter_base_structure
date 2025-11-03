@@ -278,7 +278,10 @@ class MediaPicked extends Equatable {
   bool get isVideo => mimetype?.contains('video') == true;
   bool get isLoading => isInUploadProgress;
   bool get isUploadError => hasError;
-  bool get isEmpty => mediaFile == null && url.isNullOrEmpty;
+  bool get isEmpty =>
+      mediaFile == null &&
+      url.isNullOrEmpty &&
+      cloudFile?.id?.isNotNullOrEmpty != true;
 
   String? get fileName =>
       mediaFile?.name ?? mediaFile?.path?.let(path.basename);
