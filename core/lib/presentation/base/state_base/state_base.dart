@@ -131,7 +131,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
       context: context,
       message: displayMessage,
       onClose: () {
-        _onCloseErrorDialog();
+        onCloseErrorDialog();
         onClose?.call();
       },
     );
@@ -161,7 +161,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
       leftBtn: coreL10n.skip,
       onConfirmed: backToAuth,
     ).then((value) {
-      _onCloseErrorDialog();
+      onCloseErrorDialog();
       return value;
     });
   }
