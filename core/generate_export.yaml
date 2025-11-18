@@ -1,5 +1,7 @@
 ---
 - folder: lib/common/
+  ignore:
+    - "**/universal/platform"
   file_name: common.dart
 - folder: lib/data/
   file_name: data.dart
