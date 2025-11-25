@@ -5,6 +5,7 @@ import 'package:extended_image/extended_image.dart';
 import 'package:fl_ui/fl_ui.dart';
 import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_avif/flutter_avif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg_provider;
 
@@ -61,7 +62,40 @@ class ImageView extends StatelessWidget {
         height: height,
       );
     }
+
+    // Check if image is AVIF format
+    final isAvif = image.toLowerCase().contains('.avif');
+
     if (image.isUrl) {
+      if (isAvif) {
+        return AvifImage.network(
+          image,
+          width: width,
+          height: height,
+          fit: fit ?? BoxFit.contain,
+          alignment: alignment,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) {
+              return child;
+            }
+            return Loading(
+              brightness: MediaQuery.of(context).platformBrightness,
+              radius: loadingRadius ?? 12,
+            );
+          },
+          errorBuilder: errorPlaceHolder.isNotNullOrEmpty
+              ? (context, error, stackTrace) => ImageView(
+                    source: errorPlaceHolder!,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                    color: color,
+                    alignment: alignment,
+                    package: package,
+                  )
+              : null,
+        );
+      }
       return ExtendedNetworkImage(
         image,
         width: width,
@@ -96,6 +130,17 @@ class ImageView extends StatelessWidget {
         ),
         alignment: alignment,
         package: package,
+      );
+    }
+
+    // Handle AVIF asset images using flutter_avif
+    if (isAvif) {
+      return AvifImage.asset(
+        package != null ? 'packages/$package/$image' : image,
+        width: width,
+        height: height,
+        fit: fit ?? BoxFit.contain,
+        alignment: alignment,
       );
     }
 
@@ -208,11 +253,18 @@ class ExtendedNetworkImage extends StatelessWidget {
 class ImageViewProviderFactory {
   ImageViewProviderFactory(this.source)
       : provider = source.let((it) {
+          final isAvif = it.toLowerCase().contains('.avif');
           if (it.isUrl) {
+            if (isAvif) {
+              return NetworkAvifImage(it);
+            }
             return ExtendedNetworkImageProvider(it);
           }
           if (it.contains('.svg')) {
             return svg_provider.Svg(it);
+          }
+          if (isAvif) {
+            return AssetAvifImage(it);
           }
           return AssetImage(it);
         });
