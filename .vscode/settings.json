@@ -53,6 +53,7 @@
     "dartx",
     "elif",
     "inappwebview",
+    "inplace",
     "interps",
     "jvmargs",
     "pdfx",
@@ -60,7 +61,8 @@
     "rxdart",
     "Schyler",
     "sprintf",
-    "vnsilicon"
+    "vnsilicon",
+    "xcconfig"
   ],
   "dart.flutterSdkPath": ".fvm/versions/3.32.8"
 }
