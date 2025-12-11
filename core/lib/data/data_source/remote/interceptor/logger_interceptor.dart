@@ -1,30 +1,40 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-import '../../../../common/services/network_log/network_log_service.dart';
-import '../../../../common/utils.dart';
+import '../../../../core.dart';
 
 class LoggerInterceptor extends Interceptor {
-  //For case response data is too large, dont need to show on log
-  final bool Function(Response)? ignoreResponseDataLog;
+  const LoggerInterceptor();
 
-  LoggerInterceptor({this.ignoreResponseDataLog});
+  String _formatData(dynamic data, {int maxLength = 1000}) {
+    if (data == null) {
+      return 'null';
+    }
+    final dataStr = data.toString();
+    if (dataStr.length <= maxLength) {
+      return dataStr;
+    }
+
+    final truncated = dataStr.substring(0, maxLength);
+    final remaining = dataStr.length - maxLength;
+    return '''$truncated... ($remaining more characters, ${dataStr.length} total)''';
+  }
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     options.extra['startTime'] = DateTime.now(); // save time for duration calc
     if (!kIsWeb) {
-      logUtils.i({
-        'from': 'onRequest',
-        'Time': DateTime.now().toString(),
-        'baseUrl': options.baseUrl,
-        'path': options.path,
-        'headers': options.headers,
-        'extra': options.extra,
-        'method': options.method,
-        'requestData': options.data,
-        'queryParameters': options.queryParameters,
-      });
+      log(
+        '🌐 ${options.method} ${options.baseUrl}${options.path}\n'
+        'Headers: ${options.headers}\n'
+        'Query: ${options.queryParameters}\n'
+        'Body: ${options.data}',
+        time: DateTime.now(),
+        name: 'HTTP Request',
+        level: 800, // INFO level
+      );
     }
     super.onRequest(options, handler);
   }
@@ -34,19 +44,18 @@ class LoggerInterceptor extends Interceptor {
     final startTime = response.requestOptions.extra['startTime'] as DateTime? ??
         DateTime.now();
     final endTime = DateTime.now();
+    final duration = endTime.difference(startTime);
 
     if (!kIsWeb) {
-      logUtils.i({
-        'from': 'onResponse',
-        'Time': DateTime.now().toString(),
-        'statusCode': response.statusCode,
-        'baseUrl': response.requestOptions.baseUrl,
-        'path': response.requestOptions.path,
-        'method': response.requestOptions.method,
-        if (ignoreResponseDataLog == null ||
-            ignoreResponseDataLog?.call(response) == false)
-          'responseData': response.data,
-      });
+      log(
+        '''✅ ${response.requestOptions.method} ${response.requestOptions.baseUrl}${response.requestOptions.path}\n'''
+        'Status: ${response.statusCode}\n'
+        'Duration: ${duration.inMilliseconds}ms\n'
+        'Data: ${_formatData(response.data)}',
+        time: DateTime.now(),
+        name: 'HTTP Response',
+        level: 800, // INFO level
+      );
     }
 
     NetworkLoggerService().add(
@@ -75,22 +84,21 @@ class LoggerInterceptor extends Interceptor {
     final startTime =
         error.requestOptions.extra['startTime'] as DateTime? ?? DateTime.now();
     final endTime = DateTime.now();
+    final duration = endTime.difference(startTime);
+
     if (!kIsWeb) {
-      logUtils.e(
-        {
-          'from': 'onError',
-          'Time': DateTime.now().toString(),
-          'baseUrl': error.requestOptions.baseUrl,
-          'header': error.requestOptions.headers,
-          'extra': error.requestOptions.extra,
-          'path': error.requestOptions.path,
-          'type': error.type.toString(),
-          'message': error.message,
-          'statusCode': error.response?.statusCode,
-          'error': error.error.toString(),
-          'responseData': error.response?.data,
-        },
-        error,
+      log(
+        '''❌ ${error.requestOptions.method} ${error.requestOptions.baseUrl}${error.requestOptions.path}\n'''
+        'Status: ${error.response?.statusCode ?? 'N/A'}\n'
+        'Type: ${error.type.name}\n'
+        'Duration: ${duration.inMilliseconds}ms\n'
+        'Message: ${error.message}\n'
+        'Error: ${error.error}\n'
+        'Response: ${_formatData(error.response?.data)}',
+        time: DateTime.now(),
+        error: error,
+        name: 'HTTP Error',
+        level: 1000, // SEVERE level
       );
     }
     NetworkLoggerService().add(

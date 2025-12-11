@@ -61,12 +61,7 @@ class DioClientFactory {
     //   ),
     // );
     dio.interceptors.add(
-      LoggerInterceptor(
-        ignoreResponseDataLog: (response) {
-          // return response.requestOptions.path == ApiContract.administrative;
-          return false;
-        },
-      ),
+      const LoggerInterceptor(),
     );
 
     // Add retry interceptor for handling retries
