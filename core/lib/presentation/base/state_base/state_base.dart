@@ -48,8 +48,8 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
   void _setupDelegate() {
     if (willHandleError) {
       delegate?.addErrorHandler(onError);
+      delegate?.addLoadingHandler(invokeLoading);
     }
-    delegate?.addLoadingHandler(invokeLoading);
   }
 
   /// Shows loading indicator with customizable options
@@ -74,6 +74,9 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
   }
 
   void invokeLoading(bool isLoading) {
+    if (!mounted) {
+      return;
+    }
     if (isLoading) {
       showLoading();
     } else {
