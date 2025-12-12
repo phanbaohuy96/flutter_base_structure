@@ -76,16 +76,20 @@ class LoggerInterceptor extends Interceptor {
   }
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+  Future<void> onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
     super.onRequest(options, handler);
 
     options.extra['startTime'] = DateTime.now(); // save time for duration calc
     if (!kIsWeb) {
+      final formattedData = await _formatData(options.data);
       log(
         '🌐 ${options.method} ${options.baseUrl}${options.path}\n'
         'Headers: ${options.headers}\n'
         'Query: ${options.queryParameters}\n'
-        '''Body: ${jsonEncode(options.data)}''',
+        '''Body: $formattedData''',
         time: DateTime.now(),
         name: 'HTTP Request',
         level: 800, // INFO level
