@@ -138,6 +138,36 @@ class ThemeColor {
   /// when disabled
   final Color outlineButtonDisableColor;
 
+  /// Color of the check mark inside a selected checkbox
+  final Color checkboxCheckColor;
+
+  /// Background color of a selected checkbox
+  final Color checkboxActiveColor;
+
+  /// Border color of an unselected checkbox
+  final Color checkboxBorderColor;
+
+  /// Background and border color of a disabled checkbox
+  final Color checkboxDisabledColor;
+
+  /// Background color of a chip
+  final Color chipBackgroundColor;
+
+  /// Border color of a chip
+  final Color chipBorderColor;
+
+  /// Text color of a chip label
+  final Color chipLabelColor;
+
+  /// Background color of a selected chip
+  final Color chipSelectedColor;
+
+  /// Background color of a disabled chip
+  final Color chipDisabledColor;
+
+  /// Color of delete icon in chip
+  final Color deleteIconColor;
+
   final Brightness brightness;
   // Text Color
   final Color displayText;
@@ -178,6 +208,16 @@ class ThemeColor {
     Color? outlineButtonColor,
     Color? outlineButtonBackgroundColor,
     Color? outlineButtonDisableColor,
+    Color? checkboxCheckColor,
+    Color? checkboxActiveColor,
+    Color? checkboxBorderColor,
+    Color? checkboxDisabledColor,
+    Color? chipBackgroundColor,
+    Color? chipBorderColor,
+    Color? chipLabelColor,
+    Color? chipSelectedColor,
+    Color? chipDisabledColor,
+    Color? deleteIconColor,
     Color? displayText,
     Color? headlineText,
     Color? titleText,
@@ -205,15 +245,13 @@ class ThemeColor {
                 : Colors.white38),
         borderColor = borderColor ??
             (brightness == Brightness.light
-                ? const Color(0xFFE5E7EB)
+                ? const Color(0xFFD1D5DB)
                 : Colors.white38),
         schemeAction = schemeAction ?? primary,
         cardBackground = cardBackground ??
             (brightness == Brightness.light ? Colors.white : Colors.grey[800]!),
         canvasColor = canvasColor ??
-            (brightness == Brightness.light
-                ? Colors.grey[50]
-                : Colors.grey[850]!)!,
+            (brightness == Brightness.light ? Colors.white : Colors.grey[850]!),
         splashColor = splashColor ?? secondary,
         shadowColor = shadowColor ??
             (brightness == Brightness.light
@@ -252,6 +290,28 @@ class ThemeColor {
                 : Colors.orange[800]!),
         hyperLink = hyperLink ??
             (brightness == Brightness.light ? Colors.blue : Colors.blue[800]!),
+        checkboxCheckColor = checkboxCheckColor ?? Colors.white,
+        checkboxActiveColor = checkboxActiveColor ?? primary,
+        checkboxBorderColor = checkboxBorderColor ??
+            borderColor ??
+            (brightness == Brightness.light
+                ? const Color(0xFFD1D5DB)
+                : Colors.white38),
+        checkboxDisabledColor = checkboxDisabledColor ?? disableColor,
+        chipBackgroundColor = chipBackgroundColor ??
+            (brightness == Brightness.light ? Colors.white : Colors.grey[700]!),
+        chipBorderColor = chipBorderColor ??
+            borderColor ??
+            (brightness == Brightness.light
+                ? const Color(0xFFD1D5DB)
+                : Colors.white38),
+        chipLabelColor = chipLabelColor ??
+            (brightness == Brightness.light
+                ? const Color(0xFF272727)
+                : Colors.grey[300]!),
+        chipSelectedColor = chipSelectedColor ?? primary,
+        chipDisabledColor = chipDisabledColor ?? disableColor,
+        deleteIconColor = deleteIconColor ?? const Color(0xFF6B7280),
         selectedLabelColor = selectedLabelColor ?? primary,
         selected = selected ?? primary;
 
@@ -375,6 +435,19 @@ class ThemeColor {
       warningText:
           Color.lerp(warningText, other.warningText, t) ?? other.warningText,
       hyperLink: Color.lerp(hyperLink, other.hyperLink, t) ?? other.hyperLink,
+      chipBackgroundColor:
+          Color.lerp(chipBackgroundColor, other.chipBackgroundColor, t) ??
+              other.chipBackgroundColor,
+      chipBorderColor: Color.lerp(chipBorderColor, other.chipBorderColor, t) ??
+          other.chipBorderColor,
+      chipLabelColor: Color.lerp(chipLabelColor, other.chipLabelColor, t) ??
+          other.chipLabelColor,
+      chipSelectedColor:
+          Color.lerp(chipSelectedColor, other.chipSelectedColor, t) ??
+              other.chipSelectedColor,
+      chipDisabledColor:
+          Color.lerp(chipDisabledColor, other.chipDisabledColor, t) ??
+              other.chipDisabledColor,
     );
   }
 
@@ -431,7 +504,7 @@ class ThemeColorExtension extends ThemeExtension<ThemeColorExtension> {
     if (other == null) {
       return this;
     }
-    // improve handle lerp to using switch color aniamtion
+    // improve handle lerp to using switch color animation
     return ThemeColorExtension(colors: colors.lerp(other.colors, t));
   }
 }
