@@ -1,5 +1,5 @@
 import '../../domain/entity/config.dart';
-import '../modules/dev_mode/devmode_route.dart';
+import '../modules/dev_mode/dev_mode_route.dart';
 import '../modules/document_viewer/document_viewer_route.dart';
 import '../modules/html_viewer/htmlviewer_route.dart';
 import '../modules/webview/webview_route.dart';

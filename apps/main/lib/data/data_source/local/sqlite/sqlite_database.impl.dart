@@ -3,7 +3,7 @@ import 'package:injectable/injectable.dart';
 
 @Singleton(as: SQLiteDatabase)
 class SQLiteDatabaseImpl extends SQLiteDatabase {
-  /// Version shouble be updated when database structure changed
+  /// Version should be updated when database structure changed
   int get version => 2;
 
   String get name => 'local.db';

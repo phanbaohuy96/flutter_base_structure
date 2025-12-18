@@ -41,7 +41,7 @@ export 'presentation/base/base.dart';
 export 'presentation/common_bloc/common_bloc.dart';
 export 'presentation/common_widget/export.dart';
 export 'presentation/extentions/extention.dart';
-export 'presentation/modules/dev_mode/devmode.dart';
+export 'presentation/modules/dev_mode/dev_mode.dart';
 export 'presentation/modules/document_viewer/document_viewer_coordinator.dart';
 export 'presentation/modules/html_viewer/htmlviewer_coordinator.dart';
 export 'presentation/modules/webview/webview_coordinator.dart';

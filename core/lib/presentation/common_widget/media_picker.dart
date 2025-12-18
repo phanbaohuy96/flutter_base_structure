@@ -11,8 +11,9 @@ import '../../l10n/localization_ext.dart';
 
 /// # MediaPickerWidget
 ///
-/// A comprehensive Flutter widget for picking, displaying, and managing media files (photos and videos).
-/// Supports camera capture, gallery selection, automatic upload, and validation.
+/// A comprehensive Flutter widget for picking, displaying, and managing media
+/// files (photos and videos).
+/// Supports camera capture, gallery selection, automatic upload, and validation
 ///
 /// ## Features
 /// - Photo and video selection from gallery

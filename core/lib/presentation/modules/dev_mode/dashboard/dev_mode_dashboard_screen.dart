@@ -6,10 +6,10 @@ import '../../../../common/constants/locale/app_locale.dart';
 import '../../../common_bloc/app_bloc/app_bloc.dart';
 import '../../../common_widget/forms/screen_form.dart';
 import '../../../extentions/extention.dart';
-import '../devmode_coordinator.dart';
+import '../dev_mode_coordinator.dart';
 
 class DevModeDashboardScreen extends StatefulWidget {
-  static String routeName = '/devmode-dashboard';
+  static String routeName = '/dev-mode-dashboard';
   const DevModeDashboardScreen({super.key});
 
   @override
