@@ -414,7 +414,7 @@ Future<DateTime?> showCalendarDatePicker({
 }) async {
   return showModal<DateTime?>(
     context,
-    _CalendarDatePickerBottomSheet(
+    builder: (context) => _CalendarDatePickerBottomSheet(
       initialDate: initialDate,
       minDate: minDate,
       maxDate: maxDate,

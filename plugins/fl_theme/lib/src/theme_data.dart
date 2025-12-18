@@ -109,14 +109,14 @@ class AppThemeConfig {
     this.useMaterial3 = true,
     this.fontFamily,
     this.appTextTheme,
-    this.inputDecorationThemeBuilder = AppTheme._buildInputDecorationTheme,
-    this.textButtonThemeBuilder = AppTheme._buildTextButtonTheme,
-    this.elevatedButtonThemeBuilder = AppTheme._buildElevatedButtonTheme,
-    this.outlinedButtonThemeBuilder = AppTheme._buildOutlinedButtonTheme,
-    this.tabBarThemeBuilder = AppTheme._buildTabBarTheme,
-    this.checkboxThemeBuilder = AppTheme._buildCheckboxTheme,
-    this.menuThemeBuilder = AppTheme._buildMenuTheme,
-    this.chipThemeBuilder = AppTheme._buildChipTheme,
+    this.inputDecorationThemeBuilder = AppTheme.buildInputDecorationTheme,
+    this.textButtonThemeBuilder = AppTheme.buildTextButtonTheme,
+    this.elevatedButtonThemeBuilder = AppTheme.buildElevatedButtonTheme,
+    this.outlinedButtonThemeBuilder = AppTheme.buildOutlinedButtonTheme,
+    this.tabBarThemeBuilder = AppTheme.buildTabBarTheme,
+    this.checkboxThemeBuilder = AppTheme.buildCheckboxTheme,
+    this.menuThemeBuilder = AppTheme.buildMenuTheme,
+    this.chipThemeBuilder = AppTheme.buildChipTheme,
     this.targetPlatform,
   });
 }
@@ -204,17 +204,17 @@ class AppTheme {
     String? fontFamily,
     AppTextTheme? appTextTheme,
     InputDecorationThemeBuilder inputDecorationThemeBuilder =
-        AppTheme._buildInputDecorationTheme,
+        AppTheme.buildInputDecorationTheme,
     TextButtonThemeBuilder textButtonThemeBuilder =
-        AppTheme._buildTextButtonTheme,
+        AppTheme.buildTextButtonTheme,
     ElevatedButtonThemeBuilder elevatedButtonThemeBuilder =
-        AppTheme._buildElevatedButtonTheme,
+        AppTheme.buildElevatedButtonTheme,
     OutlinedButtonThemeBuilder outlinedButtonThemeBuilder =
-        AppTheme._buildOutlinedButtonTheme,
-    TabBarThemeBuilder tabBarThemeBuilder = AppTheme._buildTabBarTheme,
-    CheckboxThemeBuilder checkboxThemeBuilder = AppTheme._buildCheckboxTheme,
-    MenuThemeBuilder menuThemeBuilder = AppTheme._buildMenuTheme,
-    ChipThemeBuilder chipThemeBuilder = AppTheme._buildChipTheme,
+        AppTheme.buildOutlinedButtonTheme,
+    TabBarThemeBuilder tabBarThemeBuilder = AppTheme.buildTabBarTheme,
+    CheckboxThemeBuilder checkboxThemeBuilder = AppTheme.buildCheckboxTheme,
+    MenuThemeBuilder menuThemeBuilder = AppTheme.buildMenuTheme,
+    ChipThemeBuilder chipThemeBuilder = AppTheme.buildChipTheme,
     TargetPlatform? targetPlatform,
   }) {
     return AppTheme.create(
@@ -359,10 +359,17 @@ class AppTheme {
 
   /// Creates Material 3 color scheme from theme colors
   static ColorScheme _buildColorScheme(ThemeColor themeColor) {
-    return ColorScheme.fromSwatch().copyWith(
+    return ColorScheme(
       primary: themeColor.primary,
+      primaryContainer: themeColor.primaryVariant,
       secondary: themeColor.secondary,
-      surface: Colors.white,
+      secondaryContainer: themeColor.secondaryVariant,
+      surface: themeColor.surface,
+      error: themeColor.error,
+      onPrimary: themeColor.onPrimary,
+      onSecondary: themeColor.onSecondary,
+      onSurface: themeColor.onSurface,
+      onError: themeColor.onError,
       brightness: themeColor.brightness,
     );
   }
@@ -378,7 +385,7 @@ class AppTheme {
   /// - State-based color resolution
   /// - Standard sizing and padding
   /// - Rounded corners
-  static TextButtonThemeData _buildTextButtonTheme({
+  static TextButtonThemeData buildTextButtonTheme({
     required AppTextTheme textTheme,
     required ThemeColor themeColor,
   }) {
@@ -406,7 +413,7 @@ class AppTheme {
   /// - Consistent elevation and shadows
   /// - State-based color resolution
   /// - Standard sizing and padding
-  static ElevatedButtonThemeData _buildElevatedButtonTheme({
+  static ElevatedButtonThemeData buildElevatedButtonTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {
@@ -440,7 +447,7 @@ class AppTheme {
   /// - State-dependent border colors
   /// - Background color handling
   /// - Consistent styling with other buttons
-  static OutlinedButtonThemeData _buildOutlinedButtonTheme({
+  static OutlinedButtonThemeData buildOutlinedButtonTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {
@@ -480,11 +487,12 @@ class AppTheme {
   /// - Proper label behavior
   /// - Error state styling
   /// - Standard padding
-  static InputDecorationTheme _buildInputDecorationTheme({
+  static InputDecorationTheme buildInputDecorationTheme({
     required ThemeColor themeColor,
     required AppTextTheme appTextTheme,
+    BorderRadius? borderRadius,
   }) {
-    final borderRadius = _borderRadius;
+    final bdRadius = borderRadius ?? _borderRadius;
 
     /// Helper method to create consistent input field borders
     OutlineInputBorder _createInputBorder(
@@ -498,13 +506,13 @@ class AppTheme {
     }
 
     return InputDecorationTheme(
-      border: _createInputBorder(themeColor.borderColor, borderRadius),
-      enabledBorder: _createInputBorder(themeColor.borderColor, borderRadius),
-      focusedBorder: _createInputBorder(themeColor.primary, borderRadius),
-      disabledBorder: _createInputBorder(themeColor.disableColor, borderRadius),
+      border: _createInputBorder(themeColor.borderColor, bdRadius),
+      enabledBorder: _createInputBorder(themeColor.borderColor, bdRadius),
+      focusedBorder: _createInputBorder(themeColor.primary, bdRadius),
+      disabledBorder: _createInputBorder(themeColor.disableColor, bdRadius),
       errorBorder: _createInputBorder(
         appTextTheme.inputError?.color ?? Colors.red,
-        borderRadius,
+        bdRadius,
       ),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: appTextTheme.inputTitle,
@@ -514,7 +522,7 @@ class AppTheme {
   }
 
   /// Creates tab bar theme with label styling and indicator colors
-  static TabBarThemeData _buildTabBarTheme({
+  static TabBarThemeData buildTabBarTheme({
     required AppTextTheme textTheme,
     required ThemeColor themeColor,
   }) {
@@ -538,7 +546,7 @@ class AppTheme {
   /// - Consistent check marks and borders
   /// - Hover and focus state styling
   /// - Material state overlays
-  static CheckboxThemeData _buildCheckboxTheme({
+  static CheckboxThemeData buildCheckboxTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {
@@ -608,7 +616,7 @@ class AppTheme {
   /// - Proper text styling for chip labels
   /// - Material elevation and rounded borders
   /// - Hover and press state effects
-  static ChipThemeData _buildChipTheme({
+  static ChipThemeData buildChipTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {
@@ -655,7 +663,7 @@ class AppTheme {
   /// - State-based styling for selection and hover
   /// - Material elevation and border radius
   /// - Comprehensive styling for MenuAnchor, DropdownMenu, and PopupMenuButton
-  static MenuThemeData _buildMenuTheme({
+  static MenuThemeData buildMenuTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {

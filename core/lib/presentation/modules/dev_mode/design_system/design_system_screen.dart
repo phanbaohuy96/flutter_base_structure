@@ -40,7 +40,7 @@ class _DesignSystemScreenState extends State<DesignSystemScreen> {
             Theme.of(context).brightness == Brightness.dark
                 ? Icons.nightlight
                 : Icons.wb_sunny,
-            color: context.theme.primaryColor,
+            color: context.theme.appBarTheme.foregroundColor,
           ),
           onPressed: () {
             if (Theme.of(context).brightness == Brightness.light) {

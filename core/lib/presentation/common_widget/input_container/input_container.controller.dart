@@ -133,3 +133,104 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
     super.dispose();
   }
 }
+
+typedef InputContainerBuilder = Widget Function(
+  BuildContext context,
+  InputContainerController controller,
+);
+
+class InputContainerProvider extends StatefulWidget {
+  const InputContainerProvider({
+    super.key,
+    this.child,
+    this.builder,
+    this.controller,
+  });
+
+  final Widget? child;
+  final InputContainerBuilder? builder;
+  final InputContainerController? controller;
+
+  static InputContainerController? maybeOf(BuildContext context) {
+    return context
+        .dependOnInheritedWidgetOfExactType<_InputContainerInherited>()
+        ?.controller;
+  }
+
+  static InputContainerController of(BuildContext context) {
+    final result = maybeOf(context);
+    assert(
+      result != null,
+      'No InputContainerProvider found in context',
+    );
+    return result!;
+  }
+
+  @override
+  State<InputContainerProvider> createState() => _InputContainerProviderState();
+}
+
+class _InputContainerProviderState extends State<InputContainerProvider> {
+  late InputContainerController _controller;
+  bool _isControllerCreated = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller == null) {
+      _controller = InputContainerController();
+      _isControllerCreated = true;
+    } else {
+      _controller = widget.controller!;
+      _isControllerCreated = false;
+    }
+  }
+
+  @override
+  void didUpdateWidget(InputContainerProvider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.controller != oldWidget.controller) {
+      if (_isControllerCreated) {
+        _controller.dispose();
+      }
+      if (widget.controller == null) {
+        _controller = InputContainerController();
+        _isControllerCreated = true;
+      } else {
+        _controller = widget.controller!;
+        _isControllerCreated = false;
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    if (_isControllerCreated) {
+      _controller.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _InputContainerInherited(
+      controller: _controller,
+      child: widget.builder != null
+          ? widget.builder!(context, _controller)
+          : widget.child!,
+    );
+  }
+}
+
+class _InputContainerInherited extends InheritedWidget {
+  const _InputContainerInherited({
+    required super.child,
+    required this.controller,
+  });
+
+  final InputContainerController controller;
+
+  @override
+  bool updateShouldNotify(_InputContainerInherited oldWidget) =>
+      controller != oldWidget.controller;
+}

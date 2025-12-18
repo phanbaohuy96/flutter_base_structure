@@ -532,7 +532,7 @@ extension DateRangePickerExt on BuildContext {
   }) {
     return showModal(
       this,
-      Container(
+      builder: (context) => Container(
         constraints: BoxConstraints(
           maxHeight: MediaQuery.of(this).size.height * 0.85,
         ),

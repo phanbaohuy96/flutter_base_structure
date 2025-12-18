@@ -28,7 +28,7 @@ class FooterWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: backgroundColor ?? themeColor.themePrimary,
+        color: backgroundColor ?? themeColor.surface,
         boxShadow: shadowVisibility ? themeColor.boxShadowLight : null,
       ),
       padding: EdgeInsets.only(

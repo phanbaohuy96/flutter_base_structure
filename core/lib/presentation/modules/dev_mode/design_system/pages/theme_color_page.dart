@@ -140,16 +140,56 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
           children: [
             ...[
               {
-                'color': themeColor.themePrimary,
-                'name': 'themePrimary',
-              },
-              {
                 'color': themeColor.primary,
                 'name': 'primary',
               },
               {
+                'color': themeColor.primaryVariant,
+                'name': 'primaryVariant',
+              },
+              {
                 'color': themeColor.secondary,
                 'name': 'secondary',
+              },
+              {
+                'color': themeColor.secondaryVariant,
+                'name': 'secondaryVariant',
+              },
+              {
+                'color': themeColor.surface,
+                'name': 'surface',
+              },
+              {
+                'color': themeColor.background,
+                'name': 'background',
+              },
+              {
+                'color': themeColor.error,
+                'name': 'error',
+              },
+              {
+                'color': themeColor.onPrimary,
+                'name': 'onPrimary',
+              },
+              {
+                'color': themeColor.onSecondary,
+                'name': 'onSecondary',
+              },
+              {
+                'color': themeColor.onBackground,
+                'name': 'onBackground',
+              },
+              {
+                'color': themeColor.onSurface,
+                'name': 'onSurface',
+              },
+              {
+                'color': themeColor.onError,
+                'name': 'onError',
+              },
+              {
+                'color': themeColor.themePrimary,
+                'name': 'themePrimary',
               },
               {
                 'color': themeColor.appbarForegroundColor,
@@ -176,20 +216,32 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
                 'name': 'dividerColor',
               },
               {
+                'color': themeColor.borderColor,
+                'name': 'borderColor',
+              },
+              {
                 'color': themeColor.unselectedLabelColor,
                 'name': 'unselectedLabelColor',
+              },
+              {
+                'color': themeColor.selectedLabelColor,
+                'name': 'selectedLabelColor',
+              },
+              {
+                'color': themeColor.selected,
+                'name': 'selected',
               },
               {
                 'color': themeColor.splashColor,
                 'name': 'splashColor',
               },
               {
-                'color': themeColor.textButtonColor,
-                'name': 'textButtonColor',
+                'color': themeColor.shadowColor,
+                'name': 'shadowColor',
               },
               {
-                'color': themeColor.unselectedLabelColor,
-                'name': 'unselectedLabelColor',
+                'color': themeColor.textButtonColor,
+                'name': 'textButtonColor',
               },
               {
                 'color': themeColor.textButtonDisableColor,
@@ -216,12 +268,64 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
                 'name': 'outlineButtonColor',
               },
               {
+                'color': themeColor.outlineButtonBackgroundColor,
+                'name': 'outlineButtonBackgroundColor',
+              },
+              {
                 'color': themeColor.outlineButtonDisableColor,
                 'name': 'outlineButtonDisableColor',
               },
               {
+                'color': themeColor.checkboxCheckColor,
+                'name': 'checkboxCheckColor',
+              },
+              {
+                'color': themeColor.checkboxActiveColor,
+                'name': 'checkboxActiveColor',
+              },
+              {
+                'color': themeColor.checkboxBorderColor,
+                'name': 'checkboxBorderColor',
+              },
+              {
+                'color': themeColor.checkboxDisabledColor,
+                'name': 'checkboxDisabledColor',
+              },
+              {
+                'color': themeColor.chipBackgroundColor,
+                'name': 'chipBackgroundColor',
+              },
+              {
+                'color': themeColor.chipBorderColor,
+                'name': 'chipBorderColor',
+              },
+              {
+                'color': themeColor.chipLabelColor,
+                'name': 'chipLabelColor',
+              },
+              {
+                'color': themeColor.chipSelectedColor,
+                'name': 'chipSelectedColor',
+              },
+              {
+                'color': themeColor.chipDisabledColor,
+                'name': 'chipDisabledColor',
+              },
+              {
+                'color': themeColor.deleteIconColor,
+                'name': 'deleteIconColor',
+              },
+              {
+                'color': themeColor.displayText,
+                'name': 'displayText',
+              },
+              {
                 'color': themeColor.headlineText,
                 'name': 'headlineText',
+              },
+              {
+                'color': themeColor.titleText,
+                'name': 'titleText',
               },
               {
                 'color': themeColor.bodyText,
@@ -230,10 +334,6 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
               {
                 'color': themeColor.lableText,
                 'name': 'lableText',
-              },
-              {
-                'color': themeColor.titleText,
-                'name': 'titleText',
               },
               {
                 'color': themeColor.warningText,

@@ -80,7 +80,7 @@ class DialogAndPickerPage extends StatelessWidget {
           onPressed: () {
             showModal(
               context,
-              Container(
+              builder: (context) => Container(
                 constraints: const BoxConstraints(
                   maxHeight: 300,
                 ),

@@ -160,167 +160,6 @@ abstract class ThemeDialog {
     }
   }
 
-  Widget buildNoticeDialogWithOptions({
-    required dynamic title,
-    required List<Map<String, dynamic>> options,
-    TextStyle? styleOptionTitle,
-    bool useRootNavigator = true,
-    bool dismissWhenAction = true,
-    bool barrierDismissible = true,
-    void Function(int? selectedOption)? onConfirmed,
-    void Function()? onCanceled,
-    int? initialValue,
-  }) {
-    final dismissFunc = () {
-      if (dismissWhenAction) {
-        Navigator.of(context, rootNavigator: useRootNavigator).pop();
-      }
-    };
-    final selectedOptionNotifier = ValueNotifier<int?>(initialValue);
-
-    final textTheme = context.theme.textTheme;
-    final localization = context.coreL10n;
-    final themeColor = context.themeColor;
-
-    final showAndroidDialog = () => PopScope(
-          canPop: barrierDismissible,
-          child: AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            title: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.warning_amber_rounded,
-                      color: context.themeColor.primary,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(localization.inform),
-                  ],
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                Divider(
-                  color: context.themeColor.dividerColor,
-                  thickness: 1.0,
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                title is String
-                    ? Text(
-                        title,
-                        style: context.textTheme.labelLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )
-                    : title,
-              ],
-            ),
-            content: ValueListenableBuilder<int?>(
-              valueListenable: selectedOptionNotifier,
-              builder: (context, _selectedOption, _) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: List.generate(options.length, (index) {
-                    final option = options[index];
-                    final title = option['title'] as dynamic;
-                    final description = option['description'] as dynamic;
-                    return Theme(
-                      data: Theme.of(context).copyWith(
-                        radioTheme: const RadioThemeData(
-                          materialTapTargetSize:
-                              MaterialTapTargetSize.shrinkWrap,
-                          visualDensity: VisualDensity.compact,
-                        ),
-                      ),
-                      child: RadioListTile<int>(
-                        title: title is String
-                            ? Text(
-                                title,
-                                style: textTheme.titleSmall,
-                              )
-                            : title,
-                        subtitle: description != null
-                            ? description is String
-                                ? Text(
-                                    description,
-                                    style: textTheme.bodyMedium,
-                                  )
-                                : description
-                            : null,
-                        value: index,
-                        groupValue: selectedOptionNotifier.value,
-                        toggleable: false,
-                        contentPadding: EdgeInsets.zero,
-                        dense: false,
-                        activeColor: themeColor.primary,
-                        onChanged: (int? value) {
-                          if (value != null) {
-                            selectedOptionNotifier.value = value;
-                          }
-                        },
-                      ),
-                    );
-                  }),
-                );
-              },
-            ),
-            actions: [
-              TextButton(
-                key: const ValueKey('NoticeDialogWithOptions_close_btn'),
-                onPressed: () {
-                  dismissFunc.call();
-                  onCanceled?.call();
-                },
-                child: Text(
-                  localization.cancel,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: themeColor.primary,
-                  ),
-                ),
-              ),
-              TextButton(
-                key: const ValueKey('NoticeDialogWithOptions_confirm_btn'),
-                onPressed: () {
-                  dismissFunc.call();
-                  onConfirmed?.call(selectedOptionNotifier.value);
-                },
-                child: Text(
-                  localization.confirm,
-                  style: textTheme.labelLarge?.copyWith(
-                    color: themeColor.primary,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-
-    if (kIsWeb) {
-      return showAndroidDialog();
-    } else if (Platform.isAndroid) {
-      return showAndroidDialog();
-    } else {
-      return NoticeDialogWithOptions(
-        title: title,
-        options: options,
-        parentContext: context,
-        styleOptionTitle: styleOptionTitle,
-        useRootNavigator: useRootNavigator,
-        dismissWhenAction: dismissWhenAction,
-        barrierDismissible: barrierDismissible,
-        onConfirmed: onConfirmed,
-        onCanceled: onCanceled,
-        initialValue: initialValue,
-      );
-    }
-  }
-
   Widget buildConfirmWithReasonDialog({
     required InputContainerController controller,
     String? title,
@@ -336,8 +175,10 @@ abstract class ThemeDialog {
     void Function(String)? onCanceled,
     Widget? additionalWidget,
     bool? isRequiredReason,
+    Widget? icon,
   }) {
     final _icReason = controller;
+    Widget body;
     final dismissFunc = () {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop(
@@ -355,6 +196,7 @@ abstract class ThemeDialog {
           content: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              icon ?? const SizedBox.shrink(),
               InputTitleWidget(title: message, required: false),
               if (additionalWidget != null) additionalWidget,
               InputContainer(
@@ -397,9 +239,9 @@ abstract class ThemeDialog {
         );
 
     if (kIsWeb) {
-      return showAndroidDialog();
+      body = showAndroidDialog();
     } else if (Platform.isAndroid) {
-      return showAndroidDialog();
+      body = showAndroidDialog();
     } else {
       Widget _buildAction({
         Function()? onTap,
@@ -424,7 +266,7 @@ abstract class ThemeDialog {
         );
       }
 
-      return CupertinoAlertDialog(
+      body = CupertinoAlertDialog(
         title: Text(
           title ?? inform,
           style: theme.textTheme.headlineSmall,
@@ -434,6 +276,7 @@ abstract class ThemeDialog {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              icon ?? const SizedBox.shrink(),
               InputTitleWidget(title: message, required: false),
               if (additionalWidget != null) additionalWidget,
               InputContainer(
@@ -471,6 +314,12 @@ abstract class ThemeDialog {
         ],
       );
     }
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: true,
+      body: body,
+    );
   }
 
   Widget buildNoticeDialog({
@@ -482,6 +331,7 @@ abstract class ThemeDialog {
     bool useRootNavigator = true,
     bool dismissWhenAction = true,
     bool barrierDismissible = true,
+    Widget? icon,
   }) {
     final dismissFunc = () {
       if (dismissWhenAction) {
@@ -497,10 +347,17 @@ abstract class ThemeDialog {
               style: theme.textTheme.headlineSmall,
             ),
             content: content ??
-                Text(
-                  message,
-                  style: theme.textTheme.bodyMedium,
-                  textAlign: TextAlign.center,
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    icon ?? const SizedBox.shrink(),
+                    Text(
+                      message,
+                      style: theme.textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
             actions: [
               TextButton(
@@ -524,11 +381,19 @@ abstract class ThemeDialog {
         canPop: barrierDismissible,
         child: CupertinoAlertDialog(
           title: Text(title ?? inform),
-          content: Text(
-            message,
-            style: theme.textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
+          content: content ??
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  icon ?? const SizedBox.shrink(),
+                  Text(
+                    message,
+                    style: theme.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
           actions: <Widget>[
             CupertinoDialogAction(
               key: const ValueKey('NoticeDialog_close_btn'),
@@ -682,6 +547,7 @@ abstract class ThemeDialog {
     Color? backgroundColor,
     bool resizeToAvoidBottomInset = true,
     bool showTitleDivider = true,
+    bool showDragHandle = true,
   }) {
     final theme = context.theme;
 
@@ -697,7 +563,8 @@ abstract class ThemeDialog {
             children: <Widget>[
               DecoratedBox(
                 decoration: BoxDecoration(
-                  color: backgroundColor ?? Theme.of(context).canvasColor,
+                  color:
+                      backgroundColor ?? Theme.of(context).colorScheme.surface,
                   borderRadius: const BorderRadiusDirectional.only(
                     topEnd: Radius.circular(28),
                     topStart: Radius.circular(28),
@@ -708,23 +575,24 @@ abstract class ThemeDialog {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade400,
-                            borderRadius: BorderRadius.circular(2),
+                    if (showDragHandle)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 4,
+                            decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            margin: const EdgeInsets.only(
+                              bottom: 8,
+                              top: 8,
+                            ),
                           ),
-                          margin: const EdgeInsets.only(
-                            bottom: 8,
-                            top: 8,
-                          ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
                     if (title.isNotNullOrEmpty) ...[
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -753,10 +621,7 @@ abstract class ThemeDialog {
                         ],
                       ),
                       if (showTitleDivider) const Divider(),
-                    ] else
-                      const SizedBox(
-                        height: 4,
-                      ),
+                    ],
                     ConstrainedBox(
                       constraints: BoxConstraints(maxHeight: maxContentSize),
                       child: body,
@@ -963,5 +828,19 @@ abstract class ThemeDialog {
         ],
       );
     }
+  }
+
+  Future<T?> processShowDialog<T>({
+    required BuildContext context,
+    required WidgetBuilder builder,
+    bool barrierDismissible = true,
+    bool useRootNavigator = true,
+  }) {
+    return showDialog<T>(
+      context: context,
+      barrierDismissible: barrierDismissible,
+      useRootNavigator: useRootNavigator,
+      builder: builder,
+    ).then(asOrNull);
   }
 }

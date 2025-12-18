@@ -10,13 +10,17 @@ Future<T?> showNoticeDialog<T>({
   Function()? onClose,
   bool useRootNavigator = true,
   bool dismissWhenAction = true,
+  Widget? icon,
 }) {
+  final themeDialog = injector<ThemeDialog>(param1: context);
+
+  final showDialog = themeDialog.processShowDialog;
   return showDialog<T>(
     context: context,
     barrierDismissible: barrierDismissible,
     useRootNavigator: useRootNavigator,
     builder: (context) {
-      return injector<ThemeDialog>(param1: context).buildNoticeDialog(
+      return themeDialog.buildNoticeDialog(
         title: title,
         message: message,
         content: content,
@@ -25,6 +29,7 @@ Future<T?> showNoticeDialog<T>({
         onClose: onClose,
         titleBtn: titleBtn,
         barrierDismissible: barrierDismissible,
+        icon: icon,
       );
     },
   );
@@ -37,6 +42,7 @@ Future<T?> showNoticeErrorDialog<T>({
   void Function()? onClose,
   bool useRootNavigator = true,
   String? titleBtn,
+  Widget? icon,
 }) {
   final localization = context.coreL10n;
   return showNoticeDialog<T>(
@@ -47,6 +53,7 @@ Future<T?> showNoticeErrorDialog<T>({
     titleBtn: titleBtn,
     useRootNavigator: useRootNavigator,
     title: localization.error,
+    icon: icon,
   );
 }
 
@@ -56,6 +63,7 @@ Future<T?> showNoticeWarningDialog<T>({
   bool barrierDismissible = false,
   void Function()? onClose,
   bool useRootNavigator = true,
+  Widget? icon,
 }) {
   final localization = context.coreL10n;
   return showNoticeDialog<T>(
@@ -66,39 +74,7 @@ Future<T?> showNoticeWarningDialog<T>({
     titleBtn: localization.ok,
     useRootNavigator: useRootNavigator,
     title: localization.warning,
-  );
-}
-
-Future<T?> showNoticeDialogWithOptions<T>({
-  required BuildContext context,
-  required dynamic title,
-  required List<Map<String, dynamic>> options,
-  TextStyle? styleOptionTitle,
-  bool barrierDismissible = true,
-  bool useRootNavigator = true,
-  void Function(int? selectedOption)? onConfirmed,
-  void Function()? onCanceled,
-  int? initialValue,
-}) {
-  return showDialog<T>(
-    context: context,
-    barrierDismissible: barrierDismissible,
-    useRootNavigator: useRootNavigator,
-    builder: (context) {
-      return injector<ThemeDialog>(param1: context)
-          .buildNoticeDialogWithOptions(
-        title: title,
-        options: options,
-        styleOptionTitle: styleOptionTitle,
-        onConfirmed: (int? selectedOption) {
-          if (onConfirmed != null) {
-            onConfirmed(selectedOption);
-          }
-        },
-        onCanceled: onCanceled,
-        initialValue: initialValue,
-      );
-    },
+    icon: icon,
   );
 }
 
@@ -118,13 +94,15 @@ Future<bool> showNoticeConfirmDialog({
   TextStyle? styleLeftBtn,
   TextStyle? titleStyle,
   Widget? icon,
-}) {
-  return showDialog(
+}) async {
+  final themeDialog = injector<ThemeDialog>(param1: context);
+
+  final res = await themeDialog.processShowDialog<bool>(
     context: context,
     barrierDismissible: barrierDismissible,
     useRootNavigator: useRootNavigator,
     builder: (context) {
-      return injector<ThemeDialog>(param1: context).buildConfirmDialog(
+      return themeDialog.buildConfirmDialog(
         title: title,
         message: message ?? '',
         content: content,
@@ -140,7 +118,8 @@ Future<bool> showNoticeConfirmDialog({
         icon: icon,
       );
     },
-  ).then((value) => asOrNull<bool>(value, false)!);
+  );
+  return asOrNull<bool>(res, false)!;
 }
 
 Future<T?> showNoticeConfirmWithReasonDialog<T>({
@@ -160,28 +139,28 @@ Future<T?> showNoticeConfirmWithReasonDialog<T>({
   Widget? additionalWidget,
   bool? isRequiredReason,
 }) {
-  final _icReasonCtr = InputContainerController();
+  final themeDialog = injector<ThemeDialog>(param1: context);
+
+  final showDialog = themeDialog.processShowDialog;
+
   return showDialog<T>(
     context: context,
     barrierDismissible: false,
     useRootNavigator: useRootNavigator,
     builder: (context) {
       // Using scaffold for resizeToAvoidBottomInset
-      return GestureDetector(
-        onTap: () {
-          if (_icReasonCtr.value.focusNode.hasFocus) {
-            CoreCommonFunction().hideKeyboard(context);
-          } else if (barrierDismissible) {
-            Navigator.of(context, rootNavigator: useRootNavigator).pop(
-              _icReasonCtr.text,
-            );
-          }
-        },
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          resizeToAvoidBottomInset: true,
-          body: injector<ThemeDialog>(param1: context)
-              .buildConfirmWithReasonDialog(
+      return InputContainerProvider(
+        builder: (context, _icReasonCtr) => GestureDetector(
+          onTap: () {
+            if (_icReasonCtr.value.focusNode.hasFocus) {
+              CoreCommonFunction().hideKeyboard(context);
+            } else if (barrierDismissible) {
+              Navigator.of(context, rootNavigator: useRootNavigator).pop(
+                _icReasonCtr.text,
+              );
+            }
+          },
+          child: themeDialog.buildConfirmWithReasonDialog(
             controller: _icReasonCtr,
             title: title,
             hint: hint,
@@ -200,15 +179,12 @@ Future<T?> showNoticeConfirmWithReasonDialog<T>({
         ),
       );
     },
-  ).then((value) {
-    _icReasonCtr.dispose();
-    return value;
-  });
+  );
 }
 
 Future<T?> showModal<T>(
-  BuildContext context,
-  Widget body, {
+  BuildContext context, {
+  required WidgetBuilder builder,
   bool useRootNavigator = true,
   bool resizeToAvoidBottomInset = true,
   String? title,
@@ -217,27 +193,30 @@ Future<T?> showModal<T>(
   Color? backgroundColor,
   bool showTitleDivider = false,
   bool isDismissible = true,
+  bool isScrollControlled = true,
   bool enableDrag = true,
+  bool showDragHandle = true,
   RouteSettings? routeSettings,
 }) {
   return showModalBottomSheet<T>(
     context: context,
     useRootNavigator: useRootNavigator,
     backgroundColor: Colors.transparent,
-    isScrollControlled: true,
+    isScrollControlled: isScrollControlled,
     useSafeArea: useSafeArea,
     routeSettings: routeSettings,
     isDismissible: isDismissible,
     enableDrag: enableDrag,
     builder: (_) {
       return injector<ThemeDialog>(param1: context).buildModalBottomSheet(
-        body: body,
+        body: builder(context),
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         onClose: onClose,
         title: title,
         useRootNavigator: useRootNavigator,
         backgroundColor: backgroundColor,
         showTitleDivider: showTitleDivider,
+        showDragHandle: showDragHandle,
       );
     },
   );
@@ -253,13 +232,16 @@ Future<T?> showActionDialog<T>(
   bool dimissWhenSelect = true,
   String? titleBottomBtn,
 }) {
+  final themeDialog = injector<ThemeDialog>(param1: context);
+
   if (!kIsWeb && Platform.isAndroid) {
+    final showDialog = themeDialog.processShowDialog;
     return showDialog<T>(
       context: context,
       barrierDismissible: barrierDismissible,
       useRootNavigator: useRootNavigator,
       builder: (context) {
-        return injector<ThemeDialog>(param1: context).buildActionDialog(
+        return themeDialog.buildActionDialog(
           title: title,
           useRootNavigator: useRootNavigator,
           actions: actions,
@@ -277,7 +259,7 @@ Future<T?> showActionDialog<T>(
       isScrollControlled: true,
       isDismissible: barrierDismissible,
       builder: (BuildContext context) {
-        return injector<ThemeDialog>(param1: context).buildActionDialog(
+        return themeDialog.buildActionDialog(
           title: title,
           useRootNavigator: useRootNavigator,
           actions: actions,
@@ -306,45 +288,44 @@ Future<T?> showNoticeConfirmWithValidateDialog<T>({
   TextStyle? styleRightBtn,
   TextStyle? styleLeftBtn,
 }) {
-  final _icReasonCtr = InputContainerController();
+  final themeDialog = injector<ThemeDialog>(param1: context);
+
   return showDialog<T>(
     context: context,
     barrierDismissible: false,
     useRootNavigator: useRootNavigator,
     builder: (context) {
       // Using scaffold for resizeToAvoidBottomInset
-      return GestureDetector(
-        onTap: () {
-          if (_icReasonCtr.value.focusNode.hasFocus) {
-            CoreCommonFunction().hideKeyboard(context);
-          } else if (barrierDismissible) {
-            Navigator.of(context, rootNavigator: useRootNavigator).pop();
-          }
-        },
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          resizeToAvoidBottomInset: true,
-          body: injector<ThemeDialog>(param1: context)
-              .buildNoticeConfirmWithValidateDialog(
-            controller: _icReasonCtr,
-            title: title,
-            hint: hint,
-            message: message,
-            validateString: validateString,
-            onConfirmed: onConfirmed,
-            onCanceled: onCanceled,
-            dismissWhenAction: dismissWhenAction,
-            useRootNavigator: useRootNavigator,
-            leftBtn: leftBtn,
-            rightBtn: rightBtn,
-            styleLeftBtn: styleLeftBtn,
-            styleRightBtn: styleRightBtn,
+      return InputContainerProvider(
+        builder: (context, _icReasonCtr) => GestureDetector(
+          onTap: () {
+            if (_icReasonCtr.value.focusNode.hasFocus) {
+              CoreCommonFunction().hideKeyboard(context);
+            } else if (barrierDismissible) {
+              Navigator.of(context, rootNavigator: useRootNavigator).pop();
+            }
+          },
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            resizeToAvoidBottomInset: true,
+            body: themeDialog.buildNoticeConfirmWithValidateDialog(
+              controller: _icReasonCtr,
+              title: title,
+              hint: hint,
+              message: message,
+              validateString: validateString,
+              onConfirmed: onConfirmed,
+              onCanceled: onCanceled,
+              dismissWhenAction: dismissWhenAction,
+              useRootNavigator: useRootNavigator,
+              leftBtn: leftBtn,
+              rightBtn: rightBtn,
+              styleLeftBtn: styleLeftBtn,
+              styleRightBtn: styleRightBtn,
+            ),
           ),
         ),
       );
     },
-  ).then((value) {
-    _icReasonCtr.dispose();
-    return value;
-  });
+  );
 }
