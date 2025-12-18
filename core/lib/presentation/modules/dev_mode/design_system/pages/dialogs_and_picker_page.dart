@@ -24,12 +24,14 @@ class DialogAndPickerPage extends StatelessWidget {
         ),
         OutlinedButton(
           child: const Text('Notice Confirm With Reason Dialog'),
-          onPressed: () {
-            showNoticeConfirmWithReasonDialog(
+          onPressed: () async {
+            final res = await showNoticeConfirmWithReasonDialog(
               context: context,
               message: 'message',
               title: 'title',
             );
+
+            showToast(context, 'Reason: $res');
           },
         ),
         OutlinedButton(
@@ -97,7 +99,7 @@ class DialogAndPickerPage extends StatelessWidget {
               context: context,
               title: 'delete Account',
               message: 'deleteAccountConfirmMsg',
-              validateString: 'YES',
+              validateString: 'Yes',
               hint: 'input `Yes` To Confirm',
               onConfirmed: () async {},
             );
