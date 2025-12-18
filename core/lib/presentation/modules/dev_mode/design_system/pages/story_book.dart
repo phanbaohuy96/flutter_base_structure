@@ -409,7 +409,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
         description: 'Demo ReceiptShapeBorder with Separator widget',
         builder: (context, _, __) {
           return Material(
-            color: themeColor.themePrimary,
+            color: themeColor.surface,
             shape: ReceiptShapeBorder(
               borderColor: themeColor.primary,
               borderWidth: 1,

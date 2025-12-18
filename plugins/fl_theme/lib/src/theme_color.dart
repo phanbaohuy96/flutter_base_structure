@@ -16,13 +16,45 @@ class ThemeColor {
   final Color? themePrimaryLight;
   final Color? themePrimaryDark;
 
-  /// The color displayed most frequently across your app’s screens
+  /// The color displayed most frequently across your app's screens
   /// and components.
   final Color primary;
+
+  /// A darker variant of the primary color.
+  final Color primaryVariant;
 
   /// An accent color used for less prominent components in the UI, such as
   /// filter chips, while expanding the opportunity for color expression.
   final Color secondary;
+
+  /// A darker variant of the secondary color.
+  final Color secondaryVariant;
+
+  /// The background color for widgets like [Card].
+  final Color surface;
+
+  /// A color that typically appears behind scrollable content.
+  final Color background;
+
+  /// The color to use for input validation errors, e.g. for
+  /// [InputDecoration.errorText].
+  final Color error;
+
+  /// A color that's clearly legible when drawn on [primary].
+  final Color onPrimary;
+
+  /// A color that's clearly legible when drawn on [secondary].
+  final Color onSecondary;
+
+  /// A color that's clearly legible when drawn on [background].
+  final Color onBackground;
+
+  /// A color that's clearly legible when drawn on [surface].
+  /// Used for text and icons on surface backgrounds.
+  final Color onSurface;
+
+  /// A color that's clearly legible when drawn on [error].
+  final Color onError;
 
   /// Overrides the default value of [AppBar.foregroundColor] in all
   /// descendant [AppBar] widgets.
@@ -182,6 +214,16 @@ class ThemeColor {
     required this.primary,
     required this.secondary,
     required this.brightness,
+    Color? primaryVariant,
+    Color? secondaryVariant,
+    Color? surface,
+    Color? background,
+    Color? error,
+    Color? onPrimary,
+    Color? onSecondary,
+    Color? onBackground,
+    Color? onSurface,
+    Color? onError,
     Color? themePrimary,
     Color? themePrimaryLight,
     Color? themePrimaryDark,
@@ -225,7 +267,41 @@ class ThemeColor {
     Color? lableText,
     Color? warningText,
     Color? hyperLink,
-  })  : themePrimary = themePrimary ??
+  })  : primaryVariant = primaryVariant ?? primary.darken(0.2),
+        secondaryVariant = secondaryVariant ?? secondary.darken(0.2),
+        surface = surface ??
+            (brightness == Brightness.light
+                ? const Color(0xFFFFFFFF)
+                : const Color(0xFF121212)),
+        background = background ??
+            (brightness == Brightness.light
+                ? const Color(0xFFFFFFFF)
+                : const Color(0xFF121212)),
+        error = error ??
+            (brightness == Brightness.light
+                ? const Color(0xFFB00020)
+                : const Color(0xFFCF6679)),
+        onPrimary = onPrimary ??
+            (brightness == Brightness.light
+                ? const Color(0xFFFFFFFF)
+                : const Color(0xFF000000)),
+        onSecondary = onSecondary ??
+            (brightness == Brightness.light
+                ? const Color(0xFF000000)
+                : const Color(0xFF000000)),
+        onBackground = onBackground ??
+            (brightness == Brightness.light
+                ? const Color(0xFF000000)
+                : const Color(0xFFFFFFFF)),
+        onSurface = onSurface ??
+            (brightness == Brightness.light
+                ? const Color(0xFF000000)
+                : const Color(0xFFFFFFFF)),
+        onError = onError ??
+            (brightness == Brightness.light
+                ? const Color(0xFFFFFFFF)
+                : const Color(0xFF000000)),
+        themePrimary = themePrimary ??
             (brightness == Brightness.light ? Colors.white : Colors.grey[900]!),
         themePrimaryLight = themePrimaryLight ??
             themePrimary?.lighten(0.1) ??
@@ -369,7 +445,23 @@ class ThemeColor {
   ) {
     return ThemeColor(
       primary: Color.lerp(primary, other.primary, t) ?? other.primary,
+      primaryVariant: Color.lerp(primaryVariant, other.primaryVariant, t) ??
+          other.primaryVariant,
       secondary: Color.lerp(secondary, other.secondary, t) ?? other.secondary,
+      secondaryVariant:
+          Color.lerp(secondaryVariant, other.secondaryVariant, t) ??
+              other.secondaryVariant,
+      surface: Color.lerp(surface, other.surface, t) ?? other.surface,
+      background:
+          Color.lerp(background, other.background, t) ?? other.background,
+      error: Color.lerp(error, other.error, t) ?? other.error,
+      onPrimary: Color.lerp(onPrimary, other.onPrimary, t) ?? other.onPrimary,
+      onSecondary:
+          Color.lerp(onSecondary, other.onSecondary, t) ?? other.onSecondary,
+      onBackground:
+          Color.lerp(onBackground, other.onBackground, t) ?? other.onBackground,
+      onSurface: Color.lerp(onSurface, other.onSurface, t) ?? other.onSurface,
+      onError: Color.lerp(onError, other.onError, t) ?? other.onError,
       brightness: other.brightness,
       appbarForegroundColor:
           Color.lerp(appbarForegroundColor, other.appbarForegroundColor, t) ??

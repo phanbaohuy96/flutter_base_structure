@@ -89,7 +89,7 @@ class MainDashboardFactoryState extends State<MainDashboardFactory> {
           return BottomNavigationBar(
             items: [
               ...widget.pages.mapIndex(
-                (e, idx) => _builBottomNavigationBarItem(
+                (e, idx) => _buildBottomNavigationBarItem(
                   icon: e.bottomNavItem.icon,
                   label: e.bottomNavItem.label,
                   selected: currentIndex == idx,
@@ -101,7 +101,7 @@ class MainDashboardFactoryState extends State<MainDashboardFactory> {
             selectedItemColor: themeColor.titleText,
             unselectedItemColor: const Color(0xff49454F),
             showUnselectedLabels: true,
-            backgroundColor: themeColor.themePrimary,
+            backgroundColor: themeColor.surface,
             onTap: _onItemTapped,
           );
         },
@@ -114,7 +114,7 @@ class MainDashboardFactoryState extends State<MainDashboardFactory> {
     );
   }
 
-  BottomNavigationBarItem _builBottomNavigationBarItem({
+  BottomNavigationBarItem _buildBottomNavigationBarItem({
     Widget? icon,
     String? label,
     required bool selected,

@@ -29,7 +29,7 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
     return ScreenForm(
       title: 'App Config',
       bottomNavigationBar: _buildFooter(context),
-      bgColor: themeColor.themePrimary,
+      bgColor: themeColor.surface,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: CustomScrollView(

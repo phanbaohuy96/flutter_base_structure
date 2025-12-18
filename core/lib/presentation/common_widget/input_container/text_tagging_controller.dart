@@ -176,7 +176,7 @@ class TextTaggingController<T> extends TextEditingController {
                 _tags.removeLast();
                 _newText = '$placeholderStr${newText.substring(_tags.length)}';
               } else {
-                // Bettwen two tags
+                // Between two tags
                 _tags.removeAt(cursorPos - 1);
                 _newText =
                     '''${oldText.substring(0, cursorPos)}${oldText.substring(cursorPos + 1)}''';
@@ -213,8 +213,8 @@ class TextTaggingController<T> extends TextEditingController {
     required bool withComposing,
   }) {
     final spans = <InlineSpan>[];
-    final lenght = tags.length;
-    for (var i = 0; i < lenght; i++) {
+    final length = tags.length;
+    for (var i = 0; i < length; i++) {
       spans.add(
         WidgetSpan(
           child: tagBuilder(
@@ -223,7 +223,7 @@ class TextTaggingController<T> extends TextEditingController {
             withComposing,
             tags[i],
             i,
-            lenght,
+            length,
           ),
           alignment: PlaceholderAlignment.middle,
           style: style?.copyWith(
