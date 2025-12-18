@@ -47,7 +47,7 @@ app.*.symbols
 **/android/gradle/wrapper/gradle-wrapper.jar
 **/android/gradlew
 **/android/gradlew.bat
-**/android/keystores/keystore.properties
+**/keystore.properties
 
 # Android Studio will place build artifacts here
 **/android/app/debug
@@ -61,6 +61,7 @@ app.*.symbols
 **/xcschememanagement.plist
 **/Generated.xcconfig
 **/Flutter.podspec
+**/flutter_export_environment.sh
 
 # Obfuscation related
 app.*.map.json

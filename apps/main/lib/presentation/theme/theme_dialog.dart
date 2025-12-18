@@ -173,6 +173,7 @@ class AppThemeDialog extends ThemeDialog {
     void Function(String reason)? onCanceled,
     Widget? additionalWidget,
     bool? isRequiredReason,
+    Widget? icon,
   }) {
     final dismissFunc = () {
       if (dismissWhenAction) {
@@ -194,6 +195,7 @@ class AppThemeDialog extends ThemeDialog {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                icon ?? const SizedBox.shrink(),
                 InputTitleWidget(title: message, required: false),
                 const SizedBox(height: 8),
                 if (additionalWidget != null) additionalWidget,
@@ -254,6 +256,7 @@ class AppThemeDialog extends ThemeDialog {
     bool useRootNavigator = true,
     bool dismissWhenAction = true,
     bool barrierDismissible = true,
+    Widget? icon,
   }) {
     final dismissFunc = () {
       if (dismissWhenAction) {
@@ -269,6 +272,7 @@ class AppThemeDialog extends ThemeDialog {
         body: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            icon ?? const SizedBox.shrink(),
             Padding(
               padding: const EdgeInsets.all(16),
               child: ConstrainedBox(
