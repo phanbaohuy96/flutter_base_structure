@@ -47,10 +47,10 @@
     "scripts.sh": "*.sh",
     "mason.yaml": "mason-lock.json"
   },
-	"cSpell.allowCompoundWords": true,
-	"cSpell.ignoreRegExpList": [
-		"[\\u0E00-\\u0E7F]+"
-	],
+  "cSpell.allowCompoundWords": true,
+  "cSpell.ignoreRegExpList": [
+    "[\\u0E00-\\u0E7F]+"
+  ],
   "cSpell.words": [
     "chewie",
     "configureondemand",
@@ -68,5 +68,5 @@
     "vnsilicon",
     "xcconfig"
   ],
-  "dart.flutterSdkPath": ".fvm/versions/3.32.8"
+  "dart.flutterSdkPath": ".fvm/versions/3.41.7"
 }

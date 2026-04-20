@@ -20,7 +20,7 @@ export 'package:flutter_swipe_action_cell/core/cell.dart';
 export 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
     hide ImageSource;
 export 'package:fluttertoast/fluttertoast.dart';
-export 'package:hive_flutter/hive_flutter.dart';
+export 'package:hive_ce_flutter/hive_ce_flutter.dart';
 export 'package:logger/logger.dart';
 export 'package:mime/mime.dart';
 export 'package:pedantic/pedantic.dart';
