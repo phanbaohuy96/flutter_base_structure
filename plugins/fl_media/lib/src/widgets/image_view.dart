@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
 
@@ -8,6 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_avif/flutter_avif.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg_provider;
+
+typedef ImageViewErrorBuilder =
+    Widget Function(
+      BuildContext context,
+      Object? error,
+      StackTrace? stackTrace,
+    );
 
 class ImageView extends StatelessWidget {
   const ImageView({
@@ -24,6 +32,7 @@ class ImageView extends StatelessWidget {
     this.loadingRadius,
     this.cacheWidth,
     this.cacheHeight,
+    this.errorBuilder,
   });
 
   final String source;
@@ -38,13 +47,17 @@ class ImageView extends StatelessWidget {
   final double? loadingRadius;
   final int? cacheWidth;
   final int? cacheHeight;
+  final ImageViewErrorBuilder? errorBuilder;
 
   @override
   Widget build(BuildContext context) {
-    return _buildImage(source.isEmpty ? placeHolder ?? '' : source);
+    return _buildImage(
+      context,
+      source.isEmpty ? placeHolder ?? '' : source,
+    );
   }
 
-  Widget _buildImage(String image) {
+  Widget _buildImage(BuildContext context, String image) {
     if (image.isEmpty) {
       if (placeHolder.isNotNullOrEmpty) {
         return ImageView(
@@ -55,16 +68,27 @@ class ImageView extends StatelessWidget {
           color: color,
           alignment: alignment,
           package: package,
+          errorBuilder: errorBuilder,
         );
       }
-      return SizedBox(
-        width: width,
-        height: height,
-      );
+      return errorBuilder?.call(
+            context,
+            Exception('Image not found: $source'),
+            StackTrace.current,
+          ) ??
+          SizedBox(
+            width: width,
+            height: height,
+          );
     }
 
     // Check if image is AVIF format
     final isAvif = image.toLowerCase().contains('.avif');
+
+    final isLocalFile =
+        !image.isUrl &&
+        !image.startsWith('packages/') &&
+        !image.startsWith('assets/');
 
     if (image.isUrl) {
       if (isAvif) {
@@ -83,17 +107,29 @@ class ImageView extends StatelessWidget {
               radius: loadingRadius ?? 12,
             );
           },
-          errorBuilder: errorPlaceHolder.isNotNullOrEmpty
-              ? (context, error, stackTrace) => ImageView(
-                    source: errorPlaceHolder!,
-                    width: width,
-                    height: height,
-                    fit: fit,
-                    color: color,
-                    alignment: alignment,
-                    package: package,
-                  )
-              : null,
+          errorBuilder:
+              ConditionBuilder.from([
+                Conditional(
+                  condition: () => errorBuilder != null,
+                  value: () => errorBuilder,
+                ),
+                Conditional(
+                  condition: () => errorPlaceHolder.isNotNullOrEmpty,
+                  value: () =>
+                      (context, error, stackTrace) => ImageView(
+                        source: errorPlaceHolder!,
+                        width: width,
+                        height: height,
+                        fit: fit,
+                        color: color,
+                        alignment: alignment,
+                        package: package,
+                        errorBuilder: errorBuilder,
+                      ),
+                ),
+              ]).build(
+                orElse: () => null,
+              ),
         );
       }
       return ExtendedNetworkImage(
@@ -106,18 +142,36 @@ class ImageView extends StatelessWidget {
         loadingRadius: loadingRadius,
         cacheWidth: cacheWidth,
         cacheHeight: cacheHeight,
-        errorBuilder: ConditionBuilder.on(
-          condition: () => errorPlaceHolder.isNotNullOrEmpty,
-          value: () => (_) => ImageView(
-                source: errorPlaceHolder!,
-                width: width,
-                height: height,
-                fit: fit,
-                color: color,
-                alignment: alignment,
-                package: package,
+        placeHolder: placeHolder,
+        errorBuilder:
+            ConditionBuilder.from([
+              Conditional(
+                condition: () => errorBuilder != null,
+                value: () => (state) {
+                  return errorBuilder!(
+                    context,
+                    state.lastException,
+                    state.lastStack,
+                  );
+                },
               ),
-        ).build(orElse: () => null),
+              Conditional(
+                condition: () => errorPlaceHolder.isNotNullOrEmpty,
+                value: () =>
+                    (state) => ImageView(
+                      source: errorPlaceHolder!,
+                      width: width,
+                      height: height,
+                      fit: fit,
+                      color: color,
+                      alignment: alignment,
+                      package: package,
+                      errorBuilder: errorBuilder,
+                    ),
+              ),
+            ]).build(
+              orElse: () => null,
+            ),
       );
     }
     if (image.contains('.svg')) {
@@ -125,11 +179,28 @@ class ImageView extends StatelessWidget {
         image,
         width: width,
         height: height,
+        fit: fit ?? BoxFit.contain,
         colorFilter: color?.let(
           (it) => ColorFilter.mode(it, ui.BlendMode.srcIn),
         ),
         alignment: alignment,
         package: package,
+        errorBuilder: errorBuilder,
+      );
+    }
+
+    // Handle local files (e.g., from file_picker cache)
+    if (isLocalFile) {
+      return Image.file(
+        File(image),
+        width: width,
+        height: height,
+        fit: fit,
+        color: color,
+        alignment: alignment,
+        cacheWidth: cacheWidth,
+        cacheHeight: cacheHeight,
+        errorBuilder: errorBuilder,
       );
     }
 
@@ -141,6 +212,7 @@ class ImageView extends StatelessWidget {
         height: height,
         fit: fit ?? BoxFit.contain,
         alignment: alignment,
+        errorBuilder: errorBuilder,
       );
     }
 
@@ -152,6 +224,7 @@ class ImageView extends StatelessWidget {
       color: color,
       alignment: alignment,
       package: package,
+      errorBuilder: errorBuilder,
     );
   }
 }
@@ -252,22 +325,22 @@ class ExtendedNetworkImage extends StatelessWidget {
 
 class ImageViewProviderFactory {
   ImageViewProviderFactory(this.source)
-      : provider = source.let((it) {
-          final isAvif = it.toLowerCase().contains('.avif');
-          if (it.isUrl) {
-            if (isAvif) {
-              return NetworkAvifImage(it);
-            }
-            return ExtendedNetworkImageProvider(it);
-          }
-          if (it.contains('.svg')) {
-            return svg_provider.Svg(it);
-          }
+    : provider = source.let((it) {
+        final isAvif = it.toLowerCase().contains('.avif');
+        if (it.isUrl) {
           if (isAvif) {
-            return AssetAvifImage(it);
+            return NetworkAvifImage(it);
           }
-          return AssetImage(it);
-        });
+          return ExtendedNetworkImageProvider(it);
+        }
+        if (it.contains('.svg')) {
+          return svg_provider.Svg(it);
+        }
+        if (isAvif) {
+          return AssetAvifImage(it);
+        }
+        return AssetImage(it);
+      });
 
   final String source;
   final ImageProvider provider;

@@ -40,4 +40,10 @@ class FlMediaLocalizationsEn extends FlMediaLocalizations {
 
   @override
   String get takePhoto => 'Take a photo';
+
+  @override
+  String get media => 'Media';
+
+  @override
+  String get tapToReload => 'Tap to reload';
 }

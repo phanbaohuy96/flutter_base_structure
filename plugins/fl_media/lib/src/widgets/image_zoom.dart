@@ -1,5 +1,6 @@
 import 'dart:io'
-    if (dart.library.html) 'package:extended_image_library/src/_platform_web.dart';
+    if (dart.library.html) 'package:extended_image_library/src/_platform_web.dart'
+    if (dart.library.js_interop) 'package:extended_image_library/src/_platform_web.dart';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:fl_ui/fl_ui.dart';
@@ -95,8 +96,9 @@ class _ImageZoomState extends State<ImageZoom> with TickerProviderStateMixin {
         doubleTapPosition: pointerDownPosition,
       );
     };
-    animation =
-        animationController.drive(Tween<double>(begin: begin, end: end));
+    animation = animationController.drive(
+      Tween<double>(begin: begin, end: end),
+    );
 
     animation!.addListener(animationListener);
 

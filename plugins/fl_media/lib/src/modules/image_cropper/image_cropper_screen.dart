@@ -1,5 +1,8 @@
-import 'dart:io' as io;
+import 'dart:io'
+    if (dart.library.html) 'package:extended_image_library/src/_platform_web.dart'
+    if (dart.library.js_interop) 'package:extended_image_library/src/_platform_web.dart';
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:extended_image/extended_image.dart';
 import 'package:fl_ui/fl_ui.dart';
@@ -20,7 +23,8 @@ class ImageCropperScreen extends StatefulWidget {
     required this.imagefile,
   }) : super(key: key);
 
-  final io.File imagefile;
+  final File imagefile;
+
   @override
   _ImageCropperScreenState createState() => _ImageCropperScreenState();
 }
@@ -29,6 +33,7 @@ class _ImageCropperScreenState extends State<ImageCropperScreen> {
   final GlobalKey<ExtendedImageEditorState> editorKey =
       GlobalKey<ExtendedImageEditorState>();
 
+  final ImageEditorController _editorController = ImageEditorController();
   late FlMediaLocalizations localization;
   var _isLoadingShowing = false;
   void showLoading({bool dismissOnTap = false}) {
@@ -88,6 +93,7 @@ class _ImageCropperScreenState extends State<ImageCropperScreen> {
                       cropLayerPainter: const CustomEditorCropLayerPainter(),
                       initCropRectType: InitCropRectType.imageRect,
                       cropAspectRatio: CropAspectRatios.ratio1_1,
+                      controller: _editorController,
                     );
                   },
                 ),
@@ -140,10 +146,9 @@ class CustomEditorCropLayerPainter extends EditorCropLayerPainter {
   @override
   void paintMask(
     Canvas canvas,
-    Size size,
+    Rect rect,
     ExtendedImageCropLayerPainter painter,
   ) {
-    final rect = Offset.zero & size;
     final cropRect = painter.cropRect;
     const maskColor = Colors.black12;
 

@@ -30,12 +30,14 @@ class FilePicked {
     ///  On web `path` is always `null`,
     ///  You should access `bytes` property instead,
     ///  Read more about it [here](https://github.com/miguelpruivo/flutter_file_picker/wiki/FAQ)
+
+    final bytes = await file.readAsBytes();
     return FilePicked(
       path: kIsWeb ? null : file.path,
       name: file.name,
-      size: await file.length(),
-      bytes: await file.readAsBytes(),
-      mimeType: file.mimeType,
+      size: bytes.length,
+      bytes: bytes,
+      mimeType: file.mimeType ?? lookupMimeType(file.name),
     );
   }
 
@@ -99,15 +101,15 @@ class FilePicked {
     return kIsWeb
         ? 0
         : path.hashCode ^
-            name.hashCode ^
-            bytes.hashCode ^
-            identifier.hashCode ^
-            size.hashCode;
+              name.hashCode ^
+              bytes.hashCode ^
+              identifier.hashCode ^
+              size.hashCode;
   }
 
   @override
   String toString() {
-    return '''FilePicked(path: $path, name: $name, size: $size, identifier: $identifier, mimeType: $mimeType, bytes: ${bytes != null})''';
+    return '''FilePicked(path: $path, name: $name, size: $size, identifier: $identifier, mimeType: $mimeType,''';
   }
 
   bool get valid => bytes != null || path.isNotNullOrEmpty;

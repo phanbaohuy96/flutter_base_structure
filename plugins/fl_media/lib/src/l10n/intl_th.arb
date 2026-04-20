@@ -9,5 +9,7 @@
   "close": "ปิด",
   "gallery": "แกลเลอรี",
   "selectPhoto": "เลือกรูปภาพ",
-  "takePhoto": "ถ่ายภาพ"
+  "takePhoto": "ถ่ายภาพ",
+  "media": "สื่อ",
+  "tapToReload": "แตะเพื่อโหลดใหม่"
 }
