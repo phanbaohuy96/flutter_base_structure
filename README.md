@@ -1,234 +1,118 @@
-## Core Project Template
-### **Mobile Flutter Core**
+# Flutter Base Structure
 
-The **Mobile Flutter Core** project template provides a robust foundation for building scalable and maintainable Flutter applications. It incorporates best practices and a modular architecture to streamline development and ensure code quality.
+An opinionated Flutter project template with multi-flavor builds, codegen, a
+curated plugin set, and distribution scaffolding — ready to fork into a new
+app.
 
----
-
-### **Architecture**
-The project follows **Clean Code Architecture**, which ensures:
-- **Separation of Concerns**: Divides the project into layers (e.g., data, domain, presentation) to maintain modularity and scalability.
-- **Testability**: Each layer is independent, making it easier to write unit tests.
-- **Maintainability**: Clear structure and modular design make the codebase easier to maintain and extend.
-
-### **Project Structure**
-The project is organized as follows:
+## What's included
 
 ```
-├── apps (Contains all application projects)
-│   └── main (Mobile application project)
-│
-├── core (Core functionalities shared across the project)
-│
-├── modules (Feature-specific modules)
-│   └── data_source (Handles data and repository logic)
-│
-├── plugins (Custom plugins for extended functionality)
-│   ├── fl_media (Media handling: view, picker, crop)
-│   ├── fl_theme (Custom themes: AppTextTheme, ScreenTheme, etc.)
-│   ├── fl_ui (Common widgets for UI consistency)
-│   └── fl_utils (Utility functions: extensions, DateUtils, etc.)
-│
-├── tools (Support tools for project automation)
-│
-├── clean.sh (Script to clean the project: `sh clean.sh -h`)
-│
-├── distribution.sh (Script for building and distributing the app: `sh distribution.sh -h`)
-│
-├── gen_app_identifier.sh (Generate app identifiers: `sh gen_app_identifier.sh <PATH-TO-APP>`)
-│
-├── gen_localization.sh (Generate localization files: `sh gen_localization.sh <PATH-TO-MODULE>`)
-│
-├── makefile (Project automation with make commands: `make help`)
-│
-├── pub_gen.sh (Re-generate files: `sh pub_gen.sh -h`)
-│
-├── run_module_generator.sh (Run module generator: `sh run_module_generator.sh <PATH-TO-MODULE>`)
-│
-└── README.md (Project documentation)
+├── apps/main/                   Main Flutter app (dev / staging / sandbox / prod flavors)
+├── core/                        Shared library: utilities, services, theming, base widgets
+├── modules/
+│   └── data_source/             Retrofit + hive_ce + json_serializable plumbing
+├── plugins/
+│   ├── fl_ui/                   Common widgets (inputs, dropdowns, RadioButtonWithTitle, …)
+│   ├── fl_utils/                Extensions, date utils, formatters, currency/weight helpers
+│   ├── fl_theme/                AppTheme / ScreenTheme / ThemeColor with checkbox + chip theming
+│   ├── fl_media/                Image cropper, media viewer, pick_file_helper, video widgets
+│   └── fl_navigation/           go_router-based routing utilities
+├── tools/module_generator/      Code generators (modules, assets, localizations, translations)
+├── apps/main/fastlane/          iOS + Android distribution, CI-CD-friendly Fastfile
+├── apps/main/android/keystores/ Per-flavor signing config (keystore.properties.example)
+└── makefile                     `make help` lists every task
 ```
 
----
+Stack: Flutter **3.41.7** (via fvm), Dart **3.11.5**, Kotlin **2.1.0**, AGP
+**8.9.1**, Gradle **8.12**. Codegen: `freezed 3.2.3`, `retrofit_generator
+10.2.3`, `json_serializable ^6.11.1`, `hive_ce_generator ^1.9.3`,
+`injectable_generator ^2.6.2`.
 
-## Requirements
+## Quickstart
 
-### **Version Configuration**
-- **Flutter**: Version `>=3.32.8`
-- **Dart**: Ensure compatibility with the Flutter version.
-- **Android SDK**: Compile SDK version `34` or higher.
-- **Java**: Version `17` for both Kotlin and Java compatibility.
-
----
-
-## Utilities
-
-### **Commands**
-Here are the key commands to build, clean, and manage the project:
-
-#### **Debug Web Dev**
-To debug main web-app, you can use:
 ```bash
-# Using makefile command
-make run_web_dev
+# 1. Install Flutter 3.41.7 via fvm (uses fvm_pubspec.yaml as the source of truth)
+fvm install 3.41.7 && fvm use 3.41.7
 
-# Or using the direct Flutter command
-cd ./apps/main/
-flutter run -d web-server --web-port 3000 -t lib/main_dev.dart --dart-define-from-file="./.env"
-```
+# 2. Seed env + keystore config from the templates
+cp apps/main/.env.example apps/main/.env
+cp apps/main/android/keystores/keystore.properties.example \
+   apps/main/android/keystores/keystore.properties
+# Fill in the placeholder values in both files.
 
-#### **Build**
-To build the app:
-```bash
-cd apps/main
-flutter build apk --release --flavor dev --target="lib/main_dev.dart"
-```
-
-#### **Setup**
-To clean the project:
-```bash
-sh clean.sh
-```
-
-#### **Build Commands**
-To build the app for development:
-```bash
-sh distribution.sh -e dev -p all -a main
-```
-
-### **Makefile Commands**
-The project includes a comprehensive makefile for streamlined development workflows. All commands follow the snake_case naming convention. Here are the most useful commands:
-
-#### **Getting Help**
-```bash
-# Display all available makefile commands with descriptions
-make help
-```
-
-#### **Project Setup**
-```bash
-# Complete project setup (clean, pub get, language files, assets, code generation)
-make setup
-
-# Reset project (clean and regenerate everything)
-make reset
-
-# Generate environment configuration file
-make gen_env
-
-# Generate keystore configuration file
-make gen_keystore
-```
-
-#### **Package Management**
-```bash
-# Run flutter pub get for all modules
+# 3. Pull deps + run code generators across all packages
 make pub_get
-
-# Run flutter pub get for specific modules
-make pub_get_plugins
-make pub_get_core
-make pub_get_main
-
-# Run flutter pub get for individual plugins
-make pub_get_fl_ui
-make pub_get_fl_utils
-make pub_get_fl_theme
-make pub_get_fl_media
-```
-
-#### **Code Generation**
-```bash
-# Generate code for all modules
 make gen_all
 
-# Generate code for specific modules
-make gen_core
-make gen_data_source
-make gen_main
+# 4. Run on a device / emulator
+cd apps/main
+fvm flutter run --flavor dev -t lib/main_dev.dart --dart-define-from-file=./.env
 
-# Interactive code generation menu
-make gen
+# or build an APK:
+fvm flutter build apk --debug --flavor dev -t lib/main_dev.dart \
+    --dart-define-from-file=./.env
 ```
 
-#### **Asset and Localization**
-```bash
-# Generate assets
-make asset
+The full task list is in `make help`. Highlights:
 
-# Generate all language files
-make lang
+| Task | Purpose |
+| --- | --- |
+| `make setup` | Clean + pub_get + lang + asset + gen_all + gen_env |
+| `make pub_get` | Flutter pub get across core, data_source, apps/main, all plugins |
+| `make gen_all` | Run build_runner across core, data_source, apps/main |
+| `make lang` | Regenerate `.arb` files from `localizations.csv` |
+| `make gen_translation` / `make apply_translation` | Round-trip translations through a status-tracked CSV |
+| `make build` | Interactive build picker (env × platform) |
+| `make coverage_main` | Test coverage for `apps/main` |
+| `make format` | `dart format .` |
 
-# Generate app identifier
-make app_identifier
-```
+## Making it yours
 
-#### **Build and Run**
-```bash
-# Interactive build menu (choose environment and platform)
-make build
+When forking this template for a real app, rename the template identity:
 
-# Run the web app in development mode
-make run_web_dev
+1. **Bundle IDs / package names.** Edit:
+   - `apps/main/app_identifier.yaml`
+   - `apps/main/ios/Flutter/AppSpecific.xcconfig`
+   - `apps/main/android/app_specific.properties`
+   - `apps/main/android/app/build.gradle` (`namespace`)
+   - `apps/main/android/app/src/main/kotlin/com/pbh/baseflutter/MainActivity.kt`
+     — move the file under a new path (e.g. `com/yourorg/yourapp/`) and update
+     the `package` declaration to match.
+2. **App icons & splash.** Replace everything under `apps/main/assets/images/`
+   and `apps/main/android/app/src/main/res/mipmap-*`. Regenerate launch assets
+   via `flutter_native_splash` (see `apps/main/flutter_native_splash.yaml`).
+3. **Brand font.** The `fonts:` block in `apps/main/pubspec.yaml` is a
+   commented stub — add the family and drop the `.woff2` files into
+   `apps/main/assets/fonts/`.
+4. **Distribution.** Update `apps/main/fastlane/Fastfile` and the
+   `apps/main/ios/*.md` provisioning guides with your own Apple Developer
+   team ID and Firebase app IDs. `apps/main/fastlane/.env.example` lists
+   every CI-CD secret the lanes consume.
 
-# Run the web app in staging mode
-make run_web_staging
+## Architecture
 
-# Build web app
-make build_web
-```
+Clean architecture across three layers:
 
-#### **Testing and Coverage**
-```bash
-# Generate test coverage report for main app
-make coverage_main
-```
+- **`data/`** — data sources (REST, hive_ce local storage), DTO models, repositories
+- **`domain/`** — entities, use cases, repository contracts
+- **`presentation/`** — BLoC (flutter_bloc + bloc_concurrency), widgets, routing
 
-#### **Maintenance**
-```bash
-# Format all Dart code
-make format
+`core/` exposes everything shared. `modules/data_source/` hosts generic
+retrofit clients. `apps/main/` wires the three layers together with
+`injectable` DI.
 
-# Clean the project
-make clean
+## Environments
 
-# Clean with force option
-make clean_force
+Four flavors wired through dart-defines, Android flavors, and iOS xcconfigs:
 
-# Run module generator (interactive)
-make run_module_generator
-```
+- `dev` — local / staging backend, debug signing
+- `staging` — pre-prod, staging keystore
+- `sandbox` — customer sandbox, sandbox keystore
+- `prod` — production, prod keystore
 
----
+Each has its own entry point (`apps/main/lib/main_{dev,staging,sandbox,prod}.dart`)
+and Firebase app registration slot.
 
-### **Tools**
-The project includes several tools to automate and simplify development tasks:
+## License
 
-1. **Module Generator**:
-   - Command: `dart run module_generator`
-   - Module Name: Use under-score naming convention (e.g., `test_module`).
-
-2. **Asset Generator**:
-   - Command: `dart run module_generator:generate_asset <path-to-root-preview-image>`
-
-3. **App Localizations Generator**:
-   - Commands:
-     - Generate localizations: `dart run module_generator:generate_app_localizations`
-     - Generate CSV from localizations: `dart run module_generator:generate_csv_from_localizations`
-
-4. **Export Generator**:
-   - Command: `dart run module_generator:generate_export`
-
----
-
-### **Summary**
-
-The **Mobile Flutter Core** template is a modular, scalable, and maintainable solution for Flutter applications. It leverages clean code architecture, custom tools, and Flutter's capabilities to streamline development and ensure high-quality software delivery.
-
----
-
-### **Documentation**
-- [Base Project Structure](https://vns-site.atlassian.net/wiki/x/ZgC2Bw)
-   - [Core](https://vns-site.atlassian.net/wiki/x/hAC2Bw)
-- [Clean Code Architecture](https://vns-site.atlassian.net/wiki/x/lgC2Bw)
-- [Generator Tool Documentation](https://vns-site.atlassian.net/wiki/x/qAC2Bw)
-- [App Distribution Script Documentation](https://vns-site.atlassian.net/wiki/x/zAC2Bw)
+MIT. See `LICENSE` in each plugin directory.
