@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide RadioGroup;
+import 'package:flutter/material.dart';
 
 import '../../../../../core.dart';
 
@@ -172,12 +172,12 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 title: 'RadioButtonWithTitle 1',
               ),
               StoryWidgetBox(
-                title: 'fl_ui/RadioGroup',
+                title: 'fl_ui/FlRadioGroup',
                 builder: (context, _, __) {
                   final items = List.generate(3, (index) => index);
                   return Column(
                     children: [
-                      RadioGroup<int>(
+                      FlRadioGroup<int>(
                         items: items,
                         selectedItem: tick % items.length,
                         getLabel: (p0) {

@@ -105,110 +105,111 @@ class NoticeDialogWithOptions extends StatelessWidget {
                 child: ValueListenableBuilder<int?>(
                   valueListenable: selectedOptionNotifier,
                   builder: (context, selectedOption, _) {
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(
-                        options.length,
-                        (index) {
-                          final option = options[index];
-                          final title = option['title'] as dynamic;
-                          final description = option['description'] as dynamic;
+                    return RadioGroup<int?>(
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        selectedOptionNotifier.value = value;
+                      },
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: List.generate(
+                          options.length,
+                          (index) {
+                            final option = options[index];
+                            final title = option['title'] as dynamic;
+                            final description =
+                                option['description'] as dynamic;
 
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: selectedOption == index
-                                  ? themeColor.primary
-                                      .withAlpha((0.05 * 255).round())
-                                  : null,
-                              border: Border(
-                                bottom: BorderSide(
-                                  color: Colors.grey
-                                      .withAlpha((0.2 * 255).round()),
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: selectedOption == index
+                                    ? themeColor.primary
+                                        .withAlpha((0.05 * 255).round())
+                                    : null,
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey
+                                        .withAlpha((0.2 * 255).round()),
+                                  ),
                                 ),
                               ),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  selectedOptionNotifier.value = index;
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 12,
-                                  ),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Transform.scale(
-                                        scale: 0.9,
-                                        child: CupertinoRadio<int?>(
-                                          value: index,
-                                          // ignore: deprecated_member_use
-                                          groupValue:
-                                              selectedOptionNotifier.value,
-                                          activeColor: themeColor.primary,
-                                          // ignore: deprecated_member_use
-                                          onChanged: (value) {
-                                            selectedOptionNotifier.value =
-                                                value;
-                                          },
+                              child: Material(
+                                color: Colors.transparent,
+                                child: InkWell(
+                                  onTap: () {
+                                    selectedOptionNotifier.value = index;
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                      vertical: 12,
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Transform.scale(
+                                          scale: 0.9,
+                                          child: CupertinoRadio<int?>(
+                                            value: index,
+                                            activeColor: themeColor.primary,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            title is String
-                                                ? Text(
-                                                    title,
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          selectedOption ==
-                                                                  index
-                                                              ? FontWeight.w600
-                                                              : FontWeight.w400,
-                                                      color: const Color(
-                                                        0xFF23262F,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : title,
-                                            if (description != null) ...[
-                                              const SizedBox(height: 4),
-                                              description is String
+                                        const SizedBox(width: 12),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              title is String
                                                   ? Text(
-                                                      description,
-                                                      maxLines: 2,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      title,
                                                       style: TextStyle(
-                                                        fontSize: 13,
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            selectedOption ==
+                                                                    index
+                                                                ? FontWeight
+                                                                    .w600
+                                                                : FontWeight
+                                                                    .w400,
                                                         color: const Color(
                                                           0xFF23262F,
-                                                        ).withAlpha(
-                                                          (0.7 * 255).round(),
                                                         ),
-                                                        height: 1.3,
                                                       ),
                                                     )
-                                                  : description,
+                                                  : title,
+                                              if (description != null) ...[
+                                                const SizedBox(height: 4),
+                                                description is String
+                                                    ? Text(
+                                                        description,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: TextStyle(
+                                                          fontSize: 13,
+                                                          color: const Color(
+                                                            0xFF23262F,
+                                                          ).withAlpha(
+                                                            (0.7 * 255).round(),
+                                                          ),
+                                                          height: 1.3,
+                                                        ),
+                                                      )
+                                                    : description,
+                                              ],
                                             ],
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     );
                   },

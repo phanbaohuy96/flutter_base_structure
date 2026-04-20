@@ -56,17 +56,17 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
               SizedBox(
                 height: 24,
                 width: 24,
-                child: Radio<T>(
-                  value: value,
-                  // ignore: deprecated_member_use
+                child: RadioGroup<T>(
                   groupValue: groupValue,
-                  // ignore: deprecated_member_use
-                  onChanged: onChanged,
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  fillColor: WidgetStateProperty.resolveWith<Color>(
-                    (Set<WidgetState> states) {
-                      return Theme.of(context).colorScheme.primary;
-                    },
+                  onChanged: onChanged ?? (_) {},
+                  child: Radio<T>(
+                    value: value,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    fillColor: WidgetStateProperty.resolveWith<Color>(
+                      (Set<WidgetState> states) {
+                        return Theme.of(context).colorScheme.primary;
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -84,14 +84,14 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
   }
 }
 
-class RadioGroup<T> extends StatefulWidget {
+class FlRadioGroup<T> extends StatefulWidget {
   final List<T> items;
   final T? selectedItem;
   final void Function(T) onSelected;
   final String Function(T) getLabel;
   final Axis axis;
 
-  const RadioGroup({
+  const FlRadioGroup({
     Key? key,
     required this.items,
     required this.onSelected,
@@ -101,10 +101,10 @@ class RadioGroup<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RadioGroupState createState() => _RadioGroupState<T>();
+  _FlRadioGroupState createState() => _FlRadioGroupState<T>();
 }
 
-class _RadioGroupState<T> extends State<RadioGroup<T>> {
+class _FlRadioGroupState<T> extends State<FlRadioGroup<T>> {
   T? seleted;
 
   @override
@@ -114,7 +114,7 @@ class _RadioGroupState<T> extends State<RadioGroup<T>> {
   }
 
   @override
-  void didUpdateWidget(covariant RadioGroup<T> oldWidget) {
+  void didUpdateWidget(covariant FlRadioGroup<T> oldWidget) {
     seleted = widget.selectedItem;
     super.didUpdateWidget(oldWidget);
   }
