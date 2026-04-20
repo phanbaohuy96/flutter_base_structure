@@ -412,7 +412,7 @@ class _InputsPageState extends State<InputsPage> {
         ),
         const SizedBox(height: 12),
         DropdownButtonFormField<String>(
-          value: _dropdownValue,
+          initialValue: _dropdownValue,
           decoration: const InputDecoration(
             labelText: 'Select Option',
             prefixIcon: Icon(Icons.list),

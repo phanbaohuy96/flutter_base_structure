@@ -157,7 +157,7 @@ class _MultipleChoiceDropdownWidgetState<T>
       builder: (ctx, value, w) {
         final body = DropdownButtonFormField<T>(
           menuMaxHeight: widget.menuMaxHeight,
-          value: value.value.firstOrNull,
+          initialValue: value.value.firstOrNull,
           items: widget.items.map((e) {
             return DropdownMenuItem<T>(
               value: e,

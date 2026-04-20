@@ -178,7 +178,7 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
           ),
           child: DropdownButtonFormField<T>(
             menuMaxHeight: widget.menuMaxHeight,
-            value: value.value,
+            initialValue: value.value,
             items: widget.items.map((e) {
               return DropdownMenuItem<T>(
                 value: e,

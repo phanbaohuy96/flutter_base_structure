@@ -5,5 +5,4 @@ resource-file: lib/l10n/localizations.csv
 
 output-dir: ./lib/l10n/generated/
 output-class: AppLocalizations
-synthetic-package: false
 format: true
