@@ -27,8 +27,8 @@ Future<void> generateAppIdentifier({required List<String> args}) async {
   if (config != null) {
     final project = generate_app_identifier.ProjectConfigDocument([
       ...(jsonDecode(jsonEncode(config)) as Map<String, dynamic>).entries.map(
-            generate_app_identifier.PlatformConfigDocument.create,
-          ),
+        generate_app_identifier.PlatformConfigDocument.create,
+      ),
     ]);
     await generate_app_identifier.generateAppIdentifier(project: project);
   }

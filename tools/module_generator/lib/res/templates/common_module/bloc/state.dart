@@ -1,10 +1,11 @@
 import '../../../../common/definitions.dart';
 
-const commonModuleState = '''// ignore_for_file: unused_element
+const commonModuleState =
+    '''// ignore_for_file: unused_element
 part of '${moduleNameKey}_bloc.dart';
 
-@freezed
-class _StateData with _\$StateData {
+@freezed 
+sealed class _StateData with _\$StateData {
   const factory _StateData() = __StateData;
 }
 

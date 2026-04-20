@@ -1,11 +1,15 @@
 ################################################################################
-# Core Mobile Client Makefile
+# Base Template Makefile
 ################################################################################
+
+# FVM-aware command wrappers: use FVM if available, else fall back to system SDK
+FLUTTER := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo "flutter")
+DART    := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "dart")
 
 # Main targets
 .PHONY: setup build run test clean asset lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
-	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_env gen_keystore
+	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_env gen_keystore gen_translation apply_translation
 
 # Default target
 all: setup build
@@ -24,7 +28,7 @@ help:
 	@echo ""
 	@echo "Package Management:"
 	@echo "  make pub_get            - Run flutter pub get for all modules"
-	@echo "  make pub_get_plugins    - Run flutter pub get for all plugins" 
+	@echo "  make pub_get_plugins    - Run flutter pub get for all plugins"
 	@echo "  make pub_get_core       - Run flutter pub get for core"
 	@echo "  make pub_get_main       - Run flutter pub get for main app"
 	@echo ""
@@ -38,6 +42,8 @@ help:
 	@echo "Asset and Localization:"
 	@echo "  make asset              - Generate assets"
 	@echo "  make lang               - Generate all language files"
+	@echo "  make gen_translation    - Generate translation CSV with status column (for tracking changes)"
+	@echo "  make apply_translation  - Apply completed translations back to current localization file"
 	@echo "  make app_identifier     - Generate app identifier"
 	@echo "  make gen_env            - Generate environment configuration file"
 	@echo "  make gen_keystore       - Generate keystore configuration file"
@@ -62,9 +68,9 @@ help:
 ################################################################################
 
 # Setup the project
-setup: clean pub_get lang asset gen_all gen_env
+setup: clean pub_get lang asset gen_all gen_env gen_keystore
 
-# Clean the project 
+# Clean the project
 clean:
 	sh clean.sh
 
@@ -93,27 +99,27 @@ pub_get_plugins:
 
 # Run flutter pub get for each plugin
 pub_get_fl_ui:
-	cd plugins/fl_ui/; flutter pub get
+	cd plugins/fl_ui/; $(FLUTTER) pub get
 
 pub_get_fl_utils:
-	cd plugins/fl_utils/; flutter pub get
+	cd plugins/fl_utils/; $(FLUTTER) pub get
 
 pub_get_fl_theme:
-	cd plugins/fl_theme/; flutter pub get
+	cd plugins/fl_theme/; $(FLUTTER) pub get
 
 pub_get_fl_media:
-	cd plugins/fl_media/; flutter pub get
+	cd plugins/fl_media/; $(FLUTTER) pub get
 
 pub_get_fl_navigation:
-	cd plugins/fl_navigation/; flutter pub get
+	cd plugins/fl_navigation/; $(FLUTTER) pub get
 
 # Run flutter pub get for core
 pub_get_core:
-	cd core/; flutter pub get
+	cd core/; $(FLUTTER) pub get
 
 # Run flutter pub get for main app
 pub_get_main:
-	cd apps/main/; flutter pub get
+	cd apps/main/; $(FLUTTER) pub get
 
 ################################################################################
 # Asset and Localization
@@ -122,13 +128,43 @@ pub_get_main:
 # Asset generation
 asset:
 	cd apps/main/; \
-	dart run module_generator:generate_asset apps/main
+	$(DART) run module_generator:generate_asset apps/main
 
 # Generate all language files
 lang:
 	sh gen_localization.sh apps/main
 	sh gen_localization.sh core
 	sh gen_localization.sh plugins/fl_media
+
+# Generate translation CSV with status column (for tracking changes)
+gen_translation:
+	@echo "Generate Translation CSV File with Status Column"; \
+	echo ""; \
+	read -p "Enter path to old translation file (default: translation_old.csv): " old_file; \
+	read -p "Enter output file name (default: translation_new.csv): " output_file; \
+	old_file=$${old_file:-translation_old.csv}; \
+	output_file=$${output_file:-translation_new.csv}; \
+	cd tools/module_generator; \
+	$(DART) bin/generate_translation_csv.dart \
+		-c ../../apps/main/lib/l10n/localizations.csv \
+		-o ../../$$old_file \
+		-t ../../$$output_file; \
+	echo ""; \
+	echo "Done! You can open the file: $$output_file"
+
+# Apply completed translations back to current localization file
+apply_translation:
+	@echo "Apply Completed Translations to Localization File"; \
+	echo ""; \
+	read -p "Enter path to translated CSV file (default: localization_latest.csv): " translated_file; \
+	translated_file=$${translated_file:-localization_latest.csv}; \
+	cd tools/module_generator; \
+	$(DART) bin/apply_translation.dart \
+		--translated ../../$$translated_file \
+		--current ../../apps/main/lib/l10n/localizations.csv; \
+	echo ""; \
+	echo "Done! Translations applied to: apps/main/lib/l10n/localizations.csv"; \
+	echo "Tip: Run 'make lang' to regenerate ARB files"
 
 ################################################################################
 # Code Generation
@@ -166,20 +202,20 @@ gen_all: gen_core gen_data_source gen_main
 # Code generation for core
 gen_core:
 	cd core/; \
-	dart run build_runner build --delete-conflicting-outputs; \
-	dart run module_generator:generate_export
+	$(DART) run build_runner build --delete-conflicting-outputs; \
+	$(DART) run module_generator:generate_export
 
 # Code generation for data_source
 gen_data_source:
 	cd modules/data_source/; \
-	dart run build_runner build --delete-conflicting-outputs; \
-	dart run module_generator:generate_export
+	$(DART) run build_runner build --delete-conflicting-outputs; \
+	$(DART) run module_generator:generate_export
 
 # Code generation for main app
 gen_main:
 	cd apps/main/; \
-	dart run module_generator:generate_build_runner_config; \
-	dart run build_runner build --delete-conflicting-outputs
+	$(DART) run module_generator:generate_build_runner_config; \
+	$(DART) run build_runner build --delete-conflicting-outputs
 
 # Interactive code generation selector
 gen:
@@ -188,8 +224,8 @@ gen:
 	@echo "2. Core"
 	@echo "3. Data source"
 	@echo "4. All modules"
-	@echo "5. Exit"
-	@read -p "Enter your choice (1-5): " input; \
+	@echo "0. Exit"
+	@read -p "Enter your choice (1-4): " input; \
 	if [ $$input = "1" ]; then \
 		$(MAKE) gen_main; \
 	elif [ $$input = "2" ]; then \
@@ -208,7 +244,7 @@ gen:
 
 # Format all Dart code
 format:
-	dart format .
+	$(DART) format .
 
 # Run module generator
 run_module_generator:
@@ -269,12 +305,12 @@ build:
 # Run the app in development mode
 run_web_dev:
 	cd apps/main/ && \
-	flutter run -d web-server --web-port 3000 -t lib/main_dev.dart --dart-define-from-file="./.env"
+	$(FLUTTER) run -d web-server --web-port 3000 -t lib/main_dev.dart --dart-define-from-file="./.env"
 
 # Run the app in staging mode
 run_web_staging:
 	cd apps/main/ && \
-	flutter run -d web-server --web-port 3000 -t lib/main_staging.dart --dart-define-from-file="./.env"
+	$(FLUTTER) run -d web-server --web-port 3000 -t lib/main_staging.dart --dart-define-from-file="./.env"
 
 # Build web app
 build_web:
@@ -351,6 +387,9 @@ DART_ENV_NAME=''\n\
 DART_BASE_API_LAYER=''\n\
 DART_STORAGE_API_LAYER=''\n\
 DART_STORAGE_ASSET_LAYER=''\n\
+DART_PRIVACY_URL=''\n\
+DART_COOKIES_CONSENT_URL=''\n\
+DART_TERMS_URL=''\n\
 \n\
 ## POSTHOG\n\
 DART_POSTHOG_API_KEY=''\n\
@@ -423,7 +462,7 @@ gen_keystore:
 # -------------------------------------------------------------------------\n\
 # DEVELOPMENT Environment\n\
 # -------------------------------------------------------------------------\n\
-# Certificate DN: CN=VietNam Silicon, OU=VNS, O=VNS, L=VietNam, ST=HCM, C=84\n\
+# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
 DEV_STORE_FILE=../keystores/dev_keystore.jks\n\
 DEV_KEY_ALIAS=placeholder-value\n\
 DEV_STORE_PASSWORD=placeholder-value\n\
@@ -432,7 +471,7 @@ DEV_KEY_PASSWORD=placeholder-value\n\
 # -------------------------------------------------------------------------\n\
 # STAGING Environment\n\
 # -------------------------------------------------------------------------\n\
-# Certificate DN: CN=VietNam Silicon, OU=VNS, O=VNS, L=VietNam, ST=HCM, C=84\n\
+# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
 STAGING_STORE_FILE=../keystores/staging_keystore.jks\n\
 STAGING_KEY_ALIAS=placeholder-value\n\
 STAGING_STORE_PASSWORD=placeholder-value\n\
@@ -441,7 +480,7 @@ STAGING_KEY_PASSWORD=placeholder-value\n\
 # -------------------------------------------------------------------------\n\
 # SANDBOX Environment\n\
 # -------------------------------------------------------------------------\n\
-# Certificate DN: CN=Bangkok Silicon, OU=BKS, O=BKS, L=Thailand, ST=Bangkok, C=66\n\
+# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
 SANDBOX_STORE_FILE=../keystores/sandbox_keystore.jks\n\
 SANDBOX_KEY_ALIAS=placeholder-value\n\
 SANDBOX_STORE_PASSWORD=placeholder-value\n\
@@ -450,7 +489,7 @@ SANDBOX_KEY_PASSWORD=placeholder-value\n\
 # -------------------------------------------------------------------------\n\
 # PRODUCTION Environment\n\
 # -------------------------------------------------------------------------\n\
-# Certificate DN: CN=Bangkok Silicon, OU=BKS, O=BKS, L=Thailand, ST=Bangkok, C=66\n\
+# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
 PROD_STORE_FILE=../keystores/keystore.jks\n\
 PROD_KEY_ALIAS=placeholder-value\n\
 PROD_STORE_PASSWORD=placeholder-value\n\

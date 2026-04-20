@@ -10,10 +10,7 @@ class AssetConfig {
   final List<String> assetPaths;
   final String outputPath;
 
-  const AssetConfig({
-    required this.assetPaths,
-    required this.outputPath,
-  });
+  const AssetConfig({required this.assetPaths, required this.outputPath});
 
   factory AssetConfig.fromYaml(YamlMap config) {
     final assets = config['assets'] as List?;
@@ -21,7 +18,8 @@ class AssetConfig {
 
     if (assets == null || assetsGenerated == null) {
       throw const ConfigException(
-          'Invalid configuration: missing assets or assets_generated');
+        'Invalid configuration: missing assets or assets_generated',
+      );
     }
 
     return AssetConfig(
@@ -66,7 +64,9 @@ Future<YamlMap?> readConfig() async {
 
 /// Merges configuration from a YAML file into the existing config
 Future<void> _mergeConfigFromFile(
-    String filePath, Map<String, dynamic> config) async {
+  String filePath,
+  Map<String, dynamic> config,
+) async {
   final file = File(filePath);
   if (!file.existsSync()) return;
 

@@ -11,13 +11,17 @@ class ProjectConfigDocument {
 class AppConfig {
   final String? package;
   final String? name;
+  final String? provisioningProfileSpecifier;
 
-  AppConfig(this.package, this.name);
+  AppConfig(this.package, this.name, this.provisioningProfileSpecifier);
 
   factory AppConfig.fromMap(Map<String, dynamic> map) {
     return AppConfig(
       map['package'] != null ? map['package'] as String : null,
       map['name'] != null ? map['name'] as String : null,
+      map['provisioning_profile_specifier'] != null
+          ? map['provisioning_profile_specifier'] as String
+          : null,
     );
   }
 }
@@ -55,7 +59,7 @@ class PlatformConfigDocument<T extends ConfigDocument> {
 
 class UnknownPlatformConfigDocument extends PlatformConfigDocument {
   UnknownPlatformConfigDocument()
-      : super(configFilePath: '', document: UnknownConfigDocument());
+    : super(configFilePath: '', document: UnknownConfigDocument());
 }
 
 abstract class ConfigDocument {
@@ -87,7 +91,8 @@ class AndroidConfigDocument extends ConfigDocument {
   String get contentFile {
     return [
       ...document.entries.map(
-        (e) => '''# ${e.key}
+        (e) =>
+            '''# ${e.key}
 app.${e.key.toLowerCase()}.name=${e.value.name}
 app.${e.key.toLowerCase()}.package=${e.value.package}
 ''',
@@ -105,9 +110,11 @@ class IOSConfigDocument extends ConfigDocument {
   String get contentFile {
     return [
       ...document.entries.map(
-        (e) => '''// ${e.key}
+        (e) =>
+            '''// ${e.key}
 ${e.key.toUpperCase()}_APP_DISPLAY_NAME=${e.value.name}
 ${e.key.toUpperCase()}_PRODUCT_BUNDLE_IDENTIFIER=${e.value.package}
+${e.key.toUpperCase()}_PROVISIONING_PROFILE_SPECIFIER=${e.value.provisioningProfileSpecifier ?? ''}
 ''',
       ),
     ].join('\n');

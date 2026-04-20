@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-const repository = '''import 'dart:async';
+const repository =
+    '''import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 

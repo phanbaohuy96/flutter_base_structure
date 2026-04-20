@@ -1,6 +1,7 @@
 import '../../../../common/definitions.dart';
 
-const listingModuleEvent = '''part of '${moduleNameKey}_bloc.dart';
+const listingModuleEvent =
+    '''part of '${moduleNameKey}_bloc.dart';
 
 abstract class ${classNameKey}Event {}
 

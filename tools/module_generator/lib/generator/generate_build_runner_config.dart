@@ -142,8 +142,9 @@ void _setBuildTarget(
   final builders = defaultTarget['builders'] as Map<String, dynamic>;
 
   // Set builder configuration
-  builders[builderId] =
-      targetFiles.isEmpty ? {'enabled': false} : {'generate_for': targetFiles};
+  builders[builderId] = targetFiles.isEmpty
+      ? {'enabled': false}
+      : {'generate_for': targetFiles};
 }
 
 /// Write configuration to file

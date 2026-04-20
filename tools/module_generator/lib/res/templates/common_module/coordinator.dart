@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-final commonModuleCoordinator = '''import 'package:core/core.dart';
+final commonModuleCoordinator =
+    '''import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import '$moduleNameKey.dart';

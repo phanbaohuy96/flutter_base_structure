@@ -4,22 +4,22 @@ version: 0.0.1
 homepage:
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
-  flutter: ">=3.32.0"
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: ">=3.38.0"
 
 dependencies:
   flutter:
     sdk: flutter
   args: ^2.3.1
   yaml: ^3.1.1
-  csv: ^5.0.1
+  csv: ^6.0.0
   path: ^1.8.2
   pedantic: ^1.11.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

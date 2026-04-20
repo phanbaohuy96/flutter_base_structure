@@ -6,8 +6,9 @@ void main(List<String> args) {
   var parser = ArgParser();
   parser.addOption(
     'path',
-    callback: (path) =>
-        {generate_app_identifier.generateAppIdentifier(args: args)},
+    callback: (path) => {
+      generate_app_identifier.generateAppIdentifier(args: args),
+    },
   );
   parser.parse(args);
 }

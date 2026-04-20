@@ -6,9 +6,8 @@ void main(List<String> args) {
   var parser = ArgParser();
   parser.addOption(
     'path',
-    callback: (path) => generate_build_runner_config.generateBuildRunnerConfig(
-      args: args,
-    ),
+    callback: (path) =>
+        generate_build_runner_config.generateBuildRunnerConfig(args: args),
   );
   parser.parse(args);
 }

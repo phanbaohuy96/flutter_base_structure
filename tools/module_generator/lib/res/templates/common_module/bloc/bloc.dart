@@ -1,6 +1,7 @@
 import '../../../../common/definitions.dart';
 
-const commonModuleBloc = '''import 'dart:async';
+const commonModuleBloc =
+    '''import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';

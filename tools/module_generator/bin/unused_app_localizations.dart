@@ -21,9 +21,7 @@ void main(List<String> args) {
 
   parser.addOption(
     'path',
-    callback: (path) => generator.checkUnusedL10n(
-      shouldRemove: removeUnused,
-    ),
+    callback: (path) => generator.checkUnusedL10n(shouldRemove: removeUnused),
   );
 
   parser.parse(args);

@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-const commonModuleRoute = '''import 'package:core/core.dart';
+const commonModuleRoute =
+    '''import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import '../../../di/di.dart';

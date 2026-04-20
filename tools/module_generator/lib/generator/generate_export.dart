@@ -60,13 +60,15 @@ class ExportFile {
 
     for (var i = 0; i < normalizedPattern.length; i++) {
       final char = normalizedPattern[i];
-      final nextChar =
-          i + 1 < normalizedPattern.length ? normalizedPattern[i + 1] : '';
+      final nextChar = i + 1 < normalizedPattern.length
+          ? normalizedPattern[i + 1]
+          : '';
 
       if (char == '*' && nextChar == '*') {
         // Handle ** pattern
-        final afterDoubleStar =
-            i + 2 < normalizedPattern.length ? normalizedPattern[i + 2] : '';
+        final afterDoubleStar = i + 2 < normalizedPattern.length
+            ? normalizedPattern[i + 2]
+            : '';
         if (afterDoubleStar == '/') {
           regexPattern += '.*?/'; // **/ matches any number of directories
           i += 2; // Skip the next * and /
@@ -122,8 +124,10 @@ Future<void> generateExport({required List<YamlMap> config}) async {
   }
 }
 
-Future<List<String>> getFilesFromDirector(String directory,
-    [ExportFile? exportConfig]) async {
+Future<List<String>> getFilesFromDirector(
+  String directory, [
+  ExportFile? exportConfig,
+]) async {
   final contents = <String>[];
   final dir = Directory(directory);
 
