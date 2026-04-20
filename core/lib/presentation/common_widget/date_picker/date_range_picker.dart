@@ -254,92 +254,95 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
-          child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
-              bottom: 16,
-            ),
-            children: [
-              ...options.mapIndex(
-                (e, index) => Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (e.key == options.last.key) {
-                            selected = MapEntry(e.key, selected!.value);
-                          } else {
-                            selected = e;
-                          }
-                        });
-                      },
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              e.key,
-                            ),
-                          ),
-                          Radio<String>(
-                            activeColor: themeColor.primary,
-                            value: e.key,
-                            // ignore: deprecated_member_use
-                            groupValue: selected!.key,
-                            // ignore: deprecated_member_use
-                            onChanged: (value) {
-                              setState(() {
-                                if (value == options.last.key) {
-                                  selected = MapEntry(e.key, selected!.value);
-                                } else {
-                                  selected = e;
-                                }
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (index == options.length - 1 &&
-                        selected!.key == e.key) ...[
-                      DateInputCalendarPicker(
-                        onDateSelected: (selectedDate) {
-                          setState(() {
-                            selected = MapEntry(
-                              selected!.key,
-                              dateRange.copyWith(
-                                from: selectedDate.startOfDay,
-                              ),
-                            );
-                          });
-                        },
-                        hint: trans.selectDate,
-                        monthStr: trans.month,
-                        title: trans.fromDate,
-                        initial: dateRange.from,
-                        maxDate: dateRange.to,
-                      ),
-                      const SizedBox(height: 24),
-                      DateInputCalendarPicker(
-                        onDateSelected: (selectedDate) {
-                          setState(() {
-                            selected = MapEntry(
-                              selected!.key,
-                              dateRange.copyWith(
-                                to: selectedDate.endOfDay,
-                              ),
-                            );
-                          });
-                        },
-                        hint: trans.selectDate,
-                        monthStr: trans.month,
-                        title: trans.toDate,
-                        initial: dateRange.to,
-                        minDate: dateRange.from,
-                      ),
-                    ],
-                  ],
-                ),
+          child: RadioGroup<String>(
+            groupValue: selected!.key,
+            onChanged: (value) {
+              if (value == null) {
+                return;
+              }
+              setState(() {
+                if (value == options.last.key) {
+                  selected = MapEntry(value, selected!.value);
+                } else {
+                  selected = options.firstWhere((e) => e.key == value);
+                }
+              });
+            },
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
+                bottom: 16,
               ),
-            ],
+              children: [
+                ...options.mapIndex(
+                  (e, index) => Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            if (e.key == options.last.key) {
+                              selected = MapEntry(e.key, selected!.value);
+                            } else {
+                              selected = e;
+                            }
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                e.key,
+                              ),
+                            ),
+                            Radio<String>(
+                              activeColor: themeColor.primary,
+                              value: e.key,
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (index == options.length - 1 &&
+                          selected!.key == e.key) ...[
+                        DateInputCalendarPicker(
+                          onDateSelected: (selectedDate) {
+                            setState(() {
+                              selected = MapEntry(
+                                selected!.key,
+                                dateRange.copyWith(
+                                  from: selectedDate.startOfDay,
+                                ),
+                              );
+                            });
+                          },
+                          hint: trans.selectDate,
+                          monthStr: trans.month,
+                          title: trans.fromDate,
+                          initial: dateRange.from,
+                          maxDate: dateRange.to,
+                        ),
+                        const SizedBox(height: 24),
+                        DateInputCalendarPicker(
+                          onDateSelected: (selectedDate) {
+                            setState(() {
+                              selected = MapEntry(
+                                selected!.key,
+                                dateRange.copyWith(
+                                  to: selectedDate.endOfDay,
+                                ),
+                              );
+                            });
+                          },
+                          hint: trans.selectDate,
+                          monthStr: trans.month,
+                          title: trans.toDate,
+                          initial: dateRange.to,
+                          minDate: dateRange.from,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         FooterWidget(
