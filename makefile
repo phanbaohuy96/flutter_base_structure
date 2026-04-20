@@ -9,7 +9,7 @@ DART    := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "da
 # Main targets
 .PHONY: setup build run test clean asset lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
-	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_env gen_translation apply_translation
+	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
 
 # Default target
 all: setup build
@@ -45,8 +45,8 @@ help:
 	@echo "  make gen_translation    - Generate translation CSV with status column (for tracking changes)"
 	@echo "  make apply_translation  - Apply completed translations back to current localization file"
 	@echo "  make app_identifier     - Generate app identifier"
-	@echo "  make gen_env            - Generate environment configuration file"
-	@echo "                            (keystore template: see apps/main/android/keystores/keystore.properties.example)"
+	@echo "                            (env + keystore templates: cp apps/main/.env.example → .env and"
+	@echo "                             cp apps/main/android/keystores/keystore.properties.example → keystore.properties)"
 	@echo ""
 	@echo "Build and Run:"
 	@echo "  make build              - Interactive build menu (choose environment and platform)"
@@ -67,8 +67,8 @@ help:
 # Project Setup
 ################################################################################
 
-# Setup the project
-setup: clean pub_get lang asset gen_all gen_env
+# Setup the project (run `cp apps/main/.env.example apps/main/.env` first)
+setup: clean pub_get lang asset gen_all
 
 # Clean the project
 clean:
@@ -194,7 +194,6 @@ reset:
 	$(MAKE) lang
 	$(MAKE) asset
 	$(MAKE) gen_all
-	$(MAKE) gen_env
 
 # Code generation for all modules
 gen_all: gen_core gen_data_source gen_main
@@ -356,73 +355,3 @@ build_web:
 # Generate test coverage report for main app
 coverage_main:
 	sh coverage.sh apps/main
-
-# Generate app environment files
-gen_env:
-	@echo "Select path:"; \
-	echo "1. Main"; \
-	echo "0. Exit"; \
-	read -p "Enter (1-0): " choice; \
-	if [ $$choice = "0" ]; then \
-		echo "Exit"; \
-		exit 0; \
-	fi; \
-	if [ $$choice = "1" ]; then \
-		APP="apps/main"; \
-	else \
-		echo "Invalid choice"; \
-		exit 1; \
-	fi; \
-	if [ -f "$$APP/.env" ]; then \
-		echo "Warning: .env file already exists in $$APP/"; \
-		read -p "Do you want to overwrite it? (y/N): " confirm; \
-		if [ "$$confirm" != "y" ] && [ "$$confirm" != "Y" ]; then \
-			echo "Operation cancelled."; \
-			exit 0; \
-		fi; \
-	fi; \
-	echo "Creating .env file in $$APP/..."; \
-	echo "# Environment Configuration\n\
-DART_ENV_NAME=''\n\
-DART_BASE_API_LAYER=''\n\
-DART_STORAGE_API_LAYER=''\n\
-DART_STORAGE_ASSET_LAYER=''\n\
-DART_PRIVACY_URL=''\n\
-DART_COOKIES_CONSENT_URL=''\n\
-DART_TERMS_URL=''\n\
-\n\
-## POSTHOG\n\
-DART_POSTHOG_API_KEY=''\n\
-DART_POSTHOG_API_HOST=''\n\
-\n\
-## FIREBASE\n\
-# ANDROID\n\
-DART_ANDROID_FIREBASE_API_KEY=''\n\
-DART_ANDROID_FIREBASE_APP_ID=''\n\
-DART_ANDROID_FIREBASE_MESSAGING_SENDER_ID=''\n\
-DART_ANDROID_FIREBASE_PROJECT_ID=''\n\
-DART_ANDROID_FIREBASE_STORAGE_BUCKET=''\n\
-DART_ANDROID_FIREBASE_MEASUREMENT_ID=''\n\
-DART_ANDROID_FIREBASE_AUTH_DOMAIN=''\n\
-DART_ANDROID_FIREBASE_DATABASE_URL=''\n\
-\n\
-# IOS\n\
-DART_IOS_FIREBASE_API_KEY=''\n\
-DART_IOS_FIREBASE_APP_ID=''\n\
-DART_IOS_FIREBASE_MESSAGING_SENDER_ID=''\n\
-DART_IOS_FIREBASE_PROJECT_ID=''\n\
-DART_IOS_FIREBASE_STORAGE_BUCKET=''\n\
-DART_IOS_FIREBASE_MEASUREMENT_ID=''\n\
-DART_IOS_FIREBASE_AUTH_DOMAIN=''\n\
-DART_IOS_FIREBASE_DATABASE_URL=''\n\
-\n\
-# WEB\n\
-DART_WEB_FIREBASE_API_KEY=''\n\
-DART_WEB_FIREBASE_APP_ID=''\n\
-DART_WEB_FIREBASE_MESSAGING_SENDER_ID=''\n\
-DART_WEB_FIREBASE_PROJECT_ID=''\n\
-DART_WEB_FIREBASE_STORAGE_BUCKET=''\n\
-DART_WEB_FIREBASE_MEASUREMENT_ID=''\n\
-DART_WEB_FIREBASE_AUTH_DOMAIN=''\n\
-DART_WEB_FIREBASE_DATABASE_URL=''" > $$APP/.env; \
-	echo ".env file created successfully in $$APP/"
