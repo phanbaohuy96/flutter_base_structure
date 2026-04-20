@@ -44,6 +44,16 @@ class _MyWidgetState extends State<GenderSelection> {
     super.didUpdateWidget(oldWidget);
   }
 
+  void _select(String? value) {
+    if (!mounted || value == null) {
+      return;
+    }
+    setState(() {
+      _gender = value;
+      widget.onChange?.call(value);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     _themeData = context.theme;
@@ -58,14 +68,7 @@ class _MyWidgetState extends State<GenderSelection> {
         const SizedBox(height: 8),
         RadioGroup<String>(
           groupValue: _gender,
-          onChanged: (gender) {
-            if (mounted && gender != null) {
-              setState(() {
-                _gender = gender;
-                widget.onChange?.call(_gender!);
-              });
-            }
-          },
+          onChanged: _select,
           child: Row(
             children: [
               {
@@ -86,14 +89,7 @@ class _MyWidgetState extends State<GenderSelection> {
                 return Expanded(
                   flex: 1,
                   child: InkWell(
-                    onTap: () {
-                      if (mounted) {
-                        setState(() {
-                          _gender = e['value'] as String;
-                          widget.onChange?.call(_gender!);
-                        });
-                      }
-                    },
+                    onTap: () => _select(e['value'] as String),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 250),
                       decoration: BoxDecoration(
