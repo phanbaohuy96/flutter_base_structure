@@ -42,7 +42,7 @@ dependencies:
   collection: ^1.19.0
 
   # data
-  freezed: ^2.4.5
+  freezed_annotation: 3.1.0
   data_source:
     path: ../../modules/data_source
 
@@ -68,12 +68,17 @@ dev_dependencies:
   mockito: ^5.4.0
 
   build_runner: ^2.0.4
-  retrofit_generator: ^9.1.2
-  hive_generator: ^2.0.1
-  json_serializable: ^6.9.0
+  retrofit_generator: 10.2.3
+  hive_ce_generator: ^1.9.3
+  json_serializable: ^6.11.1
+  freezed: 3.2.3
   injectable_generator: ^2.6.2
   module_generator:
     path: ../../tools/module_generator
+
+dependency_overrides:
+  # flutter_avif (via core → fl_media) pins protobuf ^3.1.0; retrofit_generator requires ^6.0.0.
+  protobuf: ^6.0.0
 
 flutter:
   # l10n required

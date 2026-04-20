@@ -93,7 +93,7 @@ class InputDecorationFactory {
     );
   }
 
-  static InputDecorationTheme overrideTheme({
+  static InputDecorationThemeData overrideTheme({
     required BuildContext context,
     bool showBorder = true,
     BorderSide? borderSide,
