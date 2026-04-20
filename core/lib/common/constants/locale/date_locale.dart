@@ -38,11 +38,11 @@ abstract class DateLocale {
   String get pm;
 
   AppDateLocale get toAppDateLocale => AppDateLocale(
-        am: am,
-        pm: pm,
-        daysLong: daysLong,
-        daysShort: daysShort,
-        monthsLong: monthsLong,
-        monthsShort: monthsShort,
-      );
+    am: am,
+    pm: pm,
+    daysLong: daysLong,
+    daysShort: daysShort,
+    monthsLong: monthsLong,
+    monthsShort: monthsShort,
+  );
 }

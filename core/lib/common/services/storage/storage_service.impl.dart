@@ -22,30 +22,51 @@ class StorageServiceImpl extends StorageService {
     ProgressCallback? onSendProgress,
   }) async {
     final _mimeType = mimeType ?? lookupMimeType(file.path);
-    final res = autoCompressImage
-        ? await _compressFileIfImage(
-            await file.readAsBytes(),
-            filePath: file.path,
-            mimeType: _mimeType,
-            option: compressImageOption,
-          ).then(
-            (bytes) => _storageRepository.uploadBytes(
-              [
-                dio.MultipartFile.fromBytes(
-                  bytes.$1,
-                  filename: file.path.split('/').last,
-                  contentType: _mimeType?.let(
-                    (it) {
-                      return dio.DioMediaType.parse(it);
-                    },
-                  ),
-                ),
-              ],
-              cancelToken: cancelToken,
-              onSendProgress: onSendProgress,
-            ),
-          )
-        : await _storageRepository.uploadFile(file);
+    // Only read the file into memory when we actually need to compress
+    // an image. For non-images the repository uploads via a streamed
+    // MultipartFile.fromFileSync, which avoids the OOM on large files.
+    final _shouldCompress =
+        autoCompressImage && _mimeType?.startsWith('image/') == true;
+    final res = _shouldCompress
+        ? await _compressHelper
+              .compressFileIfImage(
+                await file.readAsBytes(),
+                filePath: file.path,
+                mimeType: _mimeType,
+                option: compressImageOption,
+              )
+              .then(
+                (compressedResult) {
+                  final originalName = file.path.split('/').last;
+                  final isCompressed =
+                      compressedResult.mimeType ==
+                      compressImageOption.format.mimeType;
+
+                  // Only change filename if actually compressed to webp
+                  final fileName = isCompressed
+                      ? _convertToWebPExtension(originalName)
+                      : originalName;
+
+                  return _storageRepository.uploadBytes(
+                    [
+                      dio.MultipartFile.fromBytes(
+                        compressedResult.image,
+                        filename: fileName,
+                        contentType: compressedResult.mimeType?.let(
+                          dio.DioMediaType.parse,
+                        ),
+                      ),
+                    ],
+                    cancelToken: cancelToken,
+                    onSendProgress: onSendProgress,
+                  );
+                },
+              )
+        : await _storageRepository.uploadFile(
+            file,
+            cancelToken: cancelToken,
+            onSendProgress: onSendProgress,
+          );
 
     return res.data;
   }
@@ -62,89 +83,44 @@ class StorageServiceImpl extends StorageService {
     ProgressCallback? onSendProgress,
   }) async {
     final res = autoCompressImage
-        ? await _compressFileIfImage(
-            bytes,
-            filePath: filePath,
-            mimeType: mimeType,
-            option: compressImageOption,
-          ).then(
-            (bytes) => _storageRepository.uploadBytes(
-              [
-                dio.MultipartFile.fromBytes(
-                  bytes.$1,
-                  filename: name,
-                  contentType: mimeType?.let(
-                    (it) {
-                      return dio.DioMediaType.parse(it);
-                    },
-                  ),
-                ),
-              ],
-              cancelToken: cancelToken,
-              onSendProgress: onSendProgress,
-            ),
-          )
-        : await _storageRepository.uploadBytes(
-            [
-              dio.MultipartFile.fromBytes(
-                bytes,
-                filename: name,
-                contentType: mimeType?.let(
-                  (it) {
-                    return dio.DioMediaType.parse(it);
-                  },
-                ),
-              ),
-            ],
-            cancelToken: cancelToken,
-            onSendProgress: onSendProgress,
-          );
-
-    return res.data;
-  }
-
-  @override
-  Future<CloudFile?> uploadImageBytes(
-    Uint8List bytes,
-    String name, {
-    String? mimeType,
-    bool autoCompressImage = false,
-    CompressImageOption compressImageOption = const CompressImageOption(),
-    dio.CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-  }) async {
-    final res = autoCompressImage
         ? await _compressHelper
-            .compressWithList(
-              image: bytes,
-              option: compressImageOption,
-            )
-            .then(
-              (bytes) => _storageRepository.uploadBytes(
-                [
-                  dio.MultipartFile.fromBytes(
-                    bytes.$1,
-                    filename: name,
-                    contentType: mimeType?.let(
-                      (it) {
-                        return dio.DioMediaType.parse(it);
-                      },
+              .compressFileIfImage(
+                bytes,
+                filePath: filePath,
+                mimeType: mimeType,
+                option: compressImageOption,
+              )
+              .then((compressedResult) {
+                final isCompressed =
+                    compressedResult.mimeType ==
+                    compressImageOption.format.mimeType;
+
+                // Only change filename if actually compressed to webp
+                final convertFileName = isCompressed
+                    ? _convertToWebPExtension(name)
+                    : name;
+
+                return _storageRepository.uploadBytes(
+                  [
+                    dio.MultipartFile.fromBytes(
+                      compressedResult.image,
+                      filename: convertFileName,
+                      contentType: compressedResult.mimeType?.let(
+                        dio.DioMediaType.parse,
+                      ),
                     ),
-                  ),
-                ],
-                cancelToken: cancelToken,
-                onSendProgress: onSendProgress,
-              ),
-            )
+                  ],
+                  cancelToken: cancelToken,
+                  onSendProgress: onSendProgress,
+                );
+              })
         : await _storageRepository.uploadBytes(
             [
               dio.MultipartFile.fromBytes(
                 bytes,
                 filename: name,
                 contentType: mimeType?.let(
-                  (it) {
-                    return dio.DioMediaType.parse(it);
-                  },
+                  dio.DioMediaType.parse,
                 ),
               ),
             ],
@@ -161,25 +137,11 @@ class StorageServiceImpl extends StorageService {
     return uri.resolve(reference).toString();
   }
 
-  Future<(Uint8List image, String? mimeType)> _compressFileIfImage(
-    Uint8List bytes, {
-    String? filePath,
-    String? mimeType,
-    CompressImageOption option = const CompressImageOption(),
-  }) async {
-    final mimeStr = mimeType ?? lookupMimeType(filePath ?? '');
-    if (mimeStr?.startsWith('image/') == true) {
-      try {
-        return _compressHelper.compressWithList(
-          image: bytes,
-          option: option,
-        );
-      } catch (e, s) {
-        logUtils.e(e, s);
-        return (bytes, mimeStr);
-      }
-    } else {
-      return (bytes, mimeStr);
+  String _convertToWebPExtension(String fileName) {
+    if (!fileName.contains('.')) {
+      return fileName;
     }
+    final lastDot = fileName.lastIndexOf('.');
+    return '${fileName.substring(0, lastDot)}.webp';
   }
 }

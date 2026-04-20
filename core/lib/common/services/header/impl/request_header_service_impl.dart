@@ -16,7 +16,7 @@ class RequestHeaderServiceImpl extends RequestHeaderService {
   }
 
   Map<String, String> get defaultHeader => {
-        RequestHeaderKey.contentType.key: 'application/json',
-        RequestHeaderKey.accept.key: 'application/json',
-      };
+    RequestHeaderKey.contentType.key: 'application/json',
+    RequestHeaderKey.accept.key: 'application/json',
+  };
 }

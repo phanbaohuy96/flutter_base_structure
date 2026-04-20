@@ -12,3 +12,20 @@ extension DiacriticsAwareNullableStringExtension on String? {
 extension StringHardcode on String {
   String get hardcode => this;
 }
+
+/// Extension for formatting file sizes
+extension FileSizeExtension on int {
+  /// Formats bytes to human-readable string (B, KB, MB, GB)
+  String get formatFileSize {
+    if (this < 1024) {
+      return '$this B';
+    }
+    if (this < 1024 * 1024) {
+      return '${(this / 1024).toStringAsFixed(1)} KB';
+    }
+    if (this < 1024 * 1024 * 1024) {
+      return '${(this / (1024 * 1024)).toStringAsFixed(1)} MB';
+    }
+    return '${(this / (1024 * 1024 * 1024)).toStringAsFixed(1)} GB';
+  }
+}

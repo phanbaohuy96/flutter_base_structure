@@ -7,6 +7,8 @@ abstract class CoreImageConstant {
 
   String get icUserAvatar;
 
+  String get icGroupAvatar;
+
   String? get imgScreenFormHeader;
 
   String? get imgMainPageFormHeader;

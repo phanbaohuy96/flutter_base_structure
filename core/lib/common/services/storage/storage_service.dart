@@ -14,7 +14,7 @@ abstract class StorageService {
   Future<CloudFile?> uploadFile(
     File file, {
     String? mimeType,
-    bool autoCompressImage = false,
+    bool autoCompressImage = true,
     CompressImageOption compressImageOption = const CompressImageOption(),
     dio.CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
@@ -25,17 +25,7 @@ abstract class StorageService {
     String name, {
     String? filePath,
     String? mimeType,
-    bool autoCompressImage = false,
-    CompressImageOption compressImageOption = const CompressImageOption(),
-    dio.CancelToken? cancelToken,
-    ProgressCallback? onSendProgress,
-  });
-
-  Future<CloudFile?> uploadImageBytes(
-    Uint8List bytes,
-    String name, {
-    String? mimeType,
-    bool autoCompressImage = false,
+    bool autoCompressImage = true,
     CompressImageOption compressImageOption = const CompressImageOption(),
     dio.CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
@@ -73,6 +63,9 @@ class StorageAssetProvider {
   String url(String reference, [bool shouldBeUUID = false]) {
     if (reference.isNotEmpty) {
       if (reference.isUrl) {
+        return reference;
+      }
+      if (reference.isLocalUrl) {
         return reference;
       }
       if (!shouldBeUUID || reference.split('.').first.isUUID) {

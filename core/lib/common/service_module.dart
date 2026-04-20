@@ -16,26 +16,24 @@ abstract class ServiceModule {
     LanguageHeaderProvider languageHeaderProvider,
     SystemHeaderProvider systemHeaderProvider,
     AuthHeaderProvider authHeaderProvider,
-  ) =>
-      RequestHeaderServiceImpl(
-        providers: [
-          appConfigHeaderProvider,
-          languageHeaderProvider,
-          systemHeaderProvider,
-          authHeaderProvider,
-        ],
-      );
+  ) => RequestHeaderServiceImpl(
+    providers: [
+      appConfigHeaderProvider,
+      languageHeaderProvider,
+      systemHeaderProvider,
+      authHeaderProvider,
+    ],
+  );
 
   @injectable
   StorageService storageService(
     StorageRepository _storageRepository,
     ImageCompressHelper _imageCompressHelper,
-  ) =>
-      StorageServiceImpl(
-        _imageCompressHelper,
-        _storageRepository,
-        Config.instance.appConfig.storageAssetLayer,
-      );
+  ) => StorageServiceImpl(
+    _imageCompressHelper,
+    _storageRepository,
+    Config.instance.appConfig.storageAssetLayer,
+  );
 
   @injectable
   StorageAssetProvider storageAssetProvider(StorageService _storageService) =>
