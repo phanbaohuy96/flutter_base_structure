@@ -332,8 +332,8 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
                 'name': 'bodyText',
               },
               {
-                'color': themeColor.lableText,
-                'name': 'lableText',
+                'color': themeColor.labelText,
+                'name': 'labelText',
               },
               {
                 'color': themeColor.warningText,
