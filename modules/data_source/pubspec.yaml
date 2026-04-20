@@ -4,7 +4,7 @@ version: 1.0.0
 publish_to: none
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
   flutter: ">=3.32.0"
 
 dependencies:
@@ -32,8 +32,9 @@ dev_dependencies:
     path: ../../tools/module_generator
 
 dependency_overrides:
-  # flutter_avif (via core → fl_media) pins protobuf ^3.1.0; retrofit_generator requires ^6.0.0.
-  protobuf: ^6.0.0
+  # flutter_avif (via core → fl_media) pins protobuf ^3.1.0; ^4.1.0 satisfies
+  # retrofit_generator and keeps flutter_avif's PbList generated code compiling.
+  protobuf: ^4.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -59,8 +59,8 @@ class CorePackageModule extends _i526.MicroPackageModule {
     final datasourceModule = _$DatasourceModule();
     final serviceModule = _$ServiceModule();
     final logUtilsModule = _$LogUtilsModule();
-    gh.factory<_i811.ImageCompressHelper>(() => _i811.ImageCompressHelper());
     gh.factory<_i1017.EventBus>(() => eventBusModule.eventBus);
+    gh.factory<_i811.ImageCompressHelper>(() => _i811.ImageCompressHelper());
     gh.factory<_i334.AppConfigHeaderProvider>(
         () => _i334.AppConfigHeaderProvider());
     gh.factory<_i481.SystemHeaderProvider>(() => _i481.SystemHeaderProvider());
@@ -109,10 +109,10 @@ class CorePackageModule extends _i526.MicroPackageModule {
           appData: appData,
           ldm: gh<_i494.CoreLocalDataManager>(),
         ));
-    gh.factory<_i67.LanguageHeaderProvider>(
-        () => _i67.LanguageHeaderProvider(gh<_i1036.CoreLocalDataManager>()));
     gh.factory<_i857.AuthHeaderProvider>(
         () => _i857.AuthHeaderProvider(gh<_i382.CoreLocalDataManager>()));
+    gh.factory<_i67.LanguageHeaderProvider>(
+        () => _i67.LanguageHeaderProvider(gh<_i1036.CoreLocalDataManager>()));
     gh.lazySingleton<_i524.RequestHeaderService>(
         () => serviceModule.requestHeaderService(
               gh<_i524.AppConfigHeaderProvider>(),

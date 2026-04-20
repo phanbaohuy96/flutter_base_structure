@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -33,11 +34,7 @@ Future<_i174.GetIt> $initGetIt(
   String? environment,
   _i526.EnvironmentFilter? environmentFilter,
 }) async {
-  final gh = _i526.GetItHelper(
-    getIt,
-    environment,
-    environmentFilter,
-  );
+  final gh = _i526.GetItHelper(getIt, environment, environmentFilter);
   await _i918.CorePackageModule().init(gh);
   await _i541.DataSourcePackageModule().init(gh);
   final appDatasourceModule = _$AppDatasourceModule();
@@ -45,20 +42,24 @@ Future<_i174.GetIt> $initGetIt(
   gh.singleton<_i965.CoreImageConstant>(() => _i835.ImageConstant());
   gh.singleton<_i494.SQLiteDatabase>(() => _i833.SQLiteDatabaseImpl());
   gh.factory<_i212.PreferencesHelper>(
-      () => _i212.PreferencesHelperImpl(gh<_i494.SharedPreferences>()));
-  gh.factory<_i655.LocalDataManager>(() => _i655.LocalDataManager(
-        gh<_i212.PreferencesHelper>(),
-        gh<_i494.CorePreferencesHelper>(),
-      ));
-  gh.factoryParam<_i494.ThemeDialog, _i409.BuildContext, dynamic>((
-    context,
-    _,
-  ) =>
-      _i83.AppThemeDialog(context));
-  gh.factory<_i494.CoreLocalDataManager>(() =>
-      appDatasourceModule.coreLocalDataManager(gh<_i655.LocalDataManager>()));
+    () => _i212.PreferencesHelperImpl(gh<_i494.SharedPreferences>()),
+  );
+  gh.factory<_i655.LocalDataManager>(
+    () => _i655.LocalDataManager(
+      gh<_i212.PreferencesHelper>(),
+      gh<_i494.CorePreferencesHelper>(),
+    ),
+  );
+  gh.factoryParam<_i494.ThemeDialog, _i409.BuildContext, dynamic>(
+    (context, _) => _i83.AppThemeDialog(context),
+  );
+  gh.factory<_i494.CoreLocalDataManager>(
+    () =>
+        appDatasourceModule.coreLocalDataManager(gh<_i655.LocalDataManager>()),
+  );
   gh.factory<_i738.AuthUsecase>(
-      () => _i738.AuthInteractorImpl(gh<_i655.LocalDataManager>()));
+    () => _i738.AuthInteractorImpl(gh<_i655.LocalDataManager>()),
+  );
   gh.factory<_i893.SigninBloc>(() => _i893.SigninBloc(gh<_i738.AuthUsecase>()));
   return getIt;
 }

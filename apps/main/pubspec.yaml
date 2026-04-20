@@ -8,7 +8,7 @@ version_prod: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
   flutter: ">=3.32.0"
 
 dependencies:
@@ -77,8 +77,9 @@ dev_dependencies:
     path: ../../tools/module_generator
 
 dependency_overrides:
-  # flutter_avif (via core → fl_media) pins protobuf ^3.1.0; retrofit_generator requires ^6.0.0.
-  protobuf: ^6.0.0
+  # flutter_avif (via core → fl_media) pins protobuf ^3.1.0; ^4.1.0 satisfies
+  # retrofit_generator and keeps flutter_avif's PbList generated code compiling.
+  protobuf: ^4.1.0
 
 flutter:
   # l10n required
@@ -98,64 +99,13 @@ flutter:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-  fonts:
-    - family: Poppins
-      fonts:
-        # - asset: assets/fonts/Poppins-Thin.woff2
-        #   weight: 100
-        # - asset: assets/fonts/Poppins-ThinItalic.woff2
-        #   weight: 100
-        #   style: italic
-
-        # - asset: assets/fonts/Poppins-ExtraLight.woff2
-        #   weight: 200
-        # - asset: assets/fonts/Poppins-ExtraLightItalic.woff2
-        #   weight: 200
-        #   style: italic
-
-        # - asset: assets/fonts/Poppins-Light.woff2
-        #   weight: 300
-        # - asset: assets/fonts/Poppins-LightItalic.woff2
-        #   weight: 300
-        #   style: italic
-
-        - asset: assets/fonts/Poppins-Regular.woff2
-          weight: 400
-        # - asset: assets/fonts/Poppins-Italic.woff2
-        #   weight: 400
-        #   style: italic
-
-        - asset: assets/fonts/Poppins-Medium.woff2
-          weight: 500
-        # - asset: assets/fonts/Poppins-MediumItalic.woff2
-        #   weight: 500
-        #   style: italic
-
-        - asset: assets/fonts/Poppins-SemiBold.woff2
-          weight: 600
-        # - asset: assets/fonts/Poppins-SemiBoldItalic.woff2
-        #   weight: 600
-        #   style: italic
-
-        - asset: assets/fonts/Poppins-Bold.woff2
-          weight: 700
-        # - asset: assets/fonts/Poppins-BoldItalic.woff2
-        #   weight: 700
-        #   style: italic
-
-        # - asset: assets/fonts/Poppins-ExtraBold.woff2
-        #   weight: 800
-        # - asset: assets/fonts/Poppins-ExtraBoldItalic.woff2
-        #   weight: 800
-        #   style: italic
-
-        # - asset: assets/fonts/Poppins-Black.woff2
-        #   weight: 900
-        # - asset: assets/fonts/Poppins-BlackItalic.woff2
-        #   weight: 900
-        #   style: italic
+  # Drop assets/fonts/*.woff2 into assets/fonts/ and declare the family here
+  # when the template is forked — e.g. Poppins, Inter, or your own brand font.
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.woff2
+  #         weight: 400
 
 flutter_intl:
   enabled: true

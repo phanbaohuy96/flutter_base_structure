@@ -3,7 +3,7 @@
 part of 'signin_bloc.dart';
 
 @freezed
-class _StateData with _$StateData {
+abstract class _StateData with _$StateData {
   const factory _StateData({
     @Default([]) final List<UserModel> users,
     final UserModel? selectedUser,

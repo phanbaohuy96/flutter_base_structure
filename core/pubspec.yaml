@@ -5,7 +5,7 @@ version: 3.32.0
 publish_to: none
 
 environment:
-  sdk: '>=3.3.1 <4.0.0'
+  sdk: '>=3.8.0 <4.0.0'
   flutter: ">=3.32.0"
 
 dependencies:
@@ -91,9 +91,10 @@ dev_dependencies:
     path: ../tools/module_generator
 
 dependency_overrides:
-  # flutter_avif (used by fl_media) pins protobuf ^3.1.0 but retrofit_generator >=10.2.1
-  # requires protobuf ^6.0.0. Override to ^6.0.0 (backward-compatible for flutter_avif's usage).
-  protobuf: ^6.0.0
+  # flutter_avif pins protobuf ^3.1.0 while retrofit_generator wants a newer
+  # line. ^4.1.0 satisfies retrofit_generator's resolver and keeps flutter_avif's
+  # generated PbList constructors working (protobuf 6.x removed them).
+  protobuf: ^4.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
