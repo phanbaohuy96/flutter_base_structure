@@ -1,0 +1,70 @@
+name: android
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.41.7'
+          channel: stable
+          cache: true
+
+      - name: Seed env and keystore templates
+        run: |
+          cp apps/main/.env.example apps/main/.env
+          cp apps/main/android/keystores/keystore.properties.example \
+             apps/main/android/keystores/keystore.properties
+
+      - name: Install dependencies
+        run: make pub_get
+
+      - name: Generate code
+        run: make gen_all
+
+      - name: Analyze
+        run: |
+          for pkg in core plugins/fl_ui plugins/fl_utils plugins/fl_theme \
+                    plugins/fl_media plugins/fl_navigation \
+                    modules/data_source apps/main; do
+            echo "::group::analyze $pkg"
+            (cd "$pkg" && flutter analyze --no-pub)
+            echo "::endgroup::"
+          done
+
+      - name: Test plugins and modules
+        run: |
+          for pkg in plugins/fl_utils plugins/fl_theme plugins/fl_navigation; do
+            echo "::group::test $pkg"
+            (cd "$pkg" && flutter test --no-pub)
+            echo "::endgroup::"
+          done
+
+      - name: Build debug APK (dev flavor)
+        run: |
+          cd apps/main
+          flutter build apk --debug --flavor dev \
+            -t lib/main_dev.dart \
+            --dart-define-from-file=./.env
+
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: app-dev-debug
+          path: apps/main/build/app/outputs/flutter-apk/app-dev-debug.apk
+          retention-days: 7
