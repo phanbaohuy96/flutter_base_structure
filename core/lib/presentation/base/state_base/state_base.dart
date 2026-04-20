@@ -4,7 +4,6 @@ import 'package:geolocator/geolocator.dart';
 
 import '../../../core.dart';
 import '../../../l10n/localization_ext.dart';
-import 'mixin.dart';
 
 part 'state_base.error_handler.dart';
 part 'state_base.ext.dart';
@@ -97,23 +96,22 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
       return error;
     }
 
-    final firebaseAuthExceptionType =
-        FirebaseAuthExceptionTypeExt.fromString(error.errorCode!);
+    final firebaseAuthExceptionType = FirebaseAuthExceptionTypeExt.fromString(
+      error.errorCode!,
+    );
 
     if (firebaseAuthExceptionType == null) {
       return error;
     }
 
-    final localizedMessage =
-        firebaseAuthExceptionType.localizedErrorMessage(context);
+    final localizedMessage = firebaseAuthExceptionType.localizedErrorMessage(
+      context,
+    );
     return error.copyWith(message: localizedMessage);
   }
 
   /// Handles unauthorized errors - triggers auth flow
-  void backToAuth({
-    VoidCallback? onSuccess,
-    VoidCallback? onSkip,
-  }) {
+  void backToAuth({VoidCallback? onSuccess, VoidCallback? onSkip}) {
     logUtils.w(
       '''There is no backToAuth implementation. Please override it in subclass if needed.''',
     );
@@ -127,8 +125,9 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
   }) {
     errorTypeShowing = error.type;
 
-    final displayMessage =
-        message?.isNotEmpty == true ? message! : coreL10n.technicalIssues;
+    final displayMessage = message?.isNotEmpty == true
+        ? message!
+        : coreL10n.technicalIssues;
 
     showNoticeErrorDialog(
       context: context,
@@ -171,10 +170,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
 
   /// Shows no internet connection notification
   void showNoInternetDialog() {
-    showSnackBar(
-      context: context,
-      message: coreL10n.noInternet,
-    );
+    showSnackBar(context: context, message: coreL10n.noInternet);
   }
 
   /// Handles logic errors
@@ -192,9 +188,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
     try {
       showLoading(status: coreL10n.loggingOut);
 
-      await Future.wait([
-        coreLocalDataManager.clearData(),
-      ]);
+      await Future.wait([coreLocalDataManager.clearData()]);
 
       logUtils.i('Logout completed successfully');
     } catch (e) {
