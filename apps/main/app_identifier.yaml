@@ -2,27 +2,27 @@
 
 android:
   dev:
-    package: net.vnsilicon.core.dev
-    name: Flutter DEV
+    package: com.pbh.baseflutter.dev
+    name: BaseFlutter DEV
   staging:
-    package: net.vnsilicon.core.staging
-    name: Flutter STAGING
+    package: com.pbh.baseflutter.staging
+    name: BaseFlutter STAGING
   sandbox:
-    package: net.vnsilicon.core.sandbox
-    name: Flutter SANDBOX
+    package: com.pbh.baseflutter.sandbox
+    name: BaseFlutter SANDBOX
   prod:
-    package: net.vnsilicon.core
-    name: Flutter Core
+    package: com.pbh.baseflutter
+    name: BaseFlutter
 ios:
   dev:
-    package: net.vnsilicon.core.dev
-    name: Flutter DEV
+    package: com.pbh.baseflutter.dev
+    name: BaseFlutter DEV
   staging:
-    package: net.vnsilicon.core.staging
-    name: Flutter STAGING
+    package: com.pbh.baseflutter.staging
+    name: BaseFlutter STAGING
   sandbox:
-    package: net.vnsilicon.core.sandbox
-    name: Flutter SANDBOX
+    package: com.pbh.baseflutter.sandbox
+    name: BaseFlutter SANDBOX
   prod:
-    package: net.vnsilicon.core
-    name: Flutter Core
+    package: com.pbh.baseflutter
+    name: BaseFlutter
