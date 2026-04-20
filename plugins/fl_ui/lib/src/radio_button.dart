@@ -58,7 +58,9 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
                 width: 24,
                 child: Radio<T>(
                   value: value,
+                  // ignore: deprecated_member_use
                   groupValue: groupValue,
+                  // ignore: deprecated_member_use
                   onChanged: onChanged,
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   fillColor: WidgetStateProperty.resolveWith<Color>(

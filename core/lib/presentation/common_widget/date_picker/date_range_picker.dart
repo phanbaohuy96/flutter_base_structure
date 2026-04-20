@@ -282,7 +282,9 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
                           Radio<String>(
                             activeColor: themeColor.primary,
                             value: e.key,
+                            // ignore: deprecated_member_use
                             groupValue: selected!.key,
+                            // ignore: deprecated_member_use
                             onChanged: (value) {
                               setState(() {
                                 if (value == options.last.key) {

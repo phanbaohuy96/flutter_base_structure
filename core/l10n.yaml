@@ -1,5 +1,4 @@
 output-class: CoreLocalizations
-synthetic-package: false
 arb-dir: lib/l10n
 output-dir: ./lib/l10n/generated/
 template-arb-file: intl_en.arb

@@ -31,13 +31,13 @@ class SQLiteDatabaseImpl extends SQLiteDatabase {
         await db.execute('PRAGMA foreign_keys = ON');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        //TODO: handle onUpgrade database version
+        // TODO(template): handle onUpgrade database version
         // await db.execute(
         //   'DROP TABLE IF EXISTS ${SqliteTable.form.name}',
         // );
       },
       onDowngrade: (db, oldVersion, newVersion) async {
-        //TODO: handle downgrade database version
+        // TODO(template): handle downgrade database version
         // await db.execute(
         //   'DROP TABLE IF EXISTS ${SqliteTable.form.name}',
         // );

@@ -146,9 +146,11 @@ class NoticeDialogWithOptions extends StatelessWidget {
                                         scale: 0.9,
                                         child: CupertinoRadio<int?>(
                                           value: index,
+                                          // ignore: deprecated_member_use
                                           groupValue:
                                               selectedOptionNotifier.value,
                                           activeColor: themeColor.primary,
+                                          // ignore: deprecated_member_use
                                           onChanged: (value) {
                                             selectedOptionNotifier.value =
                                                 value;

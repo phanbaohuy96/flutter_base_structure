@@ -98,7 +98,9 @@ class _MyWidgetState extends State<GenderSelection> {
                       children: [
                         Radio<String>(
                           value: e['value'] as String,
+                          // ignore: deprecated_member_use
                           groupValue: _gender,
+                          // ignore: deprecated_member_use
                           onChanged: (gender) {
                             if (mounted) {
                               setState(() {
