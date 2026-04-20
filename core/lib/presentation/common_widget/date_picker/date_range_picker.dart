@@ -250,24 +250,24 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
       ...DateRangeUtils().generateSuggestions(context),
       MapEntry(trans.manual, selected!.value),
     ];
+    void select(String? key) {
+      if (key == null) {
+        return;
+      }
+      setState(() {
+        selected = key == options.last.key
+            ? MapEntry(key, selected!.value)
+            : options.firstWhere((e) => e.key == key);
+      });
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Expanded(
           child: RadioGroup<String>(
             groupValue: selected!.key,
-            onChanged: (value) {
-              if (value == null) {
-                return;
-              }
-              setState(() {
-                if (value == options.last.key) {
-                  selected = MapEntry(value, selected!.value);
-                } else {
-                  selected = options.firstWhere((e) => e.key == value);
-                }
-              });
-            },
+            onChanged: select,
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
                 bottom: 16,
@@ -277,15 +277,7 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
                   (e, index) => Column(
                     children: [
                       InkWell(
-                        onTap: () {
-                          setState(() {
-                            if (e.key == options.last.key) {
-                              selected = MapEntry(e.key, selected!.value);
-                            } else {
-                              selected = e;
-                            }
-                          });
-                        },
+                        onTap: () => select(e.key),
                         child: Row(
                           children: [
                             Expanded(
