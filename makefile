@@ -4,7 +4,7 @@
 
 # Main targets
 .PHONY: setup build run test clean asset lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
-	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media \
+	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
 	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_env gen_keystore
 
 # Default target
@@ -89,6 +89,7 @@ pub_get_plugins:
 	$(MAKE) pub_get_fl_utils
 	$(MAKE) pub_get_fl_theme
 	$(MAKE) pub_get_fl_media
+	$(MAKE) pub_get_fl_navigation
 
 # Run flutter pub get for each plugin
 pub_get_fl_ui:
@@ -102,6 +103,9 @@ pub_get_fl_theme:
 
 pub_get_fl_media:
 	cd plugins/fl_media/; flutter pub get
+
+pub_get_fl_navigation:
+	cd plugins/fl_navigation/; flutter pub get
 
 # Run flutter pub get for core
 pub_get_core:
