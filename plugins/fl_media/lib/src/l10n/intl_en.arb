@@ -9,5 +9,7 @@
   "close": "Close",
   "gallery": "Gallery",
   "selectPhoto": "Select photo",
-  "takePhoto": "Take a photo"
+  "takePhoto": "Take a photo",
+  "media": "Media",
+  "tapToReload": "Tap to reload"
 }

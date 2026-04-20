@@ -32,80 +32,84 @@ class _HeroWidgetState extends State<HeroWidget> {
         return _rectTween!;
       },
       // make hero better when slide out
-      flightShuttleBuilder: (
-        BuildContext flightContext,
-        Animation<double> animation,
-        HeroFlightDirection flightDirection,
-        BuildContext fromHeroContext,
-        BuildContext toHeroContext,
-      ) {
-        // make hero more smoothly
-        final hero = (flightDirection == HeroFlightDirection.pop
-            ? fromHeroContext.widget
-            : toHeroContext.widget) as Hero;
-        if (_rectTween == null) {
-          return hero;
-        }
+      flightShuttleBuilder:
+          (
+            BuildContext flightContext,
+            Animation<double> animation,
+            HeroFlightDirection flightDirection,
+            BuildContext fromHeroContext,
+            BuildContext toHeroContext,
+          ) {
+            // make hero more smoothly
+            final hero =
+                (flightDirection == HeroFlightDirection.pop
+                        ? fromHeroContext.widget
+                        : toHeroContext.widget)
+                    as Hero;
+            if (_rectTween == null) {
+              return hero;
+            }
 
-        if (flightDirection == HeroFlightDirection.pop) {
-          final fixTransform = widget.slideType == SlideType.onlyImage &&
-              (widget.slidePagekey.currentState!.offset != Offset.zero ||
-                  widget.slidePagekey.currentState!.scale != 1.0);
+            if (flightDirection == HeroFlightDirection.pop) {
+              final fixTransform =
+                  widget.slideType == SlideType.onlyImage &&
+                  (widget.slidePagekey.currentState!.offset != Offset.zero ||
+                      widget.slidePagekey.currentState!.scale != 1.0);
 
-          final toHeroWidget = (toHeroContext.widget as Hero).child;
-          return AnimatedBuilder(
-            animation: animation,
-            builder: (BuildContext buildContext, Widget? child) {
-              var animatedBuilderChild = hero.child;
+              final toHeroWidget = (toHeroContext.widget as Hero).child;
+              return AnimatedBuilder(
+                animation: animation,
+                builder: (BuildContext buildContext, Widget? child) {
+                  var animatedBuilderChild = hero.child;
 
-              // make hero more smoothly
-              animatedBuilderChild = Stack(
-                clipBehavior: Clip.antiAlias,
-                alignment: Alignment.center,
-                children: <Widget>[
-                  Opacity(
-                    opacity: 1 - animation.value,
-                    child: UnconstrainedBox(
-                      child: SizedBox(
-                        width: _rectTween!.begin!.width,
-                        height: _rectTween!.begin!.height,
-                        child: toHeroWidget,
+                  // make hero more smoothly
+                  animatedBuilderChild = Stack(
+                    clipBehavior: Clip.antiAlias,
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      Opacity(
+                        opacity: 1 - animation.value,
+                        child: UnconstrainedBox(
+                          child: SizedBox(
+                            width: _rectTween!.begin!.width,
+                            height: _rectTween!.begin!.height,
+                            child: toHeroWidget,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  Opacity(
-                    opacity: animation.value,
-                    child: animatedBuilderChild,
-                  ),
-                ],
+                      Opacity(
+                        opacity: animation.value,
+                        child: animatedBuilderChild,
+                      ),
+                    ],
+                  );
+
+                  // fix transform when slide out
+                  if (fixTransform) {
+                    final offsetTween = Tween<Offset>(
+                      begin: Offset.zero,
+                      end: widget.slidePagekey.currentState!.offset,
+                    );
+
+                    final scaleTween = Tween<double>(
+                      begin: 1.0,
+                      end: widget.slidePagekey.currentState!.scale,
+                    );
+                    animatedBuilderChild = Transform.translate(
+                      offset: offsetTween.evaluate(animation),
+                      child: Transform.scale(
+                        scale: scaleTween.evaluate(animation),
+                        child: animatedBuilderChild,
+                      ),
+                    );
+                  }
+
+                  return animatedBuilderChild;
+                },
               );
-
-              // fix transform when slide out
-              if (fixTransform) {
-                final offsetTween = Tween<Offset>(
-                  begin: Offset.zero,
-                  end: widget.slidePagekey.currentState!.offset,
-                );
-
-                final scaleTween = Tween<double>(
-                  begin: 1.0,
-                  end: widget.slidePagekey.currentState!.scale,
-                );
-                animatedBuilderChild = Transform.translate(
-                  offset: offsetTween.evaluate(animation),
-                  child: Transform.scale(
-                    scale: scaleTween.evaluate(animation),
-                    child: animatedBuilderChild,
-                  ),
-                );
-              }
-
-              return animatedBuilderChild;
-            },
-          );
-        }
-        return hero.child;
-      },
+            }
+            return hero.child;
+          },
       child: widget.child,
     );
   }
