@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-const repositoryImpl = '''part of '${moduleNameKey}_repository.dart';
+const repositoryImpl =
+    '''part of '${moduleNameKey}_repository.dart';
 
 @Injectable(as: ${classNameKey}Repository)
 class ${classNameKey}RepositoryImpl with DataRepository implements ${classNameKey}Repository {

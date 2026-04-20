@@ -19,8 +19,9 @@ Future<void> generateAppLocalizations() async {
   final yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
 
   final csvPath = yamlMap['resource-file']?.toString() ?? '';
-  final outputPath =
-      (yamlMap['arb-dir'] is String) ? yamlMap['arb-dir'] : 'assets/languages';
+  final outputPath = (yamlMap['arb-dir'] is String)
+      ? yamlMap['arb-dir']
+      : 'assets/languages';
 
   if (!File(csvPath).existsSync()) {
     print('''Localizations csv file is not exist!''');
@@ -32,9 +33,7 @@ Future<void> generateAppLocalizations() async {
 
   final fields = await input
       .transform(utf8.decoder)
-      .transform(
-        CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
-      )
+      .transform(CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol))
       .toList();
 
   final filename = yamlMap['template-arb-file']?.toString() ?? '';
@@ -71,9 +70,7 @@ Future<void> generateSwapColumn({int? firstColIdx, int? secondColIdx}) async {
 
   final fields = await input
       .transform(utf8.decoder)
-      .transform(
-        CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
-      )
+      .transform(CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol))
       .toList();
 
   await generate_app_localizations.generateSwapColumn(
@@ -95,8 +92,9 @@ Future<void> generateAppLocalizationsCSVFile() async {
   final yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
 
   final csvPath = yamlMap['resource-file']?.toString() ?? '';
-  final filesPath =
-      (yamlMap['arb-dir'] is String) ? yamlMap['arb-dir'] : 'assets/languages';
+  final filesPath = (yamlMap['arb-dir'] is String)
+      ? yamlMap['arb-dir']
+      : 'assets/languages';
 
   await generate_app_localizations.generateAppLocalizationsCSVfile(
     filesPath: filesPath as String,
@@ -104,9 +102,7 @@ Future<void> generateAppLocalizationsCSVFile() async {
   );
 }
 
-Future<void> checkUnusedL10n({
-  bool shouldRemove = false,
-}) async {
+Future<void> checkUnusedL10n({bool shouldRemove = false}) async {
   var filePath = 'l10n.yaml';
   if (!File(filePath).existsSync()) {
     _showYamlError();
@@ -116,8 +112,9 @@ Future<void> checkUnusedL10n({
 
   final yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
 
-  final arbPath =
-      (yamlMap['resource-file'] is String) ? yamlMap['resource-file'] : null;
+  final arbPath = (yamlMap['resource-file'] is String)
+      ? yamlMap['resource-file']
+      : null;
 
   if (arbPath == null || arbPath.isEmpty) {
     print('''Resource file path is not set in l10n.yaml''');

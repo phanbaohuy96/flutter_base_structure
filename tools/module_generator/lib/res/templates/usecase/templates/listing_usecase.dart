@@ -1,7 +1,8 @@
 import '../../../../common/definitions.dart';
 
 /// Temlate for common usecase
-const listingUsecase = '''import 'dart:async';
+const listingUsecase =
+    '''import 'dart:async';
 
 import 'package:injectable/injectable.dart';
 
@@ -26,7 +27,8 @@ abstract class ${classNameKey}Usecase {
 }
 ''';
 
-const listingUsecaseImpl = '''part of '${moduleNameKey}_usecase.dart';
+const listingUsecaseImpl =
+    '''part of '${moduleNameKey}_usecase.dart';
 
 @Injectable(as: ${classNameKey}Usecase)
 class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {

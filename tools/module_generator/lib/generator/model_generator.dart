@@ -25,8 +25,9 @@ Future<bool> generateModel() async {
   final source = switch (selection) {
     1 => freezedModel,
     2 => jsonSerializableModel,
-    _ =>
-      throw UnsupportedError('Model with $selection currently not supported'),
+    _ => throw UnsupportedError(
+      'Model with $selection currently not supported',
+    ),
   };
 
   final className = formatClassName(name);

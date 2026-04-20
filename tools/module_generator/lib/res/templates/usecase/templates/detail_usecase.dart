@@ -1,6 +1,7 @@
 import '../../../../common/definitions.dart';
 
-const detailUsecase = '''import 'dart:async';
+const detailUsecase =
+    '''import 'dart:async';
 
 import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
@@ -12,7 +13,8 @@ abstract class ${classNameKey}Usecase {
 }
 ''';
 
-const detailUsecaseImpl = '''part of '${moduleNameKey}_usecase.dart';
+const detailUsecaseImpl =
+    '''part of '${moduleNameKey}_usecase.dart';
 
 @Injectable(as: ${classNameKey}Usecase)
 class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {

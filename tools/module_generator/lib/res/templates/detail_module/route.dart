@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-const detailModuleRoute = '''import 'package:core/core.dart';
+const detailModuleRoute =
+    '''import 'package:core/core.dart';
 
 import '$importPartKey/../../di/di.dart';
 import 'bloc/${moduleNameKey}_bloc.dart';

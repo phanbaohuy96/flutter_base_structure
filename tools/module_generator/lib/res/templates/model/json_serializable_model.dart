@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-const jsonSerializableModel = '''
+const jsonSerializableModel =
+    '''
 
 import 'package:core/core.dart';
 import 'package:json_annotation/json_annotation.dart';

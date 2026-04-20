@@ -1,8 +1,9 @@
 import '../../../../common/definitions.dart';
 
-const detailModuleAction = '''part of '${moduleNameKey}_screen.dart';
+const detailModuleAction =
+    '''part of '${moduleNameKey}_screen.dart';
 
-extension ${classNameKey}Action on _${classNameKey}ScreenState {
+extension on _${classNameKey}ScreenState {
   void _blocListener(BuildContext context, ${classNameKey}State state) {
     hideLoading();
   }

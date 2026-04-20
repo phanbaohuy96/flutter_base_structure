@@ -15,14 +15,15 @@ Future<bool> generateUsecase() async {
     message: 'Usecase directory',
   );
   await generateUsecaseWithTemplateSource(
-    source: usecaseRes[switch (selection) {
-      1 => 'common',
-      2 => 'detail',
-      3 => 'listing',
-      _ => throw UnsupportedError(
-          'Usecase with $selection currently not supported',
-        ),
-    }]!,
+    source:
+        usecaseRes[switch (selection) {
+          1 => 'common',
+          2 => 'detail',
+          3 => 'listing',
+          _ => throw UnsupportedError(
+            'Usecase with $selection currently not supported',
+          ),
+        }]!,
     inputModuleName: inputModuleName,
     inputModuleDir: inputModuleDir,
   );

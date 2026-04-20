@@ -26,11 +26,12 @@ class InputHelper {
     String defaultDir = 'lib/presentation/modules',
     String message = 'Module directory',
   }) async {
-    var inputModuleDir = await InputHelper.enterText(
-      '$message (default: $defaultDir): ',
-    ).then((value) {
-      return value?.replaceAll("'", '') ?? '';
-    });
+    var inputModuleDir =
+        await InputHelper.enterText('$message (default: $defaultDir): ').then((
+          value,
+        ) {
+          return value?.replaceAll("'", '') ?? '';
+        });
     return inputModuleDir.isEmpty ? defaultDir : inputModuleDir;
   }
 }

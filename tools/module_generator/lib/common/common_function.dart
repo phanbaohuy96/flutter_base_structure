@@ -25,8 +25,9 @@ extension StringExtension on String {
     };
 
     // Create pattern with word boundaries for exact matches
-    final pattern =
-        replacements.keys.map((key) => RegExp.escape(key)).join('|');
+    final pattern = replacements.keys
+        .map((key) => RegExp.escape(key))
+        .join('|');
     final regex = RegExp('($pattern)');
 
     return replaceAllMapped(regex, (match) => replacements[match.group(0)]!);

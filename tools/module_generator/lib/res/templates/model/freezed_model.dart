@@ -1,6 +1,7 @@
 import '../../../common/definitions.dart';
 
-const freezedModel = '''// ignore_for_file: invalid_annotation_target
+const freezedModel =
+    '''// ignore_for_file: invalid_annotation_target
 
 import 'package:core/core.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -8,8 +9,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part '$moduleNameKey.freezed.dart';
 part '$moduleNameKey.g.dart';
 
-@freezed
-class $classNameKey with _\$$classNameKey {
+@freezed 
+sealed class $classNameKey with _\$$classNameKey {
   @JsonSerializable(explicitToJson: true, includeIfNull: false)
   const factory $classNameKey({
     @JsonKey(name: 'id', fromJson: asOrNull)

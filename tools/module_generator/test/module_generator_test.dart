@@ -35,15 +35,19 @@ void main() {
 
       // Test **/ pattern matching - should match paths containing the pattern
       expect(
-          exportFile
-              .shouldIgnore('lib/common/universal/platform/platform.dart'),
-          isTrue);
-      expect(exportFile.shouldIgnore('lib/data/universal/platform/web.dart'),
-          isTrue);
+        exportFile.shouldIgnore('lib/common/universal/platform/platform.dart'),
+        isTrue,
+      );
       expect(
-          exportFile
-              .shouldIgnore('lib/presentation/universal/platform/mobile.dart'),
-          isTrue);
+        exportFile.shouldIgnore('lib/data/universal/platform/web.dart'),
+        isTrue,
+      );
+      expect(
+        exportFile.shouldIgnore(
+          'lib/presentation/universal/platform/mobile.dart',
+        ),
+        isTrue,
+      );
       expect(exportFile.shouldIgnore('lib/common/universal/platform'), isTrue);
 
       // Test **/*.ext pattern matching
@@ -52,16 +56,22 @@ void main() {
 
       // Test single * pattern - should only match files directly in directory
       expect(exportFile.shouldIgnore('temp/file.dart'), isTrue);
-      expect(exportFile.shouldIgnore('temp/subfolder/file.dart'),
-          isFalse); // Should not match subdirectories
+      expect(
+        exportFile.shouldIgnore('temp/subfolder/file.dart'),
+        isFalse,
+      ); // Should not match subdirectories
 
       // Test files that should not be ignored
-      expect(exportFile.shouldIgnore('lib/common/universal/other/file.dart'),
-          isFalse);
+      expect(
+        exportFile.shouldIgnore('lib/common/universal/other/file.dart'),
+        isFalse,
+      );
       expect(exportFile.shouldIgnore('lib/models/user.dart'), isFalse);
       expect(exportFile.shouldIgnore('lib/widgets/button.dart'), isFalse);
-      expect(exportFile.shouldIgnore('universal/platform'),
-          isFalse); // No prefix, so ** doesn't match
+      expect(
+        exportFile.shouldIgnore('universal/platform'),
+        isFalse,
+      ); // No prefix, so ** doesn't match
     });
 
     test('should not ignore anything when ignore list is empty', () {
@@ -72,9 +82,9 @@ void main() {
       );
 
       expect(
-          exportFile
-              .shouldIgnore('lib/common/universal/platform/platform.dart'),
-          isFalse);
+        exportFile.shouldIgnore('lib/common/universal/platform/platform.dart'),
+        isFalse,
+      );
       expect(exportFile.shouldIgnore('any/path/file.dart'), isFalse);
     });
 
@@ -91,13 +101,17 @@ void main() {
 
       // Test **/directory/** matching
       expect(exportFile.shouldIgnore('lib/test/widget_test.dart'), isTrue);
-      expect(exportFile.shouldIgnore('src/test/integration/api_test.dart'),
-          isTrue);
+      expect(
+        exportFile.shouldIgnore('src/test/integration/api_test.dart'),
+        isTrue,
+      );
 
       // Test directory/* matching (only direct children)
       expect(exportFile.shouldIgnore('build/output.dart'), isTrue);
-      expect(exportFile.shouldIgnore('build/subdir/file.dart'),
-          isFalse); // Should not match subdirectories
+      expect(
+        exportFile.shouldIgnore('build/subdir/file.dart'),
+        isFalse,
+      ); // Should not match subdirectories
 
       // Files that should not be ignored
       expect(exportFile.shouldIgnore('lib/models/user.dart'), isFalse);

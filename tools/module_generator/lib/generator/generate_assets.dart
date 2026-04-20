@@ -129,8 +129,10 @@ class AssetProcessor {
 
         for (final entity in entities.whereType<File>()) {
           try {
-            final assetFile =
-                AssetTypeDetector.createAssetFile(entity.path, prefix: prefix);
+            final assetFile = AssetTypeDetector.createAssetFile(
+              entity.path,
+              prefix: prefix,
+            );
             listAssets.add(assetFile);
           } catch (e) {
             // Skip ignored files or files with errors
@@ -154,8 +156,9 @@ class AssetProcessor {
     final groupedAssets = <AssetType, List<AssetFile>>{};
 
     for (final assetType in AssetType.values) {
-      groupedAssets[assetType] =
-          assets.where((asset) => asset.type == assetType).toList();
+      groupedAssets[assetType] = assets
+          .where((asset) => asset.type == assetType)
+          .toList();
     }
 
     return groupedAssets;
@@ -234,14 +237,20 @@ Future<void> generateAsset({
     // Write all asset files
     await _writeAssetFiles(output, {
       'assets.dart': assetsRes,
-      'image_assets.dart':
-          imageAssetsRes.replaceFirst(contentKey, imageContent),
+      'image_assets.dart': imageAssetsRes.replaceFirst(
+        contentKey,
+        imageContent,
+      ),
       'svg_assets.dart': svgAssetsRes.replaceFirst(contentKey, svgContent),
       'gif_assets.dart': gifAssetsRes.replaceFirst(contentKey, gifContent),
-      'audio_assets.dart':
-          audioAssetsRes.replaceFirst(contentKey, audioContent),
-      'other_assets.dart':
-          otherAssetsRes.replaceFirst(contentKey, otherContent),
+      'audio_assets.dart': audioAssetsRes.replaceFirst(
+        contentKey,
+        audioContent,
+      ),
+      'other_assets.dart': otherAssetsRes.replaceFirst(
+        contentKey,
+        otherContent,
+      ),
       'rive_assets.dart': riveContent,
     });
 
@@ -271,8 +280,10 @@ Future<void> removeUnusedAssets({
     print('Starting unused asset removal process...');
 
     // Collect assets with Assets.type.name pattern for usage checking
-    final allAssets =
-        await AssetProcessor.collectAssets(resPaths, prefix: 'Assets');
+    final allAssets = await AssetProcessor.collectAssets(
+      resPaths,
+      prefix: 'Assets',
+    );
     final groupedAssets = AssetProcessor.groupAssetsByType(allAssets);
 
     print('Found ${allAssets.length} total assets to check for usage');
@@ -285,8 +296,10 @@ Future<void> removeUnusedAssets({
     await _removeUsedAssetsFromLists(groupedAssets, allDartFiles);
 
     // Count unused assets
-    final unusedCount =
-        groupedAssets.values.fold<int>(0, (sum, list) => sum + list.length);
+    final unusedCount = groupedAssets.values.fold<int>(
+      0,
+      (sum, list) => sum + list.length,
+    );
     print('Found $unusedCount unused assets');
 
     if (unusedCount > 0) {
@@ -316,8 +329,10 @@ Future<void> _removeUsedAssetsFromLists(
 
     for (final assetList in groupedAssets.values) {
       assetList.removeWhere((asset) {
-        final regex =
-            RegExp('\\b(${asset.variableName})\\b', caseSensitive: false);
+        final regex = RegExp(
+          '\\b(${asset.variableName})\\b',
+          caseSensitive: false,
+        );
         return regex.hasMatch(content);
       });
     }

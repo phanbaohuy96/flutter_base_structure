@@ -1,6 +1,7 @@
 import '../../../../common/definitions.dart';
 
-final commonModuleScreen = '''import 'package:core/core.dart';
+final commonModuleScreen =
+    '''import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
 import '$importPartKey../l10n/generated/app_localizations.dart';

@@ -31,7 +31,8 @@ class ReCase {
 
       sb.write(char);
 
-      var isEndOfWord = nextChar == null ||
+      var isEndOfWord =
+          nextChar == null ||
           (_upperAlphaRegex.hasMatch(nextChar) && !isAllCaps) ||
           symbolSet.contains(nextChar);
 

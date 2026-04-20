@@ -148,9 +148,7 @@ Future<void> checkUnusedL10n({
 
   final fields = await input
       .transform(utf8.decoder)
-      .transform(
-        CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
-      )
+      .transform(CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol))
       .toList();
 
   final dartDir = Directory(dartPath);
@@ -161,11 +159,12 @@ Future<void> checkUnusedL10n({
   final usedKeys = <String>{};
 
   // Search Dart files for usage of localization keys
-  final dartFiles =
-      dartDir.listSync(recursive: true).where((f) => f.path.endsWith('.dart'));
+  final dartFiles = dartDir
+      .listSync(recursive: true)
+      .where((f) => f.path.endsWith('.dart'));
 
   final keyPattern = RegExp(
-    r'''(?:S\.of\(.*?\)|AppLocalizations\.of\(.*?\)|trans|translate\(.*?\)|l10n)\.(\w+)''',
+    r'''(?:S\.of\(.*?\)|AppLocalizations\.of\(.*?\)|trans|_localizations|translate\(.*?\)|l10n)\.(\w+)''',
   );
 
   for (final file in dartFiles) {
@@ -193,14 +192,11 @@ Future<void> checkUnusedL10n({
 
   // Optionally remove unused keys from .arb files
   if (shouldRemove) {
-    var csv = ListToCsvConverter(
-      eol: Platform.isMacOS ? '\n' : defaultEol,
-    ).convert(
-      [
-        fields.first,
-        ...fields.skip(1).where((row) => usedKeys.contains(row.first)),
-      ],
-    );
+    var csv = ListToCsvConverter(eol: Platform.isMacOS ? '\n' : defaultEol)
+        .convert([
+          fields.first,
+          ...fields.skip(1).where((row) => usedKeys.contains(row.first)),
+        ]);
 
     await FilesHelper.writeFile(pathFile: resourcePath, content: csv);
 
