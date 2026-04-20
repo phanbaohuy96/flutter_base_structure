@@ -54,8 +54,9 @@ class MoneySuggestionUtils {
         final maxAmount =
             (total ~/ denominations.last + 1) * denominations.last;
         if (total > denominations.last && !suggestions.contains(maxAmount)) {
-          suggestions
-              .add((total ~/ denominations.last + 1) * denominations.last);
+          suggestions.add(
+            (total ~/ denominations.last + 1) * denominations.last,
+          );
         }
         return suggestions;
       } else {

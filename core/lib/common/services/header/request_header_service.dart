@@ -21,8 +21,7 @@ enum RequestHeaderKey {
   platform('platform'),
   apiKey('x-core-api-key'),
   language('Accept-Language'),
-  deviceId('device-id'),
-  ;
+  deviceId('device-id');
 
   const RequestHeaderKey(this.key);
   final String key;
@@ -47,6 +46,10 @@ abstract class RequestHeaderService {
     for (final element in providers) {
       addProvider(element);
     }
+  }
+
+  void removeProviderWhere(bool Function(HeaderProvider) test) {
+    _providers.removeWhere(test);
   }
 
   T? findProvider<T extends HeaderProvider>() {

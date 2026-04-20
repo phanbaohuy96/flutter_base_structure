@@ -13,6 +13,6 @@ abstract class LogUtilsModule {
 
   @Injectable(env: [Env.sanboxEnvName, Env.prodEnvName])
   LogUtils get prodLogUtils => LogUtils(
-        cacheToView: false,
-      );
+    cacheToView: false,
+  );
 }

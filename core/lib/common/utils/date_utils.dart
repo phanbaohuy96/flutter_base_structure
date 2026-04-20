@@ -114,7 +114,7 @@ extension DateUtilsExtention on DateTime {
     );
   }
 
-  String? timeago([String? locale]) {
+  String? timeAgo([String? locale]) {
     return tag_format.format(
       this,
       locale: locale,

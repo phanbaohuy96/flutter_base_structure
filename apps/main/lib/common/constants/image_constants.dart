@@ -13,6 +13,9 @@ class ImageConstant extends core_const.CoreImageConstant {
   String get icUserAvatar => Assets.svg.icUserAvatar;
 
   @override
+  String get icGroupAvatar => Assets.svg.icUserAvatar;
+
+  @override
   String get imgScreenFormHeader => '';
 
   @override

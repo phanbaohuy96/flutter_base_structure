@@ -10,7 +10,8 @@ class LanguageHeaderProvider extends HeaderProvider {
 
   @override
   Future<Map<String, String>> build() async {
-    final languageCode = localDataManager.getLocalization() ??
+    final languageCode =
+        localDataManager.getLocalization() ??
         AppLocale.defaultLocale.languageCode;
     return {
       RequestHeaderKey.language.key: languageCode,

@@ -249,7 +249,11 @@ class _AutoCompleteFieldState<T extends Object>
                       TitleMode.above => const Offset(0, 18),
                       _ => const Offset(0, 0),
                     },
-                  OptionsViewOpenDirection.down => const Offset(0, 0),
+                  // mostSpace is resolved by Flutter at layout; fall through
+                  // to the no-offset branch since we can't predict direction.
+                  OptionsViewOpenDirection.down ||
+                  OptionsViewOpenDirection.mostSpace =>
+                    const Offset(0, 0),
                 };
                 return Transform.translate(
                   offset: offset,
@@ -325,7 +329,9 @@ class _AutocompleteOptionsState<T extends Object>
   Widget build(BuildContext context) {
     final optionsAlignment = switch (widget.openDirection) {
       OptionsViewOpenDirection.up => AlignmentDirectional.bottomStart,
-      OptionsViewOpenDirection.down => AlignmentDirectional.topStart,
+      OptionsViewOpenDirection.down ||
+      OptionsViewOpenDirection.mostSpace =>
+        AlignmentDirectional.topStart,
     };
     return Align(
       alignment: optionsAlignment,

@@ -14,8 +14,7 @@ enum OrderBy {
   desc('desc'),
   descNullsLast('desc_nulls_last'),
   asc('asc'),
-  ascNullsFirst('asc_nulls_first'),
-  ;
+  ascNullsFirst('asc_nulls_first');
 
   const OrderBy(this.orderBy);
 

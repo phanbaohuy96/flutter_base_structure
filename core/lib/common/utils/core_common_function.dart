@@ -213,7 +213,7 @@ class CoreCommonFunction extends CommonFunction {
     return compareVersionNames(currentVersion, newVersion) == 0;
   }
 
-  Future<bool> tryLunchUri(String uri) {
+  Future<bool> tryLaunchUri(String uri) {
     final _url = Uri.parse(uri);
     return canLaunchUrl(_url).then((value) {
       if (value) {
