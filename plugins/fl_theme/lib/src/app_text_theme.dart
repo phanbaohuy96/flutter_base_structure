@@ -278,17 +278,17 @@ class AppTextTheme extends TextTheme {
       labelLarge: TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
-        color: themeColor.lableText,
+        color: themeColor.labelText,
       ).wrapper(wrapper),
       labelMedium: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w500,
-        color: themeColor.lableText,
+        color: themeColor.labelText,
       ).wrapper(wrapper),
       labelSmall: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w500,
-        color: themeColor.lableText,
+        color: themeColor.labelText,
       ).wrapper(wrapper),
     );
   }

@@ -206,7 +206,7 @@ class ThemeColor {
   final Color headlineText;
   final Color titleText;
   final Color bodyText;
-  final Color lableText;
+  final Color labelText;
   final Color warningText;
   final Color hyperLink;
 
@@ -264,7 +264,7 @@ class ThemeColor {
     Color? headlineText,
     Color? titleText,
     Color? bodyText,
-    Color? lableText,
+    Color? labelText,
     Color? warningText,
     Color? hyperLink,
   })  : primaryVariant = primaryVariant ?? primary.darken(0.2),
@@ -356,7 +356,7 @@ class ThemeColor {
             (brightness == Brightness.light
                 ? const Color(0xFF272727)
                 : Colors.grey),
-        lableText = lableText ??
+        labelText = labelText ??
             (brightness == Brightness.light
                 ? const Color(0xFF272727)
                 : Colors.grey),
@@ -520,7 +520,7 @@ class ThemeColor {
       displayText:
           Color.lerp(displayText, other.displayText, t) ?? other.displayText,
       bodyText: Color.lerp(bodyText, other.bodyText, t) ?? other.bodyText,
-      lableText: Color.lerp(lableText, other.lableText, t) ?? other.lableText,
+      labelText: Color.lerp(labelText, other.labelText, t) ?? other.labelText,
       headlineText:
           Color.lerp(headlineText, other.headlineText, t) ?? other.headlineText,
       titleText: Color.lerp(titleText, other.titleText, t) ?? other.titleText,
