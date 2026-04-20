@@ -9,7 +9,7 @@ DART    := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "da
 # Main targets
 .PHONY: setup build run test clean asset lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
-	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_env gen_keystore gen_translation apply_translation
+	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_env gen_translation apply_translation
 
 # Default target
 all: setup build
@@ -46,7 +46,7 @@ help:
 	@echo "  make apply_translation  - Apply completed translations back to current localization file"
 	@echo "  make app_identifier     - Generate app identifier"
 	@echo "  make gen_env            - Generate environment configuration file"
-	@echo "  make gen_keystore       - Generate keystore configuration file"
+	@echo "                            (keystore template: see apps/main/android/keystores/keystore.properties.example)"
 	@echo ""
 	@echo "Build and Run:"
 	@echo "  make build              - Interactive build menu (choose environment and platform)"
@@ -68,7 +68,7 @@ help:
 ################################################################################
 
 # Setup the project
-setup: clean pub_get lang asset gen_all gen_env gen_keystore
+setup: clean pub_get lang asset gen_all gen_env
 
 # Clean the project
 clean:
@@ -426,72 +426,3 @@ DART_WEB_FIREBASE_MEASUREMENT_ID=''\n\
 DART_WEB_FIREBASE_AUTH_DOMAIN=''\n\
 DART_WEB_FIREBASE_DATABASE_URL=''" > $$APP/.env; \
 	echo ".env file created successfully in $$APP/"
-
-# Generate keystore configuration files
-gen_keystore:
-	@echo "Select path:"; \
-	echo "1. Main"; \
-	echo "0. Exit"; \
-	read -p "Enter (1-0): " choice; \
-	if [ $$choice = "0" ]; then \
-		echo "Exit"; \
-		exit 0; \
-	fi; \
-	if [ $$choice = "1" ]; then \
-		APP="apps/main"; \
-	else \
-		echo "Invalid choice"; \
-		exit 1; \
-	fi; \
-	if [ -f "$$APP/android/keystores/keystore.properties" ]; then \
-		echo "Warning: keystore.properties file already exists in $$APP/android/keystores/"; \
-		read -p "Do you want to overwrite it? (y/N): " confirm; \
-		if [ "$$confirm" != "y" ] && [ "$$confirm" != "Y" ]; then \
-			echo "Operation cancelled."; \
-			exit 0; \
-		fi; \
-	fi; \
-	echo "Creating keystore.properties file in $$APP/android/keystores/..."; \
-	echo "# =========================================================================\n\
-# Android Keystore Configuration\n\
-# =========================================================================\n\
-# This file contains keystore configuration for different build variants\n\
-# Certificate validity: 8760 days (24 years)\n\
-# =========================================================================\n\
-\n\
-# -------------------------------------------------------------------------\n\
-# DEVELOPMENT Environment\n\
-# -------------------------------------------------------------------------\n\
-# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
-DEV_STORE_FILE=../keystores/dev_keystore.jks\n\
-DEV_KEY_ALIAS=placeholder-value\n\
-DEV_STORE_PASSWORD=placeholder-value\n\
-DEV_KEY_PASSWORD=placeholder-value\n\
-\n\
-# -------------------------------------------------------------------------\n\
-# STAGING Environment\n\
-# -------------------------------------------------------------------------\n\
-# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
-STAGING_STORE_FILE=../keystores/staging_keystore.jks\n\
-STAGING_KEY_ALIAS=placeholder-value\n\
-STAGING_STORE_PASSWORD=placeholder-value\n\
-STAGING_KEY_PASSWORD=placeholder-value\n\
-\n\
-# -------------------------------------------------------------------------\n\
-# SANDBOX Environment\n\
-# -------------------------------------------------------------------------\n\
-# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
-SANDBOX_STORE_FILE=../keystores/sandbox_keystore.jks\n\
-SANDBOX_KEY_ALIAS=placeholder-value\n\
-SANDBOX_STORE_PASSWORD=placeholder-value\n\
-SANDBOX_KEY_PASSWORD=placeholder-value\n\
-\n\
-# -------------------------------------------------------------------------\n\
-# PRODUCTION Environment\n\
-# -------------------------------------------------------------------------\n\
-# Certificate DN: CN=Your Org, OU=ORG, O=ORG, L=City, ST=State, C=Country\n\
-PROD_STORE_FILE=../keystores/keystore.jks\n\
-PROD_KEY_ALIAS=placeholder-value\n\
-PROD_STORE_PASSWORD=placeholder-value\n\
-PROD_KEY_PASSWORD=placeholder-value" > $$APP/android/keystores/keystore.properties; \
-	echo "keystore.properties file created successfully in $$APP/android/keystores/"
