@@ -8,7 +8,7 @@ plugins {
 apply from: 'signing.gradle'
 
 android {
-    namespace 'net.vnsilicon.core'
+    namespace 'com.pbh.baseflutter'
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 

@@ -1,4 +1,4 @@
-package net.vnsilicon.core
+package com.pbh.baseflutter
 
 import io.flutter.embedding.android.FlutterActivity
 
