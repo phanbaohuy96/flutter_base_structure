@@ -12,7 +12,7 @@ class AppThemeColor extends ThemeColor {
     super.elevatedBtnForegroundColor = Colors.white,
     super.schemeAction = Colors.grey,
     super.outlineButtonColor = const Color(0xff3B82F6),
-    super.lableText = const Color(0xff8E8E93),
+    super.labelText = const Color(0xff8E8E93),
   });
 }
 
@@ -25,6 +25,6 @@ class AppDarkThemeColor extends ThemeColor {
     super.brightness = Brightness.dark,
     super.schemeAction = Colors.grey,
     super.outlineButtonColor = const Color(0xff3B82F6),
-    super.lableText = const Color(0xff8E8E93),
+    super.labelText = const Color(0xff8E8E93),
   });
 }

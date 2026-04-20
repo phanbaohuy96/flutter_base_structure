@@ -21,7 +21,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane android upload_firebase_dev
 ```
 
-Deploy with Fastlane
+Deploy Android APK to Firebase App Distribution - Dev
 
 ### android upload_firebase_staging
 
@@ -29,7 +29,15 @@ Deploy with Fastlane
 [bundle exec] fastlane android upload_firebase_staging
 ```
 
+Deploy Android APK to Firebase App Distribution - Staging
 
+### android upload_firebase_sandbox
+
+```sh
+[bundle exec] fastlane android upload_firebase_sandbox
+```
+
+Deploy Android APK to Firebase App Distribution - Sandbox
 
 ### android upload_firebase_prod
 
@@ -37,7 +45,15 @@ Deploy with Fastlane
 [bundle exec] fastlane android upload_firebase_prod
 ```
 
+Deploy Android APK to Firebase App Distribution - Production
 
+### android deploy_play_store
+
+```sh
+[bundle exec] fastlane android deploy_play_store
+```
+
+Deploy to Google Play Store
 
 ----
 
@@ -50,7 +66,7 @@ Deploy with Fastlane
 [bundle exec] fastlane ios upload_firebase_dev
 ```
 
-Description of what the lane does
+Deploy iOS IPA to Firebase App Distribution - Dev
 
 ### ios upload_firebase_staging
 
@@ -58,7 +74,15 @@ Description of what the lane does
 [bundle exec] fastlane ios upload_firebase_staging
 ```
 
+Deploy iOS IPA to Firebase App Distribution - Staging
 
+### ios upload_firebase_sandbox
+
+```sh
+[bundle exec] fastlane ios upload_firebase_sandbox
+```
+
+Deploy iOS IPA to Firebase App Distribution - Sandbox
 
 ### ios upload_firebase_prod
 
@@ -66,7 +90,23 @@ Description of what the lane does
 [bundle exec] fastlane ios upload_firebase_prod
 ```
 
+Deploy iOS IPA to Firebase App Distribution - Production
 
+### ios upload_testflight
+
+```sh
+[bundle exec] fastlane ios upload_testflight
+```
+
+Upload to TestFlight
+
+### ios deploy_app_store
+
+```sh
+[bundle exec] fastlane ios deploy_app_store
+```
+
+Deploy to App Store
 
 ----
 

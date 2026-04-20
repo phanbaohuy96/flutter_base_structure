@@ -1,75 +1,279 @@
 default_platform(:android)
 
+# Environment variables (can be overridden in CI/CD)
+# FIREBASE_TOKEN - Firebase CI token (optional, falls back to firebase CLI login)
+# FIREBASE_SERVICE_ACCOUNT_JSON - Firebase service account JSON (base64, recommended for CI/CD)
+# APP_STORE_CONNECT_API_KEY_ID - App Store Connect API Key ID
+# APP_STORE_CONNECT_ISSUER_ID - App Store Connect Issuer ID
+# APP_STORE_CONNECT_API_KEY_CONTENT - App Store Connect API Key (base64)
+
 platform :android do
-  desc "Deploy with Fastlane"
+  desc "Deploy Android APK to Firebase App Distribution - Dev"
   lane :upload_firebase_dev do |options|
     apk_path = options[:binary_path]
+    groups = options.fetch(:group, "android-internal")
+    testers = options.fetch(:testers, "")
 
-    firebase_app_distribution(
-      app: "",
-      groups: "android-internal",
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_ANDROID_DEV"] || "",
+      groups: groups,
+      testers: testers,
       release_notes_file: "release_notes_dev.txt",
       apk_path: apk_path
-    )
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
   end
 
+  desc "Deploy Android APK to Firebase App Distribution - Staging"
   lane :upload_firebase_staging do |options|
     apk_path = options[:binary_path]
+    groups = options.fetch(:group, "android-internal")
+    testers = options.fetch(:testers, "")
 
-    firebase_app_distribution(
-      app: "",
-      groups: "android-internal",
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_ANDROID_STAGING"] || "",
+      groups: groups,
+      testers: testers,
       release_notes_file: "release_notes_staging.txt",
       apk_path: apk_path
-    )
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
   end
 
+  desc "Deploy Android APK to Firebase App Distribution - Sandbox"
+  lane :upload_firebase_sandbox do |options|
+    apk_path = options[:binary_path]
+    groups = options.fetch(:group, "android-internal")
+    testers = options.fetch(:testers, "")
+
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_ANDROID_SANDBOX"] || "",
+      groups: groups,
+      testers: testers,
+      release_notes_file: "release_notes_sandbox.txt",
+      apk_path: apk_path
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
+  end
+
+  desc "Deploy Android APK to Firebase App Distribution - Production"
   lane :upload_firebase_prod do |options|
     apk_path = options[:binary_path]
+    groups = options.fetch(:group, "android-internal")
+    testers = options.fetch(:testers, "")
 
-    firebase_app_distribution(
-      app: "",
-      groups: "android-internal",
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_ANDROID_PROD"] || "",
+      groups: groups,
+      testers: testers,
       release_notes_file: "release_notes_prod.txt",
       apk_path: apk_path
-    )
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
   end
 
+  desc "Deploy to Google Play Store"
+  lane :deploy_play_store do |options|
+    flavor = options.fetch(:flavor, "prod")
+    track = options.fetch(:track, "internal") # internal, alpha, beta, production
+    
+    upload_to_play_store(
+      track: track,
+      package_name: "com.example.app",
+      aab: "build/app/outputs/bundle/#{flavor}Release/app-#{flavor}-release.aab",
+      skip_upload_screenshots: true,
+      skip_upload_images: true,
+      skip_upload_metadata: true
+    )
+  end
 end
 
 platform :ios do
-  desc "Description of what the lane does"
+  desc "Deploy iOS IPA to Firebase App Distribution - Dev"
   lane :upload_firebase_dev do |options|
     ipa_path = options[:binary_path]
+    groups = options.fetch(:group, "ios-internal")
+    testers = options.fetch(:testers, "")
 
-    firebase_app_distribution(
-      app: "",
-      groups: "ios-internal",
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_IOS_DEV"] || "",
+      groups: groups,
+      testers: testers,
       release_notes_file: "release_notes_dev.txt",
       ipa_path: ipa_path
-    )
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
   end
 
+  desc "Deploy iOS IPA to Firebase App Distribution - Staging"
   lane :upload_firebase_staging do |options|
     ipa_path = options[:binary_path]
+    groups = options.fetch(:group, "ios-internal")
+    testers = options.fetch(:testers, "")
 
-    firebase_app_distribution(
-      app: "",
-      groups: "ios-internal",
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_IOS_STAGING"] || "",
+      groups: groups,
+      testers: testers,
       release_notes_file: "release_notes_staging.txt",
       ipa_path: ipa_path
-    )
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
   end
 
-  lane :upload_firebase_prod do  |options|
+  desc "Deploy iOS IPA to Firebase App Distribution - Sandbox"
+  lane :upload_firebase_sandbox do |options|
     ipa_path = options[:binary_path]
+    groups = options.fetch(:group, "ios-internal")
+    testers = options.fetch(:testers, "")
 
-    firebase_app_distribution(
-      app: "",
-      groups: "ios-internal",
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_IOS_SANDBOX"] || "",
+      groups: groups,
+      testers: testers,
+      release_notes_file: "release_notes_sandbox.txt",
+      ipa_path: ipa_path
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
+  end
+
+  desc "Deploy iOS IPA to Firebase App Distribution - Production"
+  lane :upload_firebase_prod do |options|
+    ipa_path = options[:binary_path]
+    groups = options.fetch(:group, "ios-internal")
+    testers = options.fetch(:testers, "")
+
+    firebase_options = {
+      app: ENV["FIREBASE_APP_ID_IOS_PROD"] || "",
+      groups: groups,
+      testers: testers,
       release_notes_file: "release_notes_prod.txt",
       ipa_path: ipa_path
+    }
+    
+    # Service account takes precedence over CLI token (recommended for CI/CD)
+    if ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]
+      service_account_path = "/tmp/firebase-service-account.json"
+      File.write(service_account_path, Base64.decode64(ENV["FIREBASE_SERVICE_ACCOUNT_JSON"]))
+      firebase_options[:service_credentials_file] = service_account_path
+    elsif ENV["FIREBASE_TOKEN"]
+      firebase_options[:firebase_cli_token] = ENV["FIREBASE_TOKEN"]
+    end
+    
+    firebase_app_distribution(firebase_options)
+  end
+
+  desc "Upload to TestFlight"
+  lane :upload_testflight do |options|
+    ipa_path = options[:binary_path]
+    
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY_CONTENT"],
+      is_key_content_base64: true
+    )
+    
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: ipa_path,
+      skip_waiting_for_build_processing: true,
+      skip_submission: true
     )
   end
-   
+
+  desc "Deploy to App Store"
+  lane :deploy_app_store do |options|
+    ipa_path = options[:binary_path]
+    
+    api_key = app_store_connect_api_key(
+      key_id: ENV["APP_STORE_CONNECT_API_KEY_ID"],
+      issuer_id: ENV["APP_STORE_CONNECT_ISSUER_ID"],
+      key_content: ENV["APP_STORE_CONNECT_API_KEY_CONTENT"],
+      is_key_content_base64: true
+    )
+    
+    upload_to_app_store(
+      api_key: api_key,
+      ipa: ipa_path,
+      skip_screenshots: true,
+      skip_metadata: true,
+      submit_for_review: false
+    )
+  end
+end
+
+# Error handling
+error do |lane, exception, options|
+  UI.error("Error in lane #{lane}: #{exception.message}")
 end

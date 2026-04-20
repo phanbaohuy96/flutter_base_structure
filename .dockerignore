@@ -1,0 +1,8 @@
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.build
+**/.idea
+**/.dart_tool
+**/.gradle
+**/doc/api/
+.git
