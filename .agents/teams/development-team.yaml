@@ -1,0 +1,231 @@
+# Development Team Configuration
+# AI agent roles available in this Flutter base template.
+#
+# Each member has:
+#   role            — stable internal name used in handoff rules
+#   agent           — handle the user mentions to activate it (e.g. @orchestrator)
+#   responsibilities— what the role owns
+#   triggers        — words/phrases that should auto-route to this role
+#   skills          — entries from .agents/skills/ this role should pull on
+#                     (informational; agents still resolve skills dynamically)
+
+team:
+  name: development-team
+  description: Full-cycle development team for the Flutter base template
+
+  members:
+    - role: orchestrator
+      agent: orchestrator
+      responsibilities:
+        - task_decomposition
+        - delegation
+        - quality_control
+        - workflow_coordination
+      triggers: [plan, coordinate, review, organize]
+      skills: []   # delegates to specialists; rarely loads skills directly
+
+    - role: explorer
+      agent: explorer
+      responsibilities:
+        - codebase_search
+        - file_discovery
+        - pattern_matching
+        - code_navigation
+      triggers: [find, search, locate, explore]
+      skills: []
+
+    - role: oracle
+      agent: oracle
+      responsibilities:
+        - architecture_review
+        - design_decisions
+        - code_quality_analysis
+        - strategic_planning
+      triggers: ["should I", architecture, design, review]
+      skills:
+        - bloc-pattern
+        - route-config
+        - error-handling
+        - data-layer
+        - flutter-reviewer
+        - data-reviewer
+
+    - role: security_auditor
+      agent: security-auditor
+      responsibilities:
+        - vulnerability_detection
+        - security_pattern_analysis
+        - dependency_auditing
+        - remediation_guidance
+      triggers: [security, vulnerability, audit, scan]
+      skills:
+        - data-layer            # auth, token storage, network surface
+        - error-handling        # how unauthorized + 4xx flow
+
+    - role: researcher
+      agent: researcher
+      responsibilities:
+        - external_research
+        - documentation_lookup
+        - api_reference
+        - best_practices
+      triggers: [research, documentation, API, "best practice"]
+      skills: []
+
+    - role: designer
+      agent: designer
+      responsibilities:
+        - ui_ux_design
+        - component_creation
+        - visual_design
+      triggers: [design, UI, UX, style, visual]
+      skills:
+        - theme-usage
+        - extension-action
+        - localization
+
+    - role: fixer
+      agent: fixer
+      responsibilities:
+        - implementation
+        - bug_fixes
+        - feature_development
+        - refactoring
+      triggers: [fix, implement, create, build, write]
+      skills:
+        - module-scaffold
+        - bloc-pattern
+        - extension-action
+        - route-config
+        - theme-usage
+        - data-layer
+        - localization
+        - error-handling
+        - code-generation
+        - testing
+
+    - role: git_master
+      agent: git-master
+      responsibilities:
+        - commit_creation
+        - rebase_operations
+        - history_analysis
+        - atomic_commits
+      triggers: [commit, git, rebase, history]
+      skills:
+        - code-generation       # ensure generated files are staged before commit
+
+# Handoff Protocol
+handoff:
+  protocol: explicit
+  triggers:
+    - condition: security_issue_detected
+      target: security_auditor
+      context_transfer: full
+    - condition: implementation_needed
+      target: fixer
+      context_transfer: summary
+    - condition: design_decision_required
+      target: oracle
+      context_transfer: full
+    - condition: external_research_needed
+      target: researcher
+      context_transfer: summary
+    - condition: implementation_complete
+      target: git_master
+      context_transfer: summary
+    - condition: ui_review_needed
+      target: oracle
+      context_transfer: full
+      hint: load flutter-reviewer
+    - condition: data_layer_review_needed
+      target: oracle
+      context_transfer: full
+      hint: load data-reviewer
+  termination_conditions:
+    - type: max_messages
+      value: 50
+    - type: text_mention
+      value: "TASK_COMPLETE"
+    - type: external
+      enabled: true
+
+# Collaboration Pattern
+collaboration:
+  type: swarm
+  description: Agents handoff based on task requirements
+  default_flow: |
+    1. orchestrator receives task
+    2. orchestrator decomposes and delegates
+    3. specialists complete their tasks
+    4. fixer implements changes (loads module-scaffold / bloc-pattern / etc.)
+    5. oracle reviews via flutter-reviewer or data-reviewer
+    6. git_master runs code-generation, then creates atomic commits
+    7. orchestrator verifies completion
+
+# Common workflows expressed as agent + skill chains
+workflows:
+  new_feature:
+    description: Add a new screen with bloc, route, and tests
+    chain:
+      - { agent: fixer, skills: [module-scaffold] }
+      - { agent: fixer, skills: [bloc-pattern, extension-action] }
+      - { agent: fixer, skills: [route-config] }
+      - { agent: designer, skills: [theme-usage, localization] }
+      - { agent: fixer, skills: [code-generation] }
+      - { agent: fixer, skills: [testing] }
+      - { agent: oracle, skills: [flutter-reviewer] }
+      - { agent: git_master }
+
+  api_integration:
+    description: Wrap a new endpoint into repo + bloc
+    chain:
+      - { agent: fixer, skills: [data-layer] }
+      - { agent: fixer, skills: [code-generation] }
+      - { agent: fixer, skills: [bloc-pattern] }
+      - { agent: fixer, skills: [error-handling] }
+      - { agent: fixer, skills: [testing] }
+      - { agent: oracle, skills: [data-reviewer] }
+      - { agent: git_master }
+
+  bug_fix:
+    description: Locate, root-cause, fix, and pin with a regression test
+    chain:
+      - { agent: explorer }
+      - { agent: oracle }
+      - { agent: fixer }
+      - { agent: fixer, skills: [testing] }
+      - { agent: git_master }
+
+  pr_review:
+    description: Review by area
+    chain:
+      - { agent: oracle, skills: [flutter-reviewer] }   # presentation/
+      - { agent: oracle, skills: [data-reviewer] }      # data/
+
+# Project conventions referenced by skills
+project_config:
+  skills_directory: .agents/skills
+  project_root: .
+  conventions:
+    - clean_architecture                           # presentation → domain → data
+    - bloc_pattern_with_state_data                 # AppBlocBase + abstract state hierarchy
+    - freezed_state_data                           # _StateData via @freezed sealed class
+    - extension_action_screens                     # *.action.dart part-of screen
+    - iroute_navigation_via_core                   # IRoute + CustomRouter from core/, fed into go_router
+    - fl_theme_tokens                              # context.themeColor + Material 3 text slots + AppTextTheme extras
+    - csv_localization                             # localizations.csv → ARB → AppLocalizations
+    - core_delegate_error_routing                  # CoreBlocBase.onError → StateBase ErrorType router
+  make_commands:
+    setup:                 Clean + pub_get + lang + asset + gen_all
+    pub_get:               flutter pub get across plugins, core, main
+    gen_all:               build_runner across core + data_source + main
+    gen_main:              build_runner only inside apps/main
+    gen_core:              build_runner only inside core
+    gen_data_source:       build_runner only inside modules/data_source
+    lang:                  CSV → ARB → AppLocalizations
+    asset:                 regenerate asset accessors
+    format:                dart format .
+    coverage_main:         apps/main coverage via coverage.sh
+    run_module_generator:  interactive feature scaffolder
+    build:                 interactive build picker (env × platform)
