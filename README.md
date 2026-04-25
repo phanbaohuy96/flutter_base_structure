@@ -20,6 +20,7 @@ app.
 ├── tools/module_generator/      Code generators (modules, assets, localizations, translations)
 ├── apps/main/fastlane/          iOS + Android distribution, CI-CD-friendly Fastfile
 ├── apps/main/android/keystores/ Per-flavor signing config (keystore.properties.example)
+├── .agents/                     Skill bundle for AI coding agents (see .agents/README.md)
 └── makefile                     `make help` lists every task
 ```
 
@@ -113,6 +114,15 @@ Four flavors wired through dart-defines, Android flavors, and iOS xcconfigs:
 
 Each has its own entry point (`apps/main/lib/main_{dev,staging,sandbox,prod}.dart`)
 and Firebase app registration slot.
+
+## AI agents
+
+The repo ships project-local skills under [`.agents/skills/`](./.agents/) so
+AI coding agents (Claude Code, OpenCode, Cursor, Windsurf, …) can pick up
+this template's conventions automatically — bloc + `_StateData` shape,
+`IRoute` routing, `fl_theme` tokens, CSV localization, the build_runner
+workflow, and more. See [`.agents/README.md`](./.agents/README.md) for the
+full skill list.
 
 ## License
 
