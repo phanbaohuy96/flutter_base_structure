@@ -5,9 +5,8 @@ enum ButtonState { normal, loading }
 class LoadingButtonController {
   final ValueNotifier<ButtonState> buttonState;
 
-  LoadingButtonController({
-    ButtonState state = ButtonState.normal,
-  }) : buttonState = ValueNotifier(state);
+  LoadingButtonController({ButtonState state = ButtonState.normal})
+    : buttonState = ValueNotifier(state);
 
   set changeState(ButtonState state) => buttonState.value = state;
 

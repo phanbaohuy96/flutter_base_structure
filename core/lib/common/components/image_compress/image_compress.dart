@@ -26,9 +26,7 @@ class _CompressParams {
 
 typedef CompressResult = ({Uint8List image, String? mimeType});
 
-Future<CompressResult> _compressInIsolate(
-  _CompressParams params,
-) async {
+Future<CompressResult> _compressInIsolate(_CompressParams params) async {
   final imageSize = _getImageDimensions(params.image);
   if (imageSize == null) {
     throw Exception('Failed to decode image dimensions');
@@ -167,10 +165,7 @@ class ImageCompressHelper {
     final mimeStr = mimeType ?? lookupMimeType(filePath ?? '');
     if (mimeStr?.startsWith('image/') == true) {
       try {
-        return compressWithList(
-          image: bytes,
-          option: option,
-        );
+        return compressWithList(image: bytes, option: option);
       } catch (_) {
         return (image: bytes, mimeType: mimeStr);
       }

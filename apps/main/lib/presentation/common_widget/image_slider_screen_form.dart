@@ -4,10 +4,7 @@ import 'image_slider.dart';
 
 const _defaultImageDescriptionDecor = BoxDecoration(
   gradient: LinearGradient(
-    colors: [
-      Colors.transparent,
-      Colors.black87,
-    ],
+    colors: [Colors.transparent, Colors.black87],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   ),
@@ -61,7 +58,8 @@ class _ScreenFormWithAppbarImageSliderState
                 child: ImageSlider(
                   images: widget.imageUrls,
                   aspectRatio: aspectRatio,
-                  descriptionDecoration: widget.imageDescriptionDecoration ??
+                  descriptionDecoration:
+                      widget.imageDescriptionDecoration ??
                       (widget.imageDescriptionBuilder != null
                           ? _defaultImageDescriptionDecor
                           : null),
@@ -93,19 +91,13 @@ class _ScreenFormWithAppbarImageSliderState
                 left: 8,
                 child: IconButton(
                   onPressed: widget.onBack ?? () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
                 ),
               ),
             ],
           ),
         ),
-        SliverFillRemaining(
-          hasScrollBody: true,
-          child: widget.body,
-        ),
+        SliverFillRemaining(hasScrollBody: true, child: widget.body),
       ],
     );
   }

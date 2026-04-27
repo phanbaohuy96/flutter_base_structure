@@ -98,12 +98,12 @@ Choose storage option (git is most common).
 
 ```bash
 # For development
-fastlane match development --app_identifier "com.example.app.dev"
+fastlane match development --app_identifier "com.pbh.myflutterbase.dev"
 
 # For distribution (staging/sandbox/prod)
-fastlane match appstore --app_identifier "com.example.app.staging"
-fastlane match appstore --app_identifier "com.example.app.sandbox"
-fastlane match appstore --app_identifier "com.example.app"
+fastlane match appstore --app_identifier "com.pbh.myflutterbase.staging"
+fastlane match appstore --app_identifier "com.pbh.myflutterbase.sandbox"
+fastlane match appstore --app_identifier "com.pbh.myflutterbase"
 ```
 
 4. **Update Fastfile** (see example below)
@@ -265,16 +265,16 @@ platform :ios do
     case environment
     when "dev"
       match_type = "development"
-      app_id = "com.example.app.dev"
+      app_id = "com.pbh.myflutterbase.dev"
     when "staging"
       match_type = "appstore"
-      app_id = "com.example.app.staging"
+      app_id = "com.pbh.myflutterbase.staging"
     when "sandbox"
       match_type = "appstore"
-      app_id = "com.example.app.sandbox"
+      app_id = "com.pbh.myflutterbase.sandbox"
     when "prod"
       match_type = "appstore"
-      app_id = "com.example.app"
+      app_id = "com.pbh.myflutterbase"
     end
     
     match(
@@ -319,10 +319,10 @@ storage_mode("git")
 type("appstore") # or "development", "adhoc"
 
 app_identifier([
-  "com.example.app.dev",
-  "com.example.app.staging",
-  "com.example.app.sandbox",
-  "com.example.app"
+  "com.pbh.myflutterbase.dev",
+  "com.pbh.myflutterbase.staging",
+  "com.pbh.myflutterbase.sandbox",
+  "com.pbh.myflutterbase"
 ])
 
 username("your-apple-id@example.com")
@@ -494,8 +494,8 @@ If you want better team certificate management:
 
 3. **Generate profiles:**
    ```bash
-   fastlane match development --app_identifier "com.example.app.dev"
-   fastlane match appstore --app_identifier "com.example.app.staging"
+   fastlane match development --app_identifier "com.pbh.myflutterbase.dev"
+   fastlane match appstore --app_identifier "com.pbh.myflutterbase.staging"
    ```
 
 4. **Add Match secrets to GitHub:**

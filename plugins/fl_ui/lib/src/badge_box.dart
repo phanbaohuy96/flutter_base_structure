@@ -28,9 +28,9 @@ class BadgeBox extends StatelessWidget {
         child: Text(
           count > maxCount ? '$maxCount+' : '$count',
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: countTextColor,
-                fontWeight: FontWeight.bold,
-              ),
+            color: countTextColor,
+            fontWeight: FontWeight.bold,
+          ),
           maxLines: 1,
         ),
       ),
@@ -41,10 +41,7 @@ class BadgeBox extends StatelessWidget {
       ),
       badgeStyle: badge.BadgeStyle(
         badgeColor: backgroundColor,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 1,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
         shape: badge.BadgeShape.square,
         borderRadius: BorderRadius.circular(16),
       ),

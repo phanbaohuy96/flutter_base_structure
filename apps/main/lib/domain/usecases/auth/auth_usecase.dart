@@ -20,9 +20,7 @@ abstract class AuthUsecase {
   Future<AuthResponse> authWithUserToken(UserToken token);
 
   @Deprecated('Example Implementation: Suspended soon')
-  Future<AuthResponse> loginWithUser({
-    required UserModel user,
-  });
+  Future<AuthResponse> loginWithUser({required UserModel user});
 
   @Deprecated('Example Implementation: Suspended soon')
   Future<List<UserModel>> getUsers();

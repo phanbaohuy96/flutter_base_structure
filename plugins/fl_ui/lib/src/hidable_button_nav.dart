@@ -90,9 +90,7 @@ class HidableBottomNav extends StatefulWidget {
 }
 
 class HidableBottomNavState extends State<HidableBottomNav> {
-  late final listener = HidableBottomScrollListener(
-    widget.scrollControllers,
-  );
+  late final listener = HidableBottomScrollListener(widget.scrollControllers);
 
   double maxHeight = 0.0;
 

@@ -51,10 +51,7 @@ class LoadingButton extends StatelessWidget {
                 Expanded(
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      title,
-                      style: textStyle,
-                    ),
+                    child: Text(title, style: textStyle),
                   ),
                 ),
                 const SizedBox(width: 6),

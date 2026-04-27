@@ -82,18 +82,12 @@ class SubmitSucceedDailog extends StatelessWidget {
   Widget _buildIcon(double iconSize) {
     if (icon is Widget) {
       return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: iconSize,
-          minHeight: iconSize,
-        ),
+        constraints: BoxConstraints(maxWidth: iconSize, minHeight: iconSize),
         child: icon,
       );
     }
     if (icon is IconData) {
-      return Icon(
-        icon,
-        size: iconSize,
-      );
+      return Icon(icon, size: iconSize);
     }
     if (icon is! String) {
       return const SizedBox();

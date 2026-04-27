@@ -13,15 +13,9 @@ class WebViewArgs {
   final String? html;
   final String? title;
 
-  const WebViewArgs({
-    this.url,
-    this.html,
-    this.title,
-  });
+  const WebViewArgs({this.url, this.html, this.title});
 
-  factory WebViewArgs.fromUrlParams(
-    Map<String, dynamic> queryParameters,
-  ) =>
+  factory WebViewArgs.fromUrlParams(Map<String, dynamic> queryParameters) =>
       WebViewArgs(
         url: asOrNull(queryParameters['url']),
         html: asOrNull(queryParameters['html']),
@@ -49,10 +43,7 @@ enum WebViewLoadState { idle, loading, loaded, error }
 class WebViewScreen extends StatefulWidget {
   static const String routeName = '/webview';
 
-  const WebViewScreen({
-    super.key,
-    this.params,
-  });
+  const WebViewScreen({super.key, this.params});
 
   final WebViewArgs? params;
 
@@ -87,10 +78,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenForm(
-      title: _params.title,
-      child: _buildWebViewStack(),
-    );
+    return ScreenForm(title: _params.title, child: _buildWebViewStack());
   }
 
   Widget _buildWebViewStack() {

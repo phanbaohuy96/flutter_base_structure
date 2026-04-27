@@ -27,7 +27,8 @@ class EnViSwitch extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final _border = border ??
+    final _border =
+        border ??
         BorderSide(
           width: theme.dividerTheme.indent ?? 1,
           color: theme.dividerColor,
@@ -50,12 +51,8 @@ class EnViSwitch extends StatelessWidget {
         height: indicatorSize.width * .8,
       ),
       textMargin: EdgeInsets.zero,
-      textBuilder: (value) => Center(
-        child: Text(
-          value ? viCode : enCode,
-          style: textStyle,
-        ),
-      ),
+      textBuilder: (value) =>
+          Center(child: Text(value ? viCode : enCode, style: textStyle)),
     );
   }
 }

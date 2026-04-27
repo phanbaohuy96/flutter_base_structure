@@ -59,12 +59,7 @@ class _BannerWidgetState<T> extends State<BannerWidget<T>> {
         ),
       );
     }
-    return Column(
-      children: [
-        _buildCarouselSlider(),
-        _buildBannerIndicator(),
-      ],
-    );
+    return Column(children: [_buildCarouselSlider(), _buildBannerIndicator()]);
   }
 
   Widget _buildCarouselSlider() {
@@ -88,10 +83,8 @@ class _BannerWidgetState<T> extends State<BannerWidget<T>> {
       items: [
         ...widget.banners!.map(
           (e) => Padding(
-            padding: widget.padding ??
-                const EdgeInsets.symmetric(
-                  horizontal: 16,
-                ),
+            padding:
+                widget.padding ?? const EdgeInsets.symmetric(horizontal: 16),
             child: BannerItem<T>(
               item: e,
               onTap: () => widget.onTap?.call(e),

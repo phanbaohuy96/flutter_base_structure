@@ -119,7 +119,7 @@ platform :android do
     
     upload_to_play_store(
       track: track,
-      package_name: "com.example.app",
+      package_name: "com.pbh.myflutterbase",
       aab: "build/app/outputs/bundle/#{flavor}Release/app-#{flavor}-release.aab",
       skip_upload_screenshots: true,
       skip_upload_images: true,

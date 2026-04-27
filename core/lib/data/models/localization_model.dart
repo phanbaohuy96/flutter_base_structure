@@ -7,19 +7,16 @@ part 'localization_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class LocalizationModel {
-  @JsonKey(name: 'th')
-  final String? th;
+  @JsonKey(name: 'vi')
+  final String? vi;
   @JsonKey(name: 'en')
   final String? en;
 
-  const LocalizationModel({
-    this.th,
-    this.en,
-  });
+  const LocalizationModel({this.vi, this.en});
 
   String? localized(String languageCode) {
-    if (languageCode == AppLocale.th.languageCode) {
-      return th;
+    if (languageCode == AppLocale.vi.languageCode) {
+      return vi;
     }
     if (languageCode == AppLocale.en.languageCode) {
       return en;
@@ -27,13 +24,8 @@ class LocalizationModel {
     return null;
   }
 
-  factory LocalizationModel.fromValue({
-    required String value,
-  }) {
-    return LocalizationModel(
-      th: value,
-      en: value,
-    );
+  factory LocalizationModel.fromValue({required String value}) {
+    return LocalizationModel(vi: value, en: value);
   }
 
   factory LocalizationModel.fromJson(Map<String, dynamic> json) =>
@@ -43,7 +35,7 @@ class LocalizationModel {
 
   bool isLike(String text) {
     final keywords = text.removeDiacritic.toLowerCase();
-    return (th?.toLowerCase().removeDiacritic.contains(keywords) ?? false) ||
+    return (vi?.toLowerCase().removeDiacritic.contains(keywords) ?? false) ||
         (en?.toLowerCase().removeDiacritic.contains(keywords) ?? false);
   }
 }

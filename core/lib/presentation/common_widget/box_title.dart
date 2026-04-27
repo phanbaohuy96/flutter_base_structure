@@ -20,17 +20,18 @@ class BoxTitle extends StatelessWidget {
     this.isRequired = false,
     this.actions = const [],
     this.titlePadding = const EdgeInsets.fromLTRB(16, 0, 16, 16),
-  })  : assert(
-          title != null || titleWidget != null,
-          'Please provide BoxTitle.title || BoxTitle.titleWidget',
-        ),
-        super(key: key);
+  }) : assert(
+         title != null || titleWidget != null,
+         'Please provide BoxTitle.title || BoxTitle.titleWidget',
+       ),
+       super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final style = textStyle ?? context.textTheme.titleMedium;
 
-    final _titleWidget = titleWidget ??
+    final _titleWidget =
+        titleWidget ??
         RichText(
           text: TextSpan(
             text: title,
@@ -39,9 +40,7 @@ class BoxTitle extends StatelessWidget {
               if (isRequired == true)
                 TextSpan(
                   text: ' *',
-                  style: style?.copyWith(
-                    color: Colors.red,
-                  ),
+                  style: style?.copyWith(color: Colors.red),
                 ),
             ],
           ),
@@ -53,7 +52,12 @@ class BoxTitle extends StatelessWidget {
           padding: titlePadding,
           child: actions.isEmpty
               ? _titleWidget
-              : Row(children: [Expanded(child: _titleWidget), ...actions]),
+              : Row(
+                  children: [
+                    Expanded(child: _titleWidget),
+                    ...actions,
+                  ],
+                ),
         ),
         child,
       ],

@@ -1,0 +1,18 @@
+{
+  "inform": "Thông báo",
+  "ok": "Đồng ý",
+  "cancel": "Hủy",
+  "confirm": "Xác nhận",
+  "skip": "Bỏ qua",
+  "close": "Đóng",
+  "loginRequired": "Vui lòng đăng nhập để tiếp tục",
+  "login": "Đăng nhập",
+  "userRole": "Vai trò người dùng",
+  "poweredByApp": "Được cung cấp bởi My Flutter Base",
+  "pleaseSelectARoleBeforeLoginMsg": "Vui lòng chọn vai trò trước khi đăng nhập.",
+  "backToHomepage": "Quay lại trang chủ",
+  "pageNotFound": "404 - Không tìm thấy trang",
+  "back": "Quay lại",
+  "loginFailed": "Không thể lấy thông tin người dùng",
+  "thisRoleIsNotSupportedYet": "Vai trò này chưa được hỗ trợ"
+}

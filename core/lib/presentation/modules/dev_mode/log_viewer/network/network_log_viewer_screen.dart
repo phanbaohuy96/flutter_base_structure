@@ -16,10 +16,10 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
   bool? error;
 
   List<NetworkLog> get logsByFilter => [
-        ...NetworkLoggerService()
-            .logs
-            .where((e) => error == null || e.error == error),
-      ];
+    ...NetworkLoggerService().logs.where(
+      (e) => error == null || e.error == error,
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +36,7 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
           return InkWell(
             onTap: () => _viewLogDetail(log),
             onDoubleTap: () => _copyCURL(log),
-            child: NetworkLogItem(
-              log: log,
-            ),
+            child: NetworkLogItem(log: log),
           );
         },
         separatorBuilder: (_, __) => const SizedBox(height: 16),
@@ -48,33 +46,31 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
   }
 
   Widget _rightButton() => PopupMenuButton<Map<String, dynamic>>(
-        icon: Icon(
-          Icons.more_vert_outlined,
-          color: context.themeColor.appbarForegroundColor,
-        ),
-        color: context.theme.primaryColor,
-        onSelected: (item) => item['onTap'].call(),
-        itemBuilder: (_) => [
-          ..._dropdownItems.map(
-            (e) => PopupMenuItem<Map<String, dynamic>>(
-              value: e,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  e['icon'],
-                  const SizedBox(width: 8),
-                  Text(
-                    e['title'],
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: e['color'],
-                    ),
-                  ),
-                ],
+    icon: Icon(
+      Icons.more_vert_outlined,
+      color: context.themeColor.appbarForegroundColor,
+    ),
+    color: context.theme.primaryColor,
+    onSelected: (item) => item['onTap'].call(),
+    itemBuilder: (_) => [
+      ..._dropdownItems.map(
+        (e) => PopupMenuItem<Map<String, dynamic>>(
+          value: e,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              e['icon'],
+              const SizedBox(width: 8),
+              Text(
+                e['title'],
+                style: context.textTheme.bodyLarge?.copyWith(color: e['color']),
               ),
-            ),
+            ],
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   List<Map<String, dynamic>> get _dropdownItems {
     return [
@@ -109,11 +105,7 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
       {
         'title': 'Log All',
         'color': null,
-        'icon': const Icon(
-          Icons.notes_outlined,
-          size: 16,
-          color: Colors.black,
-        ),
+        'icon': const Icon(Icons.notes_outlined, size: 16, color: Colors.black),
         'onTap': () async {
           setState(() {
             error = null;
@@ -122,10 +114,7 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
       },
       {
         'title': 'Refresh',
-        'icon': const Icon(
-          Icons.refresh,
-          size: 16,
-        ),
+        'icon': const Icon(Icons.refresh, size: 16),
         'onTap': () async {
           setState(() {});
         },
@@ -146,10 +135,7 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
 class NetworkLogItem extends StatelessWidget {
   final NetworkLog log;
 
-  const NetworkLogItem({
-    super.key,
-    required this.log,
-  });
+  const NetworkLogItem({super.key, required this.log});
 
   @override
   Widget build(BuildContext context) {

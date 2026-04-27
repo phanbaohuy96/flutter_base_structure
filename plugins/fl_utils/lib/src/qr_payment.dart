@@ -43,8 +43,7 @@ extension QrPaymentUtilOnStringExt on String {
 enum PaymentServiceCode {
   payment('QRPUSH'),
   toCard('QRIBFTTC'),
-  toAccount('QRIBFTTA'),
-  ;
+  toAccount('QRIBFTTA');
 
   const PaymentServiceCode(this.code);
   final String code;

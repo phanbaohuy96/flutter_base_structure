@@ -6,9 +6,7 @@ import '../../../common.dart';
 @injectable
 class AuthHeaderProvider extends HeaderProvider {
   final CoreLocalDataManager localDataManager;
-  AuthHeaderProvider(
-    this.localDataManager,
-  );
+  AuthHeaderProvider(this.localDataManager);
 
   @override
   Future<Map<String, String>> build() async {

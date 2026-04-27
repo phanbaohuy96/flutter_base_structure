@@ -21,7 +21,8 @@ class TabBox extends StatelessWidget {
     return Container(
       height: tabBarHeight,
       margin: tabBarMargin,
-      decoration: tabBarDecoration ??
+      decoration:
+          tabBarDecoration ??
           BoxDecoration(
             color: context.theme.primaryColor,
             gradient: LinearGradient(
@@ -46,7 +47,8 @@ class TabPageWidget extends StatefulWidget {
   final void Function(
     TabController tabController,
     PageController pageController,
-  )? onViewCreated;
+  )?
+  onViewCreated;
   final ScrollPhysics? physics;
   final bool isTabScrollable;
   final Color? pageBackground;
@@ -96,9 +98,7 @@ class TabPageWidget extends StatefulWidget {
 }
 
 class _TabPageWidgetState extends State<TabPageWidget> {
-  late final _pageController = PageController(
-    initialPage: widget.initialIndex,
-  );
+  late final _pageController = PageController(initialPage: widget.initialIndex);
 
   TabController? tabController;
 
@@ -107,10 +107,7 @@ class _TabPageWidgetState extends State<TabPageWidget> {
   void onDefaultTabCreated(BuildContext context) {
     DefaultTabController.of(context).let((it) {
       tabController = it;
-      widget.onViewCreated?.call(
-        tabController!,
-        pageController,
-      );
+      widget.onViewCreated?.call(tabController!, pageController);
     });
   }
 
@@ -174,9 +171,7 @@ class _TabPageWidgetState extends State<TabPageWidget> {
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          pageController.jumpToPage(
-                            index,
-                          );
+                          pageController.jumpToPage(index);
                         }
                       },
                       indicator: widget.indicator,

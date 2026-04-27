@@ -55,7 +55,7 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
             bottomNavigationBar: Padding(
               padding: EdgeInsets.only(bottom: max(paddingBottom, 16)),
               child: Text(
-                trans.poweredByVNS,
+                trans.poweredByApp,
                 style: textTheme.labelMedium,
                 textAlign: TextAlign.center,
               ),
@@ -72,16 +72,9 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(
-            Assets.image.logo,
-            height: 100,
-            fit: BoxFit.fitHeight,
-          ),
+          Image.asset(Assets.image.logo, height: 100, fit: BoxFit.fitHeight),
           const SizedBox(height: 20),
-          Text(
-            'Flutter Core'.hardcode,
-            style: textTheme.titleMedium,
-          ),
+          Text('My Flutter Base'.hardcode, style: textTheme.titleMedium),
           const SizedBox(height: 30),
           DropdownWidget<UserModel>(
             title: trans.userRole,
@@ -142,9 +135,9 @@ extension on _AccountSelectionState {
     }
 
     if (result is AuthSuccessResponse) {
-      SigninScreenInherited.maybeOf(context)
-          ?.state
-          .loginSuccessCallback(result);
+      SigninScreenInherited.maybeOf(
+        context,
+      )?.state.loginSuccessCallback(result);
     }
   }
 }

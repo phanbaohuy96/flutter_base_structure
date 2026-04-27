@@ -70,9 +70,7 @@ class SmartRefresherWrapper extends StatelessWidget {
           if (mode == lib.LoadStatus.loading) {
             return const Padding(
               padding: EdgeInsets.all(16.0),
-              child: Loading(
-                radius: 10,
-              ),
+              child: Loading(radius: 10),
             );
           }
           return const SizedBox();
@@ -146,7 +144,7 @@ class RefreshController extends IRefreshController {
   final lib.RefreshController _controller;
 
   RefreshController({bool initialRefresh = false})
-      : _controller = lib.RefreshController(initialRefresh: initialRefresh);
+    : _controller = lib.RefreshController(initialRefresh: initialRefresh);
 
   lib.RefreshController get externalCtrl => _controller;
 

@@ -72,7 +72,8 @@ class ScreenForm extends StatefulWidget {
     BuildContext context,
     ScreenFormTheme screenTheme,
     String? title,
-  )? titleWidgetBuilder;
+  )?
+  titleWidgetBuilder;
 
   /// Main content of the screen
   final Widget? child;
@@ -143,22 +144,21 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
 
   /// Gets the screen form theme with widget overrides applied
   ScreenFormTheme get screenTheme => context.screenFormTheme.let((it) {
-        return it.copyWith(
-          showHeaderImage: widget.showHeaderImage,
-          showBackButton: widget.showBackButton,
-          hasBottomBorderRadius: widget.hasBottomBorderRadius,
-          centerTitle: widget.centerTitle,
-          showAppbarDivider: widget.showAppbarDivider,
-          forceCenterTitle: widget.forceCenterTitle,
-          appbarColor: widget.appbarColor,
-          appbarForegroundColor: widget.appbarForegroundColor,
-          titleMaxLines: widget.titleMaxLines,
-          titleStyle:
-              widget.titleStyle ?? it.titleStyle ?? _theme.textTheme.titleLarge,
-          desStyle:
-              widget.desStyle ?? it.desStyle ?? _theme.textTheme.titleSmall,
-        );
-      });
+    return it.copyWith(
+      showHeaderImage: widget.showHeaderImage,
+      showBackButton: widget.showBackButton,
+      hasBottomBorderRadius: widget.hasBottomBorderRadius,
+      centerTitle: widget.centerTitle,
+      showAppbarDivider: widget.showAppbarDivider,
+      forceCenterTitle: widget.forceCenterTitle,
+      appbarColor: widget.appbarColor,
+      appbarForegroundColor: widget.appbarForegroundColor,
+      titleMaxLines: widget.titleMaxLines,
+      titleStyle:
+          widget.titleStyle ?? it.titleStyle ?? _theme.textTheme.titleLarge,
+      desStyle: widget.desStyle ?? it.desStyle ?? _theme.textTheme.titleSmall,
+    );
+  });
 
   /// Determines if the title should be centered based on configuration and
   /// content
@@ -171,12 +171,12 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
   /// Determines if the app bar should be shown based on content and
   /// configuration
   bool get showAppBar => [
-        screenTheme.showBackButton == true,
-        widget.title.isNotNullOrEmpty,
-        widget.titleWidgetBuilder != null,
-        widget.description.isNotNullOrEmpty,
-        widget.actions.isNotEmpty,
-      ].any((e) => e);
+    screenTheme.showBackButton == true,
+    widget.title.isNotNullOrEmpty,
+    widget.titleWidgetBuilder != null,
+    widget.description.isNotNullOrEmpty,
+    widget.actions.isNotEmpty,
+  ].any((e) => e);
 
   @override
   void afterFirstLayout(BuildContext context) {
@@ -219,9 +219,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
         child: Column(
           children: [
             _buildAppBar(),
-            Expanded(
-              child: widget.child ?? const SizedBox(),
-            ),
+            Expanded(child: widget.child ?? const SizedBox()),
           ],
         ),
       ),
@@ -230,11 +228,13 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
 
   /// Builds the app bar section of the screen
   Widget _buildAppBar() {
-    final appbarColor = screenTheme.appbarColor ??
+    final appbarColor =
+        screenTheme.appbarColor ??
         context.themeColor.appbarBackgroundColor ??
         context.theme.appBarTheme.backgroundColor;
 
-    final appbarForegroundColor = screenTheme.appbarForegroundColor ??
+    final appbarForegroundColor =
+        screenTheme.appbarForegroundColor ??
         context.themeColor.appbarForegroundColor;
 
     return Container(
@@ -245,9 +245,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
         image: _getHeaderBackgroundImage(),
         border: _getAppBarBorder(),
       ),
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).padding.top,
-      ),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
         children: [
           if (showAppBar) _buildAppBarContent(appbarForegroundColor),
@@ -266,18 +264,13 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildBackButton(appbarForegroundColor),
-            Expanded(
-              child: _buildTitleAndDescription(appbarForegroundColor),
-            ),
+            Expanded(child: _buildTitleAndDescription(appbarForegroundColor)),
             // Space to balance the back button
             const SizedBox(width: 56),
           ],
         ),
         // Actions are positioned at the end
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: widget.actions,
-        ),
+        Row(mainAxisAlignment: MainAxisAlignment.end, children: widget.actions),
       ],
     );
   }
@@ -290,12 +283,9 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
         child: IconButton(
           key: const ValueKey('screen_form_back_btn'),
           onPressed: widget.onBack ?? () => Navigator.pop(context),
-          icon: widget.backButton ??
-              Icon(
-                Icons.arrow_back,
-                size: 22,
-                color: foregroundColor,
-              ),
+          icon:
+              widget.backButton ??
+              Icon(Icons.arrow_back, size: 22, color: foregroundColor),
         ),
       );
     } else {
@@ -317,9 +307,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
           Text(
             widget.description!,
             textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
-            style: screenTheme.desStyle?.copyWith(
-              color: foregroundColor,
-            ),
+            style: screenTheme.desStyle?.copyWith(color: foregroundColor),
           ),
         ],
       ],
@@ -338,9 +326,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
 
     return Text(
       widget.title ?? '',
-      style: screenTheme.titleStyle?.copyWith(
-        color: foregroundColor,
-      ),
+      style: screenTheme.titleStyle?.copyWith(color: foregroundColor),
       textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
       maxLines: screenTheme.titleMaxLines,
       overflow: TextOverflow.ellipsis,
@@ -375,10 +361,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
   BoxBorder? _getAppBarBorder() {
     if (screenTheme.showAppbarDivider) {
       return Border(
-        bottom: BorderSide(
-          color: themeColor.dividerColor,
-          width: 1,
-        ),
+        bottom: BorderSide(color: themeColor.dividerColor, width: 1),
       );
     }
     return null;

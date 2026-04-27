@@ -19,27 +19,19 @@ class _ChipsPageState extends State<ChipsPage> {
     final colorScheme = Theme.of(context).colorScheme;
 
     return ListView(
-      padding: const EdgeInsets.all(16).copyWith(
-        bottom: MediaQuery.of(context).padding.bottom + 16,
-      ),
+      padding: const EdgeInsets.all(
+        16,
+      ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
       children: [
         // Basic Chips
-        Text(
-          'Basic Chips',
-          style: textTheme.titleLarge,
-        ),
+        Text('Basic Chips', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
           children: [
-            Chip(
-              label: const Text('Default Chip'),
-              onDeleted: () {},
-            ),
-            const Chip(
-              label: Text('Simple Chip'),
-            ),
+            Chip(label: const Text('Default Chip'), onDeleted: () {}),
+            const Chip(label: Text('Simple Chip')),
             Chip(
               label: const Text('With Avatar'),
               avatar: CircleAvatar(
@@ -49,48 +41,32 @@ class _ChipsPageState extends State<ChipsPage> {
             ),
             Chip(
               label: const Text('With Icon'),
-              avatar: Icon(
-                Icons.star,
-                size: 18,
-                color: colorScheme.primary,
-              ),
+              avatar: Icon(Icons.star, size: 18, color: colorScheme.primary),
             ),
           ],
         ),
         const SizedBox(height: 24),
 
         // Action Chips
-        Text(
-          'Action Chips',
-          style: textTheme.titleLarge,
-        ),
+        Text('Action Chips', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
           runSpacing: 8,
           children: [
-            ActionChip(
-              label: const Text('Action Chip'),
-              onPressed: () {},
-            ),
+            ActionChip(label: const Text('Action Chip'), onPressed: () {}),
             ActionChip(
               label: const Text('With Icon'),
               avatar: const Icon(Icons.add, size: 18),
               onPressed: () {},
             ),
-            const ActionChip(
-              label: Text('Disabled'),
-              onPressed: null,
-            ),
+            const ActionChip(label: Text('Disabled'), onPressed: null),
           ],
         ),
         const SizedBox(height: 24),
 
         // Filter Chips
-        Text(
-          'Filter Chips',
-          style: textTheme.titleLarge,
-        ),
+        Text('Filter Chips', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
@@ -145,10 +121,7 @@ class _ChipsPageState extends State<ChipsPage> {
         const SizedBox(height: 24),
 
         // Choice Chips
-        Text(
-          'Choice Chips',
-          style: textTheme.titleLarge,
-        ),
+        Text('Choice Chips', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
@@ -186,10 +159,7 @@ class _ChipsPageState extends State<ChipsPage> {
         const SizedBox(height: 24),
 
         // Input Chips
-        Text(
-          'Input Chips',
-          style: textTheme.titleLarge,
-        ),
+        Text('Input Chips', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,
@@ -226,10 +196,7 @@ class _ChipsPageState extends State<ChipsPage> {
         const SizedBox(height: 24),
 
         // Chip Sizes
-        Text(
-          'Chip Sizes',
-          style: textTheme.titleLarge,
-        ),
+        Text('Chip Sizes', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         const Wrap(
           spacing: 8,
@@ -241,9 +208,7 @@ class _ChipsPageState extends State<ChipsPage> {
               labelPadding: EdgeInsets.symmetric(horizontal: 4),
               visualDensity: VisualDensity.compact,
             ),
-            Chip(
-              label: Text('Default'),
-            ),
+            Chip(label: Text('Default')),
             Chip(
               label: Text('Large'),
               labelPadding: EdgeInsets.symmetric(horizontal: 8),
@@ -254,10 +219,7 @@ class _ChipsPageState extends State<ChipsPage> {
         const SizedBox(height: 24),
 
         // Custom Styled Chips
-        Text(
-          'Custom Styled Chips',
-          style: textTheme.titleLarge,
-        ),
+        Text('Custom Styled Chips', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         Wrap(
           spacing: 8,

@@ -106,10 +106,7 @@ class TabItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius ?? 50),
           color: selected ? themeData.colorScheme.primary : Colors.transparent,
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 4,
-          vertical: 12,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 12),
         child: Center(
           child: Text(
             title,

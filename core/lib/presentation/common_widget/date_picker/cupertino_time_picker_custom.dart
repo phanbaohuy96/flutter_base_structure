@@ -16,9 +16,7 @@ Future<dynamic> showCupertinoCustomTimePicker(
       return CupertinoTimePickerCustom(
         initialTimerDuration: initial,
         onComfirmed: onComfirmed,
-        theme: CustomDatePickerTheme(
-          theme: Theme.of(context),
-        ),
+        theme: CustomDatePickerTheme(theme: Theme.of(context)),
       );
     },
   );
@@ -65,14 +63,15 @@ class _CupertinoTimePickerCustomState extends State<CupertinoTimePickerCustom> {
           child: SafeArea(
             top: false,
             child: SizedBox(
-              height: CustomPickerConstants.pickerSheetHeight +
+              height:
+                  CustomPickerConstants.pickerSheetHeight +
                   widget.theme.titleHeight,
               child: Column(
                 children: <Widget>[
                   _buildFunction(),
                   CupertinoTimerPicker(
-                    backgroundColor:
-                        CupertinoColors.systemBackground.resolveFrom(context),
+                    backgroundColor: CupertinoColors.systemBackground
+                        .resolveFrom(context),
                     initialTimerDuration: widget.initialTimerDuration!,
                     onTimerDurationChanged: (Duration newTimer) {
                       selectedTime = newTimer;
@@ -102,10 +101,7 @@ class _CupertinoTimePickerCustomState extends State<CupertinoTimePickerCustom> {
                 widget.onCancelled?.call();
                 _close();
               },
-              child: Text(
-                coreL10n.cancel,
-                style: widget.theme.cancelStyle,
-              ),
+              child: Text(coreL10n.cancel, style: widget.theme.cancelStyle),
             ),
           ),
           SizedBox(
@@ -117,10 +113,7 @@ class _CupertinoTimePickerCustomState extends State<CupertinoTimePickerCustom> {
                 widget.onComfirmed?.call(selectedTime);
                 _close();
               },
-              child: Text(
-                coreL10n.confirm,
-                style: widget.theme.doneStyle,
-              ),
+              child: Text(coreL10n.confirm, style: widget.theme.doneStyle),
             ),
           ),
         ],

@@ -1,4 +1,4 @@
-package com.pbh.baseflutter
+package com.pbh.myflutterbase
 
 import io.flutter.embedding.android.FlutterActivity
 

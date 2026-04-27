@@ -8,7 +8,7 @@
   "loginRequired": "Please login to continue",
   "login": "Login",
   "userRole": "User role",
-  "poweredByVNS": "Powered by VNS",
+  "poweredByApp": "Powered by My Flutter Base",
   "pleaseSelectARoleBeforeLoginMsg": "Please select a role before logging in.",
   "backToHomepage": "Back to Homepage",
   "pageNotFound": "404 - Page Not Found",

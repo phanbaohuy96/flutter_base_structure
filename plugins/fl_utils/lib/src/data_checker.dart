@@ -28,9 +28,8 @@ T? asOrNull<T>(dynamic value, [T? defaultValue]) {
         }
 
         if (value is num) {
-          return DateTime.fromMillisecondsSinceEpoch(
-            (value * 1000).toInt(),
-          ) as T?;
+          return DateTime.fromMillisecondsSinceEpoch((value * 1000).toInt())
+              as T?;
         }
       }
       if (value is num) {
@@ -68,9 +67,8 @@ T? asDateOrNull<T>(dynamic value, [T? defaultValue]) {
       }
 
       if (value is num) {
-        return DateTime.fromMillisecondsSinceEpoch(
-          (value * 1000).toInt(),
-        ) as T?;
+        return DateTime.fromMillisecondsSinceEpoch((value * 1000).toInt())
+            as T?;
       }
     } catch (e, stackTrace) {
       debugPrint('asOrNullTest: $e $stackTrace');

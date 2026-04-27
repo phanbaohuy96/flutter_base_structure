@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core.dart';
 
-enum TitleMode {
-  floating,
-  above,
-}
+enum TitleMode { floating, above }
 
 class InputDecorationFactory {
   static InputDecoration build({
@@ -74,10 +71,7 @@ class InputDecorationFactory {
         color: appTextTheme.inputTitle?.color,
       ),
       suffixIcon: suffixIcon?.let(
-        (it) => AvailabilityWidget(
-          enable: enable,
-          child: it,
-        ),
+        (it) => AvailabilityWidget(enable: enable, child: it),
       ),
       suffixIconConstraints: BoxConstraints(
         minHeight: suffixIconSize ?? 0,
@@ -113,9 +107,7 @@ class InputDecorationFactory {
                   borderRadius: borderRadius,
                 );
               }
-              return it?.copyWith(
-                borderSide: borderSide,
-              );
+              return it?.copyWith(borderSide: borderSide);
             }),
       enabledBorder: !showBorder
           ? InputBorder.none
@@ -126,9 +118,7 @@ class InputDecorationFactory {
                   borderRadius: borderRadius,
                 );
               }
-              return it?.copyWith(
-                borderSide: borderSide,
-              );
+              return it?.copyWith(borderSide: borderSide);
             }),
       focusedBorder: !showBorder
           ? InputBorder.none
@@ -139,9 +129,7 @@ class InputDecorationFactory {
                   borderRadius: borderRadius,
                 );
               }
-              return it?.copyWith(
-                borderSide: borderSide,
-              );
+              return it?.copyWith(borderSide: borderSide);
             }),
       contentPadding: contentPadding ?? inputDecorationTheme.contentPadding,
     );

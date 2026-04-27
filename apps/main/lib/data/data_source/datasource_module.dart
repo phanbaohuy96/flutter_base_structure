@@ -9,6 +9,5 @@ abstract class AppDatasourceModule {
   @injectable
   CoreLocalDataManager coreLocalDataManager(
     LocalDataManager localDataManager,
-  ) =>
-      localDataManager;
+  ) => localDataManager;
 }

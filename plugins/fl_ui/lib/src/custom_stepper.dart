@@ -15,9 +15,7 @@ class StepData {
     required this.content,
     required this.dividerColor,
     this.showDivider = true,
-    this.contentPadding = const EdgeInsets.only(
-      left: 24,
-    ),
+    this.contentPadding = const EdgeInsets.only(left: 24),
     this.stepSize = 24.0,
   });
 
@@ -28,21 +26,13 @@ class StepData {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: stepSize / 2,
-              ),
-              child: SizedBox(
-                width: stepSize,
-                height: stepSize,
-                child: step,
-              ),
+              padding: EdgeInsets.symmetric(vertical: stepSize / 2),
+              child: SizedBox(width: stepSize, height: stepSize, child: step),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(
-                  top: stepSize / 2,
-                ),
+                padding: EdgeInsets.only(top: stepSize / 2),
                 child: title,
               ),
             ),
@@ -53,17 +43,12 @@ class StepData {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                margin: EdgeInsets.only(
-                  left: stepSize / 2 - 0.5,
-                ),
+                margin: EdgeInsets.only(left: stepSize / 2 - 0.5),
                 width: 1,
                 color: showDivider ? dividerColor : Colors.transparent,
               ),
               Expanded(
-                child: Padding(
-                  padding: contentPadding,
-                  child: content,
-                ),
+                child: Padding(padding: contentPadding, child: content),
               ),
             ],
           ),
@@ -76,10 +61,7 @@ class StepData {
 class VerticalStepper extends StatelessWidget {
   final List<StepData> steps;
 
-  const VerticalStepper({
-    Key? key,
-    required this.steps,
-  }) : super(key: key);
+  const VerticalStepper({Key? key, required this.steps}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -126,12 +108,7 @@ class _AnimatedSlideBoxState extends State<AnimatedSlideBox>
   late final Animation<Offset> _offsetAnimation = Tween<Offset>(
     begin: widget.begin,
     end: widget.end,
-  ).animate(
-    CurvedAnimation(
-      parent: _controller,
-      curve: Curves.fastOutSlowIn,
-    ),
-  );
+  ).animate(CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
 
   @override
   void dispose() {
@@ -141,9 +118,6 @@ class _AnimatedSlideBoxState extends State<AnimatedSlideBox>
 
   @override
   Widget build(BuildContext context) {
-    return SlideTransition(
-      position: _offsetAnimation,
-      child: widget.child,
-    );
+    return SlideTransition(position: _offsetAnimation, child: widget.child);
   }
 }

@@ -15,11 +15,7 @@ extension DocumentViewerCoordinator on BuildContext {
     return pushBehavior.push(
       this,
       DocumentViewerScreen.routeName,
-      arguments: DocumentViewerArgs(
-        title: title,
-        type: type,
-        url: url,
-      ),
+      arguments: DocumentViewerArgs(title: title, type: type, url: url),
     );
   }
 }

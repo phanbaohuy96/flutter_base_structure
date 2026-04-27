@@ -30,16 +30,10 @@ class DioClientFactory {
 
     dio.options.headers.clear();
 
-    dio.interceptors.add(
-      DomainInterceptor(
-        localDataManager: localDataManager,
-      ),
-    );
+    dio.interceptors.add(DomainInterceptor(localDataManager: localDataManager));
 
     dio.interceptors.add(
-      HeaderInterceptor(
-        requestHeaderService: requestHeaderService,
-      ),
+      HeaderInterceptor(requestHeaderService: requestHeaderService),
     );
 
     /// Dio InterceptorsWrapper
@@ -60,16 +54,10 @@ class DioClientFactory {
     //     // logoutPath: ApiContract.logout,
     //   ),
     // );
-    dio.interceptors.add(
-      const LoggerInterceptor(),
-    );
+    dio.interceptors.add(const LoggerInterceptor());
 
     // Add retry interceptor for handling retries
-    dio.interceptors.add(
-      RetryInterceptor(
-        dio: dio,
-      ),
-    );
+    dio.interceptors.add(RetryInterceptor(dio: dio));
 
     // Enable cookies
     dio.options.extra['withCredentials'] = true;

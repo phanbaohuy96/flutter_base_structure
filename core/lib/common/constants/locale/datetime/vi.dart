@@ -34,15 +34,7 @@ class VIDateLocale extends DateLocale {
   ];
 
   @override
-  List<String> get daysShort => [
-    'T2',
-    'T3',
-    'T4',
-    'T5',
-    'T6',
-    'T7',
-    'CN',
-  ];
+  List<String> get daysShort => ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
 
   @override
   List<String> get daysLong => [

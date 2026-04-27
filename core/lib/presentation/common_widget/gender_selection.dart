@@ -70,69 +70,68 @@ class _MyWidgetState extends State<GenderSelection> {
           groupValue: _gender,
           onChanged: _select,
           child: Row(
-            children: [
-              {
-                'lable': coreL10n.male,
-                'value': ServerGender.male,
-                'icon': Icons.male,
-              },
-              {
-                'lable': coreL10n.female,
-                'value': ServerGender.female,
-                'icon': Icons.female,
-              },
-            ].map<Widget>(
-              (e) {
-                final color = e['value'] as String == _gender
-                    ? context.theme.colorScheme.primary
-                    : context.theme.disabledColor;
-                return Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: () => _select(e['value'] as String),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: color,
-                          width: 1,
+            children:
+                [
+                      {
+                        'lable': coreL10n.male,
+                        'value': ServerGender.male,
+                        'icon': Icons.male,
+                      },
+                      {
+                        'lable': coreL10n.female,
+                        'value': ServerGender.female,
+                        'icon': Icons.female,
+                      },
+                    ]
+                    .map<Widget>((e) {
+                      final color = e['value'] as String == _gender
+                          ? context.theme.colorScheme.primary
+                          : context.theme.disabledColor;
+                      return Expanded(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () => _select(e['value'] as String),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: color, width: 1),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            padding: const EdgeInsets.only(right: 5),
+                            child: Row(
+                              children: [
+                                Radio<String>(
+                                  value: e['value'] as String,
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.padded,
+                                  fillColor:
+                                      WidgetStateProperty.resolveWith<Color>((
+                                        Set<WidgetState> states,
+                                      ) {
+                                        return Theme.of(
+                                          context,
+                                        ).colorScheme.primary;
+                                      }),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    e['lable'] as String,
+                                    style: _themeData.textTheme.bodyLarge
+                                        ?.copyWith(color: color),
+                                  ),
+                                ),
+                                Icon(
+                                  e['icon'] as IconData,
+                                  size: 24,
+                                  color: color,
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      padding: const EdgeInsets.only(right: 5),
-                      child: Row(
-                        children: [
-                          Radio<String>(
-                            value: e['value'] as String,
-                            materialTapTargetSize: MaterialTapTargetSize.padded,
-                            fillColor: WidgetStateProperty.resolveWith<Color>(
-                              (Set<WidgetState> states) {
-                                return Theme.of(context).colorScheme.primary;
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              e['lable'] as String,
-                              style: _themeData.textTheme.bodyLarge?.copyWith(
-                                color: color,
-                              ),
-                            ),
-                          ),
-                          Icon(
-                            e['icon'] as IconData,
-                            size: 24,
-                            color: color,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ).insertSeparator(
-              (index) => const SizedBox(width: 15),
-            ),
+                      );
+                    })
+                    .insertSeparator((index) => const SizedBox(width: 15)),
           ),
         ),
       ],

@@ -36,9 +36,7 @@ class AppThemeDialog extends ThemeDialog {
       children: [
         Container(
           margin: const EdgeInsets.symmetric(horizontal: 32),
-          constraints: const BoxConstraints(
-            maxWidth: 450,
-          ),
+          constraints: const BoxConstraints(maxWidth: 450),
           decoration: BoxDecoration(
             color: theme.primaryColor,
             borderRadius: BorderRadius.circular(16),
@@ -112,7 +110,8 @@ class AppThemeDialog extends ThemeDialog {
             padding: const EdgeInsets.all(16),
             child: ConstrainedBox(
               constraints: const BoxConstraints(minHeight: 40),
-              child: content ??
+              child:
+                  content ??
                   Center(
                     child: Text(
                       message ?? '',
@@ -278,7 +277,8 @@ class AppThemeDialog extends ThemeDialog {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 40),
                 child: Center(
-                  child: content ??
+                  child:
+                      content ??
                       Text(
                         message,
                         style: theme.textTheme.bodyMedium,

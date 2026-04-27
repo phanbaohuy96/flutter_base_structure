@@ -15,14 +15,12 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
     return TickerBuilder(
       duration: const Duration(seconds: 2),
       builder: (p0, tick) => ListView(
-        padding: const EdgeInsets.all(16).copyWith(
-          bottom: MediaQuery.of(context).padding.bottom + 16,
-        ),
-        children: _getStories(tick).insertSeparator(
-          (index) => const SizedBox(
-            height: 8,
-          ),
-        ),
+        padding: const EdgeInsets.all(
+          16,
+        ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
+        children: _getStories(
+          tick,
+        ).insertSeparator((index) => const SizedBox(height: 8)),
       ),
     );
   }
@@ -31,10 +29,8 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
     return <Widget>[
       StoryWidgetBox(
         title: 'fl_ui/AnimatedDropdownIcon',
-        builder: (context, _, __) => AnimatedDropdownIcon(
-          isExpanded: tick % 2 != 0,
-          size: 56,
-        ),
+        builder: (context, _, __) =>
+            AnimatedDropdownIcon(isExpanded: tick % 2 != 0, size: 56),
       ),
       StoryWidgetBox(
         title: 'fl_ui/AvailabilityWidget',
@@ -54,10 +50,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
         builder: (context, _, __) => Align(
           child: BadgeBox(
             count: tick,
-            child: const Icon(
-              Icons.notifications,
-              size: 32,
-            ),
+            child: const Icon(Icons.notifications, size: 32),
           ),
         ),
       ),
@@ -200,11 +193,11 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
             child: EnViSwitch(
               isVILanguage:
                   context.read<AppGlobalBloc>().state.locale.languageCode ==
-                      AppLocale.th.languageCode,
+                  AppLocale.vi.languageCode,
               onChanged: (isViLanguage) {
-                context
-                    .read<AppGlobalBloc>()
-                    .changeLocale(isViLanguage ? AppLocale.th : AppLocale.en);
+                context.read<AppGlobalBloc>().changeLocale(
+                  isViLanguage ? AppLocale.vi : AppLocale.en,
+                );
               },
             ),
           );
@@ -311,10 +304,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 divider: ItemDivider.space,
                 itemBorder: ItemBorder.all,
                 title: 'Title',
-                icon: const Icon(
-                  Icons.home,
-                  size: 16,
-                ),
+                icon: const Icon(Icons.home, size: 16),
               ),
               MenuItemWidget(
                 description: const Text('5.000\$'),
@@ -324,14 +314,8 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 divider: ItemDivider.line,
                 itemBorder: ItemBorder.top,
                 title: 'Wallet',
-                tailIcon: const Icon(
-                  Icons.delete,
-                  size: 16,
-                ),
-                icon: const Icon(
-                  Icons.wallet,
-                  size: 16,
-                ),
+                tailIcon: const Icon(Icons.delete, size: 16),
+                icon: const Icon(Icons.wallet, size: 16),
               ),
               MenuItemWidget(
                 onTap: () {
@@ -340,14 +324,8 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 divider: ItemDivider.none,
                 itemBorder: ItemBorder.bottom,
                 title: 'Delete account',
-                tailIcon: const Icon(
-                  Icons.delete,
-                  size: 16,
-                ),
-                icon: const Icon(
-                  Icons.person,
-                  size: 16,
-                ),
+                tailIcon: const Icon(Icons.delete, size: 16),
+                icon: const Icon(Icons.person, size: 16),
               ),
             ],
           );
@@ -368,10 +346,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 normalBorderColor: themeColor.dividerColor,
                 errorTextPadding: EdgeInsets.zero,
                 child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Text('Any Widget'),
                 ),
               ),
@@ -383,20 +358,14 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                     onPressed: () {
                       controller.setError('Error text');
                     },
-                    minimumSize: const Size(
-                      88,
-                      32,
-                    ),
+                    minimumSize: const Size(88, 32),
                   ),
                   ThemeButton.outline(
                     title: 'Clear Error',
                     onPressed: () {
                       controller.clear();
                     },
-                    minimumSize: const Size(
-                      88,
-                      32,
-                    ),
+                    minimumSize: const Size(88, 32),
                   ),
                 ],
               ),
@@ -422,9 +391,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   const Text('Any widget'),
-                  Separator(
-                    color: context.themeColor.primary,
-                  ),
+                  Separator(color: context.themeColor.primary),
                   const Text('Separated by Separator widget'),
                 ],
               ),
@@ -478,8 +445,9 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
           return GenderSelection(
             required: true,
             title: 'Gender',
-            defaultGender:
-                tick % 2 == 0 ? ServerGender.male : ServerGender.female,
+            defaultGender: tick % 2 == 0
+                ? ServerGender.male
+                : ServerGender.female,
             onChange: (p0) {},
           );
         },

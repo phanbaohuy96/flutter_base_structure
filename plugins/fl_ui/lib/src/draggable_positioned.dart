@@ -198,5 +198,5 @@ enum _Anchor {
   leftThird,
   bottomThird,
   rightFourth,
-  bottomFourth
+  bottomFourth,
 }

@@ -336,15 +336,15 @@ class MediaPicked extends Equatable {
 
   @override
   List<Object?> get props => [
-        key,
-        mediaFile,
-        mimetype,
-        isInUploadProgress,
-        hasError,
-        videoThumbnail,
-        index,
-        cloudFile,
-      ];
+    key,
+    mediaFile,
+    mimetype,
+    isInUploadProgress,
+    hasError,
+    videoThumbnail,
+    index,
+    cloudFile,
+  ];
 }
 
 // MARK: - Controller
@@ -378,8 +378,9 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
 
   void addAll(Iterable<MediaPicked> medias) {
     final existingKeys = value.map((e) => e.key).toSet();
-    final newMedias =
-        medias.where((media) => !existingKeys.contains(media.key));
+    final newMedias = medias.where(
+      (media) => !existingKeys.contains(media.key),
+    );
     value = [...value, ...newMedias];
   }
 
@@ -452,8 +453,10 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
         ),
       );
     } catch (e, s) {
-      final errorMedia =
-          media.copyWith(hasError: true, isInUploadProgress: false);
+      final errorMedia = media.copyWith(
+        hasError: true,
+        isInUploadProgress: false,
+      );
       _updateMedia(errorMedia);
       onUploadError?.call(errorMedia, e, s);
     }
@@ -566,7 +569,8 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
       valueListenable: widget.controller,
       builder: (context, medias, _) {
         final canBeDelete = widget.canBeDeleteWhen?.call(medias) ?? true;
-        final canAdd = widget.config.maxMedia == null ||
+        final canAdd =
+            widget.config.maxMedia == null ||
             medias.length < widget.config.maxMedia!;
 
         return GridView.count(
@@ -615,10 +619,7 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
       titleBottomBtn: l10n.cancel,
       title: _getDialogTitle(),
       subTitle: widget.config.pickDialogMessage ?? '',
-      actions: {
-        l10n.camera: _openCamera,
-        l10n.gallery: _openGallery,
-      },
+      actions: {l10n.camera: _openCamera, l10n.gallery: _openGallery},
     );
   }
 
@@ -652,7 +653,8 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
           .pickFiles(
             type: widget.config.mediaTypes.fileType,
             dialogTitle: _getDialogTitle(),
-            allowMultiple: widget.controller.allowMultiple &&
+            allowMultiple:
+                widget.controller.allowMultiple &&
                 (widget.config.maxMedia == null ||
                     (widget.config.maxMedia! - widget.controller.value.length) >
                         1),
@@ -672,8 +674,10 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
 
   Future<void> _openCamera() async {
     if (!kIsWeb) {
-      final granted = await PermissionService()
-          .requestPermission(Permission.camera, context);
+      final granted = await PermissionService().requestPermission(
+        Permission.camera,
+        context,
+      );
       if (!granted) {
         return;
       }
@@ -681,12 +685,12 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
 
     try {
       final pickedFile = await PickFileHelper().takePicture().catchError(
-            (error, stackTrace) => logUtils.eCatch<FilePicked?>(
-              'PickFileHelper.takePicture',
-              error,
-              stackTrace,
-            ),
-          );
+        (error, stackTrace) => logUtils.eCatch<FilePicked?>(
+          'PickFileHelper.takePicture',
+          error,
+          stackTrace,
+        ),
+      );
 
       if (pickedFile != null && pickedFile.valid) {
         imageCache.clearLiveImages();
@@ -705,8 +709,8 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
 
     final currentMaxIndex = widget.controller.value.isNotEmpty
         ? widget.controller.value
-            .map((e) => e.index ?? 0)
-            .reduce((a, b) => a > b ? a : b)
+              .map((e) => e.index ?? 0)
+              .reduce((a, b) => a > b ? a : b)
         : -1;
 
     final mediaPickedList = validFiles
@@ -792,9 +796,9 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _viewMedia(MediaPicked media) {
@@ -843,17 +847,17 @@ class _MediaEmptyStateWidget extends StatelessWidget {
           onTap: onTap,
           borderRadius: style.borderRadius?.let(BorderRadius.all),
           child: AnimatedBuilder(
-            animation: Listenable.merge(
-              [if (errorController != null) errorController!],
-            ),
+            animation: Listenable.merge([
+              if (errorController != null) errorController!,
+            ]),
             builder: (context, child) {
               final hasError = errorController?.value != null;
               return DottedBorder(
                 color: hasError
                     ? Colors.red
                     : style.emptyBorderSide?.color ??
-                        style.foregroundColor ??
-                        context.themeColor.primary,
+                          style.foregroundColor ??
+                          context.themeColor.primary,
                 strokeWidth: style.emptyBorderSide?.width ?? 1,
                 dashPattern: const [5, 5],
                 strokeCap: StrokeCap.round,
@@ -861,9 +865,11 @@ class _MediaEmptyStateWidget extends StatelessWidget {
                 radius: style.borderRadius ?? const Radius.circular(0),
                 child: Container(
                   alignment: Alignment.center,
-                  color: style.backgroundColor ??
-                      context.themeColor.primary
-                          .withAlpha((0.09 * 255).round()),
+                  color:
+                      style.backgroundColor ??
+                      context.themeColor.primary.withAlpha(
+                        (0.09 * 255).round(),
+                      ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -877,7 +883,8 @@ class _MediaEmptyStateWidget extends StatelessWidget {
                         Text(
                           '${medias.length}/${config.maxMedia}',
                           style: context.textTheme.bodyMedium?.copyWith(
-                            color: style.foregroundColor ??
+                            color:
+                                style.foregroundColor ??
                                 context.themeColor.primary,
                           ),
                         ),
@@ -983,9 +990,7 @@ class _MediaItemWidget extends StatelessWidget {
               )
             else
               _buildLoadingPlaceholder(constraints),
-            const Center(
-              child: Icon(Icons.play_arrow_rounded, size: 32),
-            ),
+            const Center(child: Icon(Icons.play_arrow_rounded, size: 32)),
           ],
         );
       },

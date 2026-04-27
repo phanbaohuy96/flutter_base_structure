@@ -19,10 +19,7 @@ class _SliverGroup extends RenderObjectWidget {
 
   @override
   _RenderSliverGroup createRenderObject(BuildContext context) {
-    return _RenderSliverGroup(
-      margin: margin!,
-      borderRadius: borderRadius,
-    );
+    return _RenderSliverGroup(margin: margin!, borderRadius: borderRadius);
   }
 
   @override
