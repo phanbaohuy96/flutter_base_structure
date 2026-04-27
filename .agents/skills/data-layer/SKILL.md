@@ -135,6 +135,12 @@ class UserHive extends HiveObject {
 
 Don't reuse a `typeId` — pick a unique one across the app.
 
+## Local storage APIs
+
+Expose storage behavior through the existing DAO → repository → usecase boundaries rather than letting presentation code reach into storage directly. Prefer stable table/row operations over replacing storage infrastructure. New public DAO/repository/usecase methods should have concise Dartdoc.
+
+When a mutation produces data the caller needs, return the updated domain result instead of returning only a success flag and forcing an immediate duplicate query.
+
 ## Repository
 
 Repositories accept the API client (and optionally a local data source) by constructor and decide cache/refresh policy. They are the only layer feature blocs depend on.
