@@ -83,6 +83,7 @@ Rules:
 
 - Key names are lowerCamelCase and describe meaning (`loginRequired`, not `auth_msg_2`).
 - Keep keys flat across the package. If two screens need different copy, use distinct keys.
+- Remove source CSV keys when the UI/API surface that used them is removed; do not leave stale generated accessors.
 - Quote values containing commas or newlines.
 - Parameters are **positional** (`{0}`, `{1}`, …); do not use named placeholders.
 - Fill every locale column. The custom CSV → ARB step writes cells as-is, so empty cells produce empty translations rather than a reliable fallback.
@@ -186,6 +187,7 @@ If shared/core strings changed, analyze `core`; if media strings changed, analyz
 - [ ] Values provided for `en` and `vi`.
 - [ ] No translation entered directly into generated `*.arb` or `*_localizations_*.dart` files.
 - [ ] `make lang` run and generated files updated.
+- [ ] Removed/renamed keys have no stale references in CSV, ARB, generated Dart, or call sites.
 - [ ] Use site reads strings via generated localization APIs, not hardcoded user-facing text.
 - [ ] Parameters use positional `{0}`, `{1}` placeholders.
 - [ ] Stale locale files/imports removed when replacing a locale.
@@ -195,6 +197,7 @@ If shared/core strings changed, analyze `core`; if media strings changed, analyz
 - Editing `intl_en.arb` or `intl_vi.arb` directly — the next `make lang` overwrites it.
 - Adding only app CSV strings when the UI actually uses `core` or `fl_media` localization.
 - Leaving old locale artifacts (`intl_th.arb`, `*_th.dart`) after replacing a locale.
+- Leaving unused keys in `localizations.csv` because only the widget code was removed.
 - Using `{name}` placeholders — use positional `{0}`.
 - Leaving empty CSV cells and assuming generated localizations will fall back to English.
 - Sneaking in raw `Text('Save')` for user-facing text.
