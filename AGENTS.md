@@ -83,6 +83,18 @@ These generic agent rules come before implementation details. For the full check
 3. **Surgical changes**: every changed line should trace to the request or required generated output. Do not refactor adjacent code, reformat unrelated files, or delete unrelated dead code unless asked.
 4. **Goal-driven execution**: for multi-step work, define success criteria before coding, then verify with concrete checks such as `rg`, generation commands, analyzer, tests, or UI smoke tests.
 
+## Generalized implementation guidance
+
+- When the user names an existing architecture or pattern, follow that structure directly; ask before substituting a lighter-weight shortcut.
+- For multi-screen features, keep parent modules responsible for route/coordinator aggregation and give non-trivial child screens their own module state.
+- Reuse existing project widgets, helpers, and abstractions before creating new ones.
+- Design reusable row/list components so trailing content aligns consistently and can accept widgets when needed.
+- Add concise Dartdoc to newly introduced public APIs in reusable or cross-layer surfaces.
+- When a child flow mutates data that a caller needs, return the updated result instead of forcing an immediate duplicate read.
+- Keep storage operations behind the existing data/domain boundaries and prefer stable table/row operations over replacing storage infrastructure.
+- Remove stale source-of-truth entries and regenerated outputs when a feature surface is removed.
+- For user-facing UI changes, run an available smoke test before reporting completion, or state why it could not be run.
+
 ## Command Priority
 
 Prefer project-standard commands over ad-hoc direct commands.

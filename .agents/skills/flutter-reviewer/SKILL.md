@@ -33,8 +33,9 @@ metadata:
 - [ ] `bloc` getter overridden to `BlocProvider.of(context)`.
 - [ ] `static String routeName` declared, leading slash, lowercase.
 - [ ] Wraps in `ScreenForm` / `MainPageForm` rather than raw `Scaffold + AppBar` unless there's a reason.
-- [ ] Translates via `trans = translate(context)` or `context.l10n`; no hardcoded user-facing strings.
+- [ ] Translates via `trans = translate(context)` or `context.l10n`; no hardcoded user-facing strings or cached localization state.
 - [ ] Action file (`<feature>.action.dart`) is a `part of` the screen and holds `_blocListener`, `onRefresh`, etc.
+- [ ] Row/list trailing content aligns consistently and supports widgets when the design needs controls or rich values.
 
 ### Routing
 
@@ -51,6 +52,7 @@ metadata:
 - [ ] No raw `Colors.white`/`Colors.black` for surfaces or text — use `context.themeColor.*`.
 - [ ] Typography uses Material 3 slot names (`titleMedium`, `bodySmall`, …) plus the `AppTextTheme` extras (`titleTiny`, `inputTitle`, `buttonText`, …) — not invented tokens like `titleMd`/`bodyXs`.
 - [ ] Buttons reuse `ThemeButton.*` defaults; per-call `style:` overrides are scoped, not redundant.
+- [ ] Existing project controls are reused before custom UI is introduced.
 
 ### Performance
 
@@ -80,6 +82,8 @@ Reply with:
 - A new state class added to `<feature>_state.dart` without a matching `_factories` entry (runtime crash on first `copyWith<T>()`).
 - A screen whose `_blocListener` doesn't call `hideLoading()` on every state — the loading indicator can stick.
 - A coordinator method built with literal route paths instead of `<Screen>.routeName`.
+- A named project architecture bypassed with an ad-hoc UI structure.
+- A custom control recreated when an existing project widget already fits.
 - A `Text(...)` with a literal English string anywhere in production code.
 - `setState` inside a `BlocBuilder.builder` (rebuild loop).
 
