@@ -9,6 +9,7 @@ One-line index of every skill under [`./skills/`](./skills/).
 | [`behavioral-guardrails`](./skills/behavioral-guardrails/SKILL.md) | Clarify, simplify, make surgical changes, verify | Planning, implementing, reviewing, or refactoring |
 | [`module-scaffold`](./skills/module-scaffold/SKILL.md) | Scaffold a feature module | Starting a new screen / feature |
 | [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `AppBlocBase` + `_StateData` + `_factories` | Adding or modifying state management |
+| [`bus-event`](./skills/bus-event/SKILL.md) | Cross-feature event synchronization | Publishing or listening to `BusEvent` updates |
 | [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` for screen handlers | Splitting handlers out of a bloated screen |
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` + `CustomRouter` + coordinator | Wiring navigation |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` | Styling a widget |
@@ -32,6 +33,7 @@ Any non-trivial change?        → behavioral-guardrails
 Starting a feature?            → module-scaffold → bloc-pattern → route-config
 Cleaning up a screen?          → extension-action
 Adding a network endpoint?     → data-layer → bloc-pattern
+Syncing state across features? → bus-event
 After editing annotated code?  → code-generation
 Adding user-facing strings?    → localization
 Writing tests?                 → testing
