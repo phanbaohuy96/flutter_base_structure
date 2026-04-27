@@ -90,6 +90,8 @@ These generic agent rules come before implementation details. For the full check
 - Reuse existing project widgets, helpers, and abstractions before creating new ones.
 - Design reusable row/list components so trailing content aligns consistently and can accept widgets when needed.
 - Add concise Dartdoc to newly introduced public APIs in reusable or cross-layer surfaces.
+- Keep domain use cases narrowly scoped by caller responsibility instead of collecting unrelated feature workflows behind one broad facade.
+- When splitting Injectable use cases, update build-runner scan inputs, generated DI, and the consuming BLoC constructor dependencies in the same change.
 - When a child flow mutates data that a caller needs, return the updated result instead of forcing an immediate duplicate read.
 - Keep storage operations behind the existing data/domain boundaries and prefer stable table/row operations over replacing storage infrastructure.
 - Remove stale source-of-truth entries and regenerated outputs when a feature surface is removed.
