@@ -25,11 +25,11 @@ class _DevModeDashboardScreenState extends State<DevModeDashboardScreen> {
         EnViSwitch(
           isVILanguage:
               context.read<AppGlobalBloc>().state.locale.languageCode ==
-                  AppLocale.th.languageCode,
+              AppLocale.vi.languageCode,
           onChanged: (isViLanguage) {
-            context
-                .read<AppGlobalBloc>()
-                .changeLocale(isViLanguage ? AppLocale.th : AppLocale.en);
+            context.read<AppGlobalBloc>().changeLocale(
+              isViLanguage ? AppLocale.vi : AppLocale.en,
+            );
           },
         ),
         IconButton(

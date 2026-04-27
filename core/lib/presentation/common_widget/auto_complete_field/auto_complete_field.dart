@@ -76,7 +76,8 @@ class AutoCompleteField<T extends Object> extends StatefulWidget {
 }
 
 class _AutoCompleteFieldState<T extends Object>
-    extends State<AutoCompleteField<T>> with AfterLayoutMixin {
+    extends State<AutoCompleteField<T>>
+    with AfterLayoutMixin {
   final _fetching = ValueNotifier(false);
   var _fecthingAt = DateTime.now();
 
@@ -109,11 +110,11 @@ class _AutoCompleteFieldState<T extends Object>
     if (oldWidget.initialValue != widget.initialValue) {
       _selected = widget.initialValue;
       final text = selectedToText;
-      _icText.value.tdController.value =
-          _icText.value.tdController.value.copyWith(
-        text: text,
-        selection: TextSelection.collapsed(offset: text?.length ?? 0),
-      );
+      _icText.value.tdController.value = _icText.value.tdController.value
+          .copyWith(
+            text: text,
+            selection: TextSelection.collapsed(offset: text?.length ?? 0),
+          );
     }
 
     if (widget.warning != null) {
@@ -159,9 +160,8 @@ class _AutoCompleteFieldState<T extends Object>
             child: Autocomplete<T>(
               displayStringForOption: widget.displayStringForOption,
               initialValue: widget.initialValue?.let(
-                (it) => TextEditingValue(
-                  text: widget.displayStringForOption(it),
-                ),
+                (it) =>
+                    TextEditingValue(text: widget.displayStringForOption(it)),
               ),
               optionsViewOpenDirection: widget.optionsViewOpenDirection,
               optionsMaxHeight: widget.optionsMaxHeight,
@@ -186,59 +186,57 @@ class _AutoCompleteFieldState<T extends Object>
                   return value;
                 });
               },
-              fieldViewBuilder: (
-                context,
-                textEditingController,
-                focusNode,
-                onFieldSubmitted,
-              ) {
-                return ValueListenableBuilder<bool>(
-                  valueListenable: _fetching,
-                  builder: (context, fetching, _) {
-                    return InputContainer(
-                      controller: _icText
-                        ..value.withValue(
-                          tdController: textEditingController,
-                          focusNode: focusNode,
-                        ),
-                      onTap: widget.onTap,
-                      onSubmitted: (_) => onFieldSubmitted(),
-                      title: widget.title,
-                      titleMode: widget.titleMode,
-                      hint: widget.hint,
-                      required: widget.required,
-                      validation: _icText.value.validation,
-                      scrollPadding: widget.scrollPadding,
-                      helperText: widget.helperText,
-                      suffixIcon: Builder(
-                        builder: (context) {
-                          if (fetching && !widget.isLocalSearch) {
-                            return const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 8),
-                              child: Loading(
-                                brightness: Brightness.light,
-                                radius: 8,
-                              ),
-                            );
-                          }
-                          return widget.suffixIcon ??
-                              const Icon(
-                                Icons.search,
-                                size: 18,
-                              );
-                        },
-                      ),
-                      enable: widget.enable,
-                      withClearButton: !fetching && widget.withClearButton,
-                      onClear: (hasFocus) {
-                        widget.onSelected.call(null);
+              fieldViewBuilder:
+                  (
+                    context,
+                    textEditingController,
+                    focusNode,
+                    onFieldSubmitted,
+                  ) {
+                    return ValueListenableBuilder<bool>(
+                      valueListenable: _fetching,
+                      builder: (context, fetching, _) {
+                        return InputContainer(
+                          controller: _icText
+                            ..value.withValue(
+                              tdController: textEditingController,
+                              focusNode: focusNode,
+                            ),
+                          onTap: widget.onTap,
+                          onSubmitted: (_) => onFieldSubmitted(),
+                          title: widget.title,
+                          titleMode: widget.titleMode,
+                          hint: widget.hint,
+                          required: widget.required,
+                          validation: _icText.value.validation,
+                          scrollPadding: widget.scrollPadding,
+                          helperText: widget.helperText,
+                          suffixIcon: Builder(
+                            builder: (context) {
+                              if (fetching && !widget.isLocalSearch) {
+                                return const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8),
+                                  child: Loading(
+                                    brightness: Brightness.light,
+                                    radius: 8,
+                                  ),
+                                );
+                              }
+                              return widget.suffixIcon ??
+                                  const Icon(Icons.search, size: 18);
+                            },
+                          ),
+                          enable: widget.enable,
+                          withClearButton: !fetching && widget.withClearButton,
+                          onClear: (hasFocus) {
+                            widget.onSelected.call(null);
+                          },
+                          onTextChanged: widget.onTextChanged,
+                          maxLines: null,
+                        );
                       },
-                      onTextChanged: widget.onTextChanged,
-                      maxLines: null,
                     );
                   },
-                );
-              },
               optionsViewBuilder: (context, onSelected, options) {
                 /// Move to option overlap over title when
                 /// [widget.optionsViewOpenDirection] is
@@ -246,14 +244,13 @@ class _AutoCompleteFieldState<T extends Object>
                 /// and [widget.titleMode] is TitleMode.above
                 final offset = switch (widget.optionsViewOpenDirection) {
                   OptionsViewOpenDirection.up => switch (widget.titleMode) {
-                      TitleMode.above => const Offset(0, 18),
-                      _ => const Offset(0, 0),
-                    },
+                    TitleMode.above => const Offset(0, 18),
+                    _ => const Offset(0, 0),
+                  },
                   // mostSpace is resolved by Flutter at layout; fall through
                   // to the no-offset branch since we can't predict direction.
                   OptionsViewOpenDirection.down ||
-                  OptionsViewOpenDirection.mostSpace =>
-                    const Offset(0, 0),
+                  OptionsViewOpenDirection.mostSpace => const Offset(0, 0),
                 };
                 return Transform.translate(
                   offset: offset,
@@ -330,16 +327,13 @@ class _AutocompleteOptionsState<T extends Object>
     final optionsAlignment = switch (widget.openDirection) {
       OptionsViewOpenDirection.up => AlignmentDirectional.bottomStart,
       OptionsViewOpenDirection.down ||
-      OptionsViewOpenDirection.mostSpace =>
-        AlignmentDirectional.topStart,
+      OptionsViewOpenDirection.mostSpace => AlignmentDirectional.topStart,
     };
     return Align(
       alignment: optionsAlignment,
       child: Material(
         elevation: 4.0,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxHeight: widget.maxOptionsHeight,
@@ -378,10 +372,7 @@ class _AutocompleteOptionsState<T extends Object>
                   horizontal: 16,
                   vertical: 12,
                 ),
-                child: Text(
-                  widget.title!,
-                  style: textTheme.bodyMedium,
-                ),
+                child: Text(widget.title!, style: textTheme.bodyMedium),
               );
             }
             final option = widget.options.elementAt(
@@ -395,15 +386,17 @@ class _AutocompleteOptionsState<T extends Object>
                 builder: (BuildContext context) {
                   final highlight = widget.selected == option;
                   if (highlight) {
-                    SchedulerBinding.instance
-                        .addPostFrameCallback((Duration timeStamp) {
+                    SchedulerBinding.instance.addPostFrameCallback((
+                      Duration timeStamp,
+                    ) {
                       Scrollable.ensureVisible(context, alignment: 0.5);
                     });
                   }
                   return Container(
                     color: highlight ? Theme.of(context).focusColor : null,
                     padding: const EdgeInsets.all(12.0),
-                    child: widget.optionBuilder?.call(option) ??
+                    child:
+                        widget.optionBuilder?.call(option) ??
                         Text(
                           widget.displayStringForOption(option),
                           style: textTheme.textInput,

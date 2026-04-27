@@ -105,30 +105,25 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(16).copyWith(
-        bottom: MediaQuery.of(context).padding.bottom + 16,
-      ),
+      padding: const EdgeInsets.all(
+        16,
+      ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
       children: <Widget>[
-        ...themeDemo.map(
-          (e) {
-            return Theme(
-              data: e['light'].theme,
-              child: OutlinedButton(
-                child: Text('${e['name']} Theme'),
-                onPressed: () {
-                  context.read<AppGlobalBloc>().updateTheme(
-                        lightTheme: e['light'],
-                        darkTheme: e['dark'],
-                      );
-                },
-              ),
-            );
-          },
-        ),
-        Text(
-          'Theme Color',
-          style: context.textTheme.bodyLarge,
-        ),
+        ...themeDemo.map((e) {
+          return Theme(
+            data: e['light'].theme,
+            child: OutlinedButton(
+              child: Text('${e['name']} Theme'),
+              onPressed: () {
+                context.read<AppGlobalBloc>().updateTheme(
+                  lightTheme: e['light'],
+                  darkTheme: e['dark'],
+                );
+              },
+            ),
+          );
+        }),
+        Text('Theme Color', style: context.textTheme.bodyLarge),
         GridView.count(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
@@ -139,86 +134,35 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
           crossAxisSpacing: 0.0,
           children: [
             ...[
-              {
-                'color': themeColor.primary,
-                'name': 'primary',
-              },
-              {
-                'color': themeColor.primaryVariant,
-                'name': 'primaryVariant',
-              },
-              {
-                'color': themeColor.secondary,
-                'name': 'secondary',
-              },
+              {'color': themeColor.primary, 'name': 'primary'},
+              {'color': themeColor.primaryVariant, 'name': 'primaryVariant'},
+              {'color': themeColor.secondary, 'name': 'secondary'},
               {
                 'color': themeColor.secondaryVariant,
                 'name': 'secondaryVariant',
               },
-              {
-                'color': themeColor.surface,
-                'name': 'surface',
-              },
-              {
-                'color': themeColor.background,
-                'name': 'background',
-              },
-              {
-                'color': themeColor.error,
-                'name': 'error',
-              },
-              {
-                'color': themeColor.onPrimary,
-                'name': 'onPrimary',
-              },
-              {
-                'color': themeColor.onSecondary,
-                'name': 'onSecondary',
-              },
-              {
-                'color': themeColor.onBackground,
-                'name': 'onBackground',
-              },
-              {
-                'color': themeColor.onSurface,
-                'name': 'onSurface',
-              },
-              {
-                'color': themeColor.onError,
-                'name': 'onError',
-              },
-              {
-                'color': themeColor.themePrimary,
-                'name': 'themePrimary',
-              },
+              {'color': themeColor.surface, 'name': 'surface'},
+              {'color': themeColor.background, 'name': 'background'},
+              {'color': themeColor.error, 'name': 'error'},
+              {'color': themeColor.onPrimary, 'name': 'onPrimary'},
+              {'color': themeColor.onSecondary, 'name': 'onSecondary'},
+              {'color': themeColor.onBackground, 'name': 'onBackground'},
+              {'color': themeColor.onSurface, 'name': 'onSurface'},
+              {'color': themeColor.onError, 'name': 'onError'},
+              {'color': themeColor.themePrimary, 'name': 'themePrimary'},
               {
                 'color': themeColor.appbarForegroundColor,
                 'name': 'appbarForegroundColor',
               },
-              {
-                'color': themeColor.schemeAction,
-                'name': 'schemeAction',
-              },
-              {
-                'color': themeColor.cardBackground,
-                'name': 'cardBackground',
-              },
+              {'color': themeColor.schemeAction, 'name': 'schemeAction'},
+              {'color': themeColor.cardBackground, 'name': 'cardBackground'},
               {
                 'color': themeColor.scaffoldBackgroundColor,
                 'name': 'scaffoldBackgroundColor',
               },
-              {
-                'color': themeColor.disableColor,
-                'name': 'disableColor',
-              },
-              {
-                'color': themeColor.dividerColor,
-                'name': 'dividerColor',
-              },
-              {
-                'color': themeColor.borderColor,
-                'name': 'borderColor',
-              },
+              {'color': themeColor.disableColor, 'name': 'disableColor'},
+              {'color': themeColor.dividerColor, 'name': 'dividerColor'},
+              {'color': themeColor.borderColor, 'name': 'borderColor'},
               {
                 'color': themeColor.unselectedLabelColor,
                 'name': 'unselectedLabelColor',
@@ -227,22 +171,10 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
                 'color': themeColor.selectedLabelColor,
                 'name': 'selectedLabelColor',
               },
-              {
-                'color': themeColor.selected,
-                'name': 'selected',
-              },
-              {
-                'color': themeColor.splashColor,
-                'name': 'splashColor',
-              },
-              {
-                'color': themeColor.shadowColor,
-                'name': 'shadowColor',
-              },
-              {
-                'color': themeColor.textButtonColor,
-                'name': 'textButtonColor',
-              },
+              {'color': themeColor.selected, 'name': 'selected'},
+              {'color': themeColor.splashColor, 'name': 'splashColor'},
+              {'color': themeColor.shadowColor, 'name': 'shadowColor'},
+              {'color': themeColor.textButtonColor, 'name': 'textButtonColor'},
               {
                 'color': themeColor.textButtonDisableColor,
                 'name': 'textButtonDisableColor',
@@ -295,14 +227,8 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
                 'color': themeColor.chipBackgroundColor,
                 'name': 'chipBackgroundColor',
               },
-              {
-                'color': themeColor.chipBorderColor,
-                'name': 'chipBorderColor',
-              },
-              {
-                'color': themeColor.chipLabelColor,
-                'name': 'chipLabelColor',
-              },
+              {'color': themeColor.chipBorderColor, 'name': 'chipBorderColor'},
+              {'color': themeColor.chipLabelColor, 'name': 'chipLabelColor'},
               {
                 'color': themeColor.chipSelectedColor,
                 'name': 'chipSelectedColor',
@@ -311,38 +237,14 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
                 'color': themeColor.chipDisabledColor,
                 'name': 'chipDisabledColor',
               },
-              {
-                'color': themeColor.deleteIconColor,
-                'name': 'deleteIconColor',
-              },
-              {
-                'color': themeColor.displayText,
-                'name': 'displayText',
-              },
-              {
-                'color': themeColor.headlineText,
-                'name': 'headlineText',
-              },
-              {
-                'color': themeColor.titleText,
-                'name': 'titleText',
-              },
-              {
-                'color': themeColor.bodyText,
-                'name': 'bodyText',
-              },
-              {
-                'color': themeColor.labelText,
-                'name': 'labelText',
-              },
-              {
-                'color': themeColor.warningText,
-                'name': 'warningText',
-              },
-              {
-                'color': themeColor.hyperLink,
-                'name': 'hyperLink',
-              },
+              {'color': themeColor.deleteIconColor, 'name': 'deleteIconColor'},
+              {'color': themeColor.displayText, 'name': 'displayText'},
+              {'color': themeColor.headlineText, 'name': 'headlineText'},
+              {'color': themeColor.titleText, 'name': 'titleText'},
+              {'color': themeColor.bodyText, 'name': 'bodyText'},
+              {'color': themeColor.labelText, 'name': 'labelText'},
+              {'color': themeColor.warningText, 'name': 'warningText'},
+              {'color': themeColor.hyperLink, 'name': 'hyperLink'},
             ].map(
               (e) => InkWell(
                 onTap: () {
@@ -390,9 +292,7 @@ class _ThemeColorPageState extends State<ThemeColorPage> {
           borderRadius: BorderRadius.circular(12),
           child: const Text('boxShadowDark'),
         ),
-      ].insertSeparator(
-        (index) => const SizedBox(height: 16),
-      ),
+      ].insertSeparator((index) => const SizedBox(height: 16)),
     );
   }
 }

@@ -35,7 +35,11 @@ class DataColumn {
   });
 
   String get create =>
-      '''$name ${type.typeStr} ${isPrimary ? 'PRIMARY KEY NOT NULL' : ''} ${isPrimary ? '' : notNull ? 'NOT NULL' : ''}''';
+      '''$name ${type.typeStr} ${isPrimary ? 'PRIMARY KEY NOT NULL' : ''} ${isPrimary
+          ? ''
+          : notNull
+          ? 'NOT NULL'
+          : ''}''';
 }
 
 abstract class DAO {
@@ -45,7 +49,8 @@ abstract class DAO {
 
   String get tableName;
 
-  String get createQuery => '''CREATE TABLE IF NOT EXISTS $tableName (
+  String get createQuery =>
+      '''CREATE TABLE IF NOT EXISTS $tableName (
   ${columns.map((e) => e.create).join(',')}
 )''';
 

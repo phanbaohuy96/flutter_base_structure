@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../common/constants/locale/app_locale.dart';
 import '../../common/constants/locale/date_locale.dart';
 import '../../common/constants/locale/datetime/en.dart';
-import '../../common/constants/locale/datetime/th.dart';
+import '../../common/constants/locale/datetime/vi.dart';
 import '../theme/export.dart';
 
 export 'package:fl_theme/src/extension.dart';
@@ -24,8 +24,8 @@ extension CorePresentationContextOnStateExt on State {
 extension CoreAppDateLocaleExt on BuildContext {
   AppDateLocale get appDateLocale {
     final languageCode = Localizations.localeOf(this).languageCode;
-    if (languageCode == AppLocale.th.languageCode) {
-      return THDateLocale().toAppDateLocale;
+    if (languageCode == AppLocale.vi.languageCode) {
+      return VIDateLocale().toAppDateLocale;
     }
     return ENDateLocale().toAppDateLocale;
   }

@@ -22,11 +22,9 @@ abstract class DatasourceModule {
 
   @singleton
   FlutterSecureStorage get secureStorage => const FlutterSecureStorage(
-        aOptions: AndroidOptions(
-          encryptedSharedPreferences: true,
-        ),
-        iOptions: IOSOptions(),
-      );
+    aOptions: AndroidOptions(encryptedSharedPreferences: true),
+    iOptions: IOSOptions(),
+  );
 
   ///
   /// REMOTE
@@ -35,28 +33,24 @@ abstract class DatasourceModule {
   Dio createDioClient(
     CoreLocalDataManager localDataManager,
     RequestHeaderService requestHeaderService,
-  ) =>
-      DioClientFactory.build(
-        localDataManager: localDataManager,
-        requestHeaderService: requestHeaderService,
-        baseUrl: Config.instance.appConfig.baseApiLayer,
-      );
+  ) => DioClientFactory.build(
+    localDataManager: localDataManager,
+    requestHeaderService: requestHeaderService,
+    baseUrl: Config.instance.appConfig.baseApiLayer,
+  );
 
   @injectable
-  RestApiRepository restApiRepo(Dio dio) => RestApiRepository(
-        dio,
-      );
+  RestApiRepository restApiRepo(Dio dio) => RestApiRepository(dio);
 
   @injectable
   AppApiService createAppApiService(
     RestApiRepository restApi,
     CoreLocalDataManager localDataManagert,
-  ) =>
-      AppApiService(restApi, localDataManagert);
+  ) => AppApiService(restApi, localDataManagert);
 
   @injectable
   StorageRepository storageRepo(Dio dio) => StorageRepository(
-        dio,
-        baseUrl: Config.instance.appConfig.storageApiLayer,
-      );
+    dio,
+    baseUrl: Config.instance.appConfig.storageApiLayer,
+  );
 }

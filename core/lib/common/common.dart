@@ -8,7 +8,6 @@ export 'constants/firebase_auth_constants.dart';
 export 'constants/locale/app_locale.dart';
 export 'constants/locale/date_locale.dart';
 export 'constants/locale/datetime/en.dart';
-export 'constants/locale/datetime/th.dart';
 export 'constants/locale/datetime/vi.dart';
 export 'exceptions/refresh_token_exception.dart';
 export 'mixin.dart';

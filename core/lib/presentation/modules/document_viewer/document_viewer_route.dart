@@ -8,9 +8,7 @@ class DocumentViewerRoute extends IRoute {
       CustomRouter(
         path: DocumentViewerScreen.routeName,
         builder: (context, uri, extra) {
-          return DocumentViewerScreen(
-            args: extra as DocumentViewerArgs,
-          );
+          return DocumentViewerScreen(args: extra as DocumentViewerArgs);
         },
       ),
     ];

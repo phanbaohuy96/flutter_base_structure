@@ -27,10 +27,7 @@ class HtmlWidgetWithViewMore extends StatelessWidget {
       viewMore: viewMore,
       seeLess: seeLess,
       minHeight: minHeight,
-      child: HtmlWidgetWrapper(
-        htmlContent: htmlContent,
-        textStyle: style,
-      ),
+      child: HtmlWidgetWrapper(htmlContent: htmlContent, textStyle: style),
     );
   }
 }

@@ -101,7 +101,8 @@ class _CheckboxWithTitleState extends State<CheckboxWithTitle> {
               Expanded(
                 child: Text(
                   widget.title,
-                  style: widget.style ??
+                  style:
+                      widget.style ??
                       textTheme.bodyLarge?.copyWith(height: 1.4),
                 ),
               ),

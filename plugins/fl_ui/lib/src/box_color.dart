@@ -143,10 +143,7 @@ class ChipItem extends StatelessWidget {
         color: _bgColor,
         borderRadius: BorderRadius.circular(32),
         padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        border: Border.all(
-          width: 1,
-          color: _color,
-        ),
+        border: Border.all(width: 1, color: _color),
         child: Text(
           text,
           style: selected
@@ -180,24 +177,18 @@ class StatusBox extends StatelessWidget {
     return BoxColor(
       color: bgColor ?? Colors.grey[200]!,
       borderRadius: BorderRadius.circular(32),
-      padding: const EdgeInsets.symmetric(
-        vertical: 2,
-        horizontal: 8,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 8),
       border: hasBorder
-          ? Border.all(
-              width: 1,
-              color: color ?? Colors.grey,
-            )
+          ? Border.all(width: 1, color: color ?? Colors.grey)
           : null,
       constraints: const BoxConstraints(minWidth: 64),
       alignment: Alignment.center,
       child: Text(
         status ?? '--',
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: textColor ?? color ?? Colors.grey,
-              fontWeight: FontWeight.w600,
-            ),
+          color: textColor ?? color ?? Colors.grey,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

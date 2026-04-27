@@ -1,6 +1,5 @@
 enum SqliteTable {
-  user('user'),
-  ;
+  user('user');
 
   const SqliteTable(this.name);
 

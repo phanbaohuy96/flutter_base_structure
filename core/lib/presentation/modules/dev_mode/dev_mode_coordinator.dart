@@ -13,28 +13,19 @@ extension DevModeCoordinator on BuildContext {
   Future<T?> openDevMode<T>({
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(
-      this,
-      DevModeDashboardScreen.routeName,
-    );
+    return pushBehavior.push(this, DevModeDashboardScreen.routeName);
   }
 
   Future<T?> openLogViewer<T>({
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(
-      this,
-      LogViewerScreen.routeName,
-    );
+    return pushBehavior.push(this, LogViewerScreen.routeName);
   }
 
   Future<T?> openNetWorkLogViewer<T>({
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(
-      this,
-      NetworkLogViewerScreen.routeName,
-    );
+    return pushBehavior.push(this, NetworkLogViewerScreen.routeName);
   }
 
   Future<T?> openNetworkLogDetail<T>({
@@ -51,18 +42,12 @@ extension DevModeCoordinator on BuildContext {
   Future<T?> viewDesignSystem<T>({
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(
-      this,
-      DesignSystemScreen.routeName,
-    );
+    return pushBehavior.push(this, DesignSystemScreen.routeName);
   }
 
   Future<T?> openAppConfig<T>({
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(
-      this,
-      AppConfigScreen.routeName,
-    );
+    return pushBehavior.push(this, AppConfigScreen.routeName);
   }
 }

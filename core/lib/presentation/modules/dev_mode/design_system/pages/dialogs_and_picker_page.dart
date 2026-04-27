@@ -8,9 +8,9 @@ class DialogAndPickerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: const EdgeInsets.all(16).copyWith(
-        bottom: MediaQuery.of(context).padding.bottom + 16,
-      ),
+      padding: const EdgeInsets.all(
+        16,
+      ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
       children: <Widget>[
         OutlinedButton(
           child: const Text('Notice Confirm Dialog'),
@@ -47,19 +47,13 @@ class DialogAndPickerPage extends StatelessWidget {
         OutlinedButton(
           child: const Text('Notice Error Dialog'),
           onPressed: () {
-            showNoticeErrorDialog(
-              context: context,
-              message: 'message',
-            );
+            showNoticeErrorDialog(context: context, message: 'message');
           },
         ),
         OutlinedButton(
           child: const Text('Notice Warning Dialog'),
           onPressed: () {
-            showNoticeWarningDialog(
-              context: context,
-              message: 'message',
-            );
+            showNoticeWarningDialog(context: context, message: 'message');
           },
         ),
         OutlinedButton(
@@ -83,9 +77,7 @@ class DialogAndPickerPage extends StatelessWidget {
             showModal(
               context,
               builder: (context) => Container(
-                constraints: const BoxConstraints(
-                  maxHeight: 300,
-                ),
+                constraints: const BoxConstraints(maxHeight: 300),
                 alignment: Alignment.center,
                 child: const Text('showModal'),
               ),
@@ -108,10 +100,7 @@ class DialogAndPickerPage extends StatelessWidget {
         OutlinedButton(
           child: const Text('Show My Custom Date Picker'),
           onPressed: () {
-            showMyCustomDatePicker(
-              context,
-              initialDateTime: DateTime.now(),
-            );
+            showMyCustomDatePicker(context, initialDateTime: DateTime.now());
           },
         ),
         OutlinedButton(
@@ -126,26 +115,16 @@ class DialogAndPickerPage extends StatelessWidget {
         OutlinedButton(
           child: const Text('Show My Custom Month Picker'),
           onPressed: () {
-            showMyCustomMonthPicker(
-              context,
-              initialDateTime: DateTime.now(),
-            );
+            showMyCustomMonthPicker(context, initialDateTime: DateTime.now());
           },
         ),
         OutlinedButton(
           child: const Text('Show My Custom Time Picker'),
           onPressed: () {
-            showMyTimePicker(
-              context,
-              initialDateTime: DateTime.now(),
-            );
+            showMyTimePicker(context, initialDateTime: DateTime.now());
           },
         ),
-      ].insertSeparator(
-        (index) => const SizedBox(
-          height: 16,
-        ),
-      ),
+      ].insertSeparator((index) => const SizedBox(height: 16)),
     );
   }
 }

@@ -46,48 +46,51 @@ abstract class ThemeDialog {
     final theme = context.theme;
 
     final showAndroidDialog = () => AlertDialog(
-          icon: icon,
-          title: Text(
-            title ?? inform,
-            style: titleStyle ?? theme.textTheme.headlineSmall,
+      icon: icon,
+      title: Text(
+        title ?? inform,
+        style: titleStyle ?? theme.textTheme.headlineSmall,
+      ),
+      content:
+          content ??
+          Text(
+            message ?? '',
+            style: theme.textTheme.bodyMedium,
+            textAlign: TextAlign.center,
           ),
-          content: content ??
-              Text(
-                message ?? '',
-                style: theme.textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
-          actions: [
-            TextButton(
-              key: const ValueKey('ConfirmDialog_cancel_btn'),
-              onPressed: () {
-                dismissFunc.call(false);
-                onCanceled?.call();
-              },
-              child: Text(
-                leftBtn ?? cancel,
-                style: styleLeftBtn ??
-                    theme.textTheme.labelLarge?.copyWith(
-                      color: context.themeColor.primary,
-                    ),
-              ),
-            ),
-            TextButton(
-              key: const ValueKey('ConfirmDialog_confirm_btn'),
-              onPressed: () {
-                dismissFunc.call(true);
-                onConfirmed?.call();
-              },
-              child: Text(
-                rightBtn ?? confirm,
-                style: styleRightBtn ??
-                    theme.textTheme.labelLarge?.copyWith(
-                      color: context.themeColor.primary,
-                    ),
-              ),
-            ),
-          ],
-        );
+      actions: [
+        TextButton(
+          key: const ValueKey('ConfirmDialog_cancel_btn'),
+          onPressed: () {
+            dismissFunc.call(false);
+            onCanceled?.call();
+          },
+          child: Text(
+            leftBtn ?? cancel,
+            style:
+                styleLeftBtn ??
+                theme.textTheme.labelLarge?.copyWith(
+                  color: context.themeColor.primary,
+                ),
+          ),
+        ),
+        TextButton(
+          key: const ValueKey('ConfirmDialog_confirm_btn'),
+          onPressed: () {
+            dismissFunc.call(true);
+            onConfirmed?.call();
+          },
+          child: Text(
+            rightBtn ?? confirm,
+            style:
+                styleRightBtn ??
+                theme.textTheme.labelLarge?.copyWith(
+                  color: context.themeColor.primary,
+                ),
+          ),
+        ),
+      ],
+    );
 
     if (kIsWeb) {
       return showAndroidDialog();
@@ -109,7 +112,8 @@ abstract class ThemeDialog {
           },
           child: Text(
             title,
-            style: style ??
+            style:
+                style ??
                 theme.textTheme.labelLarge!.copyWith(
                   color: Colors.blue,
                   fontWeight: FontWeight.normal,
@@ -119,11 +123,9 @@ abstract class ThemeDialog {
       }
 
       return CupertinoAlertDialog(
-        title: Text(
-          title ?? inform,
-          style: theme.textTheme.headlineSmall,
-        ),
-        content: content ??
+        title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
+        content:
+            content ??
             Text(
               message ?? '',
               style: theme.textTheme.bodyMedium,
@@ -141,9 +143,7 @@ abstract class ThemeDialog {
                   popResult: false,
                 ),
               ),
-              const VerticalDivider(
-                width: 1,
-              ),
+              const VerticalDivider(width: 1),
               Expanded(
                 key: const ValueKey('ConfirmDialog_confirm_btn'),
                 child: _buildAction(
@@ -181,62 +181,58 @@ abstract class ThemeDialog {
     Widget body;
     final dismissFunc = () {
       if (dismissWhenAction) {
-        Navigator.of(context, rootNavigator: useRootNavigator).pop(
-          _icReason.text,
-        );
+        Navigator.of(
+          context,
+          rootNavigator: useRootNavigator,
+        ).pop(_icReason.text);
       }
     };
     final theme = context.theme;
 
     final showAndroidDialog = () => AlertDialog(
-          title: Text(
-            title ?? inform,
-            style: theme.textTheme.headlineSmall,
+      title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          icon ?? const SizedBox.shrink(),
+          InputTitleWidget(title: message, required: false),
+          if (additionalWidget != null) additionalWidget,
+          InputContainer(controller: _icReason, maxLines: 6, hint: hint),
+        ],
+      ),
+      actions: [
+        TextButton(
+          key: const ValueKey('ConfirmWithReasonDialog_cancel_btn'),
+          onPressed: () {
+            dismissFunc.call();
+            onCanceled?.call(_icReason.text);
+          },
+          child: Text(
+            leftBtn ?? cancel,
+            style:
+                styleLeftBtn ??
+                theme.textTheme.labelLarge?.copyWith(
+                  color: context.themeColor.primary,
+                ),
           ),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              icon ?? const SizedBox.shrink(),
-              InputTitleWidget(title: message, required: false),
-              if (additionalWidget != null) additionalWidget,
-              InputContainer(
-                controller: _icReason,
-                maxLines: 6,
-                hint: hint,
-              ),
-            ],
+        ),
+        TextButton(
+          key: const ValueKey('ConfirmWithReasonDialog_confirm_btn'),
+          onPressed: () {
+            dismissFunc.call();
+            onConfirmed?.call(_icReason.text);
+          },
+          child: Text(
+            rightBtn ?? confirm,
+            style:
+                styleRightBtn ??
+                theme.textTheme.labelLarge?.copyWith(
+                  color: context.themeColor.primary,
+                ),
           ),
-          actions: [
-            TextButton(
-              key: const ValueKey('ConfirmWithReasonDialog_cancel_btn'),
-              onPressed: () {
-                dismissFunc.call();
-                onCanceled?.call(_icReason.text);
-              },
-              child: Text(
-                leftBtn ?? cancel,
-                style: styleLeftBtn ??
-                    theme.textTheme.labelLarge?.copyWith(
-                      color: context.themeColor.primary,
-                    ),
-              ),
-            ),
-            TextButton(
-              key: const ValueKey('ConfirmWithReasonDialog_confirm_btn'),
-              onPressed: () {
-                dismissFunc.call();
-                onConfirmed?.call(_icReason.text);
-              },
-              child: Text(
-                rightBtn ?? confirm,
-                style: styleRightBtn ??
-                    theme.textTheme.labelLarge?.copyWith(
-                      color: context.themeColor.primary,
-                    ),
-              ),
-            ),
-          ],
-        );
+        ),
+      ],
+    );
 
     if (kIsWeb) {
       body = showAndroidDialog();
@@ -257,7 +253,8 @@ abstract class ThemeDialog {
           },
           child: Text(
             title,
-            style: style ??
+            style:
+                style ??
                 theme.textTheme.labelLarge!.copyWith(
                   color: Colors.blue,
                   fontWeight: FontWeight.normal,
@@ -267,10 +264,7 @@ abstract class ThemeDialog {
       }
 
       body = CupertinoAlertDialog(
-        title: Text(
-          title ?? inform,
-          style: theme.textTheme.headlineSmall,
-        ),
+        title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
         content: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Column(
@@ -279,11 +273,7 @@ abstract class ThemeDialog {
               icon ?? const SizedBox.shrink(),
               InputTitleWidget(title: message, required: false),
               if (additionalWidget != null) additionalWidget,
-              InputContainer(
-                controller: _icReason,
-                maxLines: 4,
-                hint: hint,
-              ),
+              InputContainer(controller: _icReason, maxLines: 4, hint: hint),
             ],
           ),
         ),
@@ -298,9 +288,7 @@ abstract class ThemeDialog {
                   style: styleLeftBtn,
                 ),
               ),
-              const VerticalDivider(
-                width: 1,
-              ),
+              const VerticalDivider(width: 1),
               Expanded(
                 key: const ValueKey('ConfirmWithReasonDialog_confirm_btn'),
                 child: _buildAction(
@@ -340,37 +328,35 @@ abstract class ThemeDialog {
     };
     final theme = context.theme;
     final showAndroidDialog = () => PopScope(
-          canPop: barrierDismissible,
-          child: AlertDialog(
-            title: Text(
-              title ?? inform,
-              style: theme.textTheme.headlineSmall,
-            ),
-            content: content ??
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    icon ?? const SizedBox.shrink(),
-                    Text(
-                      message,
-                      style: theme.textTheme.bodyMedium,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+      canPop: barrierDismissible,
+      child: AlertDialog(
+        title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
+        content:
+            content ??
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                icon ?? const SizedBox.shrink(),
+                Text(
+                  message,
+                  style: theme.textTheme.bodyMedium,
+                  textAlign: TextAlign.center,
                 ),
-            actions: [
-              TextButton(
-                key: const ValueKey('NoticeDialog_close_btn'),
-                onPressed: () {
-                  dismissFunc.call();
-                  onClose?.call();
-                },
-                child: Text(titleBtn ?? ok),
-              ),
-            ],
+              ],
+            ),
+        actions: [
+          TextButton(
+            key: const ValueKey('NoticeDialog_close_btn'),
+            onPressed: () {
+              dismissFunc.call();
+              onClose?.call();
+            },
+            child: Text(titleBtn ?? ok),
           ),
-        );
+        ],
+      ),
+    );
 
     if (kIsWeb) {
       return showAndroidDialog();
@@ -381,7 +367,8 @@ abstract class ThemeDialog {
         canPop: barrierDismissible,
         child: CupertinoAlertDialog(
           title: Text(title ?? inform),
-          content: content ??
+          content:
+              content ??
               Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -457,9 +444,7 @@ abstract class ThemeDialog {
                   },
                   child: Text(
                     e.key,
-                    style: TextStyle(
-                      color: context.themeColor.primary,
-                    ),
+                    style: TextStyle(color: context.themeColor.primary),
                   ),
                 ),
               )
@@ -472,9 +457,7 @@ abstract class ThemeDialog {
             },
             child: Text(
               titleBottomBtn ?? cancel,
-              style: TextStyle(
-                color: context.themeColor.primary,
-              ),
+              style: TextStyle(color: context.themeColor.primary),
             ),
           ),
         ],
@@ -521,10 +504,7 @@ abstract class ThemeDialog {
         cancelButton: CupertinoActionSheetAction(
           key: const ValueKey('ActionDialog_close_btn'),
           onPressed: () {
-            Navigator.of(
-              context,
-              rootNavigator: useRootNavigator,
-            ).pop();
+            Navigator.of(context, rootNavigator: useRootNavigator).pop();
             onClose?.call();
           },
           child: Text(
@@ -557,8 +537,9 @@ abstract class ThemeDialog {
         final maxContentSize =
             constraints.maxHeight - mediaData.padding.top - 120;
         return Padding(
-          padding:
-              resizeToAvoidBottomInset ? mediaData.viewInsets : EdgeInsets.zero,
+          padding: resizeToAvoidBottomInset
+              ? mediaData.viewInsets
+              : EdgeInsets.zero,
           child: Wrap(
             children: <Widget>[
               DecoratedBox(
@@ -586,10 +567,7 @@ abstract class ThemeDialog {
                               color: Colors.grey.shade400,
                               borderRadius: BorderRadius.circular(2),
                             ),
-                            margin: const EdgeInsets.only(
-                              bottom: 8,
-                              top: 8,
-                            ),
+                            margin: const EdgeInsets.only(bottom: 8, top: 8),
                           ),
                         ],
                       ),
@@ -606,11 +584,12 @@ abstract class ThemeDialog {
                           ),
                           IconButton(
                             key: const ValueKey('ModalBottomSheet_close_btn'),
-                            onPressed: onClose ??
+                            onPressed:
+                                onClose ??
                                 () => Navigator.of(
-                                      context,
-                                      rootNavigator: useRootNavigator,
-                                    ).pop(),
+                                  context,
+                                  rootNavigator: useRootNavigator,
+                                ).pop(),
                             icon: Icon(
                               Icons.close,
                               size: 24,
@@ -660,73 +639,66 @@ abstract class ThemeDialog {
     final theme = context.theme;
 
     final showAndroidDialog = () => AlertDialog(
-          title: Text(
-            title ?? inform,
-            style: theme.textTheme.headlineSmall,
+      title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            message,
+            style: theme.textTheme.titleSmall?.copyWith(color: Colors.black),
           ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                message,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 12),
-              InputContainer(
-                controller: _icValidate,
-                hint: hint,
-                isDense: true,
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-              ),
-            ],
+          const SizedBox(height: 12),
+          InputContainer(
+            controller: _icValidate,
+            hint: hint,
+            isDense: true,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
+            ),
           ),
-          actions: [
-            TextButton(
-              key: const ValueKey('NoticeConfirmWithValidateDialog_cancel_btn'),
-              onPressed: () {
-                dismissFunc.call();
-                onCanceled?.call();
-              },
-              child: Text(
-                leftBtn ?? cancel,
-                style: styleLeftBtn ??
-                    theme.textTheme.labelLarge?.copyWith(
-                      color: context.themeColor.primary,
-                    ),
-              ),
-            ),
-            ValueListenableBuilder<TextEditingValue>(
-              valueListenable: _icValidate.value.tdController,
-              builder: (context, value, child) {
-                return AvailabilityWidget(
-                  enable: value.text == validateString,
-                  child: child!,
-                );
-              },
-              child: TextButton(
-                key: const ValueKey(
-                  'NoticeConfirmWithValidateDialog_confirm_btn',
+        ],
+      ),
+      actions: [
+        TextButton(
+          key: const ValueKey('NoticeConfirmWithValidateDialog_cancel_btn'),
+          onPressed: () {
+            dismissFunc.call();
+            onCanceled?.call();
+          },
+          child: Text(
+            leftBtn ?? cancel,
+            style:
+                styleLeftBtn ??
+                theme.textTheme.labelLarge?.copyWith(
+                  color: context.themeColor.primary,
                 ),
-                onPressed: () {
-                  dismissFunc.call();
-                  onConfirmed?.call();
-                },
-                child: Text(
-                  rightBtn ?? confirm,
-                  style: styleRightBtn ??
-                      theme.textTheme.labelLarge?.copyWith(
-                        color: Colors.red,
-                      ),
-                ),
-              ),
+          ),
+        ),
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _icValidate.value.tdController,
+          builder: (context, value, child) {
+            return AvailabilityWidget(
+              enable: value.text == validateString,
+              child: child!,
+            );
+          },
+          child: TextButton(
+            key: const ValueKey('NoticeConfirmWithValidateDialog_confirm_btn'),
+            onPressed: () {
+              dismissFunc.call();
+              onConfirmed?.call();
+            },
+            child: Text(
+              rightBtn ?? confirm,
+              style:
+                  styleRightBtn ??
+                  theme.textTheme.labelLarge?.copyWith(color: Colors.red),
             ),
-          ],
-        );
+          ),
+        ),
+      ],
+    );
 
     if (kIsWeb) {
       return showAndroidDialog();
@@ -747,7 +719,8 @@ abstract class ThemeDialog {
           },
           child: Text(
             title,
-            style: style ??
+            style:
+                style ??
                 theme.textTheme.labelLarge!.copyWith(
                   color: Colors.blue,
                   fontWeight: FontWeight.normal,
@@ -757,10 +730,7 @@ abstract class ThemeDialog {
       }
 
       return CupertinoAlertDialog(
-        title: Text(
-          title ?? inform,
-          style: theme.textTheme.headlineSmall,
-        ),
+        title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
         content: Padding(
           padding: const EdgeInsets.only(top: 8),
           child: Column(
@@ -798,9 +768,7 @@ abstract class ThemeDialog {
                   style: styleLeftBtn,
                 ),
               ),
-              const VerticalDivider(
-                width: 1,
-              ),
+              const VerticalDivider(width: 1),
               Expanded(
                 key: const ValueKey(
                   'NoticeConfirmWithValidateDialog_confirm_btn',
@@ -816,10 +784,9 @@ abstract class ThemeDialog {
                   child: _buildAction(
                     onTap: () => onConfirmed?.call(),
                     title: rightBtn ?? confirm,
-                    style: styleRightBtn ??
-                        theme.textTheme.labelLarge?.copyWith(
-                          color: Colors.red,
-                        ),
+                    style:
+                        styleRightBtn ??
+                        theme.textTheme.labelLarge?.copyWith(color: Colors.red),
                   ),
                 ),
               ),

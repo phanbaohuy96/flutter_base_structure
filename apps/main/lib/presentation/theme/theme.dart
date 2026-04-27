@@ -9,16 +9,10 @@ class MainAppTheme {
   final AppTheme light;
   final AppTheme dark;
 
-  const MainAppTheme({
-    required this.light,
-    required this.dark,
-  });
+  const MainAppTheme({required this.light, required this.dark});
 
   factory MainAppTheme.normal() {
-    return MainAppTheme(
-      light: _buildLightTheme(),
-      dark: _buildDarkTheme(),
-    );
+    return MainAppTheme(light: _buildLightTheme(), dark: _buildDarkTheme());
   }
 
   static AppTheme _buildLightTheme() {

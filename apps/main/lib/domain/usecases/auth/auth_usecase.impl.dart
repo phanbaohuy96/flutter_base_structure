@@ -25,15 +25,10 @@ class AuthInteractorImpl extends AuthUsecase {
     // Clear token if any
     await localDataManager.setToken(null);
     final token = await Future.value(
-      UserToken(
-        accessToken: 'accessToken',
-        type: TokenType.bearer,
-      ),
+      UserToken(accessToken: 'accessToken', type: TokenType.bearer),
     );
 
-    return authWithUserToken(
-      token,
-    );
+    return authWithUserToken(token);
   }
 
   @override
@@ -41,9 +36,7 @@ class AuthInteractorImpl extends AuthUsecase {
     unawaited(localDataManager.saveUserInfo(null));
 
     UserModel? user;
-    await localDataManager.setToken(
-      token,
-    );
+    await localDataManager.setToken(token);
     try {
       user = await Future.value(const UserModel());
     } catch (e) {
@@ -54,15 +47,11 @@ class AuthInteractorImpl extends AuthUsecase {
 
     if (user == null) {
       // Currently we not support this role yet
-      return AuthResponse(
-        result: LoginResultType.unsupportedRole,
-      );
+      return AuthResponse(result: LoginResultType.unsupportedRole);
     }
     unawaited(localDataManager.saveUserInfo(user));
 
-    return AuthSuccessResponse(
-      user: user,
-    );
+    return AuthSuccessResponse(user: user);
   }
 
   @override
@@ -70,22 +59,16 @@ class AuthInteractorImpl extends AuthUsecase {
   Future<AuthResponse> loginWithUser({required UserModel user}) async {
     final credentials = user.phoneNumber?.split('-');
     if (credentials == null || credentials.length < 2) {
-      return AuthResponse(
-        result: LoginResultType.failed,
-      );
+      return AuthResponse(result: LoginResultType.failed);
     }
     final users = await getUsers();
     final userModel = users.firstWhereOrNull(
       (element) => element.phoneNumber == credentials[0],
     );
     if (userModel == null) {
-      return AuthResponse(
-        result: LoginResultType.failed,
-      );
+      return AuthResponse(result: LoginResultType.failed);
     }
-    return AuthSuccessResponse(
-      user: userModel,
-    );
+    return AuthSuccessResponse(user: userModel);
   }
 
   @override
@@ -93,8 +76,6 @@ class AuthInteractorImpl extends AuthUsecase {
   Future<List<UserModel>> getUsers() {
     /// Return the hardcode user roles
     ///
-    return Future.value([
-      ...demoUsers,
-    ]);
+    return Future.value([...demoUsers]);
   }
 }

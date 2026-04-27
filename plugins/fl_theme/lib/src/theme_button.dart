@@ -16,11 +16,11 @@ class ThemeButton {
     ButtonStyle? style,
     double? prefixSpace = 8,
     TextStyle? textStyle,
-  }) =>
-      ElevatedButton(
-        key: key,
-        onPressed: enable ? onPressed : null,
-        style: ConditionBuilder.on(
+  }) => ElevatedButton(
+    key: key,
+    onPressed: enable ? onPressed : null,
+    style:
+        ConditionBuilder.on(
           condition: () => style != null,
           value: () => style,
         ).build(
@@ -30,13 +30,13 @@ class ThemeButton {
             textStyle: textStyle,
           ),
         ),
-        child: _buildChild(
-          title: title,
-          prefixIcon: prefixIcon,
-          prefixSpace: prefixSpace,
-          mainAxisAlignment: mainAxisAlignment,
-        ),
-      );
+    child: _buildChild(
+      title: title,
+      prefixIcon: prefixIcon,
+      prefixSpace: prefixSpace,
+      mainAxisAlignment: mainAxisAlignment,
+    ),
+  );
 
   static Widget secondary({
     Key? key,
@@ -50,20 +50,19 @@ class ThemeButton {
     EdgeInsetsGeometry? padding,
     ButtonStyle? style,
     TextStyle? textStyle,
-  }) =>
-      outline(
-        key: key,
-        title: title,
-        onPressed: onPressed,
-        enable: enable,
-        prefixIcon: prefixIcon,
-        minimumSize: minimumSize,
-        mainAxisAlignment: mainAxisAlignment,
-        padding: padding,
-        style: style,
-        prefixSpace: prefixSpace,
-        textStyle: textStyle,
-      );
+  }) => outline(
+    key: key,
+    title: title,
+    onPressed: onPressed,
+    enable: enable,
+    prefixIcon: prefixIcon,
+    minimumSize: minimumSize,
+    mainAxisAlignment: mainAxisAlignment,
+    padding: padding,
+    style: style,
+    prefixSpace: prefixSpace,
+    textStyle: textStyle,
+  );
 
   static Widget outline({
     Key? key,
@@ -81,9 +80,7 @@ class ThemeButton {
     double? prefixSpace = 8,
   }) {
     final defaultStyle = ButtonStyle(
-      minimumSize: WidgetStateProperty.resolveWith<Size>(
-        (_) => minimumSize,
-      ),
+      minimumSize: WidgetStateProperty.resolveWith<Size>((_) => minimumSize),
       padding: ConditionBuilder.on(
         condition: () => padding != null,
         value: () => WidgetStateProperty.resolveWith<EdgeInsetsGeometry>(
@@ -92,43 +89,34 @@ class ThemeButton {
       ).build(orElse: () => null),
       backgroundColor: ConditionBuilder.on(
         condition: () => backgroundColor != null,
-        value: () => _resolveAndExcludeDisabledWith<Color?>(
-          (Set<WidgetState> states) {
-            return backgroundColor;
-          },
-        ),
+        value: () =>
+            _resolveAndExcludeDisabledWith<Color?>((Set<WidgetState> states) {
+              return backgroundColor;
+            }),
       ).build(orElse: () => null),
       foregroundColor: ConditionBuilder.on(
         condition: () => foregroundColor != null,
-        value: () => _resolveAndExcludeDisabledWith<Color?>(
-          (Set<WidgetState> states) {
-            return foregroundColor;
-          },
-        ),
+        value: () =>
+            _resolveAndExcludeDisabledWith<Color?>((Set<WidgetState> states) {
+              return foregroundColor;
+            }),
       ).build(orElse: () => null),
       side: ConditionBuilder.on(
         condition: () => foregroundColor != null,
-        value: () => _resolveAndExcludeDisabledWith<BorderSide?>(
-          (Set<WidgetState> states) {
-            return BorderSide(
-              color: foregroundColor!,
-              width: 1,
-            );
-          },
-        ),
-      ).build(
-        orElse: () => null,
-      ),
+        value: () => _resolveAndExcludeDisabledWith<BorderSide?>((
+          Set<WidgetState> states,
+        ) {
+          return BorderSide(color: foregroundColor!, width: 1);
+        }),
+      ).build(orElse: () => null),
       textStyle: ConditionBuilder.on(
         condition: () => textStyle != null,
-        value: () => _resolveAndExcludeDisabledWith<TextStyle?>(
-          (Set<WidgetState> states) {
-            return textStyle;
-          },
-        ),
-      ).build(
-        orElse: () => null,
-      ),
+        value: () => _resolveAndExcludeDisabledWith<TextStyle?>((
+          Set<WidgetState> states,
+        ) {
+          return textStyle;
+        }),
+      ).build(orElse: () => null),
     );
     return OutlinedButton(
       key: key,
@@ -136,9 +124,7 @@ class ThemeButton {
       style: ConditionBuilder.on(
         condition: () => style != null,
         value: () => style,
-      ).build(
-        orElse: () => defaultStyle,
-      ),
+      ).build(orElse: () => defaultStyle),
       child: _buildChild(
         title: title,
         prefixIcon: prefixIcon,
@@ -156,20 +142,12 @@ class ThemeButton {
     bool enable = true,
     EdgeInsetsGeometry? padding,
     TextStyle? textStyle,
-  }) =>
-      TextButton(
-        style: TextButton.styleFrom(
-          minimumSize: minimumSize,
-          padding: padding,
-        ),
-        key: key,
-        onPressed: enable ? onPressed : null,
-        child: Text(
-          title,
-          textAlign: TextAlign.center,
-          style: textStyle,
-        ),
-      );
+  }) => TextButton(
+    style: TextButton.styleFrom(minimumSize: minimumSize, padding: padding),
+    key: key,
+    onPressed: enable ? onPressed : null,
+    child: Text(title, textAlign: TextAlign.center, style: textStyle),
+  );
 
   static Widget _buildChild({
     String? title,
@@ -192,30 +170,23 @@ class ThemeButton {
       ),
       Conditional(
         condition: () => title != null,
-        value: () => Text(
-          title!,
-          textAlign: TextAlign.center,
-        ),
+        value: () => Text(title!, textAlign: TextAlign.center),
       ),
       Conditional(
         condition: () => prefixIcon != null,
         value: () => prefixIcon!,
       ),
-    ]).build(
-      orElse: () => const SizedBox.shrink(),
-    )!;
+    ]).build(orElse: () => const SizedBox.shrink())!;
   }
 
   static WidgetStateProperty<T?> _resolveAndExcludeDisabledWith<T>(
     WidgetPropertyResolver<T> callback,
   ) {
-    return WidgetStateProperty.resolveWith<T?>(
-      (Set<WidgetState> states) {
-        if (states.contains(WidgetState.disabled)) {
-          return null;
-        }
-        return callback(states);
-      },
-    );
+    return WidgetStateProperty.resolveWith<T?>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
+        return null;
+      }
+      return callback(states);
+    });
   }
 }

@@ -31,9 +31,7 @@ class DevModeRoute extends IRoute {
       CustomRouter(
         path: NetworkLogDetailScreen.routeName,
         builder: (context, uri, extra) {
-          return NetworkLogDetailScreen(
-            log: extra,
-          );
+          return NetworkLogDetailScreen(log: extra);
         },
       ),
       CustomRouter(
