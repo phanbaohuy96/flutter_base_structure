@@ -16,11 +16,11 @@ class MenuItemWidget extends StatelessWidget {
     this.description,
     this.boxShadow,
     this.titleStyle,
-  })  : assert(
-          title is String || title is Widget,
-          '$title [String, Widget] is supported',
-        ),
-        super(key: key);
+  }) : assert(
+         title is String || title is Widget,
+         '$title [String, Widget] is supported',
+       ),
+       super(key: key);
 
   /// [String, Widget] is supported
   final dynamic title;
@@ -63,9 +63,7 @@ class MenuItemWidget extends StatelessWidget {
     return AvailabilityWidget(
       enable: onTap != null,
       child: Padding(
-        padding: EdgeInsets.only(
-          bottom: divider != ItemDivider.space ? 0 : 16,
-        ),
+        padding: EdgeInsets.only(bottom: divider != ItemDivider.space ? 0 : 16),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
@@ -77,7 +75,8 @@ class MenuItemWidget extends StatelessWidget {
                 color: bgColor,
                 boxShadow: boxShadow,
                 borderRadius: borderRadius,
-                gradient: divider == ItemDivider.line &&
+                gradient:
+                    divider == ItemDivider.line &&
                         itemBorder != ItemBorder.bottom &&
                         itemBorder != ItemBorder.all
                     ? LinearGradient(
@@ -90,16 +89,14 @@ class MenuItemWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  if (icon != null) ...[
-                    icon!,
-                    const SizedBox(width: 14),
-                  ],
+                  if (icon != null) ...[icon!, const SizedBox(width: 14)],
                   Expanded(
                     child: title is Widget
                         ? title
                         : Text(
                             title,
-                            style: titleStyle ??
+                            style:
+                                titleStyle ??
                                 Theme.of(context).textTheme.titleSmall,
                           ),
                   ),

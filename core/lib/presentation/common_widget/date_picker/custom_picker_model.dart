@@ -90,16 +90,8 @@ class DateDDMMYYYModel extends CommonPickerModel {
     super.setLeftIndex(index);
     final minDay = _minDayOfCurrentMonth();
     currentTime = currentTime.isUtc
-        ? DateTime.utc(
-            currentTime.year,
-            currentTime.month,
-            minDay + index,
-          )
-        : DateTime(
-            currentTime.year,
-            currentTime.month,
-            minDay + index,
-          );
+        ? DateTime.utc(currentTime.year, currentTime.month, minDay + index)
+        : DateTime(currentTime.year, currentTime.month, minDay + index);
   }
 
   @override
@@ -152,23 +144,11 @@ class DateDDMMYYYModel extends CommonPickerModel {
               currentTime.month,
               _calcDateCount(destYear, 2),
             )
-          : DateTime(
-              destYear,
-              currentTime.month,
-              _calcDateCount(destYear, 2),
-            );
+          : DateTime(destYear, currentTime.month, _calcDateCount(destYear, 2));
     } else {
       newTime = currentTime.isUtc
-          ? DateTime.utc(
-              destYear,
-              currentTime.month,
-              currentTime.day,
-            )
-          : DateTime(
-              destYear,
-              currentTime.month,
-              currentTime.day,
-            );
+          ? DateTime.utc(destYear, currentTime.month, currentTime.day)
+          : DateTime(destYear, currentTime.month, currentTime.day);
     }
     //min/max check
     if (newTime.isAfter(maxTime)) {
@@ -353,16 +333,8 @@ class DateMMYYYModel extends CommonPickerModel {
     super.setLeftIndex(index);
     final minDay = _minDayOfCurrentMonth();
     currentTime = currentTime.isUtc
-        ? DateTime.utc(
-            currentTime.year,
-            currentTime.month,
-            minDay + index,
-          )
-        : DateTime(
-            currentTime.year,
-            currentTime.month,
-            minDay + index,
-          );
+        ? DateTime.utc(currentTime.year, currentTime.month, minDay + index)
+        : DateTime(currentTime.year, currentTime.month, minDay + index);
   }
 
   @override
@@ -420,23 +392,11 @@ class DateMMYYYModel extends CommonPickerModel {
               currentTime.month,
               _calcDateCount(destYear, 2),
             )
-          : DateTime(
-              destYear,
-              currentTime.month,
-              _calcDateCount(destYear, 2),
-            );
+          : DateTime(destYear, currentTime.month, _calcDateCount(destYear, 2));
     } else {
       newTime = currentTime.isUtc
-          ? DateTime.utc(
-              destYear,
-              currentTime.month,
-              currentTime.day,
-            )
-          : DateTime(
-              destYear,
-              currentTime.month,
-              currentTime.day,
-            );
+          ? DateTime.utc(destYear, currentTime.month, currentTime.day)
+          : DateTime(destYear, currentTime.month, currentTime.day);
     }
     //min/max check
     if (newTime.isAfter(maxTime)) {
@@ -529,21 +489,15 @@ class MyTimePickerModel extends CommonPickerModel {
 
   Duration get minD =>
       minTime?.let(
-        (it) => Duration(
-          hours: it.hour,
-          minutes: it.minute,
-          seconds: it.second,
-        ),
+        (it) =>
+            Duration(hours: it.hour, minutes: it.minute, seconds: it.second),
       ) ??
       Duration.zero;
 
   Duration get maxD =>
       maxTime?.let(
-        (it) => Duration(
-          hours: it.hour,
-          minutes: it.minute,
-          seconds: it.second,
-        ),
+        (it) =>
+            Duration(hours: it.hour, minutes: it.minute, seconds: it.second),
       ) ??
       const Duration(hours: 23, minutes: 59, seconds: 59);
   int get minInSec => minD.inSeconds;
@@ -576,10 +530,10 @@ class MyTimePickerModel extends CommonPickerModel {
   }
 
   Duration get currentDuration => Duration(
-        hours: currentLeftIndex(),
-        minutes: currentMiddleIndex(),
-        seconds: currentRightIndex(),
-      );
+    hours: currentLeftIndex(),
+    minutes: currentMiddleIndex(),
+    seconds: currentRightIndex(),
+  );
 
   @override
   String? leftStringAtIndex(int index) {

@@ -19,7 +19,8 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
 
   @override
   void initState() {
-    _baseDomainCtrl.text = _localDataManager.domainReplacement ??
+    _baseDomainCtrl.text =
+        _localDataManager.domainReplacement ??
         Config.instance.appConfig.baseApiLayer;
     super.initState();
   }

@@ -1,10 +1,8 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-typedef MainDashboardFactoryBuilder = Widget Function(
-  BuildContext context,
-  PageController controller,
-);
+typedef MainDashboardFactoryBuilder =
+    Widget Function(BuildContext context, PageController controller);
 
 class MainDashboardFactory extends StatefulWidget {
   const MainDashboardFactory({
@@ -44,9 +42,7 @@ class MainDashboardFactoryState extends State<MainDashboardFactory> {
 
   /// Can access through the [GlobalKey.currentState]
   Future<void> jumpToPage(int index) async {
-    controller.jumpToPage(
-      index,
-    );
+    controller.jumpToPage(index);
   }
 
   @override
@@ -76,11 +72,7 @@ class MainDashboardFactoryState extends State<MainDashboardFactory> {
         physics: const NeverScrollableScrollPhysics(),
         controller: controller,
         onPageChanged: widget.onPageChanged,
-        children: [
-          ...widget.pages.map(
-            (e) => e.page,
-          ),
-        ],
+        children: [...widget.pages.map((e) => e.page)],
       ),
       bottomNavigationBar: AnimatedBuilder(
         animation: controller,
@@ -126,10 +118,7 @@ class MainDashboardFactoryState extends State<MainDashboardFactory> {
           color: selected ? theme.colorScheme.secondary : Colors.transparent,
           borderRadius: BorderRadius.circular(22),
         ),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 4,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
         child: icon,
       ),
       label: label,
@@ -141,10 +130,7 @@ class MainDashboardItem {
   final Widget page;
   final BottomNavItem bottomNavItem;
 
-  const MainDashboardItem({
-    required this.page,
-    required this.bottomNavItem,
-  });
+  const MainDashboardItem({required this.page, required this.bottomNavItem});
 }
 
 class BottomNavItem {

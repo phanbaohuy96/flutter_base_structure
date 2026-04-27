@@ -9,9 +9,7 @@ class WebViewRoute extends IRoute {
         path: WebViewScreen.routeName,
         builder: (context, uri, extra) {
           final args = extra as WebViewArgs?;
-          return WebViewScreen(
-            params: args,
-          );
+          return WebViewScreen(params: args);
         },
         extraFromUrlQueries: WebViewArgs.fromUrlParams,
       ),

@@ -58,14 +58,9 @@ class LogUtils {
   final bool cacheToView;
   final int cacheLimit;
 
-  final Logger _logger = Logger(
-    filter: MyFilter(),
-    printer: printer,
-  );
+  final Logger _logger = Logger(filter: MyFilter(), printer: printer);
 
-  final Logger _loggerNoStackDebug = Logger(
-    printer: noStackPrinter,
-  );
+  final Logger _loggerNoStackDebug = Logger(printer: noStackPrinter);
 
   final Logger _loggerNoStack = Logger(
     filter: MyFilter(),
@@ -100,11 +95,7 @@ class LogUtils {
     }
   }
 
-  T? eCatch<T>(
-    dynamic message, [
-    dynamic error,
-    StackTrace? stackTrace,
-  ]) {
+  T? eCatch<T>(dynamic message, [dynamic error, StackTrace? stackTrace]) {
     final log = _createLog(message, Level.warning, error, stackTrace);
     _appendLog(log);
     if (showLog) {

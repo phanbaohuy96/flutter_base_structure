@@ -8,14 +8,8 @@ class DateRangeUtils {
     final now = DateTime.now().startOfDay;
     final trans = context.coreL10n;
     return {
-      trans.fullTime: const DateRange(
-        from: null,
-        to: null,
-      ),
-      trans.today: DateRange(
-        from: now.startOfDay,
-        to: now.endOfDay,
-      ),
+      trans.fullTime: const DateRange(from: null, to: null),
+      trans.today: DateRange(from: now.startOfDay, to: now.endOfDay),
       trans.yesterday: DateRange(
         from: now.copyWith().subtract(const Duration(days: 1)).startOfDay,
         to: now.copyWith().subtract(const Duration(days: 1)).endOfDay,
@@ -72,10 +66,7 @@ class DateRangeUtils {
     BuildContext context,
   ) {
     final trans = context.coreL10n;
-    return MapEntry(
-      trans.manual,
-      initial ?? const DateRange(),
-    );
+    return MapEntry(trans.manual, initial ?? const DateRange());
   }
 }
 
@@ -105,19 +96,12 @@ class DateRangePickerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        ..._buildDateSuggestionSection(
-          context,
-          trans,
-        ),
+        ..._buildDateSuggestionSection(context, trans),
         if (showTimePickerFrom != false) ...[
           const SizedBox(height: 12),
           DateInputCalendarPicker(
             onDateSelected: (date) {
-              onChanged?.call(
-                _dateRange.copyWith(
-                  from: date.startOfDay,
-                ),
-              );
+              onChanged?.call(_dateRange.copyWith(from: date.startOfDay));
             },
             hint: trans.selectDate,
             monthStr: trans.month,
@@ -134,11 +118,7 @@ class DateRangePickerWidget extends StatelessWidget {
           const SizedBox(height: 12),
           DateInputCalendarPicker(
             onDateSelected: (date) {
-              onChanged?.call(
-                _dateRange.copyWith(
-                  to: date.endOfDay,
-                ),
-              );
+              onChanged?.call(_dateRange.copyWith(to: date.endOfDay));
             },
             hint: trans.selectDate,
             monthStr: trans.month,
@@ -170,15 +150,14 @@ class DateRangePickerWidget extends StatelessWidget {
     ];
   }
 
-  Widget _buildDateSuggestions(
-    BuildContext context,
-    CoreLocalizations trans,
-  ) {
+  Widget _buildDateSuggestions(BuildContext context, CoreLocalizations trans) {
     return Wrap(
       spacing: 12,
       runSpacing: 12,
       children: [
-        ...DateRangeUtils().generateSuggestions(context).map(
+        ...DateRangeUtils()
+            .generateSuggestions(context)
+            .map(
               (entry) => ChipItem(
                 text: entry.key,
                 selected: _dateRange.campareDate(entry.value),
@@ -228,15 +207,11 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
   void afterFirstLayout(BuildContext context) {
     final initial = widget.initial ?? const DateRange();
     setState(() {
-      selected = DateRangeUtils().generateSuggestions(context).firstWhere(
-        (entry) {
-          return entry.value.campareDate(initial);
-        },
-        orElse: () => MapEntry(
-          context.coreL10n.manual,
-          initial,
-        ),
-      );
+      selected = DateRangeUtils().generateSuggestions(context).firstWhere((
+        entry,
+      ) {
+        return entry.value.campareDate(initial);
+      }, orElse: () => MapEntry(context.coreL10n.manual, initial));
     });
   }
 
@@ -269,9 +244,9 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
             groupValue: selected!.key,
             onChanged: select,
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16).copyWith(
-                bottom: 16,
-              ),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16,
+              ).copyWith(bottom: 16),
               children: [
                 ...options.mapIndex(
                   (e, index) => Column(
@@ -280,11 +255,7 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
                         onTap: () => select(e.key),
                         child: Row(
                           children: [
-                            Expanded(
-                              child: Text(
-                                e.key,
-                              ),
-                            ),
+                            Expanded(child: Text(e.key)),
                             Radio<String>(
                               activeColor: themeColor.primary,
                               value: e.key,
@@ -317,9 +288,7 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
                             setState(() {
                               selected = MapEntry(
                                 selected!.key,
-                                dateRange.copyWith(
-                                  to: selectedDate.endOfDay,
-                                ),
+                                dateRange.copyWith(to: selectedDate.endOfDay),
                               );
                             });
                           },
@@ -345,10 +314,7 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
                   child: ThemeButton.outline(
                     title: widget.leftBtnLabel ?? trans.reset,
                     onPressed: () {
-                      Navigator.pop(
-                        context,
-                        widget.defaultValue,
-                      );
+                      Navigator.pop(context, widget.defaultValue);
                     },
                   ),
                 ),
@@ -370,11 +336,12 @@ class _DateRangePickerModalState extends State<_DateRangePickerModal>
   }
 }
 
-typedef DateRangePickerWidgetBuilder = Widget Function(
-  BuildContext context,
-  DateRange? value,
-  String formartedText,
-);
+typedef DateRangePickerWidgetBuilder =
+    Widget Function(
+      BuildContext context,
+      DateRange? value,
+      String formartedText,
+    );
 
 class DateRangePickerBuilder extends StatelessWidget {
   const DateRangePickerBuilder({
@@ -400,15 +367,15 @@ class DateRangePickerBuilder extends StatelessWidget {
     final manualOption = DateRangeUtils().getManualOption(initial, context);
     final selected = initial == null
         ? manualOption
-        : DateRangeUtils().generateSuggestions(context).firstWhere(
-            (entry) {
-              return entry.value.campareDate(initial!);
-            },
-            orElse: () => manualOption,
-          );
+        : DateRangeUtils().generateSuggestions(context).firstWhere((entry) {
+            return entry.value.campareDate(initial!);
+          }, orElse: () => manualOption);
     return InkWell(
-      child:
-          builder(context, selected.value, _getLabel(context, trans, selected)),
+      child: builder(
+        context,
+        selected.value,
+        _getLabel(context, trans, selected),
+      ),
       onTap: () async {
         final d = await context.showDateRangePickerModal(
           initial: initial,
@@ -479,7 +446,8 @@ class DateRangePickerLabel extends StatelessWidget {
         TextSpan(
           children: [
             WidgetSpan(
-              child: prefixIcon ??
+              child:
+                  prefixIcon ??
                   Icon(
                     Icons.calendar_month_outlined,
                     size: (_textStyle?.fontSize ?? 0) * 1.3,
@@ -487,19 +455,9 @@ class DateRangePickerLabel extends StatelessWidget {
                   ),
               alignment: PlaceholderAlignment.middle,
             ),
-            const WidgetSpan(
-              child: SizedBox(
-                width: 4,
-              ),
-            ),
-            TextSpan(
-              text: formartedText,
-            ),
-            const WidgetSpan(
-              child: SizedBox(
-                width: 2,
-              ),
-            ),
+            const WidgetSpan(child: SizedBox(width: 4)),
+            TextSpan(text: formartedText),
+            const WidgetSpan(child: SizedBox(width: 2)),
             WidgetSpan(
               child: Icon(
                 Icons.keyboard_arrow_down_outlined,

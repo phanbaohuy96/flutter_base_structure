@@ -104,12 +104,14 @@ class _PageIndicatorWidgetState extends State<PageIndicatorWidget> {
         activeColor: colorDotActive,
         activeSize: widget.activeSize,
         activeShape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.all(Radius.circular(widget.activeSize.width / 2)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(widget.activeSize.width / 2),
+          ),
         ),
         shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.all(Radius.circular(widget.activeSize.width / 2)),
+          borderRadius: BorderRadius.all(
+            Radius.circular(widget.activeSize.width / 2),
+          ),
         ),
         size: widget.size,
         spacing: widget.spacing,

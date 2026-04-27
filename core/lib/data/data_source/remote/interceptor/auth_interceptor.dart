@@ -29,15 +29,17 @@ class AutoRefreshTokenInterceptor extends Interceptor {
 
     if (headerToken != null && options.path != refreshTokenPath) {
       if (JwtUtils().isAboutToExpire(token ?? '')) {
-        refreshToken(token ?? '', options).then((newToken) {
-          options.headers[RequestHeaderKey.authorization.key] =
-              newToken?.authorization;
-          _logoutRequestCallBack(options);
-          super.onRequest(options, handler);
-        }).catchError((e, stackTrace) {
-          _logoutRequestCallBack(options);
-          handler.reject(e);
-        });
+        refreshToken(token ?? '', options)
+            .then((newToken) {
+              options.headers[RequestHeaderKey.authorization.key] =
+                  newToken?.authorization;
+              _logoutRequestCallBack(options);
+              super.onRequest(options, handler);
+            })
+            .catchError((e, stackTrace) {
+              _logoutRequestCallBack(options);
+              handler.reject(e);
+            });
       } else {
         _logoutRequestCallBack(options);
         super.onRequest(options, handler);

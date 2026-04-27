@@ -17,13 +17,12 @@ class ExtendedFab extends StatelessWidget {
     Key? key,
     required String label,
     VoidCallback? onPressed,
-  }) =>
-      ExtendedFab(
-        key: key,
-        label: Text(label),
-        onPressed: onPressed,
-        icon: const Icon(Icons.add),
-      );
+  }) => ExtendedFab(
+    key: key,
+    label: Text(label),
+    onPressed: onPressed,
+    icon: const Icon(Icons.add),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +30,7 @@ class ExtendedFab extends StatelessWidget {
       onPressed: onPressed,
       label: label,
       icon: icon,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(30),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       backgroundColor: context.themeColor.primary,
       foregroundColor: context.themeColor.elevatedBtnForegroundColor,
     );

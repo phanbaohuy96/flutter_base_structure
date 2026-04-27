@@ -10,9 +10,7 @@ import 'preferences_helper/preferences_helper.dart';
 class CoreLocalDataManager implements CoreAppPreferenceData, CoreLocalHiveData {
   final CorePreferencesHelper _preferencesHelper;
 
-  CoreLocalDataManager(
-    this._preferencesHelper,
-  );
+  CoreLocalDataManager(this._preferencesHelper);
 
   //////////////////////////////////////////////////////
   ///             Preferences helper

@@ -224,23 +224,11 @@ class DatePickerModel extends CommonPickerModel {
               currentTime.month,
               calcDateCount(destYear, 2),
             )
-          : DateTime(
-              destYear,
-              currentTime.month,
-              calcDateCount(destYear, 2),
-            );
+          : DateTime(destYear, currentTime.month, calcDateCount(destYear, 2));
     } else {
       newTime = currentTime.isUtc
-          ? DateTime.utc(
-              destYear,
-              currentTime.month,
-              currentTime.day,
-            )
-          : DateTime(
-              destYear,
-              currentTime.month,
-              currentTime.day,
-            );
+          ? DateTime.utc(destYear, currentTime.month, currentTime.day)
+          : DateTime(destYear, currentTime.month, currentTime.day);
     }
     //min/max check
     if (newTime.isAfter(maxTime)) {
@@ -298,16 +286,8 @@ class DatePickerModel extends CommonPickerModel {
     super.setRightIndex(index);
     final minDay = _minDayOfCurrentMonth();
     currentTime = currentTime.isUtc
-        ? DateTime.utc(
-            currentTime.year,
-            currentTime.month,
-            minDay + index,
-          )
-        : DateTime(
-            currentTime.year,
-            currentTime.month,
-            minDay + index,
-          );
+        ? DateTime.utc(currentTime.year, currentTime.month, minDay + index)
+        : DateTime(currentTime.year, currentTime.month, minDay + index);
   }
 
   @override
@@ -474,7 +454,7 @@ class TimePickerModel extends CommonPickerModel {
 //a time picker model
 class Time12hPickerModel extends CommonPickerModel {
   Time12hPickerModel({DateTime? currentTime, LocaleType? locale})
-      : super(locale: locale) {
+    : super(locale: locale) {
     this.currentTime = currentTime ?? DateTime.now();
 
     _currentLeftIndex = this.currentTime.hour % 12;

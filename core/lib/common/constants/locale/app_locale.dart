@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppLocale {
-  static const th = Locale('th', 'TH');
+  static const vi = Locale('vi', 'VN');
   static const en = Locale('en', 'US');
-  static const defaultLocale = th;
+  static const defaultLocale = en;
 
-  static const supportedLocales = [en, th];
+  static const supportedLocales = [en, vi];
 
   static bool isSupported(Locale locale) {
     return supportedLocales.any((e) => e.languageCode == locale.languageCode);

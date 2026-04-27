@@ -41,7 +41,8 @@ class TextTaggingController<T> extends TextEditingController {
     T tag,
     int index,
     int total,
-  ) tagBuilder;
+  )
+  tagBuilder;
 
   final String Function(T) tagToText;
   final void Function(List<T>)? onTagsChanged;
@@ -61,10 +62,8 @@ class TextTaggingController<T> extends TextEditingController {
 
   List<T> get tags => _tags;
 
-  String get edittingText => value.text.substring(
-        _tags.length,
-        value.text.length,
-      );
+  String get edittingText =>
+      value.text.substring(_tags.length, value.text.length);
 
   String get placeholderStr =>
       List.generate(_tags.length, (i) => placeholderChar).join();
@@ -163,8 +162,11 @@ class TextTaggingController<T> extends TextEditingController {
             } else {
               /// Replace tags from current selection to end with adding text
               _tags.removeRange(cursorPos, min(cursorPosEnd, tagCount));
-              _newText =
-                  oldText.replaceRange(cursorPos, cursorPosEnd, addedStr);
+              _newText = oldText.replaceRange(
+                cursorPos,
+                cursorPosEnd,
+                addedStr,
+              );
             }
             notifyTagChanged();
           } else {
@@ -217,28 +219,14 @@ class TextTaggingController<T> extends TextEditingController {
     for (var i = 0; i < length; i++) {
       spans.add(
         WidgetSpan(
-          child: tagBuilder(
-            context,
-            style,
-            withComposing,
-            tags[i],
-            i,
-            length,
-          ),
+          child: tagBuilder(context, style, withComposing, tags[i], i, length),
           alignment: PlaceholderAlignment.middle,
-          style: style?.copyWith(
-            height: 2,
-          ),
+          style: style?.copyWith(height: 2),
           baseline: TextBaseline.alphabetic,
         ),
       );
     }
-    spans.add(
-      TextSpan(
-        text: value.text.substring(spans.length),
-        style: style,
-      ),
-    );
+    spans.add(TextSpan(text: value.text.substring(spans.length), style: style));
 
     return TextSpan(children: spans);
   }

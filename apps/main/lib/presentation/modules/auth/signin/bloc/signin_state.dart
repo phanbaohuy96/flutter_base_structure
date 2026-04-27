@@ -15,12 +15,8 @@ abstract class SigninState {
 
   SigninState(this.data);
 
-  T copyWith<T extends SigninState>({
-    _StateData? data,
-  }) {
-    return _factories[T == SigninState ? runtimeType : T]!(
-      data ?? this.data,
-    );
+  T copyWith<T extends SigninState>({_StateData? data}) {
+    return _factories[T == SigninState ? runtimeType : T]!(data ?? this.data);
   }
 
   List<UserModel> get users => data.users;
@@ -29,25 +25,14 @@ abstract class SigninState {
 }
 
 class SigninInitial extends SigninState {
-  SigninInitial({
-    _StateData data = const _StateData(),
-  }) : super(data);
+  SigninInitial({_StateData data = const _StateData()}) : super(data);
 }
 
 class LoginSuccess extends SigninState {
-  LoginSuccess({
-    _StateData data = const _StateData(),
-  }) : super(data);
+  LoginSuccess({_StateData data = const _StateData()}) : super(data);
 }
 
-final _factories = <Type,
-    Function(
-  _StateData data,
-)>{
-  SigninInitial: (data) => SigninInitial(
-        data: data,
-      ),
-  LoginSuccess: (data) => LoginSuccess(
-        data: data,
-      ),
+final _factories = <Type, Function(_StateData data)>{
+  SigninInitial: (data) => SigninInitial(data: data),
+  LoginSuccess: (data) => LoginSuccess(data: data),
 };

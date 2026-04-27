@@ -47,15 +47,15 @@ class InfoItem extends StatelessWidget {
     this.backgroundWidget,
     this.backgroundWidgetAlignment = Alignment.topCenter,
     this.required = false,
-  })  : assert(
-          title is String || title is Widget,
-          '$title [String, Widget] is supported',
-        ),
-        assert(
-          value == null || value is String || value is Widget,
-          '$value [String, Widget] is supported',
-        ),
-        super(key: key);
+  }) : assert(
+         title is String || title is Widget,
+         '$title [String, Widget] is supported',
+       ),
+       assert(
+         value == null || value is String || value is Widget,
+         '$value [String, Widget] is supported',
+       ),
+       super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +63,9 @@ class InfoItem extends StatelessWidget {
     final textTheme = theme.textTheme;
     return Container(
       margin: EdgeInsets.only(
-        bottom:
-            divider == ItemDivider.none || divider == ItemDivider.line ? 0 : 16,
+        bottom: divider == ItemDivider.none || divider == ItemDivider.line
+            ? 0
+            : 16,
       ),
       color: color ?? theme.primaryColor,
       child: Builder(
@@ -72,8 +73,10 @@ class InfoItem extends StatelessWidget {
           final child = Padding(
             padding: EdgeInsets.only(left: padding.left, right: padding.right),
             child: Container(
-              padding:
-                  EdgeInsets.only(top: padding.top, bottom: padding.bottom),
+              padding: EdgeInsets.only(
+                top: padding.top,
+                bottom: padding.bottom,
+              ),
               decoration: BoxDecoration(
                 border: divider == ItemDivider.line
                     ? Border(
@@ -94,23 +97,18 @@ class InfoItem extends StatelessWidget {
                       builder: (context) {
                         final tw = title is Widget ? title : Text(title);
                         if (titleFlex != null) {
-                          return Expanded(
-                            flex: titleFlex!,
-                            child: tw,
-                          );
+                          return Expanded(flex: titleFlex!, child: tw);
                         }
                         return tw;
                       },
                     ),
                   ),
                   if (required == true)
-                    const Text(
-                      '*',
-                      style: TextStyle(color: Colors.red),
-                    ),
+                    const Text('*', style: TextStyle(color: Colors.red)),
                   SizedBox(width: spacer),
                   DefaultTextStyle(
-                    style: valueStyle ??
+                    style:
+                        valueStyle ??
                         textTheme.bodyMedium!.copyWith(
                           fontWeight: FontWeight.w500,
                         ),
@@ -125,10 +123,7 @@ class InfoItem extends StatelessWidget {
                                 textAlign: TextAlign.end,
                               );
                         if (valueFlex != null) {
-                          return Expanded(
-                            flex: valueFlex!,
-                            child: vw,
-                          );
+                          return Expanded(flex: valueFlex!, child: vw);
                         }
                         return vw;
                       },
