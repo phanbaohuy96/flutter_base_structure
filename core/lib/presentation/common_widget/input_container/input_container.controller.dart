@@ -12,13 +12,10 @@ class InputContainerProperties {
     this.validation,
     this.isShowPassword = false,
     FocusNode? focusNode,
-  })  : tdController = tdController ?? TextEditingController(),
-        focusNode = focusNode ?? FocusNode();
+  }) : tdController = tdController ?? TextEditingController(),
+       focusNode = focusNode ?? FocusNode();
 
-  void withValue({
-    TextEditingController? tdController,
-    FocusNode? focusNode,
-  }) {
+  void withValue({TextEditingController? tdController, FocusNode? focusNode}) {
     this.tdController = tdController ?? this.tdController;
     this.focusNode = focusNode ?? this.focusNode;
   }
@@ -39,7 +36,7 @@ class InputContainerProperties {
 
 class InputContainerController extends ValueNotifier<InputContainerProperties> {
   InputContainerController({InputContainerProperties? value})
-      : super(value ?? InputContainerProperties());
+    : super(value ?? InputContainerProperties());
 
   String get text => value.tdController.text;
 
@@ -61,9 +58,7 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   }
 
   set selection(TextSelection selection) {
-    textValue = value.tdController.value.copyWith(
-      selection: selection,
-    );
+    textValue = value.tdController.value.copyWith(selection: selection);
   }
 
   void resetValidation() {
@@ -134,10 +129,8 @@ class InputContainerController extends ValueNotifier<InputContainerProperties> {
   }
 }
 
-typedef InputContainerBuilder = Widget Function(
-  BuildContext context,
-  InputContainerController controller,
-);
+typedef InputContainerBuilder =
+    Widget Function(BuildContext context, InputContainerController controller);
 
 class InputContainerProvider extends StatefulWidget {
   const InputContainerProvider({
@@ -159,10 +152,7 @@ class InputContainerProvider extends StatefulWidget {
 
   static InputContainerController of(BuildContext context) {
     final result = maybeOf(context);
-    assert(
-      result != null,
-      'No InputContainerProvider found in context',
-    );
+    assert(result != null, 'No InputContainerProvider found in context');
     return result!;
   }
 

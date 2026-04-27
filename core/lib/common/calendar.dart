@@ -3,8 +3,6 @@ import 'dart:ui';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-import 'constants/locale/app_locale.dart';
-
 class CalendarHelper {
   static var _isBuddhist = false;
 
@@ -15,9 +13,7 @@ class CalendarHelper {
   }
 
   static Future setupCalendarByLocale(Locale locale) {
-    /// Enable buddhist calendar
-    CalendarHelper.enableBuddhistCalendar =
-        locale.languageCode == AppLocale.th.languageCode;
+    CalendarHelper.enableBuddhistCalendar = false;
 
     Intl.defaultLocale = locale.languageCode;
     return initializeDateFormatting();

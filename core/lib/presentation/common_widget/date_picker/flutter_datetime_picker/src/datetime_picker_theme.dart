@@ -25,10 +25,10 @@ class CustomDatePickerTheme with DiagnosticableTreeMixin {
     this.titleHeight = 44.0,
     this.itemHeight = 36.0,
     this.theme,
-  })  : cancelStyle = theme?.textTheme.labelLarge,
-        doneStyle = theme?.textTheme.labelLarge?.copyWith(
-          color: theme.colorScheme.primary,
-        ),
-        backgroundColor = backgroundColor ?? theme?.primaryColor,
-        itemStyle = itemStyle ?? theme?.textTheme.bodyLarge;
+  }) : cancelStyle = theme?.textTheme.labelLarge,
+       doneStyle = theme?.textTheme.labelLarge?.copyWith(
+         color: theme.colorScheme.primary,
+       ),
+       backgroundColor = backgroundColor ?? theme?.primaryColor,
+       itemStyle = itemStyle ?? theme?.textTheme.bodyLarge;
 }

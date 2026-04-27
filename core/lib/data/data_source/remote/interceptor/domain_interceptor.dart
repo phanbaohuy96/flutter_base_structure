@@ -7,9 +7,7 @@ import '../../../../core.dart';
 class DomainInterceptor extends Interceptor {
   final CoreLocalDataManager localDataManager;
 
-  DomainInterceptor({
-    required this.localDataManager,
-  });
+  DomainInterceptor({required this.localDataManager});
 
   @override
   Future onRequest(

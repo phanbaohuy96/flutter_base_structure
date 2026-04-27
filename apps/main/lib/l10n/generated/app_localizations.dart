@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
-import 'app_localizations_th.dart';
+import 'app_localizations_vi.dart';
 
 // ignore_for_file: type=lint
 
@@ -95,7 +95,7 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('th'),
+    Locale('vi'),
   ];
 
   /// No description provided for @inform.
@@ -152,11 +152,11 @@ abstract class AppLocalizations {
   /// **'User role'**
   String get userRole;
 
-  /// No description provided for @poweredByVNS.
+  /// No description provided for @poweredByApp.
   ///
   /// In en, this message translates to:
-  /// **'Powered by VNS'**
-  String get poweredByVNS;
+  /// **'Powered by My Flutter Base'**
+  String get poweredByApp;
 
   /// No description provided for @pleaseSelectARoleBeforeLoginMsg.
   ///
@@ -206,7 +206,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'th'].contains(locale.languageCode);
+      <String>['en', 'vi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -217,8 +217,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return AppLocalizationsEn();
-    case 'th':
-      return AppLocalizationsTh();
+    case 'vi':
+      return AppLocalizationsVi();
   }
 
   throw FlutterError(

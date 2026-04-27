@@ -66,10 +66,7 @@ class _MultipleSelectionDialog<T> extends State<MultipleSelectionDialog<T>> {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -112,8 +109,11 @@ class _MultipleSelectionDialog<T> extends State<MultipleSelectionDialog<T>> {
                                   multipleSelected.add(items[idx]);
                                 });
                               },
-                              child:
-                                  widget.itemBuilder(ctx, items[idx], selected),
+                              child: widget.itemBuilder(
+                                ctx,
+                                items[idx],
+                                selected,
+                              ),
                             );
                           },
                           itemCount: items.length,
@@ -131,27 +131,27 @@ class _MultipleSelectionDialog<T> extends State<MultipleSelectionDialog<T>> {
   }
 
   Widget _toolbar(BuildContext context) => Container(
-        padding: const EdgeInsets.only(bottom: 16),
-        child: Row(
-          children: [
-            ThemeButton.secondary(
-              title: localization.cancel,
-              minimumSize: const Size(0, 36.0),
-              onPressed: () {
-                widget.onCancel();
-              },
-            ),
-            Expanded(child: Container()),
-            ThemeButton.primary(
-              title: localization.confirm,
-              minimumSize: const Size(0, 36.0),
-              onPressed: () {
-                widget.onSelected.call(multipleSelected);
-              },
-            ),
-          ],
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Row(
+      children: [
+        ThemeButton.secondary(
+          title: localization.cancel,
+          minimumSize: const Size(0, 36.0),
+          onPressed: () {
+            widget.onCancel();
+          },
         ),
-      );
+        Expanded(child: Container()),
+        ThemeButton.primary(
+          title: localization.confirm,
+          minimumSize: const Size(0, 36.0),
+          onPressed: () {
+            widget.onSelected.call(multipleSelected);
+          },
+        ),
+      ],
+    ),
+  );
 
   // bool _isItemSelected(T item) {
   //   return _indexOfSelected(item) != -1;

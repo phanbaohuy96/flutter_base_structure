@@ -132,13 +132,11 @@ class MainPageForm extends StatelessWidget {
   }
 
   /// Builds the app bar with title, actions, and styling.
-  Widget _buildAppBar(
-    BuildContext context,
-    MainPageFormTheme screenTheme,
-  ) {
+  Widget _buildAppBar(BuildContext context, MainPageFormTheme screenTheme) {
     final mediaData = MediaQuery.of(context);
     final appbarColor = screenTheme.appbarColor ?? context.themeColor.primary;
-    final appbarForegroundColor = screenTheme.appbarForegroundColor ??
+    final appbarForegroundColor =
+        screenTheme.appbarForegroundColor ??
         context.themeColor.appbarForegroundColor;
 
     return ClipRRect(
@@ -153,12 +151,7 @@ class MainPageForm extends StatelessWidget {
         child: Column(
           children: [
             // Status bar padding
-            SizedBox(
-              height: max(
-                mediaData.padding.top,
-                24,
-              ),
-            ),
+            SizedBox(height: max(mediaData.padding.top, 24)),
             // Title and actions
             if (title != null || actions != null)
               _buildAppBarContent(screenTheme, appbarForegroundColor),

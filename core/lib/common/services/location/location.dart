@@ -28,10 +28,7 @@ class Position {
     try {
       switch (type) {
         case PositionType.point:
-          return Location(
-            lng: coordinates?[0],
-            lat: coordinates?[1],
-          );
+          return Location(lng: coordinates?[0], lat: coordinates?[1]);
         default:
       }
     } catch (_) {}
@@ -46,10 +43,7 @@ class Location {
   @JsonKey(name: 'lat', fromJson: asOrNull)
   final double? lat;
 
-  Location({
-    this.lng,
-    this.lat,
-  });
+  Location({this.lng, this.lat});
 
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);
@@ -63,11 +57,6 @@ class Location {
     if (!isValid || !(other?.isValid == true)) {
       return null;
     }
-    return Geolocator.distanceBetween(
-      lat!,
-      lng!,
-      other!.lat!,
-      other.lng!,
-    );
+    return Geolocator.distanceBetween(lat!, lng!, other!.lat!, other.lng!);
   }
 }

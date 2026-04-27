@@ -7,10 +7,7 @@ typedef MultipleChipSelectionCallback<T> = void Function(List<T> items);
 
 typedef ChipLabelGetter<T> = String Function(T item);
 
-enum SelectionMode {
-  single,
-  multiple,
-}
+enum SelectionMode { single, multiple }
 
 class ChipSelection<T> extends StatelessWidget {
   const ChipSelection._({
@@ -21,10 +18,7 @@ class ChipSelection<T> extends StatelessWidget {
     this.getChipLabel,
     this.decoration,
     this.selectedDecoration,
-    this.constraints = const BoxConstraints(
-      minHeight: 42,
-      minWidth: 118,
-    ),
+    this.constraints = const BoxConstraints(minHeight: 42, minWidth: 118),
     this.selectedLabelStyle,
     this.labelStyle,
     this.spacing = 8,
@@ -50,24 +44,21 @@ class ChipSelection<T> extends StatelessWidget {
     double spacing = 8,
     double runSpacing = 8,
     int? minimumItemsPerRow,
-  }) =>
-      ChipSelection._(
-        items: items,
-        selected: [if (selected != null) selected],
-        onSelectionChange: (items) => onSelectionChange?.call(
-          items.firstOrNull,
-        ),
-        getChipLabel: getChipLabel,
-        decoration: decoration,
-        selectedDecoration: selectedDecoration,
-        constraints: constraints,
-        selectedLabelStyle: selectedLabelStyle,
-        labelStyle: labelStyle,
-        spacing: spacing,
-        runSpacing: runSpacing,
-        minimumItemsPerRow: minimumItemsPerRow,
-        selectionMode: SelectionMode.single,
-      );
+  }) => ChipSelection._(
+    items: items,
+    selected: [if (selected != null) selected],
+    onSelectionChange: (items) => onSelectionChange?.call(items.firstOrNull),
+    getChipLabel: getChipLabel,
+    decoration: decoration,
+    selectedDecoration: selectedDecoration,
+    constraints: constraints,
+    selectedLabelStyle: selectedLabelStyle,
+    labelStyle: labelStyle,
+    spacing: spacing,
+    runSpacing: runSpacing,
+    minimumItemsPerRow: minimumItemsPerRow,
+    selectionMode: SelectionMode.single,
+  );
 
   factory ChipSelection.miltiple({
     Key? key,
@@ -86,22 +77,21 @@ class ChipSelection<T> extends StatelessWidget {
     double spacing = 8,
     double runSpacing = 8,
     int? minimumItemsPerRow,
-  }) =>
-      ChipSelection._(
-        items: items,
-        selected: selectedItems,
-        onSelectionChange: onSelectionChange,
-        getChipLabel: getChipLabel,
-        decoration: decoration,
-        selectedDecoration: selectedDecoration,
-        constraints: constraints,
-        selectedLabelStyle: selectedLabelStyle,
-        labelStyle: labelStyle,
-        spacing: spacing,
-        runSpacing: runSpacing,
-        minimumItemsPerRow: minimumItemsPerRow,
-        selectionMode: SelectionMode.multiple,
-      );
+  }) => ChipSelection._(
+    items: items,
+    selected: selectedItems,
+    onSelectionChange: onSelectionChange,
+    getChipLabel: getChipLabel,
+    decoration: decoration,
+    selectedDecoration: selectedDecoration,
+    constraints: constraints,
+    selectedLabelStyle: selectedLabelStyle,
+    labelStyle: labelStyle,
+    spacing: spacing,
+    runSpacing: runSpacing,
+    minimumItemsPerRow: minimumItemsPerRow,
+    selectionMode: SelectionMode.multiple,
+  );
 
   final List<T> items;
   final List<T>? selected;
@@ -133,10 +123,7 @@ class ChipSelection<T> extends StatelessWidget {
         },
       );
     }
-    return _buildWrapChipWithConstraints(
-      context,
-      constraints,
-    );
+    return _buildWrapChipWithConstraints(context, constraints);
   }
 
   Widget _buildWrapChipWithConstraints(
@@ -148,32 +135,30 @@ class ChipSelection<T> extends StatelessWidget {
       runSpacing: runSpacing,
       alignment: WrapAlignment.start,
       children: [
-        ...items.map(
-          (e) {
-            final isSelected = selected?.contains(e) == true;
-            return _buildChipItem(
-              context: context,
-              item: e,
-              isSelected: isSelected,
-              onTap: onSelectionChange?.let(
-                (callback) => () {
-                  if (selectionMode == SelectionMode.single) {
-                    callback([e]);
+        ...items.map((e) {
+          final isSelected = selected?.contains(e) == true;
+          return _buildChipItem(
+            context: context,
+            item: e,
+            isSelected: isSelected,
+            onTap: onSelectionChange?.let(
+              (callback) => () {
+                if (selectionMode == SelectionMode.single) {
+                  callback([e]);
+                } else {
+                  final selectedItems = [...?selected];
+                  if (isSelected) {
+                    selectedItems.remove(e);
                   } else {
-                    final selectedItems = [...?selected];
-                    if (isSelected) {
-                      selectedItems.remove(e);
-                    } else {
-                      selectedItems.add(e);
-                    }
-                    callback(selectedItems);
+                    selectedItems.add(e);
                   }
-                },
-              ),
-              constraints: constraints,
-            );
-          },
-        ),
+                  callback(selectedItems);
+                }
+              },
+            ),
+            constraints: constraints,
+          );
+        }),
       ],
     );
   }
@@ -206,12 +191,9 @@ class ChipSelection<T> extends StatelessWidget {
 }
 
 BoxDecoration defaultChipDecoration(BuildContext context) => BoxDecoration(
-      border: Border.all(
-        width: 1,
-        color: context.themeColor.borderColor,
-      ),
-      borderRadius: BorderRadius.circular(4),
-    );
+  border: Border.all(width: 1, color: context.themeColor.borderColor),
+  borderRadius: BorderRadius.circular(4),
+);
 
 BoxDecoration defaultSelectedChipDecoration(BuildContext context) =>
     BoxDecoration(

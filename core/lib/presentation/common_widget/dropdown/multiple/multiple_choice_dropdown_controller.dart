@@ -7,8 +7,11 @@ class MultipleChoiceDropdownData<T> {
   MultipleChoiceDropdownData({this.value = const [], this.validation});
 }
 
-class MultipleChoiceDropdownController<V,
-    T extends MultipleChoiceDropdownData<V>> extends ValueNotifier<T> {
+class MultipleChoiceDropdownController<
+  V,
+  T extends MultipleChoiceDropdownData<V>
+>
+    extends ValueNotifier<T> {
   MultipleChoiceDropdownController({required T value}) : super(value);
 
   void setError(String validation) {

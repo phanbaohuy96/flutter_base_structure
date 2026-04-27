@@ -4,14 +4,8 @@ class DateRange {
 
   const DateRange({this.from, this.to});
 
-  DateRange copyWith({
-    DateTime? from,
-    DateTime? to,
-  }) {
-    return DateRange(
-      from: from ?? this.from,
-      to: to ?? this.to,
-    );
+  DateRange copyWith({DateTime? from, DateTime? to}) {
+    return DateRange(from: from ?? this.from, to: to ?? this.to);
   }
 
   bool campare(DateRange other) {

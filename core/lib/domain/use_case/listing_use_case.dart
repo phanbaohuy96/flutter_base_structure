@@ -3,7 +3,7 @@ import '../entity/pagination.dart';
 
 class ListingUseCase<T, P> {
   final Future<List<T>> Function(int offset, int limit, int page, [P? param])
-      _getPaginationData;
+  _getPaginationData;
 
   late var _pagination = Pagination(limit: fetchLimit);
   final _data = <T>[];
@@ -21,9 +21,7 @@ class ListingUseCase<T, P> {
   List<T> get data => _data;
 
   Future<List<T>> getData([P? param]) async {
-    _pagination = Pagination(
-      limit: fetchLimit,
-    );
+    _pagination = Pagination(limit: fetchLimit);
     _data.clear();
     return _getData(param);
   }

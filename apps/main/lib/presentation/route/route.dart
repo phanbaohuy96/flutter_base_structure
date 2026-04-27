@@ -12,9 +12,9 @@ class RouteGenerator {
   RouteGenerator();
 
   List<CustomRouter> get routers => [
-        ...CoreRoute().routers(),
-        ...AuthenticationRoute().routers(),
-      ];
+    ...CoreRoute().routers(),
+    ...AuthenticationRoute().routers(),
+  ];
 
   Route<dynamic>? generateRoute(
     BuildContext context,
@@ -51,18 +51,15 @@ class RouteGenerator {
     /// more specific paths are matched before more general ones. This is
     /// important because the route verifier may use `startsWith` for matching,
     /// so longer, more specific paths must be evaluated first.
-    final sortedRouters = [...routers]..sortByCompare(
+    final sortedRouters = [...routers]
+      ..sortByCompare(
         (element) => element.path,
         (a, b) => b.length.compareTo(a.length),
       );
 
     for (final route in sortedRouters) {
       if (route.canLaunch(uri, settings.arguments)) {
-        return (context) => route.build(
-              context,
-              uri,
-              settings.arguments,
-            );
+        return (context) => route.build(context, uri, settings.arguments);
       }
     }
     return null;
@@ -89,11 +86,9 @@ class RouteGenerator {
     // handle language
     final languageCode =
         uri.queryParameters['hl'] ?? uri.queryParameters['lang'];
-    final locale = AppLocale.supportedLocales.firstWhereOrNull(
-      (l) {
-        return l.languageCode == languageCode?.toLowerCase();
-      },
-    );
+    final locale = AppLocale.supportedLocales.firstWhereOrNull((l) {
+      return l.languageCode == languageCode?.toLowerCase();
+    });
 
     if (locale != null) {
       internalQueryParametes.addAll(['lang', 'hl']);
@@ -118,9 +113,7 @@ class RouteGenerator {
 
 Route buildFaderPageRoute<T>(WidgetBuilder builder, {RouteSettings? settings}) {
   return FaderPageRoute<T>(
-    builder: (context) => TextScaleFixed(
-      child: builder(context),
-    ),
+    builder: (context) => TextScaleFixed(child: builder(context)),
     settings: settings,
   );
 }
@@ -128,25 +121,19 @@ Route buildFaderPageRoute<T>(WidgetBuilder builder, {RouteSettings? settings}) {
 Route buildRoute<T>(WidgetBuilder builder, {RouteSettings? settings}) {
   if (kIsWeb) {
     return MaterialPageRoute<T>(
-      builder: (context) => TextScaleFixed(
-        child: builder(context),
-      ),
+      builder: (context) => TextScaleFixed(child: builder(context)),
       settings: settings,
     );
   }
   return CupertinoPageRoute<T>(
-    builder: (context) => TextScaleFixed(
-      child: builder(context),
-    ),
+    builder: (context) => TextScaleFixed(child: builder(context)),
     settings: settings,
   );
 }
 
 class FaderPageRoute<T> extends PageRoute<T> {
-  FaderPageRoute({
-    required this.builder,
-    RouteSettings? settings,
-  }) : super(settings: settings);
+  FaderPageRoute({required this.builder, RouteSettings? settings})
+    : super(settings: settings);
 
   @override
   Color get barrierColor => Colors.transparent;
@@ -162,10 +149,7 @@ class FaderPageRoute<T> extends PageRoute<T> {
     Animation<double> animation,
     Animation<double> secondaryAnimation,
   ) {
-    return FadeTransition(
-      opacity: animation,
-      child: builder(context),
-    );
+    return FadeTransition(opacity: animation, child: builder(context));
   }
 
   @override

@@ -7,10 +7,7 @@ abstract class StateBase<T extends StatefulWidget> extends CoreStateBase<T> {
   AppBlocBase? get bloc => null;
 
   @override
-  void backToAuth({
-    Function()? onSuccess,
-    Function()? onSkip,
-  }) {
+  void backToAuth({Function()? onSuccess, Function()? onSkip}) {
     super.backToAuth(onSuccess: onSuccess, onSkip: onSkip);
     context.openSignIn().then((value) {
       if (value is bool && value) {

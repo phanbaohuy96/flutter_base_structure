@@ -42,12 +42,13 @@ class _InputsPageState extends State<InputsPage> {
   final _inputContainerPasswordCtrl = InputContainerController();
   final _dropdownController =
       DropdownController<SampleOption, DropdownData<SampleOption>>(
-    value: DropdownData<SampleOption>(),
-  );
-  final _multipleChoiceController = MultipleChoiceDropdownController<
-      SampleOption, MultipleChoiceDropdownData<SampleOption>>(
-    value: MultipleChoiceDropdownData<SampleOption>(),
-  );
+        value: DropdownData<SampleOption>(),
+      );
+  final _multipleChoiceController =
+      MultipleChoiceDropdownController<
+        SampleOption,
+        MultipleChoiceDropdownData<SampleOption>
+      >(value: MultipleChoiceDropdownData<SampleOption>());
   SampleOption? _dropdownMenuButtonValue;
 
   @override
@@ -68,15 +69,12 @@ class _InputsPageState extends State<InputsPage> {
     final textTheme = Theme.of(context).textTheme;
 
     return ListView(
-      padding: const EdgeInsets.all(16).copyWith(
-        bottom: MediaQuery.of(context).padding.bottom + 16,
-      ),
+      padding: const EdgeInsets.all(
+        16,
+      ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
       children: [
         // Custom Widget: InputContainer
-        Text(
-          'InputContainer Widget',
-          style: textTheme.titleLarge,
-        ),
+        Text('InputContainer Widget', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         InputContainer(
           controller: _inputContainerCtrl,
@@ -116,10 +114,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 32),
 
         // Custom Widget: DropdownWidget
-        Text(
-          'DropdownWidget',
-          style: textTheme.titleLarge,
-        ),
+        Text('DropdownWidget', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         DropdownWidget<SampleOption>(
           controller: _dropdownController,
@@ -143,10 +138,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 32),
 
         // Custom Widget: MultipleChoiceDropdownWidget
-        Text(
-          'MultipleChoiceDropdownWidget',
-          style: textTheme.titleLarge,
-        ),
+        Text('MultipleChoiceDropdownWidget', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         MultipleChoiceDropdownWidget<SampleOption>(
           controller: _multipleChoiceController,
@@ -180,18 +172,13 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 32),
 
         // Custom Widget: DropdownMenuButton
-        Text(
-          'DropdownMenuButton',
-          style: textTheme.titleLarge,
-        ),
+        Text('DropdownMenuButton', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         DropdownMenuButton<SampleOption>(
           customButton: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
-              border: Border.all(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+              border: Border.all(color: Theme.of(context).colorScheme.outline),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -220,10 +207,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 32),
 
         // Basic Text Fields
-        Text(
-          'Basic Text Fields',
-          style: textTheme.titleLarge,
-        ),
+        Text('Basic Text Fields', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         const TextField(
           decoration: InputDecoration(
@@ -259,10 +243,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Text Fields with Icons
-        Text(
-          'Text Fields with Icons',
-          style: textTheme.titleLarge,
-        ),
+        Text('Text Fields with Icons', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         const TextField(
           decoration: InputDecoration(
@@ -292,10 +273,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Password Field
-        Text(
-          'Password Field',
-          style: textTheme.titleLarge,
-        ),
+        Text('Password Field', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         TextField(
           controller: _passwordController,
@@ -317,10 +295,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Error States
-        Text(
-          'Error States',
-          style: textTheme.titleLarge,
-        ),
+        Text('Error States', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         const TextField(
           decoration: InputDecoration(
@@ -342,10 +317,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Multiline Text Field
-        Text(
-          'Multiline Text Field',
-          style: textTheme.titleLarge,
-        ),
+        Text('Multiline Text Field', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         TextField(
           controller: _multilineController,
@@ -359,10 +331,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Input with Counter
-        Text(
-          'Input with Counter',
-          style: textTheme.titleLarge,
-        ),
+        Text('Input with Counter', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         const TextField(
           maxLength: 100,
@@ -375,10 +344,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Input with Formatters
-        Text(
-          'Input with Formatters',
-          style: textTheme.titleLarge,
-        ),
+        Text('Input with Formatters', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         TextField(
           keyboardType: TextInputType.number,
@@ -406,10 +372,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Dropdown Field
-        Text(
-          'Dropdown Field',
-          style: textTheme.titleLarge,
-        ),
+        Text('Dropdown Field', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         DropdownButtonFormField<String>(
           initialValue: _dropdownValue,
@@ -419,10 +382,8 @@ class _InputsPageState extends State<InputsPage> {
           ),
           items: ['Option 1', 'Option 2', 'Option 3', 'Option 4']
               .map(
-                (option) => DropdownMenuItem(
-                  value: option,
-                  child: Text(option),
-                ),
+                (option) =>
+                    DropdownMenuItem(value: option, child: Text(option)),
               )
               .toList(),
           onChanged: (value) {
@@ -432,10 +393,7 @@ class _InputsPageState extends State<InputsPage> {
         const SizedBox(height: 24),
 
         // Date Picker Field
-        Text(
-          'Date & Time Picker Fields',
-          style: textTheme.titleLarge,
-        ),
+        Text('Date & Time Picker Fields', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         TextField(
           readOnly: true,
@@ -471,30 +429,23 @@ class _InputsPageState extends State<InputsPage> {
                 : null,
           ),
           onTap: () {
-            showTimePicker(
-              context: context,
-              initialTime: TimeOfDay.now(),
-            );
+            showTimePicker(context: context, initialTime: TimeOfDay.now());
           },
         ),
         const SizedBox(height: 24),
 
         // Custom Styled Inputs
-        Text(
-          'Custom Styled Inputs',
-          style: textTheme.titleLarge,
-        ),
+        Text('Custom Styled Inputs', style: textTheme.titleLarge),
         const SizedBox(height: 12),
         TextField(
           decoration: InputDecoration(
             labelText: 'Filled Style',
             hintText: 'Enter text',
             filled: true,
-            fillColor:
-                Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
+            fillColor: Theme.of(
+              context,
+            ).colorScheme.primary.withValues(alpha: 0.05),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
           ),
         ),
         const SizedBox(height: 16),
@@ -502,9 +453,7 @@ class _InputsPageState extends State<InputsPage> {
           decoration: InputDecoration(
             labelText: 'Rounded Style',
             hintText: 'Enter text',
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(24)),
             prefixIcon: const Icon(Icons.search),
           ),
         ),
@@ -514,9 +463,7 @@ class _InputsPageState extends State<InputsPage> {
             labelText: 'Dense Style',
             hintText: 'Enter text',
             isDense: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
           ),
         ),
         const SizedBox(height: 32),

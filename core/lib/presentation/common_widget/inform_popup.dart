@@ -7,11 +7,8 @@ class InformationPopup extends StatelessWidget {
   final String content;
   final String title;
 
-  const InformationPopup({
-    Key? key,
-    required this.content,
-    required this.title,
-  }) : super(key: key);
+  const InformationPopup({Key? key, required this.content, required this.title})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +29,13 @@ class InformationPopup extends StatelessWidget {
             style: theme.textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           Text(
             content,
             style: theme.textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
-          const SizedBox(
-            height: 32,
-          ),
+          const SizedBox(height: 32),
           ThemeButton.primary(
             title: localization.close,
             onPressed: Navigator.of(context).pop,

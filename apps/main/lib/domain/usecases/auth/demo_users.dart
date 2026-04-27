@@ -1,9 +1,6 @@
 import 'package:data_source/data_source.dart';
 
-final demoUsers = [
-  user1,
-  user2,
-];
+final demoUsers = [user1, user2];
 
 const user1 = UserModel(
   email: 'user1@yopmail.com',

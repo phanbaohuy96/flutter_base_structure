@@ -48,15 +48,13 @@ class _TickerBuilderState extends State<TickerBuilder> {
     _cancelTimer();
     _timer = Timer.periodic(
       duration,
-      (Timer timer) => setState(
-        () {
-          _timer = timer;
-          tick++;
-          if (widget.tickLimit != null && tick > widget.tickLimit!) {
-            timer.cancel();
-          }
-        },
-      ),
+      (Timer timer) => setState(() {
+        _timer = timer;
+        tick++;
+        if (widget.tickLimit != null && tick > widget.tickLimit!) {
+          timer.cancel();
+        }
+      }),
     );
   }
 

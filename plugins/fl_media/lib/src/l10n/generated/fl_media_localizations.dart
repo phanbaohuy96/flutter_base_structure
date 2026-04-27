@@ -6,7 +6,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'fl_media_localizations_en.dart';
-import 'fl_media_localizations_th.dart';
+import 'fl_media_localizations_vi.dart';
 
 // ignore_for_file: type=lint
 
@@ -98,7 +98,7 @@ abstract class FlMediaLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('th'),
+    Locale('vi'),
   ];
 
   /// No description provided for @cancel.
@@ -193,7 +193,7 @@ class _FlMediaLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'th'].contains(locale.languageCode);
+      <String>['en', 'vi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_FlMediaLocalizationsDelegate old) => false;
@@ -204,8 +204,8 @@ FlMediaLocalizations lookupFlMediaLocalizations(Locale locale) {
   switch (locale.languageCode) {
     case 'en':
       return FlMediaLocalizationsEn();
-    case 'th':
-      return FlMediaLocalizationsTh();
+    case 'vi':
+      return FlMediaLocalizationsVi();
   }
 
   throw FlutterError(

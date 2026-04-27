@@ -267,129 +267,155 @@ class ThemeColor {
     Color? labelText,
     Color? warningText,
     Color? hyperLink,
-  })  : primaryVariant = primaryVariant ?? primary.darken(0.2),
-        secondaryVariant = secondaryVariant ?? secondary.darken(0.2),
-        surface = surface ??
-            (brightness == Brightness.light
-                ? const Color(0xFFFFFFFF)
-                : const Color(0xFF121212)),
-        background = background ??
-            (brightness == Brightness.light
-                ? const Color(0xFFFFFFFF)
-                : const Color(0xFF121212)),
-        error = error ??
-            (brightness == Brightness.light
-                ? const Color(0xFFB00020)
-                : const Color(0xFFCF6679)),
-        onPrimary = onPrimary ??
-            (brightness == Brightness.light
-                ? const Color(0xFFFFFFFF)
-                : const Color(0xFF000000)),
-        onSecondary = onSecondary ??
-            (brightness == Brightness.light
-                ? const Color(0xFF000000)
-                : const Color(0xFF000000)),
-        onBackground = onBackground ??
-            (brightness == Brightness.light
-                ? const Color(0xFF000000)
-                : const Color(0xFFFFFFFF)),
-        onSurface = onSurface ??
-            (brightness == Brightness.light
-                ? const Color(0xFF000000)
-                : const Color(0xFFFFFFFF)),
-        onError = onError ??
-            (brightness == Brightness.light
-                ? const Color(0xFFFFFFFF)
-                : const Color(0xFF000000)),
-        themePrimary = themePrimary ??
-            (brightness == Brightness.light ? Colors.white : Colors.grey[900]!),
-        themePrimaryLight = themePrimaryLight ??
-            themePrimary?.lighten(0.1) ??
-            (brightness == Brightness.light ? Colors.white : Colors.grey[900]!)
-                .lighten(0.1),
-        themePrimaryDark = themePrimaryDark ??
-            themePrimary?.darken(0.1) ??
-            (brightness == Brightness.light
-                    ? Colors.white70
-                    : Colors.grey[900]!)
-                .darken(0.1),
-        scaffoldBackgroundColor = scaffoldBackgroundColor ??
-            ThemeData(brightness: brightness).scaffoldBackgroundColor,
-        dividerColor = dividerColor ??
-            (brightness == Brightness.light
-                ? const Color(0xFFF6F6F7)
-                : Colors.white38),
-        borderColor = borderColor ??
-            (brightness == Brightness.light
-                ? const Color(0xFFD1D5DB)
-                : Colors.white38),
-        schemeAction = schemeAction ?? primary,
-        cardBackground = cardBackground ??
-            (brightness == Brightness.light ? Colors.white : Colors.grey[800]!),
-        canvasColor = canvasColor ??
-            (brightness == Brightness.light ? Colors.white : Colors.grey[850]!),
-        splashColor = splashColor ?? secondary,
-        shadowColor = shadowColor ??
-            (brightness == Brightness.light
-                ? Colors.grey.shade300
-                : Colors.grey.shade800),
-        textButtonColor = textButtonColor ?? primary,
-        textButtonDisableColor = textButtonDisableColor ?? disableColor,
-        elevatedBtnBackgroundColor = elevatedBtnBackgroundColor ?? primary,
-        outlineButtonColor = outlineButtonColor ?? primary,
-        outlineButtonBackgroundColor =
-            outlineButtonBackgroundColor ?? Colors.transparent,
-        outlineButtonDisableColor = outlineButtonDisableColor ?? disableColor,
-        displayText = displayText ??
-            (brightness == Brightness.light
-                ? const Color(0xFF272727)
-                : Colors.grey),
-        headlineText = headlineText ??
-            (brightness == Brightness.light
-                ? const Color(0xFF272727)
-                : Colors.grey),
-        titleText = titleText ??
-            (brightness == Brightness.light
-                ? const Color(0xFF272727)
-                : Colors.grey),
-        bodyText = bodyText ??
-            (brightness == Brightness.light
-                ? const Color(0xFF272727)
-                : Colors.grey),
-        labelText = labelText ??
-            (brightness == Brightness.light
-                ? const Color(0xFF272727)
-                : Colors.grey),
-        warningText = warningText ??
-            (brightness == Brightness.light
-                ? const Color(0xFFFF9B1A)
-                : Colors.orange[800]!),
-        hyperLink = hyperLink ??
-            (brightness == Brightness.light ? Colors.blue : Colors.blue[800]!),
-        checkboxCheckColor = checkboxCheckColor ?? Colors.white,
-        checkboxActiveColor = checkboxActiveColor ?? primary,
-        checkboxBorderColor = checkboxBorderColor ??
-            borderColor ??
-            (brightness == Brightness.light
-                ? const Color(0xFFD1D5DB)
-                : Colors.white38),
-        checkboxDisabledColor = checkboxDisabledColor ?? disableColor,
-        chipBackgroundColor = chipBackgroundColor ??
-            (brightness == Brightness.light ? Colors.white : Colors.grey[700]!),
-        chipBorderColor = chipBorderColor ??
-            borderColor ??
-            (brightness == Brightness.light
-                ? const Color(0xFFD1D5DB)
-                : Colors.white38),
-        chipLabelColor = chipLabelColor ??
-            (brightness == Brightness.light
-                ? const Color(0xFF272727)
-                : Colors.grey[300]!),
-        chipSelectedColor = chipSelectedColor ?? primary,
-        chipDisabledColor = chipDisabledColor ?? disableColor,
-        deleteIconColor = deleteIconColor ?? const Color(0xFF6B7280),
-        selectedLabelColor = selectedLabelColor ?? primary,
-        selected = selected ?? primary;
+  }) : primaryVariant = primaryVariant ?? primary.darken(0.2),
+       secondaryVariant = secondaryVariant ?? secondary.darken(0.2),
+       surface =
+           surface ??
+           (brightness == Brightness.light
+               ? const Color(0xFFFFFFFF)
+               : const Color(0xFF121212)),
+       background =
+           background ??
+           (brightness == Brightness.light
+               ? const Color(0xFFFFFFFF)
+               : const Color(0xFF121212)),
+       error =
+           error ??
+           (brightness == Brightness.light
+               ? const Color(0xFFB00020)
+               : const Color(0xFFCF6679)),
+       onPrimary =
+           onPrimary ??
+           (brightness == Brightness.light
+               ? const Color(0xFFFFFFFF)
+               : const Color(0xFF000000)),
+       onSecondary =
+           onSecondary ??
+           (brightness == Brightness.light
+               ? const Color(0xFF000000)
+               : const Color(0xFF000000)),
+       onBackground =
+           onBackground ??
+           (brightness == Brightness.light
+               ? const Color(0xFF000000)
+               : const Color(0xFFFFFFFF)),
+       onSurface =
+           onSurface ??
+           (brightness == Brightness.light
+               ? const Color(0xFF000000)
+               : const Color(0xFFFFFFFF)),
+       onError =
+           onError ??
+           (brightness == Brightness.light
+               ? const Color(0xFFFFFFFF)
+               : const Color(0xFF000000)),
+       themePrimary =
+           themePrimary ??
+           (brightness == Brightness.light ? Colors.white : Colors.grey[900]!),
+       themePrimaryLight =
+           themePrimaryLight ??
+           themePrimary?.lighten(0.1) ??
+           (brightness == Brightness.light ? Colors.white : Colors.grey[900]!)
+               .lighten(0.1),
+       themePrimaryDark =
+           themePrimaryDark ??
+           themePrimary?.darken(0.1) ??
+           (brightness == Brightness.light ? Colors.white70 : Colors.grey[900]!)
+               .darken(0.1),
+       scaffoldBackgroundColor =
+           scaffoldBackgroundColor ??
+           ThemeData(brightness: brightness).scaffoldBackgroundColor,
+       dividerColor =
+           dividerColor ??
+           (brightness == Brightness.light
+               ? const Color(0xFFF6F6F7)
+               : Colors.white38),
+       borderColor =
+           borderColor ??
+           (brightness == Brightness.light
+               ? const Color(0xFFD1D5DB)
+               : Colors.white38),
+       schemeAction = schemeAction ?? primary,
+       cardBackground =
+           cardBackground ??
+           (brightness == Brightness.light ? Colors.white : Colors.grey[800]!),
+       canvasColor =
+           canvasColor ??
+           (brightness == Brightness.light ? Colors.white : Colors.grey[850]!),
+       splashColor = splashColor ?? secondary,
+       shadowColor =
+           shadowColor ??
+           (brightness == Brightness.light
+               ? Colors.grey.shade300
+               : Colors.grey.shade800),
+       textButtonColor = textButtonColor ?? primary,
+       textButtonDisableColor = textButtonDisableColor ?? disableColor,
+       elevatedBtnBackgroundColor = elevatedBtnBackgroundColor ?? primary,
+       outlineButtonColor = outlineButtonColor ?? primary,
+       outlineButtonBackgroundColor =
+           outlineButtonBackgroundColor ?? Colors.transparent,
+       outlineButtonDisableColor = outlineButtonDisableColor ?? disableColor,
+       displayText =
+           displayText ??
+           (brightness == Brightness.light
+               ? const Color(0xFF272727)
+               : Colors.grey),
+       headlineText =
+           headlineText ??
+           (brightness == Brightness.light
+               ? const Color(0xFF272727)
+               : Colors.grey),
+       titleText =
+           titleText ??
+           (brightness == Brightness.light
+               ? const Color(0xFF272727)
+               : Colors.grey),
+       bodyText =
+           bodyText ??
+           (brightness == Brightness.light
+               ? const Color(0xFF272727)
+               : Colors.grey),
+       labelText =
+           labelText ??
+           (brightness == Brightness.light
+               ? const Color(0xFF272727)
+               : Colors.grey),
+       warningText =
+           warningText ??
+           (brightness == Brightness.light
+               ? const Color(0xFFFF9B1A)
+               : Colors.orange[800]!),
+       hyperLink =
+           hyperLink ??
+           (brightness == Brightness.light ? Colors.blue : Colors.blue[800]!),
+       checkboxCheckColor = checkboxCheckColor ?? Colors.white,
+       checkboxActiveColor = checkboxActiveColor ?? primary,
+       checkboxBorderColor =
+           checkboxBorderColor ??
+           borderColor ??
+           (brightness == Brightness.light
+               ? const Color(0xFFD1D5DB)
+               : Colors.white38),
+       checkboxDisabledColor = checkboxDisabledColor ?? disableColor,
+       chipBackgroundColor =
+           chipBackgroundColor ??
+           (brightness == Brightness.light ? Colors.white : Colors.grey[700]!),
+       chipBorderColor =
+           chipBorderColor ??
+           borderColor ??
+           (brightness == Brightness.light
+               ? const Color(0xFFD1D5DB)
+               : Colors.white38),
+       chipLabelColor =
+           chipLabelColor ??
+           (brightness == Brightness.light
+               ? const Color(0xFF272727)
+               : Colors.grey[300]!),
+       chipSelectedColor = chipSelectedColor ?? primary,
+       chipDisabledColor = chipDisabledColor ?? disableColor,
+       deleteIconColor = deleteIconColor ?? const Color(0xFF6B7280),
+       selectedLabelColor = selectedLabelColor ?? primary,
+       selected = selected ?? primary;
 
   //HEX code color
   final lightGrey = const Color(0xFFbebebe);
@@ -439,18 +465,16 @@ class ThemeColor {
     );
   }
 
-  ThemeColor lerp(
-    covariant ThemeColor other,
-    double t,
-  ) {
+  ThemeColor lerp(covariant ThemeColor other, double t) {
     return ThemeColor(
       primary: Color.lerp(primary, other.primary, t) ?? other.primary,
-      primaryVariant: Color.lerp(primaryVariant, other.primaryVariant, t) ??
+      primaryVariant:
+          Color.lerp(primaryVariant, other.primaryVariant, t) ??
           other.primaryVariant,
       secondary: Color.lerp(secondary, other.secondary, t) ?? other.secondary,
       secondaryVariant:
           Color.lerp(secondaryVariant, other.secondaryVariant, t) ??
-              other.secondaryVariant,
+          other.secondaryVariant,
       surface: Color.lerp(surface, other.surface, t) ?? other.surface,
       background:
           Color.lerp(background, other.background, t) ?? other.background,
@@ -465,11 +489,13 @@ class ThemeColor {
       brightness: other.brightness,
       appbarForegroundColor:
           Color.lerp(appbarForegroundColor, other.appbarForegroundColor, t) ??
-              other.appbarForegroundColor,
+          other.appbarForegroundColor,
       schemeAction: Color.lerp(schemeAction, other.schemeAction, t),
-      cardBackground: Color.lerp(cardBackground, other.cardBackground, t) ??
+      cardBackground:
+          Color.lerp(cardBackground, other.cardBackground, t) ??
           other.cardBackground,
-      scaffoldBackgroundColor: Color.lerp(
+      scaffoldBackgroundColor:
+          Color.lerp(
             scaffoldBackgroundColor,
             other.scaffoldBackgroundColor,
             t,
@@ -481,28 +507,32 @@ class ThemeColor {
           Color.lerp(dividerColor, other.dividerColor, t) ?? other.dividerColor,
       unselectedLabelColor:
           Color.lerp(unselectedLabelColor, other.unselectedLabelColor, t) ??
-              other.unselectedLabelColor,
+          other.unselectedLabelColor,
       splashColor:
           Color.lerp(splashColor, other.splashColor, t) ?? other.splashColor,
-      elevatedBtnForegroundColor: Color.lerp(
+      elevatedBtnForegroundColor:
+          Color.lerp(
             elevatedBtnForegroundColor,
             other.elevatedBtnForegroundColor,
             t,
           ) ??
           other.elevatedBtnForegroundColor,
-      elevatedBtnBackgroundColor: Color.lerp(
+      elevatedBtnBackgroundColor:
+          Color.lerp(
             elevatedBtnBackgroundColor,
             other.elevatedBtnBackgroundColor,
             t,
           ) ??
           other.elevatedBtnBackgroundColor,
-      elevatedBtnForegroundDisableColor: Color.lerp(
+      elevatedBtnForegroundDisableColor:
+          Color.lerp(
             elevatedBtnForegroundDisableColor,
             other.elevatedBtnForegroundDisableColor,
             t,
           ) ??
           other.elevatedBtnForegroundDisableColor,
-      elevatedBtnBackgroundDisableColor: Color.lerp(
+      elevatedBtnBackgroundDisableColor:
+          Color.lerp(
             elevatedBtnBackgroundDisableColor,
             other.elevatedBtnBackgroundDisableColor,
             t,
@@ -510,8 +540,9 @@ class ThemeColor {
           other.elevatedBtnBackgroundDisableColor,
       outlineButtonColor:
           Color.lerp(outlineButtonColor, other.outlineButtonColor, t) ??
-              other.outlineButtonColor,
-      outlineButtonDisableColor: Color.lerp(
+          other.outlineButtonColor,
+      outlineButtonDisableColor:
+          Color.lerp(
             outlineButtonDisableColor,
             other.outlineButtonDisableColor,
             t,
@@ -529,59 +560,59 @@ class ThemeColor {
       hyperLink: Color.lerp(hyperLink, other.hyperLink, t) ?? other.hyperLink,
       chipBackgroundColor:
           Color.lerp(chipBackgroundColor, other.chipBackgroundColor, t) ??
-              other.chipBackgroundColor,
-      chipBorderColor: Color.lerp(chipBorderColor, other.chipBorderColor, t) ??
+          other.chipBackgroundColor,
+      chipBorderColor:
+          Color.lerp(chipBorderColor, other.chipBorderColor, t) ??
           other.chipBorderColor,
-      chipLabelColor: Color.lerp(chipLabelColor, other.chipLabelColor, t) ??
+      chipLabelColor:
+          Color.lerp(chipLabelColor, other.chipLabelColor, t) ??
           other.chipLabelColor,
       chipSelectedColor:
           Color.lerp(chipSelectedColor, other.chipSelectedColor, t) ??
-              other.chipSelectedColor,
+          other.chipSelectedColor,
       chipDisabledColor:
           Color.lerp(chipDisabledColor, other.chipDisabledColor, t) ??
-              other.chipDisabledColor,
+          other.chipDisabledColor,
     );
   }
 
   List<BoxShadow> get boxShadowBlur => [
-        BoxShadow(
-          offset: const Offset(0, 2),
-          blurRadius: 3,
-          color: shadowColor.withAlpha((0.1 * 255).round()),
-        ),
-        BoxShadow(
-          offset: const Offset(0, 4),
-          blurRadius: 6,
-          color: shadowColor.withAlpha((0.3 * 255).round()),
-        ),
-      ];
+    BoxShadow(
+      offset: const Offset(0, 2),
+      blurRadius: 3,
+      color: shadowColor.withAlpha((0.1 * 255).round()),
+    ),
+    BoxShadow(
+      offset: const Offset(0, 4),
+      blurRadius: 6,
+      color: shadowColor.withAlpha((0.3 * 255).round()),
+    ),
+  ];
 
   List<BoxShadow> get boxShadowLightest => [
-        BoxShadow(blurRadius: 1.5, color: shadowColor),
-        BoxShadow(blurRadius: 1, color: shadowColor),
-      ];
+    BoxShadow(blurRadius: 1.5, color: shadowColor),
+    BoxShadow(blurRadius: 1, color: shadowColor),
+  ];
   List<BoxShadow> get boxShadowLight => [
-        BoxShadow(blurRadius: 4, color: shadowColor),
-        BoxShadow(blurRadius: 4, color: shadowColor),
-      ];
+    BoxShadow(blurRadius: 4, color: shadowColor),
+    BoxShadow(blurRadius: 4, color: shadowColor),
+  ];
   List<BoxShadow> get boxShadowMedium => [
-        ...boxShadowLight,
-        BoxShadow(blurRadius: 8, color: shadowColor),
-        BoxShadow(blurRadius: 8, color: shadowColor),
-      ];
+    ...boxShadowLight,
+    BoxShadow(blurRadius: 8, color: shadowColor),
+    BoxShadow(blurRadius: 8, color: shadowColor),
+  ];
   List<BoxShadow> get boxShadowDark => [
-        ...boxShadowMedium,
-        BoxShadow(blurRadius: 10.9, color: shadowColor),
-        BoxShadow(blurRadius: 10.9, color: shadowColor),
-      ];
+    ...boxShadowMedium,
+    BoxShadow(blurRadius: 10.9, color: shadowColor),
+    BoxShadow(blurRadius: 10.9, color: shadowColor),
+  ];
 }
 
 class ThemeColorExtension extends ThemeExtension<ThemeColorExtension> {
   final ThemeColor colors;
 
-  ThemeColorExtension({
-    required this.colors,
-  });
+  ThemeColorExtension({required this.colors});
 
   @override
   ThemeColorExtension copyWith({ThemeColor? colors}) {
@@ -589,10 +620,7 @@ class ThemeColorExtension extends ThemeExtension<ThemeColorExtension> {
   }
 
   @override
-  ThemeColorExtension lerp(
-    covariant ThemeColorExtension? other,
-    double t,
-  ) {
+  ThemeColorExtension lerp(covariant ThemeColorExtension? other, double t) {
     if (other == null) {
       return this;
     }

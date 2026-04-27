@@ -1,2 +1,2 @@
 What's new?
- - The app with Flutter Core Template 
+ - The app with My Flutter Base

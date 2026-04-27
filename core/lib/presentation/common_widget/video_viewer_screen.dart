@@ -14,11 +14,7 @@ class VideoViewerArgs {
   final String? url;
   final File? file;
 
-  VideoViewerArgs({
-    this.title,
-    this.url,
-    this.file,
-  });
+  VideoViewerArgs({this.title, this.url, this.file});
 }
 
 class VideoViewerScreen extends StatefulWidget {
@@ -49,9 +45,7 @@ class _VideoViewerScreenState extends State<VideoViewerScreen> {
       title: widget.args?.title ?? 'Video',
       child: Container(
         height: double.infinity,
-        padding: EdgeInsets.only(
-          bottom: paddingBottom,
-        ),
+        padding: EdgeInsets.only(bottom: paddingBottom),
         color: Colors.white,
         child: FutureBuilder(
           future: _init(),
@@ -74,9 +68,7 @@ class _VideoViewerScreenState extends State<VideoViewerScreen> {
                           autoInitialize: true,
                         );
 
-                        return Chewie(
-                          controller: _chewieController!,
-                        );
+                        return Chewie(controller: _chewieController!);
                       },
                     )
                   : const Loading(),
@@ -89,13 +81,11 @@ class _VideoViewerScreenState extends State<VideoViewerScreen> {
 
   Future<void> _init() async {
     if (widget.args?.file != null) {
-      _controller = VideoPlayerController.file(
-        widget.args!.file!,
-      );
+      _controller = VideoPlayerController.file(widget.args!.file!);
     } else if (widget.args?.url != null) {
-      _controller = Uri.tryParse(widget.args?.url ?? '')?.let(
-        VideoPlayerController.networkUrl,
-      );
+      _controller = Uri.tryParse(
+        widget.args?.url ?? '',
+      )?.let(VideoPlayerController.networkUrl);
     }
 
     // _controller = VideoPlayerController.network(

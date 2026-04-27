@@ -35,33 +35,31 @@ class StorageServiceImpl extends StorageService {
                 mimeType: _mimeType,
                 option: compressImageOption,
               )
-              .then(
-                (compressedResult) {
-                  final originalName = file.path.split('/').last;
-                  final isCompressed =
-                      compressedResult.mimeType ==
-                      compressImageOption.format.mimeType;
+              .then((compressedResult) {
+                final originalName = file.path.split('/').last;
+                final isCompressed =
+                    compressedResult.mimeType ==
+                    compressImageOption.format.mimeType;
 
-                  // Only change filename if actually compressed to webp
-                  final fileName = isCompressed
-                      ? _convertToWebPExtension(originalName)
-                      : originalName;
+                // Only change filename if actually compressed to webp
+                final fileName = isCompressed
+                    ? _convertToWebPExtension(originalName)
+                    : originalName;
 
-                  return _storageRepository.uploadBytes(
-                    [
-                      dio.MultipartFile.fromBytes(
-                        compressedResult.image,
-                        filename: fileName,
-                        contentType: compressedResult.mimeType?.let(
-                          dio.DioMediaType.parse,
-                        ),
+                return _storageRepository.uploadBytes(
+                  [
+                    dio.MultipartFile.fromBytes(
+                      compressedResult.image,
+                      filename: fileName,
+                      contentType: compressedResult.mimeType?.let(
+                        dio.DioMediaType.parse,
                       ),
-                    ],
-                    cancelToken: cancelToken,
-                    onSendProgress: onSendProgress,
-                  );
-                },
-              )
+                    ),
+                  ],
+                  cancelToken: cancelToken,
+                  onSendProgress: onSendProgress,
+                );
+              })
         : await _storageRepository.uploadFile(
             file,
             cancelToken: cancelToken,
@@ -119,9 +117,7 @@ class StorageServiceImpl extends StorageService {
               dio.MultipartFile.fromBytes(
                 bytes,
                 filename: name,
-                contentType: mimeType?.let(
-                  dio.DioMediaType.parse,
-                ),
+                contentType: mimeType?.let(dio.DioMediaType.parse),
               ),
             ],
             cancelToken: cancelToken,

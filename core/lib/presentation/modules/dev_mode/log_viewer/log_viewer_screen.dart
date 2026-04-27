@@ -20,9 +20,8 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
   Level? level;
 
   List<AppLog> get logsByFilter => [
-        ...logUtils.logs.reversed
-            .where((e) => level == null || e.level == level),
-      ];
+    ...logUtils.logs.reversed.where((e) => level == null || e.level == level),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -42,57 +41,46 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
               showToast(context, 'Log copied to clipboard');
             },
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 8,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: Text(
                 logStr,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: log.level.color,
-                ),
+                style: TextStyle(fontSize: 14, color: log.level.color),
               ),
             ),
           );
         },
-        separatorBuilder: (_, __) => const Divider(
-          height: 16,
-          thickness: 1,
-        ),
+        separatorBuilder: (_, __) => const Divider(height: 16, thickness: 1),
         itemCount: logs.length,
       ),
     );
   }
 
   Widget _rightButton() => PopupMenuButton<Map<String, dynamic>>(
-        icon: Icon(
-          Icons.more_vert_outlined,
-          color: context.themeColor.appbarForegroundColor,
-        ),
-        color: context.theme.primaryColor,
-        onSelected: (item) => item['onTap'].call(),
-        itemBuilder: (_) => [
-          ..._dropdownItems.map(
-            (e) => PopupMenuItem<Map<String, dynamic>>(
-              value: e,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  e['icon'],
-                  const SizedBox(width: 8),
-                  Text(
-                    e['title'],
-                    style: context.textTheme.bodyLarge?.copyWith(
-                      color: e['color'],
-                    ),
-                  ),
-                ],
+    icon: Icon(
+      Icons.more_vert_outlined,
+      color: context.themeColor.appbarForegroundColor,
+    ),
+    color: context.theme.primaryColor,
+    onSelected: (item) => item['onTap'].call(),
+    itemBuilder: (_) => [
+      ..._dropdownItems.map(
+        (e) => PopupMenuItem<Map<String, dynamic>>(
+          value: e,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              e['icon'],
+              const SizedBox(width: 8),
+              Text(
+                e['title'],
+                style: context.textTheme.bodyLarge?.copyWith(color: e['color']),
               ),
-            ),
+            ],
           ),
-        ],
-      );
+        ),
+      ),
+    ],
+  );
 
   List<Map<String, dynamic>> get _dropdownItems {
     return [
@@ -154,20 +142,14 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
       },
       {
         'title': 'Refresh',
-        'icon': const Icon(
-          Icons.refresh,
-          size: 16,
-        ),
+        'icon': const Icon(Icons.refresh, size: 16),
         'onTap': () async {
           setState(() {});
         },
       },
       {
         'title': 'Clear Log',
-        'icon': const Icon(
-          Icons.delete_outline_rounded,
-          size: 16,
-        ),
+        'icon': const Icon(Icons.delete_outline_rounded, size: 16),
         'onTap': () async {
           setState(logUtils.logs.clear);
         },
@@ -207,10 +189,7 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
                     child: InkWell(
                       child: Text(
                         logStr,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: log.level.color,
-                        ),
+                        style: TextStyle(fontSize: 14, color: log.level.color),
                       ),
                     ),
                   ),

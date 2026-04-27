@@ -1,89 +1,93 @@
-key,en,th
-inform,Inform,แจ้งเตือน
-ok,Ok,ตกลง
-cancel,Cancel,ยกเลิก
-confirm,Confirm,ยืนยัน
+key,en,vi
+inform,Inform,Thông báo
+ok,Ok,Đồng ý
+cancel,Cancel,Hủy
+confirm,Confirm,Xác nhận
 noInternet,"Connection errors.
-Please check your network connection and try again","เกิดข้อผิดพลาดในการเชื่อมต่อ โปรดตรวจสอบการเชื่อมต่อเครือข่ายของคุณและลองใหม่อีกครั้ง"
+Please check your network connection and try again","Lỗi kết nối.
+Vui lòng kiểm tra kết nối mạng và thử lại"
 technicalIssues,"Oops! .There seems to be a technical problem.
-Please check your connection or try again later","ขออภัย เกิดปัญหาทางเทคนิค โปรดตรวจสอบการเชื่อมต่อของคุณหรือลองใหม่ภายหลัง"
+Please check your connection or try again later","Rất tiếc! Có vẻ đã xảy ra sự cố kỹ thuật.
+Vui lòng kiểm tra kết nối hoặc thử lại sau"
 requestRestricted,"Request sent too many times
-Please wait a moment and try again.","มีการส่งคำขอมากเกินไป โปรดรอสักครู่แล้วลองใหม่อีกครั้ง"
-serverMaintenance,Server is unavailable at this time. Please try again later.,ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้ในขณะนี้ โปรดลองใหม่ภายหลัง
-connectionTimeout,Connection timed out.,หมดเวลาการเชื่อมต่อ
+Please wait a moment and try again.","Bạn đã gửi yêu cầu quá nhiều lần.
+Vui lòng đợi một lát rồi thử lại."
+serverMaintenance,Server is unavailable at this time. Please try again later.,Máy chủ hiện không khả dụng. Vui lòng thử lại sau.
+connectionTimeout,Connection timed out.,Kết nối đã hết thời gian chờ.
 unknownError,"Something went wrong.
-Please try again later","เกิดข้อผิดพลาด โปรดลองใหม่ภายหลัง"
-dataParsingError,"Data parsing error, please try again later","เกิดข้อผิดพลาดในการประมวลผลข้อมูล โปรดลองใหม่ภายหลัง"
-sessionExpired,Your session is expired. Please log in again!,เซสชันของคุณหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง
-loading,Loading,กำลังโหลด
-male,Male,ชาย
-female,Female,หญิง
-skip,Skip,ข้าม
-close,Close,ปิด
-loginRequired,Please login to continue,กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ
-login,Login,เข้าสู่ระบบ
-error,Error,ข้อผิดพลาด
-search,Search,ค้นหา
-warning,Warning,คำเตือน
-haveNoPermission,No access. Please go to settings and grant permission to the app to continue.,ไม่สามารถเข้าถึงได้ โปรดไปที่การตั้งค่าและให้สิทธิ์การเข้าถึงแอปเพื่อดำเนินการต่อ
-openSetting,Open Setting,เปิดการตั้งค่า
-openInExternalBrowser,External Browser,เบราว์เซอร์ภายนอก
-copyLink,Copy link,คัดลอกลิงก์
-copied,Copied,คัดลอกแล้ว
-featureUnderDevelopment,Feature under development,ฟีเจอร์อยู่ระหว่างการพัฒนา
-requestPermission,Request permission,ขอสิทธิ์การเข้าถึง
-firebaseAuthExceptionTypeAccountExistsWithDifferentCredential,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
-firebaseAuthExceptionTypeInvalidCredential,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
-firebaseAuthExceptionTypeOperationNotAllowed,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
-firebaseAuthExceptionTypeUserDisabled,The user associated with this credential has been disabled.,บัญชีผู้ใช้ที่เกี่ยวข้องกับข้อมูลรับรองนี้ถูกปิดใช้งาน
-firebaseAuthExceptionTypeUserNotFound,User not found. Please check your credentials and try again.,ไม่พบบัญชีผู้ใช้ โปรดตรวจสอบข้อมูลรับรองและลองใหม่อีกครั้ง
-firebaseAuthExceptionTypeInvalidVerificationCode,Invalid verification code.,รหัสยืนยันไม่ถูกต้อง
-firebaseAuthExceptionTypeInvalidVerificationId,Invalid verification ID.,รหัสยืนยันตัวตนไม่ถูกต้อง
-firebaseAuthExceptionTypeWrongPassword,Wrong password. Please check your credentials and try again.,รหัสผ่านไม่ถูกต้อง โปรดตรวจสอบข้อมูลรับรองและลองใหม่อีกครั้ง
-firebaseAuthExceptionTypeUnknown,An error occurred while signing in.,เกิดข้อผิดพลาดขณะลงชื่อเข้าใช้
-firebaseAuthExceptionSessionExpired,The OTP has expired. Please re-send the new OTP to try again.,รหัส OTP หมดอายุแล้ว โปรดส่งรหัสใหม่อีกครั้งเพื่อดำเนินการ
-today,Today,วันนี้
-yesterday,Yesterday,เมื่อวานนี้
-thisWeek,This week,สัปดาห์นี้
-weekAgo,Week ago,เมื่อสัปดาห์ที่แล้ว
-thisMonth,This month,เดือนนี้
-monthAgo,Month ago,เมื่อเดือนที่แล้ว
-selectDate,Select date,เลือกวันที่
-fromDate,From date,จากวันที่
-toDate,To date,ถึงวันที่
-month,Month,เดือน
-threeDaysAgo,3 days ago,เมื่อ 3 วันที่แล้ว
-sevenDaysAgo,7 days ago,เมื่อ 7 วันที่แล้ว
-thirtyDaysAgo,30 days ago,เมื่อ 30 วันที่แล้ว
-thisQuarter,This quarter,ไตรมาสนี้
-quarterAgo,Quarter ago,เมื่อไตรมาสที่แล้ว
-thisYear,This year,ปีนี้
-yearAgo,Year ago,เมื่อปีที่แล้ว
-selectTimePeriod,Select time period,เลือกช่วงเวลา
-reset,Reset,รีเซ็ต
-apply,Apply,นำไปใช้
-manual,Manual,กำหนดเอง
-day,Day,วัน
-viewMore,See more,ดูเพิ่มเติม
-seeLess,See less,ดูน้อยลง
-fullTime,Full time,เต็มเวลา
-camera,Camera,กล้องถ่ายรูป
-gallery,Gallery,แกลเลอรี
-choosePhoto,Select photo,เลือกรูปภาพ
-choosePhotoOrVideo,Select media,เลือกสื่อ
-chooseVideo,Select video,เลือกวิดีโอ
-pleaseEnableGPS,Please enable location to continue the experience,กรุณาเปิดใช้งานตำแหน่งของคุณเพื่อดำเนินการต่อ
-required,Required,โปรดระบุ
-optional,Optional,ถ้ามี
-fileSizeOverXMB,"The file is too large. Maximum allowed size is {x}MB.","ไฟล์มีขนาดใหญ่เกินไป ขนาดสูงสุดที่อนุญาตคือ {x}MB"
-errorWhenUploading,An error occurred when uploading,เกิดข้อผิดพลาดขณะอัปโหลด
-onlyImageAllowed,Only image files are allowed.,อนุญาตเฉพาะไฟล์รูปภาพ
-onlyVideoAllowed,Only video files are allowed.,อนุญาตเฉพาะไฟล์วิดีโอ
-onlyImageOrVideoAllowed,Only image or video files are allowed.,อนุญาตเฉพาะไฟล์รูปภาพหรือวิดีโอ
-loggingOut,Logging out...,กำลังออกจากระบบ...
-failedToLoadContent,Failed to load content,ไม่สามารถโหลดเนื้อหาได้
-retry,Retry,ลองใหม่
-downloadStarted,Download started,เริ่มดาวน์โหลด
-failedToOpenExternalLink,Failed to open external link,ไม่สามารถเปิดลิงก์ภายนอกได้
-downloadFailed,Download failed,ดาวน์โหลดล้มเหลว
-noContentToDisplay,No content to display,ไม่มีเนื้อหาที่จะแสดง
+Please try again later","Đã xảy ra lỗi.
+Vui lòng thử lại sau"
+dataParsingError,"Data parsing error, please try again later","Lỗi xử lý dữ liệu, vui lòng thử lại sau"
+sessionExpired,Your session is expired. Please log in again!,Phiên đăng nhập của bạn đã hết hạn. Vui lòng đăng nhập lại!
+loading,Loading,Đang tải
+male,Male,Nam
+female,Female,Nữ
+skip,Skip,Bỏ qua
+close,Close,Đóng
+loginRequired,Please login to continue,Vui lòng đăng nhập để tiếp tục
+login,Login,Đăng nhập
+error,Error,Lỗi
+search,Search,Tìm kiếm
+warning,Warning,Cảnh báo
+haveNoPermission,No access. Please go to settings and grant permission to the app to continue.,Không có quyền truy cập. Vui lòng vào cài đặt và cấp quyền cho ứng dụng để tiếp tục.
+openSetting,Open Setting,Mở cài đặt
+openInExternalBrowser,External Browser,Trình duyệt ngoài
+copyLink,Copy link,Sao chép liên kết
+copied,Copied,Đã sao chép
+featureUnderDevelopment,Feature under development,Tính năng đang được phát triển
+requestPermission,Request permission,Yêu cầu quyền truy cập
+firebaseAuthExceptionTypeAccountExistsWithDifferentCredential,An error occurred while signing in.,Đã xảy ra lỗi khi đăng nhập.
+firebaseAuthExceptionTypeInvalidCredential,An error occurred while signing in.,Đã xảy ra lỗi khi đăng nhập.
+firebaseAuthExceptionTypeOperationNotAllowed,An error occurred while signing in.,Đã xảy ra lỗi khi đăng nhập.
+firebaseAuthExceptionTypeUserDisabled,The user associated with this credential has been disabled.,Tài khoản người dùng liên kết với thông tin đăng nhập này đã bị vô hiệu hóa.
+firebaseAuthExceptionTypeUserNotFound,User not found. Please check your credentials and try again.,Không tìm thấy người dùng. Vui lòng kiểm tra thông tin đăng nhập và thử lại.
+firebaseAuthExceptionTypeInvalidVerificationCode,Invalid verification code.,Mã xác minh không hợp lệ.
+firebaseAuthExceptionTypeInvalidVerificationId,Invalid verification ID.,ID xác minh không hợp lệ.
+firebaseAuthExceptionTypeWrongPassword,Wrong password. Please check your credentials and try again.,Mật khẩu không đúng. Vui lòng kiểm tra thông tin đăng nhập và thử lại.
+firebaseAuthExceptionTypeUnknown,An error occurred while signing in.,Đã xảy ra lỗi khi đăng nhập.
+firebaseAuthExceptionSessionExpired,The OTP has expired. Please re-send the new OTP to try again.,Mã OTP đã hết hạn. Vui lòng gửi lại mã mới để thử lại.
+today,Today,Hôm nay
+yesterday,Yesterday,Hôm qua
+thisWeek,This week,Tuần này
+weekAgo,Week ago,Tuần trước
+thisMonth,This month,Tháng này
+monthAgo,Month ago,Tháng trước
+selectDate,Select date,Chọn ngày
+fromDate,From date,Từ ngày
+toDate,To date,Đến ngày
+month,Month,Tháng
+threeDaysAgo,3 days ago,3 ngày trước
+sevenDaysAgo,7 days ago,7 ngày trước
+thirtyDaysAgo,30 days ago,30 ngày trước
+thisQuarter,This quarter,Quý này
+quarterAgo,Quarter ago,Quý trước
+thisYear,This year,Năm nay
+yearAgo,Year ago,Năm trước
+selectTimePeriod,Select time period,Chọn khoảng thời gian
+reset,Reset,Đặt lại
+apply,Apply,Áp dụng
+manual,Manual,Tùy chỉnh
+day,Day,Ngày
+viewMore,See more,Xem thêm
+seeLess,See less,Thu gọn
+fullTime,Full time,Toàn thời gian
+camera,Camera,Máy ảnh
+gallery,Gallery,Thư viện
+choosePhoto,Select photo,Chọn ảnh
+choosePhotoOrVideo,Select media,Chọn phương tiện
+chooseVideo,Select video,Chọn video
+pleaseEnableGPS,Please enable location to continue the experience,Vui lòng bật vị trí để tiếp tục trải nghiệm
+required,Required,Bắt buộc
+optional,Optional,Tùy chọn
+fileSizeOverXMB,"The file is too large. Maximum allowed size is {x}MB.","Tệp quá lớn. Dung lượng tối đa cho phép là {x}MB."
+errorWhenUploading,An error occurred when uploading,Đã xảy ra lỗi khi tải lên
+onlyImageAllowed,Only image files are allowed.,Chỉ cho phép tệp hình ảnh.
+onlyVideoAllowed,Only video files are allowed.,Chỉ cho phép tệp video.
+onlyImageOrVideoAllowed,Only image or video files are allowed.,Chỉ cho phép tệp hình ảnh hoặc video.
+loggingOut,Logging out...,Đang đăng xuất...
+failedToLoadContent,Failed to load content,Không thể tải nội dung
+retry,Retry,Thử lại
+downloadStarted,Download started,Bắt đầu tải xuống
+failedToOpenExternalLink,Failed to open external link,Không thể mở liên kết ngoài
+downloadFailed,Download failed,Tải xuống thất bại
+noContentToDisplay,No content to display,Không có nội dung để hiển thị

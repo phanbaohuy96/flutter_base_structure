@@ -287,12 +287,18 @@ String formatDate(DateTime date, List<String> formats, LocaleType locale) {
     } else if (format == m) {
       sb.write(date.month);
     } else if (format == MM) {
-      final monthLong =
-          i18nObjInLocaleLookup(locale, 'monthLong', date.month - 1);
+      final monthLong = i18nObjInLocaleLookup(
+        locale,
+        'monthLong',
+        date.month - 1,
+      );
       sb.write(monthLong);
     } else if (format == M) {
-      final monthShort =
-          i18nObjInLocaleLookup(locale, 'monthShort', date.month - 1);
+      final monthShort = i18nObjInLocaleLookup(
+        locale,
+        'monthShort',
+        date.month - 1,
+      );
       sb.write(monthShort);
     } else if (format == dd) {
       sb.write(digits(date.day, 2));
