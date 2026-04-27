@@ -20,6 +20,7 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 | [`behavioral-guardrails`](./skills/behavioral-guardrails/SKILL.md) | Clarify ambiguity, avoid overengineering, keep diffs surgical, verify outcomes |
 | [`module-scaffold`](./skills/module-scaffold/SKILL.md) | Scaffold a feature module via `make run_module_generator` or by hand |
 | [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `AppBlocBase` + abstract state hierarchy + freezed `_StateData` |
+| [`bus-event`](./skills/bus-event/SKILL.md) | Cross-feature synchronization with `EventBusManager` |
 | [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
@@ -39,6 +40,7 @@ These skills assume the structure shipped by the template:
 - Clean architecture: `presentation/` → `domain/` → `data/`.
 - BLoC via `flutter_bloc` + `bloc_concurrency`, with the `_StateData`
   pattern + `_factories` map (not freezed sealed unions).
+- Cross-feature synchronization via `BusEvent` + `EventBusManager`.
 - Routing via `IRoute` + `CustomRouter` from `core/lib/presentation/route/`
   (re-exported via `package:core/core.dart`).
 - Theming via `plugins/fl_theme/` — Material 3 token names plus
