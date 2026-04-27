@@ -17,6 +17,7 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 
 | Skill | What it covers |
 |---|---|
+| [`behavioral-guardrails`](./skills/behavioral-guardrails/SKILL.md) | Clarify ambiguity, avoid overengineering, keep diffs surgical, verify outcomes |
 | [`module-scaffold`](./skills/module-scaffold/SKILL.md) | Scaffold a feature module via `make run_module_generator` or by hand |
 | [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `AppBlocBase` + abstract state hierarchy + freezed `_StateData` |
 | [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
@@ -34,6 +35,7 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 
 These skills assume the structure shipped by the template:
 
+- Behavioral guardrails from `behavioral-guardrails`: clarify ambiguity, keep changes simple, avoid unrelated churn, and verify outcomes.
 - Clean architecture: `presentation/` → `domain/` → `data/`.
 - BLoC via `flutter_bloc` + `bloc_concurrency`, with the `_StateData`
   pattern + `_factories` map (not freezed sealed unions).
