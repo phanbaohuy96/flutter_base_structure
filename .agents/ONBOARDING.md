@@ -59,6 +59,7 @@ You can also call a skill explicitly:
 
 ```
 "Use bloc-pattern to wire up the form submission flow."
+"Use bus-event to sync the list after updates from another feature."
 ```
 
 ## Common workflows
@@ -100,6 +101,8 @@ You can also call a skill explicitly:
 - Clean architecture: `presentation/` → `domain/` → `data/`.
 - Bloc: extends `AppBlocBase<E, S>`; abstract state hierarchy with a
   freezed `_StateData` and a `_factories` map.
+- Bus events: use `BusEvent` + `EventBusManager` for cross-feature synchronization,
+  not local UI callbacks or single-BLoC state.
 - Screens: `StateBase<T>`, wrapped in `ScreenForm` / `MainPageForm`,
   always with a `static String routeName` and a `*.action.dart` partner.
 - Routes: `IRoute` returning `List<CustomRouter>`; navigation via a
