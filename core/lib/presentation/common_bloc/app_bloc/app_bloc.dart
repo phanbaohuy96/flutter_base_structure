@@ -36,41 +36,21 @@ class AppGlobalBloc extends Cubit<AppGlobalState> {
   /// --------------------- Theme ---------------------//
   void changeLightTheme() {
     localDataManager.setTheme(ThemeMode.light.index);
-    emit(
-      state.copyWith(
-        themeMode: ThemeMode.light,
-      ),
-    );
+    emit(state.copyWith(themeMode: ThemeMode.light));
   }
 
   void changeDarkTheme() {
     localDataManager.setTheme(ThemeMode.dark.index);
-    emit(
-      state.copyWith(
-        themeMode: ThemeMode.dark,
-      ),
-    );
+    emit(state.copyWith(themeMode: ThemeMode.dark));
   }
 
   void changeSystemTheme() {
     localDataManager.setTheme(ThemeMode.system.index);
-    emit(
-      state.copyWith(
-        themeMode: ThemeMode.system,
-      ),
-    );
+    emit(state.copyWith(themeMode: ThemeMode.system));
   }
 
-  void updateTheme({
-    AppTheme? lightTheme,
-    AppTheme? darkTheme,
-  }) {
-    emit(
-      state.copyWith(
-        lightTheme: lightTheme,
-        darkTheme: darkTheme,
-      ),
-    );
+  void updateTheme({AppTheme? lightTheme, AppTheme? darkTheme}) {
+    emit(state.copyWith(lightTheme: lightTheme, darkTheme: darkTheme));
   }
 
   /// ------------------- End Theme -------------------//

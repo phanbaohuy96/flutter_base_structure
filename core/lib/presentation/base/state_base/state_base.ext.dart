@@ -77,11 +77,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar({
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
   return ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(message),
-      duration: duration,
-      action: action,
-    ),
+    SnackBar(content: Text(message), duration: duration, action: action),
   );
 }
 
@@ -94,10 +90,7 @@ void showFlushBar({
   Color? messageColor,
   EdgeInsets margin = const EdgeInsets.symmetric(horizontal: 24),
   BorderRadius borderRadius = const BorderRadius.all(Radius.circular(8)),
-  EdgeInsets padding = const EdgeInsets.symmetric(
-    vertical: 16,
-    horizontal: 12,
-  ),
+  EdgeInsets padding = const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
   double borderWidth = 1,
   Color? borderColor,
 }) {
@@ -108,7 +101,8 @@ void showFlushBar({
     margin: _adjustFlushBarMarginForWeb(margin),
     horizontalPadding: padding,
     borderRadius: borderRadius,
-    backgroundColor: backgroundColor ??
+    backgroundColor:
+        backgroundColor ??
         globalNavigatorKey.currentContext?.theme.colorScheme.secondary ??
         Colors.white,
     trailingWidget: const IconButton(
@@ -145,7 +139,8 @@ void showSuccessFlushBar({
     margin: _adjustFlushBarMarginForWeb(margin),
     borderRadius: borderRadius,
     padding: padding,
-    icon: icon ??
+    icon:
+        icon ??
         const Icon(Icons.check_circle_outline, color: Colors.green, size: 24),
     borderWidth: borderWidth,
     borderColor: borderColor,

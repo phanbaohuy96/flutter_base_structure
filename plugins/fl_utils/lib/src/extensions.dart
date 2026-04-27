@@ -17,21 +17,15 @@ extension ExtendedIterable<E> on Iterable<E> {
   }
 
   List<E> insertSeparator(E Function(int index) creator) {
-    return fold<List<E>>(
-      [],
-      (previousValue, element) {
-        if (previousValue.isEmpty) {
-          return [element];
-        }
-        return [
-          ...previousValue,
-          ...[
-            creator(previousValue.length),
-            element,
-          ],
-        ];
-      },
-    );
+    return fold<List<E>>([], (previousValue, element) {
+      if (previousValue.isEmpty) {
+        return [element];
+      }
+      return [
+        ...previousValue,
+        ...[creator(previousValue.length), element],
+      ];
+    });
   }
 
   List<E> addOrUpdate(E element, bool Function(E element) test) {
@@ -45,10 +39,7 @@ extension ExtendedIterable<E> on Iterable<E> {
         }),
       ];
     } else {
-      return [
-        ...this,
-        element,
-      ];
+      return [...this, element];
     }
   }
 }
@@ -97,15 +88,11 @@ extension CoreNullableStringExtension on String? {
 }
 
 extension StringExt on String {
-  String displayNationalNumber([
-    IsoCode code = IsoCode.VN,
-  ]) {
+  String displayNationalNumber([IsoCode code = IsoCode.VN]) {
     return PhoneNumberUtils.parse(this, code)?.nationalNumber ?? '';
   }
 
-  bool validPhoneNumber([
-    IsoCode code = IsoCode.VN,
-  ]) {
+  bool validPhoneNumber([IsoCode code = IsoCode.VN]) {
     return PhoneNumberUtils.parse(this, code) != null;
   }
 
@@ -235,17 +222,15 @@ extension ListExtension<E> on List<E> {
     }
   }
 
-  bool get validNotNullOrEmpty => every(
-        (e) {
-          if (e is String) {
-            return e.isNotEmpty;
-          }
-          if (e is Iterable) {
-            return e.isNotEmpty;
-          }
-          return e != null;
-        },
-      );
+  bool get validNotNullOrEmpty => every((e) {
+    if (e is String) {
+      return e.isNotEmpty;
+    }
+    if (e is Iterable) {
+      return e.isNotEmpty;
+    }
+    return e != null;
+  });
 }
 
 extension DoubleExt on double? {
@@ -296,9 +281,7 @@ extension DistanceExt on double? {
 }
 
 extension IntFormatter on num? {
-  String toFormattedString({
-    String? locale,
-  }) {
+  String toFormattedString({String? locale}) {
     final number = this ?? 0;
     final formatter = NumberFormat('#,###', locale);
     return formatter.format(number);
@@ -315,14 +298,16 @@ extension CurrencyExt on num? {
   }) {
     final number = this ?? 0;
     final pattern = '###,###.##${isWithSymbol ? '\u00a4' : ''}';
-    final formater = NumberFormat.currency(
-      locale: locale,
-      symbol: isWithSymbol ? symbol : '',
-      customPattern:
-          withSign ? '''${number > 0 ? '+' : ''}$pattern''' : pattern,
-    )
-      ..maximumFractionDigits = fractionDigits
-      ..minimumFractionDigits = 0;
+    final formater =
+        NumberFormat.currency(
+            locale: locale,
+            symbol: isWithSymbol ? symbol : '',
+            customPattern: withSign
+                ? '''${number > 0 ? '+' : ''}$pattern'''
+                : pattern,
+          )
+          ..maximumFractionDigits = fractionDigits
+          ..minimumFractionDigits = 0;
     return formater.format(number);
   }
 
@@ -348,9 +333,7 @@ extension CurrencyExt on num? {
 }
 
 extension PhoneNumberExt on String? {
-  String displayPhoneNumber([
-    IsoCode code = IsoCode.VN,
-  ]) {
+  String displayPhoneNumber([IsoCode code = IsoCode.VN]) {
     if (isNullOrEmpty) {
       return '';
     }
@@ -472,8 +455,9 @@ extension DateOnlyCompare on DateTime {
 
   DateTime get startPrevQuarter {
     // Subtract 3 months to get the start of the previous quarter
-    var prevQuarterStart =
-        startOfQuarter.copyWith(month: startOfQuarter.month - 3);
+    var prevQuarterStart = startOfQuarter.copyWith(
+      month: startOfQuarter.month - 3,
+    );
     if (prevQuarterStart.month <= 0) {
       // Adjust for when subtracting months goes into the previous year
       prevQuarterStart = prevQuarterStart.copyWith(
@@ -584,7 +568,8 @@ extension ColorExt on Color {
 
   /// Prefixes a hash sign if [leadingHashSign] is set to `true`
   /// (default is `true`).
-  String toHex({bool leadingHashSign = true}) => '${leadingHashSign ? '#' : ''}'
+  String toHex({bool leadingHashSign = true}) =>
+      '${leadingHashSign ? '#' : ''}'
       '${a.round().toRadixString(16).padLeft(2, '0')}'
       '${r.round().toRadixString(16).padLeft(2, '0')}'
       '${g.round().toRadixString(16).padLeft(2, '0')}'

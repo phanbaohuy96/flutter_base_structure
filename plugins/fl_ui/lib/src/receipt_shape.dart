@@ -6,10 +6,7 @@ class ReceiptShapeBorder extends ShapeBorder {
   final Color borderColor;
   final double borderWidth;
 
-  ReceiptShapeBorder({
-    required this.borderColor,
-    required this.borderWidth,
-  });
+  ReceiptShapeBorder({required this.borderColor, required this.borderWidth});
 
   Path _getClip(Size size) {
     var pattern = 9.0;
@@ -78,13 +75,11 @@ class ReceiptShapeBorder extends ShapeBorder {
 
   @override
   Path getInnerPath(Rect rect, {TextDirection? textDirection}) {
-    return Path()
-      ..addRRect(
-        const BorderRadius.all(Radius.circular(0))
-            .resolve(textDirection)
-            .toRRect(rect)
-            .deflate(borderWidth),
-      );
+    return Path()..addRRect(
+      const BorderRadius.all(
+        Radius.circular(0),
+      ).resolve(textDirection).toRRect(rect).deflate(borderWidth),
+    );
   }
 
   @override
@@ -102,10 +97,7 @@ class ReceiptShapeBorder extends ShapeBorder {
       Size(rect.right - rect.left, rect.bottom - rect.left),
     );
 
-    canvas.drawPath(
-      path,
-      strokePaint,
-    );
+    canvas.drawPath(path, strokePaint);
   }
 
   @override

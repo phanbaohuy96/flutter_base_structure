@@ -111,11 +111,7 @@ class CoreCommonFunction extends CommonFunction {
   }
 
   Map<String, String> customStylesBuilder(dom.Element element) {
-    final style = {
-      'line-height': '1.5',
-      'margin': '0',
-      'padding': '0',
-    };
+    final style = {'line-height': '1.5', 'margin': '0', 'padding': '0'};
     switch (element.localName) {
       case 'h2':
         return {
@@ -227,10 +223,7 @@ class CoreCommonFunction extends CommonFunction {
     String uri, {
     LaunchMode mode = LaunchMode.externalApplication,
   }) {
-    return launchUrl(
-      Uri.parse(uri),
-      mode: mode,
-    );
+    return launchUrl(Uri.parse(uri), mode: mode);
   }
 
   Future<bool> tryTel(String phone) {
@@ -249,14 +242,12 @@ class CoreCommonFunction extends CommonFunction {
 
       if (value is List) {
         return MapEntry(newKey, [
-          ...value.map(
-            (e) {
-              if (e is Map) {
-                return castMap(e);
-              }
-              return e;
-            },
-          ),
+          ...value.map((e) {
+            if (e is Map) {
+              return castMap(e);
+            }
+            return e;
+          }),
         ]);
       }
 

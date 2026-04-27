@@ -86,10 +86,10 @@ sh encode_for_cicd.sh  # Copy 4 outputs to CI/CD secrets
 ```
 
 **Required Profiles:**
-- `com.example.app.dev` → Development
-- `com.example.app.staging` → Ad Hoc/App Store
-- `com.example.app.sandbox` → Ad Hoc/App Store
-- `com.example.app` → App Store
+- `com.pbh.myflutterbase.dev` → Development
+- `com.pbh.myflutterbase.staging` → Ad Hoc/App Store
+- `com.pbh.myflutterbase.sandbox` → Ad Hoc/App Store
+- `com.pbh.myflutterbase` → App Store
 
 ---
 

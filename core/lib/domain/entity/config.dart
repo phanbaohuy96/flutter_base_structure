@@ -105,67 +105,35 @@ class AppConfig {
     String platformRole = '',
     FirebaseEnv firebase = const FirebaseEnv(),
   }) {
-    const _app = String.fromEnvironment(
-      'DART_APP',
-    );
-    const _envName = String.fromEnvironment(
-      'DART_EVN_NAME',
-    );
-    const _baseApiLayer = String.fromEnvironment(
-      'DART_BASE_API_LAYER',
-    );
-    const _storageApiLayer = String.fromEnvironment(
-      'DART_STORAGE_API_LAYER',
-    );
+    const _app = String.fromEnvironment('DART_APP');
+    const _envName = String.fromEnvironment('DART_EVN_NAME');
+    const _baseApiLayer = String.fromEnvironment('DART_BASE_API_LAYER');
+    const _storageApiLayer = String.fromEnvironment('DART_STORAGE_API_LAYER');
     const _storageAssetLayer = String.fromEnvironment(
       'DART_STORAGE_ASSET_LAYER',
     );
-    const _baseGraphQLUrl = String.fromEnvironment(
-      'DART_BASE_GRAPHQL_URL',
-    );
-    const _graphqlApiKey = String.fromEnvironment(
-      'DART_GRAPHQL_API_KEY',
-    );
-    const _graphqlSocketUrl = String.fromEnvironment(
-      'DART_GRAPHQL_SOCKET_URL',
-    );
-    const _onesignalAppID = String.fromEnvironment(
-      'DART_ONESIGNAL_APP_ID',
-    );
-    const _platformRole = String.fromEnvironment(
-      'DART_PLATFORM_ROLE',
-    );
+    const _baseGraphQLUrl = String.fromEnvironment('DART_BASE_GRAPHQL_URL');
+    const _graphqlApiKey = String.fromEnvironment('DART_GRAPHQL_API_KEY');
+    const _graphqlSocketUrl = String.fromEnvironment('DART_GRAPHQL_SOCKET_URL');
+    const _onesignalAppID = String.fromEnvironment('DART_ONESIGNAL_APP_ID');
+    const _platformRole = String.fromEnvironment('DART_PLATFORM_ROLE');
     return AppConfig(
-      app: _app.byDefault(
-        defaultValue: app,
-      ),
-      envName: _envName.byDefault(
-        defaultValue: envName,
-      ),
-      baseApiLayer: _baseApiLayer.byDefault(
-        defaultValue: baseApiLayer,
-      ),
+      app: _app.byDefault(defaultValue: app),
+      envName: _envName.byDefault(defaultValue: envName),
+      baseApiLayer: _baseApiLayer.byDefault(defaultValue: baseApiLayer),
       storageApiLayer: _storageApiLayer.byDefault(
         defaultValue: storageApiLayer,
       ),
       storageAssetLayer: _storageAssetLayer.byDefault(
         defaultValue: storageAssetLayer,
       ),
-      baseGraphQLUrl: _baseGraphQLUrl.byDefault(
-        defaultValue: baseGraphQLUrl,
-      ),
-      graphqlApiKey: _graphqlApiKey.byDefault(
-        defaultValue: graphqlApiKey,
-      ),
+      baseGraphQLUrl: _baseGraphQLUrl.byDefault(defaultValue: baseGraphQLUrl),
+      graphqlApiKey: _graphqlApiKey.byDefault(defaultValue: graphqlApiKey),
       graphqlSocketUrl: _graphqlSocketUrl.byDefault(
         defaultValue: graphqlSocketUrl,
       ),
-      onesignalAppID: _onesignalAppID.byDefault(
-        defaultValue: onesignalAppID,
-      ),
-      platformRole: _platformRole.byDefault(
-        defaultValue: platformRole,
-      ),
+      onesignalAppID: _onesignalAppID.byDefault(defaultValue: onesignalAppID),
+      platformRole: _platformRole.byDefault(defaultValue: platformRole),
       firebase: FirebaseEnv.fromDartPlatformSpecific(
         apiKey: firebase.apiKey,
         appId: firebase.appId,
@@ -287,55 +255,27 @@ class FirebaseEnv {
     String authDomain = '',
     String databaseUrl = '',
   }) {
-    const _apiKey = String.fromEnvironment(
-      'DART_WEB_API_KEY',
-    );
-    const _appId = String.fromEnvironment(
-      'DART_WEB_APP_ID',
-    );
+    const _apiKey = String.fromEnvironment('DART_WEB_API_KEY');
+    const _appId = String.fromEnvironment('DART_WEB_APP_ID');
     const _messageSenderId = String.fromEnvironment(
       'DART_WEB_MESSAGING_SENDER_ID',
     );
-    const _projectId = String.fromEnvironment(
-      'DART_WEB_PROJECT_ID',
-    );
-    const _storageBucket = String.fromEnvironment(
-      'DART_WEB_STORAGE_BUCKET',
-    );
-    const _measurementId = String.fromEnvironment(
-      'DART_WEB_MEASUREMENT_ID',
-    );
-    const _authDomain = String.fromEnvironment(
-      'DART_WEB_AUTH_DOMAIN',
-    );
-    const _databaseUrl = String.fromEnvironment(
-      'DART_WEB_DATABASE_URL',
-    );
+    const _projectId = String.fromEnvironment('DART_WEB_PROJECT_ID');
+    const _storageBucket = String.fromEnvironment('DART_WEB_STORAGE_BUCKET');
+    const _measurementId = String.fromEnvironment('DART_WEB_MEASUREMENT_ID');
+    const _authDomain = String.fromEnvironment('DART_WEB_AUTH_DOMAIN');
+    const _databaseUrl = String.fromEnvironment('DART_WEB_DATABASE_URL');
     return FirebaseEnv(
-      apiKey: _apiKey.byDefault(
-        defaultValue: apiKey,
-      ),
-      appId: _appId.byDefault(
-        defaultValue: appId,
-      ),
+      apiKey: _apiKey.byDefault(defaultValue: apiKey),
+      appId: _appId.byDefault(defaultValue: appId),
       messageSenderId: _messageSenderId.byDefault(
         defaultValue: messageSenderId,
       ),
-      projectId: _projectId.byDefault(
-        defaultValue: projectId,
-      ),
-      storageBucket: _storageBucket.byDefault(
-        defaultValue: storageBucket,
-      ),
-      measurementId: _measurementId.byDefault(
-        defaultValue: measurementId,
-      ),
-      authDomain: _authDomain.byDefault(
-        defaultValue: authDomain,
-      ),
-      databaseUrl: _databaseUrl.byDefault(
-        defaultValue: databaseUrl,
-      ),
+      projectId: _projectId.byDefault(defaultValue: projectId),
+      storageBucket: _storageBucket.byDefault(defaultValue: storageBucket),
+      measurementId: _measurementId.byDefault(defaultValue: measurementId),
+      authDomain: _authDomain.byDefault(defaultValue: authDomain),
+      databaseUrl: _databaseUrl.byDefault(defaultValue: databaseUrl),
     );
   }
 
@@ -349,55 +289,31 @@ class FirebaseEnv {
     String authDomain = '',
     String databaseUrl = '',
   }) {
-    const _apiKey = String.fromEnvironment(
-      'DART_ANDROID_API_KEY',
-    );
-    const _appId = String.fromEnvironment(
-      'DART_ANDROID_APP_ID',
-    );
+    const _apiKey = String.fromEnvironment('DART_ANDROID_API_KEY');
+    const _appId = String.fromEnvironment('DART_ANDROID_APP_ID');
     const _messageSenderId = String.fromEnvironment(
       'DART_ANDROID_MESSAGING_SENDER_ID',
     );
-    const _projectId = String.fromEnvironment(
-      'DART_ANDROID_PROJECT_ID',
-    );
+    const _projectId = String.fromEnvironment('DART_ANDROID_PROJECT_ID');
     const _storageBucket = String.fromEnvironment(
       'DART_ANDROID_STORAGE_BUCKET',
     );
     const _measurementId = String.fromEnvironment(
       'DART_ANDROID_MEASUREMENT_ID',
     );
-    const _authDomain = String.fromEnvironment(
-      'DART_ANDROID_AUTH_DOMAIN',
-    );
-    const _databaseUrl = String.fromEnvironment(
-      'DART_ANDROID_DATABASE_URL',
-    );
+    const _authDomain = String.fromEnvironment('DART_ANDROID_AUTH_DOMAIN');
+    const _databaseUrl = String.fromEnvironment('DART_ANDROID_DATABASE_URL');
     return FirebaseEnv(
-      apiKey: _apiKey.byDefault(
-        defaultValue: apiKey,
-      ),
-      appId: _appId.byDefault(
-        defaultValue: appId,
-      ),
+      apiKey: _apiKey.byDefault(defaultValue: apiKey),
+      appId: _appId.byDefault(defaultValue: appId),
       messageSenderId: _messageSenderId.byDefault(
         defaultValue: messageSenderId,
       ),
-      projectId: _projectId.byDefault(
-        defaultValue: projectId,
-      ),
-      storageBucket: _storageBucket.byDefault(
-        defaultValue: storageBucket,
-      ),
-      measurementId: _measurementId.byDefault(
-        defaultValue: measurementId,
-      ),
-      authDomain: _authDomain.byDefault(
-        defaultValue: authDomain,
-      ),
-      databaseUrl: _databaseUrl.byDefault(
-        defaultValue: databaseUrl,
-      ),
+      projectId: _projectId.byDefault(defaultValue: projectId),
+      storageBucket: _storageBucket.byDefault(defaultValue: storageBucket),
+      measurementId: _measurementId.byDefault(defaultValue: measurementId),
+      authDomain: _authDomain.byDefault(defaultValue: authDomain),
+      databaseUrl: _databaseUrl.byDefault(defaultValue: databaseUrl),
     );
   }
 
@@ -411,55 +327,27 @@ class FirebaseEnv {
     String authDomain = '',
     String databaseUrl = '',
   }) {
-    const _apiKey = String.fromEnvironment(
-      'DART_IOS_API_KEY',
-    );
-    const _appId = String.fromEnvironment(
-      'DART_IOS_APP_ID',
-    );
+    const _apiKey = String.fromEnvironment('DART_IOS_API_KEY');
+    const _appId = String.fromEnvironment('DART_IOS_APP_ID');
     const _messageSenderId = String.fromEnvironment(
       'DART_IOS_MESSAGING_SENDER_ID',
     );
-    const _projectId = String.fromEnvironment(
-      'DART_IOS_PROJECT_ID',
-    );
-    const _storageBucket = String.fromEnvironment(
-      'DART_IOS_STORAGE_BUCKET',
-    );
-    const _measurementId = String.fromEnvironment(
-      'DART_IOS_MEASUREMENT_ID',
-    );
-    const _authDomain = String.fromEnvironment(
-      'DART_IOS_AUTH_DOMAIN',
-    );
-    const _databaseUrl = String.fromEnvironment(
-      'DART_IOS_DATABASE_URL',
-    );
+    const _projectId = String.fromEnvironment('DART_IOS_PROJECT_ID');
+    const _storageBucket = String.fromEnvironment('DART_IOS_STORAGE_BUCKET');
+    const _measurementId = String.fromEnvironment('DART_IOS_MEASUREMENT_ID');
+    const _authDomain = String.fromEnvironment('DART_IOS_AUTH_DOMAIN');
+    const _databaseUrl = String.fromEnvironment('DART_IOS_DATABASE_URL');
     return FirebaseEnv(
-      apiKey: _apiKey.byDefault(
-        defaultValue: apiKey,
-      ),
-      appId: _appId.byDefault(
-        defaultValue: appId,
-      ),
+      apiKey: _apiKey.byDefault(defaultValue: apiKey),
+      appId: _appId.byDefault(defaultValue: appId),
       messageSenderId: _messageSenderId.byDefault(
         defaultValue: messageSenderId,
       ),
-      projectId: _projectId.byDefault(
-        defaultValue: projectId,
-      ),
-      storageBucket: _storageBucket.byDefault(
-        defaultValue: storageBucket,
-      ),
-      measurementId: _measurementId.byDefault(
-        defaultValue: measurementId,
-      ),
-      authDomain: _authDomain.byDefault(
-        defaultValue: authDomain,
-      ),
-      databaseUrl: _databaseUrl.byDefault(
-        defaultValue: databaseUrl,
-      ),
+      projectId: _projectId.byDefault(defaultValue: projectId),
+      storageBucket: _storageBucket.byDefault(defaultValue: storageBucket),
+      measurementId: _measurementId.byDefault(defaultValue: measurementId),
+      authDomain: _authDomain.byDefault(defaultValue: authDomain),
+      databaseUrl: _databaseUrl.byDefault(defaultValue: databaseUrl),
     );
   }
 }

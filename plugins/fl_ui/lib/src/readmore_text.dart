@@ -16,14 +16,11 @@ enum TrimMode { length, line }
 /// actions.
 @immutable
 class Annotation {
-  const Annotation({
-    required this.regExp,
-    required this.spanBuilder,
-  });
+  const Annotation({required this.regExp, required this.spanBuilder});
 
   final RegExp regExp;
   final TextSpan Function({required String text, required TextStyle textStyle})
-      spanBuilder;
+  spanBuilder;
 }
 
 class ReadMoreText extends StatefulWidget {
@@ -60,9 +57,9 @@ class ReadMoreText extends StatefulWidget {
     this.textHeightBehavior,
     this.selectionColor,
     this.onTap,
-  })  : richData = null,
-        richPreData = null,
-        richPostData = null;
+  }) : richData = null,
+       richPreData = null,
+       richPostData = null;
 
   const ReadMoreText.rich(
     TextSpan this.richData, {
@@ -94,12 +91,12 @@ class ReadMoreText extends StatefulWidget {
     this.textHeightBehavior,
     this.selectionColor,
     this.onTap,
-  })  : data = null,
-        annotations = null,
-        preDataText = null,
-        postDataText = null,
-        preDataTextStyle = null,
-        postDataTextStyle = null;
+  }) : data = null,
+       annotations = null,
+       preDataText = null,
+       postDataText = null,
+       preDataTextStyle = null,
+       postDataTextStyle = null;
 
   final ValueNotifier<bool>? isCollapsed;
 
@@ -252,8 +249,9 @@ class ReadMoreTextState extends State<ReadMoreText> {
       effectiveTextStyle = widget.style!;
     }
     if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle
-          .merge(const TextStyle(fontWeight: FontWeight.bold));
+      effectiveTextStyle = effectiveTextStyle.merge(
+        const TextStyle(fontWeight: FontWeight.bold),
+      );
     }
     final registrar = SelectionContainer.maybeOf(context);
     final textScaler = widget.textScaler ?? MediaQuery.textScalerOf(context);
@@ -266,18 +264,22 @@ class ReadMoreTextState extends State<ReadMoreText> {
     final overflow = widget.overflow ?? defaultTextStyle.overflow;
     final textWidthBasis =
         widget.textWidthBasis ?? defaultTextStyle.textWidthBasis;
-    final textHeightBehavior = widget.textHeightBehavior ??
+    final textHeightBehavior =
+        widget.textHeightBehavior ??
         defaultTextStyle.textHeightBehavior ??
         DefaultTextHeightBehavior.maybeOf(context);
-    final selectionColor = widget.selectionColor ??
+    final selectionColor =
+        widget.selectionColor ??
         DefaultSelectionStyle.of(context).selectionColor ??
         DefaultSelectionStyle.defaultColor;
 
     final colorClickableText =
         widget.colorClickableText ?? Theme.of(context).colorScheme.secondary;
-    final defaultLessStyle = widget.lessStyle ??
+    final defaultLessStyle =
+        widget.lessStyle ??
         effectiveTextStyle.copyWith(color: colorClickableText);
-    final defaultMoreStyle = widget.moreStyle ??
+    final defaultMoreStyle =
+        widget.moreStyle ??
         effectiveTextStyle.copyWith(color: colorClickableText);
     final defaultDelimiterStyle = widget.delimiterStyle ?? effectiveTextStyle;
 
@@ -290,8 +292,8 @@ class ReadMoreTextState extends State<ReadMoreText> {
     final delimiter = TextSpan(
       text: isCollapsed
           ? widget.trimCollapsedText.isNotEmpty
-              ? widget.delimiter
-              : ''
+                ? widget.delimiter
+                : ''
           : '',
       style: defaultDelimiterStyle,
       recognizer: _recognizer,
@@ -436,11 +438,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
                     : dataTextSpan;
 
                 textSpan = TextSpan(
-                  children: <TextSpan>[
-                    effectiveDataTextSpan,
-                    delimiter,
-                    link,
-                  ],
+                  children: <TextSpan>[effectiveDataTextSpan, delimiter, link],
                 );
               } else {
                 textSpan = dataTextSpan;
@@ -496,7 +494,8 @@ class ReadMoreTextState extends State<ReadMoreText> {
     );
     if (registrar != null) {
       result = MouseRegion(
-        cursor: DefaultSelectionStyle.of(context).mouseCursor ??
+        cursor:
+            DefaultSelectionStyle.of(context).mouseCursor ??
             SystemMouseCursors.text,
         child: result,
       );
@@ -505,9 +504,7 @@ class ReadMoreTextState extends State<ReadMoreText> {
       result = Semantics(
         textDirection: widget.textDirection,
         label: widget.semanticsLabel,
-        child: ExcludeSemantics(
-          child: result,
-        ),
+        child: ExcludeSemantics(child: result),
       );
     }
     return result;

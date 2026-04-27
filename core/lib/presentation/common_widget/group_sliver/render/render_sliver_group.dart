@@ -169,16 +169,22 @@ class _RenderSliverGroup extends RenderSliver with RenderSliverHelpers {
     final headerPosition = -constraints.scrollOffset;
     switch (axisDirection) {
       case AxisDirection.up:
-        headerParentData!.paintOffset =
-            Offset(0.0, geometry!.paintExtent - 0 - 0);
+        headerParentData!.paintOffset = Offset(
+          0.0,
+          geometry!.paintExtent - 0 - 0,
+        );
         break;
       case AxisDirection.down:
-        headerParentData!.paintOffset =
-            Offset(-margin.left, headerPosition - margin.top);
+        headerParentData!.paintOffset = Offset(
+          -margin.left,
+          headerPosition - margin.top,
+        );
         break;
       case AxisDirection.left:
-        headerParentData!.paintOffset =
-            Offset(geometry!.paintExtent - 0 - 0, 0.0);
+        headerParentData!.paintOffset = Offset(
+          geometry!.paintExtent - 0 - 0,
+          0.0,
+        );
         break;
       case AxisDirection.right:
         headerParentData!.paintOffset = const Offset(0, 0.0);
@@ -202,8 +208,9 @@ class _RenderSliverGroup extends RenderSliver with RenderSliverHelpers {
 
   @override
   void applyPaintTransform(RenderObject child, Matrix4 transform) {
-    (child.parentData as SliverPhysicalParentData)
-        .applyPaintTransform(transform);
+    (child.parentData as SliverPhysicalParentData).applyPaintTransform(
+      transform,
+    );
   }
 
   @override

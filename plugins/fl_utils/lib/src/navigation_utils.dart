@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import '../fl_utils.dart';
 
 abstract class PushBehavior {
-  const PushBehavior({
-    this.rootNavigator = false,
-  });
+  const PushBehavior({this.rootNavigator = false});
 
   final bool rootNavigator;
 
@@ -21,9 +19,7 @@ abstract class PushBehavior {
 ///
 /// Ref: [Navigator.pushNamed]
 class PushNamedBehavior extends PushBehavior {
-  const PushNamedBehavior({
-    super.rootNavigator = false,
-  });
+  const PushNamedBehavior({super.rootNavigator = false});
 
   @override
   Future<T?> push<T extends Object?>(
@@ -33,14 +29,12 @@ class PushNamedBehavior extends PushBehavior {
   }) {
     final uri = Uri(
       path: routeName,
-      queryParameters: arguments?.let(
-        (it) {
-          if (it is Map<String, dynamic> && kIsWeb) {
-            return Map.from(it);
-          }
-          return null;
-        },
-      ),
+      queryParameters: arguments?.let((it) {
+        if (it is Map<String, dynamic> && kIsWeb) {
+          return Map.from(it);
+        }
+        return null;
+      }),
     );
 
     return Navigator.of(
@@ -77,20 +71,15 @@ class PushReplacementNamedBehavior<TO extends Object?> extends PushBehavior {
   }) {
     final uri = Uri(
       path: routeName,
-      queryParameters: arguments?.let(
-        (it) {
-          if (it is Map<String, dynamic> && kIsWeb) {
-            return Map.from(it);
-          }
-          return null;
-        },
-      ),
+      queryParameters: arguments?.let((it) {
+        if (it is Map<String, dynamic> && kIsWeb) {
+          return Map.from(it);
+        }
+        return null;
+      }),
     );
 
-    return Navigator.of(
-      context,
-      rootNavigator: rootNavigator,
-    )
+    return Navigator.of(context, rootNavigator: rootNavigator)
         .pushReplacementNamed(
           uri.toString(),
           arguments: arguments,
@@ -111,11 +100,10 @@ class PushNamedAndRemoveUntilBehavior<TO extends Object?> extends PushBehavior {
 
   factory PushNamedAndRemoveUntilBehavior.removeAll({
     bool rootNavigator = false,
-  }) =>
-      PushNamedAndRemoveUntilBehavior(
-        (route) => false,
-        rootNavigator: rootNavigator,
-      );
+  }) => PushNamedAndRemoveUntilBehavior(
+    (route) => false,
+    rootNavigator: rootNavigator,
+  );
 
   /// The predicate may be applied to the same route more than once if
   /// [Route.willHandlePopInternally] is true.
@@ -131,20 +119,15 @@ class PushNamedAndRemoveUntilBehavior<TO extends Object?> extends PushBehavior {
   }) {
     final uri = Uri(
       path: routeName,
-      queryParameters: arguments?.let(
-        (it) {
-          if (it is Map<String, dynamic> && kIsWeb) {
-            return Map.from(it);
-          }
-          return null;
-        },
-      ),
+      queryParameters: arguments?.let((it) {
+        if (it is Map<String, dynamic> && kIsWeb) {
+          return Map.from(it);
+        }
+        return null;
+      }),
     );
 
-    return Navigator.of(
-      context,
-      rootNavigator: rootNavigator,
-    )
+    return Navigator.of(context, rootNavigator: rootNavigator)
         .pushNamedAndRemoveUntil(
           uri.toString(),
           predicate,

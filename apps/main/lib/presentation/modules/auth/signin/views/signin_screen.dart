@@ -37,10 +37,7 @@ class SignInScreenState extends StateBase<SignInScreen> {
     _themeData = context.theme;
     trans = translate(context);
 
-    return SigninScreenInherited(
-      state: this,
-      child: const AccountSelection(),
-    );
+    return SigninScreenInherited(state: this, child: const AccountSelection());
   }
 }
 
@@ -59,10 +56,7 @@ class SigninScreenInherited extends InheritedWidget {
 
   static SigninScreenInherited of(BuildContext context) {
     final result = maybeOf(context);
-    assert(
-      result != null,
-      'No SigninScreenInherited found in context',
-    );
+    assert(result != null, 'No SigninScreenInherited found in context');
     return result!;
   }
 

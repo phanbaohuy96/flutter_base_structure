@@ -35,10 +35,8 @@ class _ErrorBoxState extends State<ErrorBox> {
 
   @override
   void initState() {
-    controller = widget.controller ??
-        ErrorBoxController(
-          value: widget.validation,
-        );
+    controller =
+        widget.controller ?? ErrorBoxController(value: widget.validation);
     super.initState();
   }
 
@@ -47,10 +45,8 @@ class _ErrorBoxState extends State<ErrorBox> {
     if (oldWidget.controller == null) {
       controller?.dispose();
     }
-    controller = widget.controller ??
-        ErrorBoxController(
-          value: widget.validation,
-        );
+    controller =
+        widget.controller ?? ErrorBoxController(value: widget.validation);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -85,8 +81,9 @@ class _ErrorBoxState extends State<ErrorBox> {
                     : EdgeInsets.zero,
                 borderRadius: widget.borderRadius,
                 bgColor: Colors.transparent,
-                borderColor:
-                    value == null ? widget.normalBorderColor : Colors.red,
+                borderColor: value == null
+                    ? widget.normalBorderColor
+                    : Colors.red,
                 child: child,
               ),
               Builder(
@@ -101,10 +98,11 @@ class _ErrorBoxState extends State<ErrorBox> {
                       padding: widget.errorTextPadding,
                       child: Text(
                         value!,
-                        style: widget.errorStyle ??
+                        style:
+                            widget.errorStyle ??
                             Theme.of(context).textTheme.labelMedium?.copyWith(
-                                  color: Colors.red,
-                                ),
+                              color: Colors.red,
+                            ),
                       ),
                     ),
                   );

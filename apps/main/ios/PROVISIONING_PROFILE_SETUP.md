@@ -9,10 +9,10 @@ Your iOS app has been configured for **manual signing** using provisioning profi
 - **95UD7HJB4N**
 
 ### Bundle Identifiers (from AppSpecific.xcconfig)
-- **Dev**: `com.example.app.dev`
-- **Staging**: `com.example.app.staging`
-- **Sandbox**: `com.example.app.sandbox`
-- **Production**: `com.example.app`
+- **Dev**: `com.pbh.myflutterbase.dev`
+- **Staging**: `com.pbh.myflutterbase.staging`
+- **Sandbox**: `com.pbh.myflutterbase.sandbox`
+- **Production**: `com.pbh.myflutterbase`
 
 ### Build Configurations
 1. **Debug-dev** → Development builds (uses iPhone Developer certificate)
@@ -36,25 +36,25 @@ You need to create provisioning profiles in your Apple Developer account for eac
 
 #### For Development (Debug-dev, Release-dev, Profile-dev)
 - Type: **iOS App Development**
-- Bundle ID: `com.example.app.dev`
+- Bundle ID: `com.pbh.myflutterbase.dev`
 - Certificate: **iOS Development certificate**
 - Devices: Include all test devices
 
 #### For Staging (Debug/Release/Profile-staging)
 - Type: **Ad Hoc** or **App Store**
-- Bundle ID: `com.example.app.staging`
+- Bundle ID: `com.pbh.myflutterbase.staging`
 - Certificate: **iOS Distribution certificate**
 - Devices: Include devices if Ad Hoc
 
 #### For Sandbox (Debug/Release/Profile-sandbox)
 - Type: **Ad Hoc** or **App Store**
-- Bundle ID: `com.example.app.sandbox`
+- Bundle ID: `com.pbh.myflutterbase.sandbox`
 - Certificate: **iOS Distribution certificate**
 - Devices: Include devices if Ad Hoc
 
 #### For Production (Debug/Release/Profile-prod)
 - Type: **App Store**
-- Bundle ID: `com.example.app`
+- Bundle ID: `com.pbh.myflutterbase`
 - Certificate: **iOS Distribution certificate**
 
 ### Step 2: Install Provisioning Profiles
@@ -206,7 +206,7 @@ Example for Fastlane:
 match(
   type: "appstore",
   readonly: true,
-  app_identifier: "com.example.app"
+  app_identifier: "com.pbh.myflutterbase"
 )
 ```
 

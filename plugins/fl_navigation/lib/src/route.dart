@@ -17,19 +17,14 @@ typedef RoutePathVerify = bool Function(Uri);
 /// - [BuildContext]: The build context
 /// - [Uri]: The URI of the route
 /// - [dynamic extra]: Additional data passed to the route
-typedef CoreRouteBuilder = Widget Function(
-  BuildContext,
-  Uri,
-  dynamic extra,
-);
+typedef CoreRouteBuilder = Widget Function(BuildContext, Uri, dynamic extra);
 
 /// Function signature for extracting extra data from URL query parameters.
 ///
 /// This function converts URL query parameters into a strongly-typed object
 /// that can be used by the route.
-typedef ExtraFromUrlQueries<T> = T? Function(
-  Map<String, dynamic> queryParameters,
-);
+typedef ExtraFromUrlQueries<T> =
+    T? Function(Map<String, dynamic> queryParameters);
 
 /// A custom router implementation for handling navigation in the application.
 ///
@@ -81,11 +76,7 @@ class CustomRouter<T> {
   }) : _builder = builder;
 
   Widget build(BuildContext context, Uri uri, dynamic extra) {
-    return _builder(
-      context,
-      uri,
-      buildExtra(uri, extra),
-    );
+    return _builder(context, uri, buildExtra(uri, extra));
   }
 
   /// Converts this CustomRouter to a GoRoute for use with GoRouter.
@@ -174,9 +165,7 @@ class CustomRouter<T> {
     final check = extraBuilt is T;
 
     if (kDebugMode && !check) {
-      log(
-        '''Access to [$path] required extra as $T but found $extraBuilt''',
-      );
+      log('''Access to [$path] required extra as $T but found $extraBuilt''');
     }
 
     return check;

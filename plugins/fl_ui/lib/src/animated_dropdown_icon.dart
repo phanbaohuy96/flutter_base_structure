@@ -31,10 +31,7 @@ class _AnimatedDropdownIconState extends State<AnimatedDropdownIcon>
       duration: widget.duration,
       value: widget.isExpanded ? 1 : 0,
     );
-    _animation = Tween<double>(
-      begin: 0.0,
-      end: 1,
-    ).animate(_controller);
+    _animation = Tween<double>(begin: 0.0, end: 1).animate(_controller);
   }
 
   @override

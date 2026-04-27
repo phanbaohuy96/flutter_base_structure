@@ -7,13 +7,9 @@ abstract class LocationState {
 }
 
 class LocationInitial extends LocationState {
-  LocationInitial({
-    Location? location,
-  }) : super(location);
+  LocationInitial({Location? location}) : super(location);
 }
 
 class LocationRefreshing extends LocationState {
-  LocationRefreshing({
-    Location? location,
-  }) : super(location);
+  LocationRefreshing({Location? location}) : super(location);
 }

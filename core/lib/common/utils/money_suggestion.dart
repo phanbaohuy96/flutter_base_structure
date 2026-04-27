@@ -21,14 +21,12 @@ class MoneySuggestionUtils {
       final surplus = minAmount % (comparePoint * 10);
       if (evenPart > 0) {
         final suggestions = [minAmount];
-        final fitDenominations = denominations.where(
-          (e) {
-            if (surplus % (comparePoint * 2) == 0) {
-              return e > (comparePoint * 2);
-            }
-            return e > comparePoint;
-          },
-        );
+        final fitDenominations = denominations.where((e) {
+          if (surplus % (comparePoint * 2) == 0) {
+            return e > (comparePoint * 2);
+          }
+          return e > comparePoint;
+        });
 
         for (final m in fitDenominations) {
           if (m > suggestions.last) {
@@ -60,10 +58,7 @@ class MoneySuggestionUtils {
         }
         return suggestions;
       } else {
-        return [
-          minAmount,
-          ...denominations.where((e) => e > minAmount),
-        ];
+        return [minAmount, ...denominations.where((e) => e > minAmount)];
       }
     }
     return [];

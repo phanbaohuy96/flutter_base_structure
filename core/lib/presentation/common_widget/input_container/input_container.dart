@@ -182,10 +182,7 @@ class _InputContainerState extends State<InputContainer> {
     /// then we do make sure the input field is visible
     if (hasFocus && isAndroidBrowser) {
       // Delay 300ms for keyboard to appear
-      Future.delayed(
-        const Duration(milliseconds: 300),
-        _ensureVisible,
-      );
+      Future.delayed(const Duration(milliseconds: 300), _ensureVisible);
     }
   }
 
@@ -264,11 +261,13 @@ class _InputContainerState extends State<InputContainer> {
             isDense: widget.isDense,
             fillColor: widget.fillColor,
           ),
-          textAlignVertical:
-              widget.maxLines != null ? TextAlignVertical.top : null,
+          textAlignVertical: widget.maxLines != null
+              ? TextAlignVertical.top
+              : null,
           keyboardType: widget.keyboardType,
           textCapitalization: widget.textCapitalization,
-          style: widget.textStyle ??
+          style:
+              widget.textStyle ??
               (widget.enable ? appTextTheme.textInput : appTextTheme.inputHint),
           obscureText:
               widget.isPassword && widget.controller?.isShowPass != true,
@@ -303,42 +302,42 @@ class _InputContainerState extends State<InputContainer> {
           child: switch (widget.titleMode) {
             TitleMode.floating => textField,
             _ => Builder(
-                builder: (context) {
-                  if (widget.title.isNullOrEmpty) {
-                    return textField;
-                  }
+              builder: (context) {
+                if (widget.title.isNullOrEmpty) {
+                  return textField;
+                }
 
-                  const spacing = 8.0;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      InputTitleWidget(
-                        title: widget.title,
-                        required: widget.required,
-                      ),
-                      const SizedBox(height: spacing),
-                      textField,
-                      ValueListenableBuilder(
-                        valueListenable: _controller!,
-                        builder: (context, value, child) {
-                          return InputHelperError(
-                            padding: const EdgeInsets.only(top: spacing),
-                            validation: value.validation ?? value.warning,
-                            style: appTextTheme.inputError?.copyWith(
-                              color: value.validation != null
-                                  ? null
-                                  : Colors.orange,
-                            ),
-                            helper: widget.helperText,
-                            helperStyle: appTextTheme.helper,
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
+                const spacing = 8.0;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InputTitleWidget(
+                      title: widget.title,
+                      required: widget.required,
+                    ),
+                    const SizedBox(height: spacing),
+                    textField,
+                    ValueListenableBuilder(
+                      valueListenable: _controller!,
+                      builder: (context, value, child) {
+                        return InputHelperError(
+                          padding: const EdgeInsets.only(top: spacing),
+                          validation: value.validation ?? value.warning,
+                          style: appTextTheme.inputError?.copyWith(
+                            color: value.validation != null
+                                ? null
+                                : Colors.orange,
+                          ),
+                          helper: widget.helperText,
+                          helperStyle: appTextTheme.helper,
+                        );
+                      },
+                    ),
+                  ],
+                );
+              },
+            ),
           },
         );
       },
@@ -351,10 +350,7 @@ class _InputContainerState extends State<InputContainer> {
       final icon = _getPasswordIcon();
       return InkWell(
         onTap: widget.controller!.showOrHidePass,
-        child: Padding(
-          padding: padding,
-          child: icon,
-        ),
+        child: Padding(padding: padding, child: icon),
       );
     }
     if (widget.withClearButton &&
@@ -363,22 +359,14 @@ class _InputContainerState extends State<InputContainer> {
         valueListenable: _controller!.value.tdController,
         builder: (context, value, child) {
           if (!widget.enable || widget.readOnly) {
-            return widget.suffixIcon?.let(
-                  (it) {
-                    return Padding(
-                      padding: padding,
-                      child: it,
-                    );
-                  },
-                ) ??
+            return widget.suffixIcon?.let((it) {
+                  return Padding(padding: padding, child: it);
+                }) ??
                 const SizedBox();
           }
           if (value.text.isNotEmpty != true) {
             if (widget.suffixIcon != null) {
-              return Padding(
-                padding: padding,
-                child: widget.suffixIcon,
-              );
+              return Padding(padding: padding, child: widget.suffixIcon);
             }
             return const SizedBox();
           }
@@ -391,21 +379,16 @@ class _InputContainerState extends State<InputContainer> {
             },
             child: Padding(
               padding: padding.add(const EdgeInsets.only(right: 8)),
-              child: widget.iconClear ??
-                  Icon(
-                    Icons.close_rounded,
-                    size: widget.suffixIconSize,
-                  ),
+              child:
+                  widget.iconClear ??
+                  Icon(Icons.close_rounded, size: widget.suffixIconSize),
             ),
           );
         },
       );
     }
     if (widget.suffixIcon != null) {
-      return Padding(
-        padding: padding,
-        child: widget.suffixIcon,
-      );
+      return Padding(padding: padding, child: widget.suffixIcon);
     }
     return null;
   }
@@ -430,10 +413,7 @@ class _InputContainerState extends State<InputContainer> {
     }
     return AvailabilityWidget(
       enable: widget.enable,
-      child: Padding(
-        padding: padding,
-        child: widget.prefixIcon,
-      ),
+      child: Padding(padding: padding, child: widget.prefixIcon),
     );
   }
 
@@ -482,26 +462,25 @@ class FakeInputField extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (title.isNotNullOrEmpty) ...[
-          InputTitleWidget(
-            title: title!,
-            required: required,
-          ),
+          InputTitleWidget(title: title!, required: required),
           const SizedBox(height: 8),
         ],
         AvailabilityWidget(
           enable: enable,
           child: InkWell(
-            borderRadius:
-                asOrNull<OutlineInputBorder>(inputDecor.border)?.borderRadius,
+            borderRadius: asOrNull<OutlineInputBorder>(
+              inputDecor.border,
+            )?.borderRadius,
             onTap: onTap,
             child: HighlightBoxColor(
               constraints: constraints,
               padding: inputDecor.contentPadding!,
-              borderColor: asOrNull<OutlineInputBorder>(inputDecor.border)
-                  ?.borderSide
-                  .color,
-              borderRadius:
-                  asOrNull<OutlineInputBorder>(inputDecor.border)?.borderRadius,
+              borderColor: asOrNull<OutlineInputBorder>(
+                inputDecor.border,
+              )?.borderSide.color,
+              borderRadius: asOrNull<OutlineInputBorder>(
+                inputDecor.border,
+              )?.borderRadius,
               alignment: Alignment.centerLeft,
               bgColor: enable
                   ? Colors.transparent

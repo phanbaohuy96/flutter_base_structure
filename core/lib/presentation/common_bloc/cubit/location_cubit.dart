@@ -16,8 +16,9 @@ class LocationCubit extends Cubit<LocationState> {
 
   LocationCubit(this._locationService) : super(LocationInitial()) {
     if (!kIsWeb) {
-      _serviceStatusStream =
-          _locationService.serviceStatusStream.listen((event) {
+      _serviceStatusStream = _locationService.serviceStatusStream.listen((
+        event,
+      ) {
         if (event == locator.ServiceStatus.enabled) {
           refreshLocation();
         }
@@ -33,11 +34,7 @@ class LocationCubit extends Cubit<LocationState> {
 
     final location = await _locationService.getLastKnownLocation();
     if (location != null) {
-      emit(
-        LocationInitial(
-          location: location,
-        ),
-      );
+      emit(LocationInitial(location: location));
 
       yield location;
     } else {

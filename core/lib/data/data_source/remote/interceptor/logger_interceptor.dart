@@ -58,14 +58,11 @@ class LoggerInterceptor extends Interceptor {
     // For potentially large data, use isolate
     try {
       final receivePort = ReceivePort();
-      await Isolate.spawn(
-        _formatDataIsolate,
-        {
-          'sendPort': receivePort.sendPort,
-          'data': data,
-          'maxLength': maxLength,
-        },
-      );
+      await Isolate.spawn(_formatDataIsolate, {
+        'sendPort': receivePort.sendPort,
+        'data': data,
+        'maxLength': maxLength,
+      });
 
       final result = await receivePort.first as String;
       return result;
@@ -104,7 +101,8 @@ class LoggerInterceptor extends Interceptor {
   ) async {
     super.onResponse(response, handler);
 
-    final startTime = response.requestOptions.extra['startTime'] as DateTime? ??
+    final startTime =
+        response.requestOptions.extra['startTime'] as DateTime? ??
         DateTime.now();
     final endTime = DateTime.now();
     final duration = endTime.difference(startTime);

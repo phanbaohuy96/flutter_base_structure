@@ -23,11 +23,11 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
     this.mainAxisSize = MainAxisSize.max,
     this.crossAxisAlignment = CrossAxisAlignment.start,
     this.padding = const EdgeInsets.symmetric(vertical: 8),
-  })  : assert(
-          title is String || title is Widget,
-          '$title [String, Widget] is supported',
-        ),
-        super(key: key);
+  }) : assert(
+         title is String || title is Widget,
+         '$title [String, Widget] is supported',
+       ),
+       super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,19 +62,17 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
                   child: Radio<T>(
                     value: value,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    fillColor: WidgetStateProperty.resolveWith<Color>(
-                      (Set<WidgetState> states) {
-                        return Theme.of(context).colorScheme.primary;
-                      },
-                    ),
+                    fillColor: WidgetStateProperty.resolveWith<Color>((
+                      Set<WidgetState> states,
+                    ) {
+                      return Theme.of(context).colorScheme.primary;
+                    }),
                   ),
                 ),
               ),
               const SizedBox(width: 5),
               mainAxisSize == MainAxisSize.max
-                  ? Expanded(
-                      child: titleWidget,
-                    )
+                  ? Expanded(child: titleWidget)
                   : titleWidget,
             ],
           ),

@@ -1,17 +1,17 @@
-key,en,th
-inform,Inform,แจ้งเตือน
-ok,Ok,ตกลง
-cancel,Cancel,ยกเลิก
-confirm,Confirm,ยืนยัน
-skip,Skip,ข้าม
-close,Close,ปิด
-loginRequired,Please login to continue,กรุณาเข้าสู่ระบบเพื่อดำเนินการต่อ
-login,Login,เข้าสู่ระบบ
-userRole,User role,บทบาทผู้ใช้
-poweredByVNS,Powered by VNS,Powered by VNS
-pleaseSelectARoleBeforeLoginMsg,Please select a role before logging in.,กรุณาเลือกบทบาทก่อนเข้าสู่ระบบ
-backToHomepage,Back to Homepage,กลับสู่หน้าแรก
-pageNotFound,"404 - Page Not Found","404 - ไม่พบหน้าที่ต้องการ"
-back,Back,ย้อนกลับ
-loginFailed,Failed to fetch user info,ไม่สามารถดึงข้อมูลผู้ใช้ได้
-thisRoleIsNotSupportedYet,This role is not supported yet.,บทบาทนี้ยังไม่รองรับ
+key,en,vi
+inform,Inform,Thông báo
+ok,Ok,Đồng ý
+cancel,Cancel,Hủy
+confirm,Confirm,Xác nhận
+skip,Skip,Bỏ qua
+close,Close,Đóng
+loginRequired,Please login to continue,Vui lòng đăng nhập để tiếp tục
+login,Login,Đăng nhập
+userRole,User role,Vai trò người dùng
+poweredByApp,Powered by My Flutter Base,Được cung cấp bởi My Flutter Base
+pleaseSelectARoleBeforeLoginMsg,Please select a role before logging in.,Vui lòng chọn vai trò trước khi đăng nhập.
+backToHomepage,Back to Homepage,Quay lại trang chủ
+pageNotFound,"404 - Page Not Found","404 - Không tìm thấy trang"
+back,Back,Quay lại
+loginFailed,Failed to fetch user info,Không thể lấy thông tin người dùng
+thisRoleIsNotSupportedYet,This role is not supported yet.,Vai trò này chưa được hỗ trợ

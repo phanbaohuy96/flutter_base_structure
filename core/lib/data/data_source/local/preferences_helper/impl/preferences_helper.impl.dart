@@ -36,10 +36,7 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
     final locale = getLocalization();
     final isLaunched = !isFirstLaunch();
 
-    await Future.wait([
-      _pref.clear(),
-      _secureStorage.deleteAll(),
-    ]);
+    await Future.wait([_pref.clear(), _secureStorage.deleteAll()]);
 
     final result = await Future.wait([
       saveLocalization(locale),
@@ -106,16 +103,13 @@ class CorePreferencesHelperImpl extends CorePreferencesHelper {
     if (accepted == null) {
       return _pref.remove(CorePreferencesKey.cookieConsent);
     }
-    return _pref.setBool(
-      CorePreferencesKey.cookieConsent,
-      accepted,
-    );
+    return _pref.setBool(CorePreferencesKey.cookieConsent, accepted);
   }
 
   @override
   DateTime? get lastDayShowCookieConsent => DateTime.tryParse(
-        _pref.getString(CorePreferencesKey.lastDayShowCookieConsent) ?? '',
-      );
+    _pref.getString(CorePreferencesKey.lastDayShowCookieConsent) ?? '',
+  );
 
   @override
   Future<bool?> setLastDayShowCookieConsent(DateTime? today) {

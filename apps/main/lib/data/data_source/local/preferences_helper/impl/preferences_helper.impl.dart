@@ -23,9 +23,6 @@ class PreferencesHelperImpl extends PreferencesHelper {
     if (user == null) {
       return _prefs.remove(PreferencesKey.userInfo);
     }
-    return _prefs.setString(
-      PreferencesKey.userInfo,
-      jsonEncode(user.toJson()),
-    );
+    return _prefs.setString(PreferencesKey.userInfo, jsonEncode(user.toJson()));
   }
 }

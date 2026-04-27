@@ -38,9 +38,7 @@ class HtmlWidgetWrapper extends StatelessWidget {
           : htmlContent,
       buildAsync: buildAsync,
       customStylesBuilder: CoreCommonFunction().customStylesBuilder,
-      factoryBuilder: () => CustomHTMLWidgetFactory(
-        usingWebView: usingWebView,
-      ),
+      factoryBuilder: () => CustomHTMLWidgetFactory(usingWebView: usingWebView),
       onTapUrl: (p0) {
         if (onTapUrl != null) {
           return onTapUrl!.call(p0);

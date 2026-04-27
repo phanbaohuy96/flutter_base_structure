@@ -36,10 +36,7 @@ class PermissionService {
   ///                         Publish api                        ///
   //////////////////////////////////////////////////////////////////
 
-  Future<bool> checkPermission(
-    Permission ps,
-    BuildContext context,
-  ) async {
+  Future<bool> checkPermission(Permission ps, BuildContext context) async {
     final status = await ps.status;
 
     return !status.isDenied &&
@@ -55,11 +52,7 @@ class PermissionService {
     var isGranted = await checkPermission(ps, context);
 
     if (!isGranted) {
-      isGranted = await _requestPermission(
-        ps,
-        context,
-        required: required,
-      );
+      isGranted = await _requestPermission(ps, context, required: required);
     }
     return isGranted;
   }
@@ -71,13 +64,7 @@ class PermissionService {
   }) async {
     final result = <bool>[];
     for (final ps in pss) {
-      result.add(
-        await requestPermission(
-          ps,
-          context,
-          required: required,
-        ),
-      );
+      result.add(await requestPermission(ps, context, required: required));
     }
     return result;
   }
@@ -89,9 +76,7 @@ class PermissionService {
       title: l10n.requestPermission,
       subTitle: l10n.haveNoPermission,
       titleBottomBtn: l10n.cancel,
-      actions: {
-        l10n.openSetting: openAppSettings,
-      },
+      actions: {l10n.openSetting: openAppSettings},
     );
   }
 }

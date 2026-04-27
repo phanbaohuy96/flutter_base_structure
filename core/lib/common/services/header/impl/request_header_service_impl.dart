@@ -1,9 +1,8 @@
 import '../request_header_service.dart';
 
 class RequestHeaderServiceImpl extends RequestHeaderService {
-  RequestHeaderServiceImpl({
-    List<HeaderProvider> providers = const [],
-  }) : super(providers);
+  RequestHeaderServiceImpl({List<HeaderProvider> providers = const []})
+    : super(providers);
 
   @override
   Future<Map<String, String>> get requestHeaders async {

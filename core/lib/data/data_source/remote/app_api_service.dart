@@ -10,8 +10,5 @@ class AppApiService {
   final RestApiRepository restApi;
   final CoreLocalDataManager localDataManager;
 
-  AppApiService(
-    this.restApi,
-    this.localDataManager,
-  );
+  AppApiService(this.restApi, this.localDataManager);
 }

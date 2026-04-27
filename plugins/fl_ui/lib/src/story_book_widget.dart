@@ -16,7 +16,8 @@ class StoryWidgetBox<T> extends StatefulWidget {
     BuildContext context,
     void Function(T? value) updateBuildValue,
     T? value,
-  ) builder;
+  )
+  builder;
   final T? initial;
 
   @override
@@ -55,10 +56,7 @@ class _StoryWidgetBoxState<T> extends State<StoryWidgetBox<T>> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (widget.title.isNotEmpty)
-            Text(
-              widget.title,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
+            Text(widget.title, style: Theme.of(context).textTheme.titleMedium),
           if (widget.description.isNotEmpty) ...[
             const SizedBox(height: 4),
             Text(
@@ -66,9 +64,7 @@ class _StoryWidgetBoxState<T> extends State<StoryWidgetBox<T>> {
               style: Theme.of(context).textTheme.labelMedium,
             ),
           ],
-          const Divider(
-            height: 16,
-          ),
+          const Divider(height: 16),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: widget.builder(context, updateBuildValue, value),

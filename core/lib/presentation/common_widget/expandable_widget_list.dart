@@ -9,10 +9,7 @@ Widget defaultToggleButton(bool isExpanded) {
       children: [
         Text(
           isExpanded ? context.coreL10n.seeLess : context.coreL10n.viewMore,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 13,
-          ),
+          style: const TextStyle(color: Colors.grey, fontSize: 13),
         ),
         Icon(
           isExpanded ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
@@ -71,10 +68,7 @@ class _ExpandableWidgetListState extends State<ExpandableWidgetList> {
             children: displayedItems.asMap().entries.map((entry) {
               final isLast = entry.key == displayedItems.length - 1;
               return Wrap(
-                children: [
-                  entry.value,
-                  if (!isLast) widget.separator,
-                ],
+                children: [entry.value, if (!isLast) widget.separator],
               );
             }).toList(),
           ),

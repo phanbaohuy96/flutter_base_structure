@@ -87,8 +87,8 @@ class _CupertinoDatePickerCustomState extends State<CupertinoDatePickerCustom> {
                   Container(
                     height: pickerSheetHeight - 30,
                     child: CupertinoDatePicker(
-                      backgroundColor:
-                          CupertinoColors.systemBackground.resolveFrom(context),
+                      backgroundColor: CupertinoColors.systemBackground
+                          .resolveFrom(context),
                       mode: widget.mode,
                       initialDateTime: widget.initialDateTime,
                       maximumDate: widget.maxDate,
@@ -121,9 +121,7 @@ class _CupertinoDatePickerCustomState extends State<CupertinoDatePickerCustom> {
             },
             child: Text(
               context.coreL10n.cancel,
-              style: actionTextStyle?.copyWith(
-                color: Colors.grey,
-              ),
+              style: actionTextStyle?.copyWith(color: Colors.grey),
             ),
           ),
           TextButton(

@@ -13,12 +13,13 @@ import 'package:dio/dio.dart' as _i361;
 import 'package:injectable/injectable.dart' as _i526;
 
 class DataSourcePackageModule extends _i526.MicroPackageModule {
-// initializes the registration of main-scope dependencies inside of GetIt
+  // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) {
     final dataSourceOverrideModule = _$DataSourceOverrideModule();
     gh.factory<_i975.DataSourceRestApiRepository>(
-        () => dataSourceOverrideModule.restApiRepo(gh<_i361.Dio>()));
+      () => dataSourceOverrideModule.restApiRepo(gh<_i361.Dio>()),
+    );
   }
 }
 

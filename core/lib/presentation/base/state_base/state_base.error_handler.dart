@@ -60,10 +60,7 @@ extension StateBaseErrorHandlerExt on CoreStateBase {
 
   /// Handles unauthorized errors
   void _handleUnauthorizedError(String message, ErrorData error) {
-    showLoginRequired(
-      message: message,
-      error: error,
-    );
+    showLoginRequired(message: message, error: error);
   }
 
   /// Handles bad response errors with different logic for 5xx vs 4xx codes
@@ -82,9 +79,7 @@ extension StateBaseErrorHandlerExt on CoreStateBase {
 
   /// Handles connectivity-related errors
   void _handleConnectivityError(String message, ErrorData error) {
-    _connectivityErrorOrNot(
-      orNot: () => showErrorDialog(message, error),
-    );
+    _connectivityErrorOrNot(orNot: () => showErrorDialog(message, error));
   }
 
   /// Handles unknown error types
@@ -105,8 +100,7 @@ extension StateBaseErrorHandlerExt on CoreStateBase {
       ErrorType.timeout => _getTimeoutMessage(error),
       ErrorType.noInternet => coreL10n.noInternet,
       ErrorType.internalServerError ||
-      ErrorType.unknown =>
-        _getInternalErrorMessage(error),
+      ErrorType.unknown => _getInternalErrorMessage(error),
       ErrorType.serverUnExpected => _getServerUnexpectedMessage(error),
       ErrorType.restricted => _getRestrictedMessage(error),
       ErrorType.dataParsing => _getDataParsingMessage(error),
@@ -170,9 +164,7 @@ extension StateBaseErrorHandlerExt on CoreStateBase {
   }
 
   /// Checks connectivity and shows appropriate error dialog
-  Future<void> _connectivityErrorOrNot({
-    void Function()? orNot,
-  }) async {
+  Future<void> _connectivityErrorOrNot({void Function()? orNot}) async {
     try {
       final connectivityResults = await Connectivity().checkConnectivity();
       if (connectivityResults.contains(ConnectivityResult.none)) {

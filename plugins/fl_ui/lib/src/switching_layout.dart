@@ -66,18 +66,10 @@ extension _SwitchDirectionExt on SwitchingAnimation {
     switch (this) {
       case SwitchingAnimation.swipeRTL:
       case SwitchingAnimation.swipeLTR:
-        return _buildHorizontalAnim(
-          child,
-          animation,
-          isReverse,
-        );
+        return _buildHorizontalAnim(child, animation, isReverse);
       case SwitchingAnimation.swipeBTT:
       case SwitchingAnimation.swipeTTB:
-        return _buildVerticalAnim(
-          child,
-          animation,
-          isReverse,
-        );
+        return _buildVerticalAnim(child, animation, isReverse);
     }
   }
 
@@ -104,11 +96,7 @@ extension _SwitchDirectionExt on SwitchingAnimation {
 
     return SlideTransition(
       position: animation.drive(
-        Tween(begin: begin, end: end).chain(
-          CurveTween(
-            curve: Curves.linear,
-          ),
-        ),
+        Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.linear)),
       ),
       child: child,
     );
@@ -139,11 +127,7 @@ extension _SwitchDirectionExt on SwitchingAnimation {
     }
     return SlideTransition(
       position: animation.drive(
-        Tween(begin: begin, end: end).chain(
-          CurveTween(
-            curve: Curves.linear,
-          ),
-        ),
+        Tween(begin: begin, end: end).chain(CurveTween(curve: Curves.linear)),
       ),
       child: child,
     );

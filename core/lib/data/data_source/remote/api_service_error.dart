@@ -15,11 +15,7 @@ enum ErrorType {
   dataParsing,
 }
 
-enum ErrorOrigin {
-  dio,
-  graphql,
-  firebase,
-}
+enum ErrorOrigin { dio, graphql, firebase }
 
 class ErrorData {
   ErrorType? type;
@@ -51,10 +47,7 @@ class ErrorData {
     if (exception is dio_p.DioException) {
       return ErrorData.fromDio(exception);
     }
-    return ErrorData(
-      type: ErrorType.unknown,
-      message: exception.toString(),
-    );
+    return ErrorData(type: ErrorType.unknown, message: exception.toString());
   }
 
   ErrorData.fromDio(dio_p.DioException error) {

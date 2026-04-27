@@ -34,10 +34,7 @@ class _NotFoundPageState extends State<NotFoundPage> {
                   title: trans.backToHomepage,
                   onPressed: _backToWelcomePage,
                 )
-              : ThemeButton.text(
-                  title: trans.back,
-                  onPressed: _back,
-                ),
+              : ThemeButton.text(title: trans.back, onPressed: _back),
         ],
       ),
     );

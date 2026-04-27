@@ -8,10 +8,7 @@ class LocationServiceImpl implements LocationService {
     if (position == null) {
       return null;
     }
-    return Location(
-      lat: position.latitude,
-      lng: position.longitude,
-    );
+    return Location(lat: position.latitude, lng: position.longitude);
   }
 
   Future<locator.Position?> _determinePosition() async {

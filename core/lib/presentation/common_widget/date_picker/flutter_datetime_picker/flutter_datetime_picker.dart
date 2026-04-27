@@ -40,8 +40,9 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         datePickerTheme: datePickerTheme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(
+          context,
+        ).modalBarrierDismissLabel,
         pickerModel: DatePickerModel(
           currentTime: currentTime,
           maxTime: maxTime,
@@ -75,8 +76,9 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         datePickerTheme: datePickerTheme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(
+          context,
+        ).modalBarrierDismissLabel,
         pickerModel: TimePickerModel(
           currentTime: currentTime,
           locale: locale,
@@ -108,8 +110,9 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         datePickerTheme: datePickerTheme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(
+          context,
+        ).modalBarrierDismissLabel,
         pickerModel: Time12hPickerModel(
           currentTime: currentTime,
           locale: locale,
@@ -142,8 +145,9 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         datePickerTheme: datePickerTheme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(
+          context,
+        ).modalBarrierDismissLabel,
         pickerModel: DateTimePickerModel(
           currentTime: currentTime,
           minTime: minTime,
@@ -176,8 +180,9 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         datePickerTheme: datePickerTheme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(
+          context,
+        ).modalBarrierDismissLabel,
         pickerModel: pickerModel,
       ),
     );
@@ -195,9 +200,9 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     this.locale,
     RouteSettings? settings,
     BasePickerModel? pickerModel,
-  })  : pickerModel = pickerModel ?? DatePickerModel(),
-        datePickerTheme = datePickerTheme ?? CustomDatePickerTheme(),
-        super(settings: settings);
+  }) : pickerModel = pickerModel ?? DatePickerModel(),
+       datePickerTheme = datePickerTheme ?? CustomDatePickerTheme(),
+       super(settings: settings);
 
   final bool? showTitleActions;
   final DateChangedCallback? onChanged;
@@ -224,8 +229,9 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null, '_animationController == null');
-    _animationController =
-        BottomSheet.createAnimationController(navigator!.overlay!);
+    _animationController = BottomSheet.createAnimationController(
+      navigator!.overlay!,
+    );
     return _animationController!;
   }
 
@@ -284,7 +290,6 @@ class _DatePickerState extends State<_DatePickerComponent> {
   }
 
   void refreshScrollOffset() {
-//    print('refreshScrollOffset ${widget.pickerModel.currentRightIndex()}');
     leftScrollCtrl = FixedExtentScrollController(
       initialItem: widget.pickerModel.currentLeftIndex(),
     );
@@ -335,10 +340,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
     final itemView = _renderItemView(theme);
     if (widget.route.showTitleActions == true) {
       return Column(
-        children: <Widget>[
-          _renderTitleActionsView(theme),
-          itemView,
-        ],
+        children: <Widget>[_renderTitleActionsView(theme), itemView],
       );
     }
     return itemView;
@@ -401,7 +403,8 @@ class _DatePickerState extends State<_DatePickerComponent> {
   }
 
   Widget _renderItemView(CustomDatePickerTheme theme) {
-    final _baseKey = widget.pickerModel.currentLeftIndex() +
+    final _baseKey =
+        widget.pickerModel.currentLeftIndex() +
         widget.pickerModel.currentMiddleIndex() +
         widget.pickerModel.currentRightIndex();
     return Container(
@@ -418,20 +421,20 @@ class _DatePickerState extends State<_DatePickerComponent> {
                       theme,
                       widget.pickerModel.leftStringAtIndex,
                       leftScrollCtrl,
-                      widget.pickerModel.layoutProportions()[0], (index) {
-                      widget.pickerModel.setLeftIndex(index);
-                    }, (index) {
-                      setState(() {
-                        refreshScrollOffset();
-                        _notifyDateChanged();
-                      });
-                    })
+                      widget.pickerModel.layoutProportions()[0],
+                      (index) {
+                        widget.pickerModel.setLeftIndex(index);
+                      },
+                      (index) {
+                        setState(() {
+                          refreshScrollOffset();
+                          _notifyDateChanged();
+                        });
+                      },
+                    )
                   : null,
             ),
-            Text(
-              widget.pickerModel.leftDivider(),
-              style: theme.itemStyle,
-            ),
+            Text(widget.pickerModel.leftDivider(), style: theme.itemStyle),
             Container(
               child: widget.pickerModel.layoutProportions()[1] > 0
                   ? _renderColumnView(
@@ -439,20 +442,20 @@ class _DatePickerState extends State<_DatePickerComponent> {
                       theme,
                       widget.pickerModel.middleStringAtIndex,
                       middleScrollCtrl,
-                      widget.pickerModel.layoutProportions()[1], (index) {
-                      widget.pickerModel.setMiddleIndex(index);
-                    }, (index) {
-                      setState(() {
-                        refreshScrollOffset();
-                        _notifyDateChanged();
-                      });
-                    })
+                      widget.pickerModel.layoutProportions()[1],
+                      (index) {
+                        widget.pickerModel.setMiddleIndex(index);
+                      },
+                      (index) {
+                        setState(() {
+                          refreshScrollOffset();
+                          _notifyDateChanged();
+                        });
+                      },
+                    )
                   : null,
             ),
-            Text(
-              widget.pickerModel.rightDivider(),
-              style: theme.itemStyle,
-            ),
+            Text(widget.pickerModel.rightDivider(), style: theme.itemStyle),
             Container(
               child: widget.pickerModel.layoutProportions()[2] > 0
                   ? _renderColumnView(
@@ -460,14 +463,17 @@ class _DatePickerState extends State<_DatePickerComponent> {
                       theme,
                       widget.pickerModel.rightStringAtIndex,
                       rightScrollCtrl,
-                      widget.pickerModel.layoutProportions()[2], (index) {
-                      widget.pickerModel.setRightIndex(index);
-                    }, (index) {
-                      setState(() {
-                        refreshScrollOffset();
-                        _notifyDateChanged();
-                      });
-                    })
+                      widget.pickerModel.layoutProportions()[2],
+                      (index) {
+                        widget.pickerModel.setRightIndex(index);
+                      },
+                      (index) {
+                        setState(() {
+                          refreshScrollOffset();
+                          _notifyDateChanged();
+                        });
+                      },
+                    )
                   : null,
             ),
           ],
@@ -500,10 +506,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
                   widget.route.onCancel!();
                 }
               },
-              child: Text(
-                cancel,
-                style: theme.cancelStyle,
-              ),
+              child: Text(cancel, style: theme.cancelStyle),
             ),
           ),
           SizedBox(
@@ -517,10 +520,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
                   widget.route.onConfirm!(widget.pickerModel.finalTime()!);
                 }
               },
-              child: Text(
-                done,
-                style: theme.doneStyle,
-              ),
+              child: Text(done, style: theme.doneStyle),
             ),
           ),
         ],

@@ -11,161 +11,174 @@ extension DateUtilsExtention on DateTime {
     DateLocale locale = const EnglishDateLocale(),
     bool useCalendarFormat = true,
   }) {
-    return formatDate(
-      toLocal(),
-      [
-        ...useCalendarFormat
-            ? format.map(
-                (e) => e == yyyy ? calendarYearStr : e,
-              )
-            : format,
-      ],
-      locale: locale,
-    );
+    return formatDate(toLocal(), [
+      ...useCalendarFormat
+          ? format.map((e) => e == yyyy ? calendarYearStr : e)
+          : format,
+    ], locale: locale);
   }
 
   /// **[mm, ' ', yyyy]**
   ///
   /// **01 2000**
   String get toLocalmmyyyy {
-    return formatDate(
-      toLocal(),
-      [mm, ' ', calendarYearStr],
-    );
+    return formatDate(toLocal(), [mm, ' ', calendarYearStr]);
   }
 
   /// **[dd, '/', mm, '/', yyyy]**
   ///
   /// **01/01/2000**
   String get toLocalddmmyyyy {
-    return formatDate(
-      toLocal(),
-      [dd, '/', mm, '/', calendarYearStr],
-    );
+    return formatDate(toLocal(), [dd, '/', mm, '/', calendarYearStr]);
   }
 
   /// **[dd, '/', mm, '/', yyyy]**
   ///
   /// **01/01/2000**
   String get ddmmyyyy {
-    return formatDate(
-      this,
-      [dd, '/', mm, '/', calendarYearStr],
-    );
+    return formatDate(this, [dd, '/', mm, '/', calendarYearStr]);
   }
 
   /// **[HH, ':', nn, ' - ', dd, '/', mm, '/', yyyy]**
   ///
   /// **10:59 - 01/01/2000**
   String get toLocalHHnnddmmyyyy {
-    return formatDate(
-      toLocal(),
-      [HH, ':', nn, ' - ', dd, '/', mm, '/', calendarYearStr],
-    );
+    return formatDate(toLocal(), [
+      HH,
+      ':',
+      nn,
+      ' - ',
+      dd,
+      '/',
+      mm,
+      '/',
+      calendarYearStr,
+    ]);
   }
 
   /// **[ dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]**
   ///
   /// **01/01/2000 10:59**
   String get toLocalddmmyyyyHHnn {
-    return formatDate(
-      toLocal(),
-      [dd, '/', mm, '/', calendarYearStr, ' ', HH, ':', nn],
-    );
+    return formatDate(toLocal(), [
+      dd,
+      '/',
+      mm,
+      '/',
+      calendarYearStr,
+      ' ',
+      HH,
+      ':',
+      nn,
+    ]);
   }
 
   /// **[yyyy, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss]**
   ///
   /// **2000-01-01 10:59:59**
   String get toLocalyyyymmddHHnnss {
-    return formatDate(
-      toLocal(),
-      [calendarYearStr, '-', mm, '-', dd, ' ', HH, ':', nn, ':', ss],
-    );
+    return formatDate(toLocal(), [
+      calendarYearStr,
+      '-',
+      mm,
+      '-',
+      dd,
+      ' ',
+      HH,
+      ':',
+      nn,
+      ':',
+      ss,
+    ]);
   }
 
   /// **[HH, ':', nn, ', ', dd, '/', mm, '/', yyyy]**
   ///
   /// **10:59, 01/01/2000**
   String get toLocalHHnnddmmyyWithCommas {
-    return formatDate(
-      toLocal(),
-      [HH, ':', nn, ', ', dd, '/', mm, '/', calendarYearStr],
-    );
+    return formatDate(toLocal(), [
+      HH,
+      ':',
+      nn,
+      ', ',
+      dd,
+      '/',
+      mm,
+      '/',
+      calendarYearStr,
+    ]);
   }
 
   /// **[yyyy, mm, dd, HH, nn, ss]**
   ///
   /// **20001225105959**
   String get toLocalyyyymmddHHnnssWithoutSeparate {
-    return formatDate(
-      toLocal(),
-      [calendarYearStr, mm, dd, HH, nn, ss],
-    );
+    return formatDate(toLocal(), [calendarYearStr, mm, dd, HH, nn, ss]);
   }
 
   /// **[dd / mm / yyyy - HH:nn:ss]**
   ///
   /// **20/01/2025 - 09:15:36**
   String get toLocalddmmyyyyHHmmss {
-    return formatDate(
-      toLocal(),
-      [dd, '/', mm, '/', calendarYearStr, ' - ', HH, ':', nn, ':', ss],
-    );
+    return formatDate(toLocal(), [
+      dd,
+      '/',
+      mm,
+      '/',
+      calendarYearStr,
+      ' - ',
+      HH,
+      ':',
+      nn,
+      ':',
+      ss,
+    ]);
   }
 
   String? timeAgo([String? locale]) {
-    return tag_format.format(
-      this,
-      locale: locale,
-      allowFromNow: true,
-    );
+    return tag_format.format(this, locale: locale, allowFromNow: true);
   }
 
   /// **[HH, ':', nn]**
   ///
   /// **10:59**
   String get toTimeFormat {
-    return formatDate(
-      toLocal(),
-      [HH, ':', nn],
-    );
+    return formatDate(toLocal(), [HH, ':', nn]);
   }
 
   /// **[HH:nn:ss]**
   ///
   /// **09:15:36**
   String get toLocalHHmmss {
-    return formatDate(
-      toLocal(),
-      [HH, ':', nn, ':', ss],
-    );
+    return formatDate(toLocal(), [HH, ':', nn, ':', ss]);
   }
 
   /// **[D, ', ', dd, '/', mm, '/', yyyy]**
   ///
   /// **Tue, 01/01/2000**
-  String toLocalDddmmyyyy({
-    DateLocale locale = const EnglishDateLocale(),
-  }) {
-    return formatDate(
-      toLocal(),
-      [D, ', ', dd, '/', mm, '/', calendarYearStr],
-      locale: locale,
-    );
+  String toLocalDddmmyyyy({DateLocale locale = const EnglishDateLocale()}) {
+    return formatDate(toLocal(), [
+      D,
+      ', ',
+      dd,
+      '/',
+      mm,
+      '/',
+      calendarYearStr,
+    ], locale: locale);
   }
 
   /// **[D, ', ', dd, '/', mm, '/', yyyy]**
   ///
   /// **Tue, 01/01/2000**
-  String toLocalddMMyyyy({
-    DateLocale locale = const EnglishDateLocale(),
-  }) {
-    return formatDate(
-      toLocal(),
-      [dd, '/', MM, '/', calendarYearStr],
-      locale: locale,
-    );
+  String toLocalddMMyyyy({DateLocale locale = const EnglishDateLocale()}) {
+    return formatDate(toLocal(), [
+      dd,
+      '/',
+      MM,
+      '/',
+      calendarYearStr,
+    ], locale: locale);
   }
 
   /// **[D, '\n', dd]**
@@ -173,27 +186,15 @@ extension DateUtilsExtention on DateTime {
   /// **Tue**
   ///
   /// **01**
-  String toLocalDAbovedd({
-    DateLocale locale = const EnglishDateLocale(),
-  }) {
-    return formatDate(
-      toLocal(),
-      [D, '\n', dd],
-      locale: locale,
-    );
+  String toLocalDAbovedd({DateLocale locale = const EnglishDateLocale()}) {
+    return formatDate(toLocal(), [D, '\n', dd], locale: locale);
   }
 
   /// **[dd, '/', mm]**
   ///
   /// **14/09**
-  String toddmm({
-    DateLocale locale = const EnglishDateLocale(),
-  }) {
-    return formatDate(
-      toLocal(),
-      [dd, '/', mm],
-      locale: locale,
-    );
+  String toddmm({DateLocale locale = const EnglishDateLocale()}) {
+    return formatDate(toLocal(), [dd, '/', mm], locale: locale);
   }
 
   String toDateRangeString({

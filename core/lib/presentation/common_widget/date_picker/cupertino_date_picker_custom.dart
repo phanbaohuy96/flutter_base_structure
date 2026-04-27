@@ -14,7 +14,7 @@ Future<DateTime?> showMyCustomDatePicker(
   final languageCode = Localizations.localeOf(context).languageCode;
   final locale = LocaleType.values.firstWhere(
     (element) => element.name == languageCode,
-    orElse: () => LocaleType.th,
+    orElse: () => LocaleType.vi,
   );
   return DatePicker().showPicker(
     context,
@@ -22,9 +22,7 @@ Future<DateTime?> showMyCustomDatePicker(
     onChanged: onChanged,
     onConfirm: onConfirmed,
     locale: locale,
-    datePickerTheme: CustomDatePickerTheme(
-      theme: Theme.of(context),
-    ),
+    datePickerTheme: CustomDatePickerTheme(theme: Theme.of(context)),
     pickerModel: DateDDMMYYYModel(
       minTime: minDate,
       maxTime: maxDate,
@@ -53,9 +51,7 @@ Future<dynamic> showMyCustomMonthPicker(
     onChanged: onChanged,
     onConfirm: onConfirmed,
     locale: locale,
-    datePickerTheme: CustomDatePickerTheme(
-      theme: Theme.of(context),
-    ),
+    datePickerTheme: CustomDatePickerTheme(theme: Theme.of(context)),
     pickerModel: DateMMYYYModel(
       minTime: minDate,
       maxTime: maxDate,
@@ -85,9 +81,7 @@ Future<dynamic> showMyTimePicker(
     onChanged: onChanged,
     onConfirm: onConfirmed,
     locale: locale,
-    datePickerTheme: CustomDatePickerTheme(
-      theme: Theme.of(context),
-    ),
+    datePickerTheme: CustomDatePickerTheme(theme: Theme.of(context)),
     pickerModel: MyTimePickerModel(
       showSecondsColumn: showSecondsColumn,
       locale: locale,

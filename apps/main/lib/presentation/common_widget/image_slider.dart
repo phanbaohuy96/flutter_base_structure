@@ -2,10 +2,8 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-typedef ImageSliderDesciptionBuilder = Widget Function(
-  BuildContext context,
-  int index,
-);
+typedef ImageSliderDesciptionBuilder =
+    Widget Function(BuildContext context, int index);
 
 class ImageSlider extends StatefulWidget {
   const ImageSlider({
@@ -76,13 +74,8 @@ class _ImageSliderState extends State<ImageSlider> with StorageServiceMixin {
           right: 0,
           left: 0,
           child: Container(
-            constraints: const BoxConstraints(
-              minHeight: 91,
-            ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
+            constraints: const BoxConstraints(minHeight: 91),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: widget.descriptionDecoration,
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -105,10 +98,7 @@ class _ImageSliderState extends State<ImageSlider> with StorageServiceMixin {
                   ),
                   child: Text(
                     '${_currentImageIndex + 1}/${widget.images.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ),
               ],
@@ -122,14 +112,12 @@ class _ImageSliderState extends State<ImageSlider> with StorageServiceMixin {
   void onTapImage(String image, int idx) {
     openImageGallery(
       context: context,
-      images: widget.images.map(
-        (e) {
-          if (e.isUrl) {
-            return e;
-          }
-          return storageAssetProvider.url(e);
-        },
-      ).toList(),
+      images: widget.images.map((e) {
+        if (e.isUrl) {
+          return e;
+        }
+        return storageAssetProvider.url(e);
+      }).toList(),
       heroTag: heroTag,
       focusIndex: idx,
     );

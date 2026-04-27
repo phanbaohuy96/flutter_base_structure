@@ -10,10 +10,7 @@ class LocalDataManager extends CoreLocalDataManager
   // ignore: unused_field
   final PreferencesHelper _appPrefs;
 
-  LocalDataManager(
-    this._appPrefs,
-    super.preferencesHelper,
-  );
+  LocalDataManager(this._appPrefs, super.preferencesHelper);
 
   @override
   Future<bool> saveUserInfo(UserModel? user) {

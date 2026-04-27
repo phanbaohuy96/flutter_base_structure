@@ -2,27 +2,27 @@
 
 android:
   dev:
-    package: com.pbh.baseflutter.dev
-    name: BaseFlutter DEV
+    package: com.pbh.myflutterbase.dev
+    name: My Flutter Base DEV
   staging:
-    package: com.pbh.baseflutter.staging
-    name: BaseFlutter STAGING
+    package: com.pbh.myflutterbase.staging
+    name: My Flutter Base STAGING
   sandbox:
-    package: com.pbh.baseflutter.sandbox
-    name: BaseFlutter SANDBOX
+    package: com.pbh.myflutterbase.sandbox
+    name: My Flutter Base SANDBOX
   prod:
-    package: com.pbh.baseflutter
-    name: BaseFlutter
+    package: com.pbh.myflutterbase
+    name: My Flutter Base
 ios:
   dev:
-    package: com.pbh.baseflutter.dev
-    name: BaseFlutter DEV
+    package: com.pbh.myflutterbase.dev
+    name: My Flutter Base DEV
   staging:
-    package: com.pbh.baseflutter.staging
-    name: BaseFlutter STAGING
+    package: com.pbh.myflutterbase.staging
+    name: My Flutter Base STAGING
   sandbox:
-    package: com.pbh.baseflutter.sandbox
-    name: BaseFlutter SANDBOX
+    package: com.pbh.myflutterbase.sandbox
+    name: My Flutter Base SANDBOX
   prod:
-    package: com.pbh.baseflutter
-    name: BaseFlutter
+    package: com.pbh.myflutterbase
+    name: My Flutter Base

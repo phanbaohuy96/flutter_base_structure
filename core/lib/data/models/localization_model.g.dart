@@ -7,7 +7,7 @@ part of 'localization_model.dart';
 // **************************************************************************
 
 LocalizationModel _$LocalizationModelFromJson(Map<String, dynamic> json) =>
-    LocalizationModel(th: json['th'] as String?, en: json['en'] as String?);
+    LocalizationModel(vi: json['vi'] as String?, en: json['en'] as String?);
 
 Map<String, dynamic> _$LocalizationModelToJson(LocalizationModel instance) =>
-    <String, dynamic>{'th': instance.th, 'en': instance.en};
+    <String, dynamic>{'vi': instance.vi, 'en': instance.en};

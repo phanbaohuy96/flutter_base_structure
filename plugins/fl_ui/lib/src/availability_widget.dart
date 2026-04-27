@@ -52,14 +52,14 @@ class AvailabilityWidget extends StatefulWidget {
     Duration animationDuration = const Duration(milliseconds: 300),
     Curve animationCurve = Curves.easeInOut,
   }) : this(
-          key: key,
-          child: child,
-          enable: enable,
-          absorbingWhenDisabled: absorbingWhenDisabled,
-          greyOpacity: greyOpacity,
-          animationDuration: animationDuration,
-          animationCurve: animationCurve,
-        );
+         key: key,
+         child: child,
+         enable: enable,
+         absorbingWhenDisabled: absorbingWhenDisabled,
+         greyOpacity: greyOpacity,
+         animationDuration: animationDuration,
+         animationCurve: animationCurve,
+       );
 
   @override
   State<AvailabilityWidget> createState() => _AvailabilityWidgetState();
@@ -142,10 +142,7 @@ class _AvailabilityWidgetState extends State<AvailabilityWidget>
 
         return AbsorbPointer(
           absorbing: !widget.enable && widget.absorbingWhenDisabled,
-          child: ColorFiltered(
-            colorFilter: animatedColorFilter,
-            child: child,
-          ),
+          child: ColorFiltered(colorFilter: animatedColorFilter, child: child),
         );
       },
       child: widget.child,
