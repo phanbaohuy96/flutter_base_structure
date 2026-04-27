@@ -66,6 +66,25 @@ apps/main/lib/data/data_source/<feature>_repository.dart  (and *_impl.dart)
 
 For shared widgets/services, add to `core/` instead of `apps/main/`.
 
+## Compound features
+
+When a feature has more than one screen, do not flatten it into one oversized module or bypass the established presentation structure. Use a parent module that owns the parent barrel, coordinator, and route aggregator; each non-trivial child screen gets its own sub-module with `bloc/` and `views/`.
+
+```text
+<feature>/
+├── <feature>.dart
+├── <feature>_route.dart          # aggregates child routes
+├── <feature>_coordinator.dart
+├── <child_a>/
+│   ├── bloc/
+│   └── views/
+└── <child_b>/
+    ├── bloc/
+    └── views/
+```
+
+If the user says a flow should follow a named project architecture, apply that architecture directly and ask before choosing a lighter UI structure.
+
 ## Manual scaffold (when the generator does not fit)
 
 Stick to the names below — `_factories`, `Args`, `routeName`, the part wiring — because other parts of the codebase rely on them.
@@ -81,6 +100,7 @@ Stick to the names below — `_factories`, `Args`, `routeName`, the part wiring 
 
 - [ ] Tried `make run_module_generator` first.
 - [ ] Module placed under `lib/presentation/modules/<feature>/`.
+- [ ] Multi-screen feature uses a parent route/coordinator/barrel plus child sub-modules.
 - [ ] Screen extends `StateBase<T>` and has a `static String routeName`.
 - [ ] Bloc extends `AppBlocBase<E, S>` and is `@Injectable()`.
 - [ ] Route extends `IRoute` and wraps the screen in `BlocProvider`.

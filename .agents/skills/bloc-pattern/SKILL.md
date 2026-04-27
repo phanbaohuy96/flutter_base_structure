@@ -127,7 +127,7 @@ class GetFeatureEvent extends FeatureEvent {
 class LoadMoreEvent extends FeatureEvent {}
 ```
 
-For events that need to surface a result back to the caller (e.g. login flows), pass a `Completer<T>` on the event and complete it inside the handler.
+For events that need to surface a result back to the caller (e.g. login flows), pass a `Completer<T>` on the event and complete it inside the handler. Choose `T` to carry the useful result object when the caller needs refreshed state; avoid returning only `bool` and forcing an immediate duplicate query.
 
 ## Loading + error handling
 
