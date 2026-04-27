@@ -7,6 +7,7 @@ import '../../../core.dart';
 ///
 /// This widget handles common screen patterns like title, description,
 /// back button, and various styling options.
+
 class ScreenForm extends StatefulWidget {
   const ScreenForm({
     Key? key,
@@ -27,6 +28,7 @@ class ScreenForm extends StatefulWidget {
     this.titleWidgetBuilder,
     this.titleMaxLines,
     this.titleStyle,
+    this.titleSpacing,
     this.desStyle,
 
     // Navigation
@@ -41,7 +43,6 @@ class ScreenForm extends StatefulWidget {
 
     // Content
     this.child,
-    this.extentions,
 
     // Scaffold components
     this.floatingActionButton,
@@ -64,6 +65,9 @@ class ScreenForm extends StatefulWidget {
   /// Custom style for the title text
   final TextStyle? titleStyle;
 
+  /// Spacing for the title text
+  final double? titleSpacing;
+
   /// Custom style for the description text
   final TextStyle? desStyle;
 
@@ -77,9 +81,6 @@ class ScreenForm extends StatefulWidget {
 
   /// Main content of the screen
   final Widget? child;
-
-  /// Additional content displayed below the app bar
-  final Widget? extentions;
 
   /// Actions to display in the app bar (typically buttons)
   final List<Widget> actions;
@@ -139,7 +140,7 @@ class ScreenForm extends StatefulWidget {
   _ScreenFormState createState() => _ScreenFormState();
 }
 
-class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
+class _ScreenFormState extends State<ScreenForm> {
   late ThemeData _theme;
 
   /// Gets the screen form theme with widget overrides applied
@@ -156,6 +157,9 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
       titleMaxLines: widget.titleMaxLines,
       titleStyle:
           widget.titleStyle ?? it.titleStyle ?? _theme.textTheme.titleLarge,
+      titleSpacing:
+          widget.titleSpacing ??
+          (widget.showBackButton != true ? 16.0 : it.titleSpacing),
       desStyle: widget.desStyle ?? it.desStyle ?? _theme.textTheme.titleSmall,
     );
   });
@@ -177,21 +181,6 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
     widget.description.isNotNullOrEmpty,
     widget.actions.isNotEmpty,
   ].any((e) => e);
-
-  @override
-  void afterFirstLayout(BuildContext context) {
-    _updateStatusBarStyle();
-  }
-
-  /// Updates the status bar style based on theme and header configuration
-  void _updateStatusBarStyle() {
-    if (screenTheme.showHeaderImage == true ||
-        Theme.brightnessOf(context) == Brightness.dark) {
-      context.themeColor.setDarkStatusBar();
-    } else {
-      context.themeColor.setLightStatusBar();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +207,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
         color: widget.bgColor ?? themeColor.scaffoldBackgroundColor,
         child: Column(
           children: [
-            _buildAppBar(),
+            if (showAppBar) _buildAppBar(),
             Expanded(child: widget.child ?? const SizedBox()),
           ],
         ),
@@ -226,7 +215,7 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
     );
   }
 
-  /// Builds the app bar section of the screen
+  /// Builds the app bar using Flutter's AppBar widget
   Widget _buildAppBar() {
     final appbarColor =
         screenTheme.appbarColor ??
@@ -238,84 +227,56 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
         context.themeColor.appbarForegroundColor;
 
     return Container(
-      width: double.infinity,
       decoration: BoxDecoration(
         color: appbarColor,
         borderRadius: _getAppBarBorderRadius(),
         image: _getHeaderBackgroundImage(),
         border: _getAppBarBorder(),
       ),
-      padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: Column(
-        children: [
-          if (showAppBar) _buildAppBarContent(appbarForegroundColor),
-          if (widget.extentions != null) widget.extentions!,
-        ],
+      foregroundDecoration: BottomBorderDecoration(
+        showBottomBorder: screenTheme.showAppbarDivider == true,
+        borderColor: themeColor.dividerColor,
+        borderWidth: 1,
+        borderRadius: _getAppBarBorderRadius(),
+      ),
+      child: AppBar(
+        backgroundColor: screenTheme.showHeaderImage == true
+            ? Colors.transparent
+            : appbarColor,
+        foregroundColor: appbarForegroundColor,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: isCenterTitle,
+        automaticallyImplyLeading: screenTheme.showBackButton == true,
+        titleSpacing: screenTheme.titleSpacing,
+        leading: screenTheme.showBackButton == true
+            ? IconButton(
+                key: const ValueKey('screen_form_back_btn'),
+                onPressed: widget.onBack ?? () => Navigator.pop(context),
+                icon:
+                    widget.backButton ??
+                    (screenTheme.backButtonAsset != null
+                        ? ImageView(
+                            source: screenTheme.backButtonAsset!,
+                            width: screenTheme.backButtonSize,
+                            height: screenTheme.backButtonSize,
+                            color: appbarForegroundColor,
+                          )
+                        : Icon(
+                            Icons.chevron_left,
+                            size: screenTheme.backButtonSize,
+                            color: appbarForegroundColor,
+                          )),
+              )
+            : null,
+        title: _buildTitleWidget(appbarForegroundColor),
+        actions: widget.actions,
       ),
     );
   }
 
-  /// Builds the content of the app bar (back button, title, actions)
-  Widget _buildAppBarContent(Color? appbarForegroundColor) {
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildBackButton(appbarForegroundColor),
-            Expanded(child: _buildTitleAndDescription(appbarForegroundColor)),
-            // Space to balance the back button
-            const SizedBox(width: 56),
-          ],
-        ),
-        // Actions are positioned at the end
-        Row(mainAxisAlignment: MainAxisAlignment.end, children: widget.actions),
-      ],
-    );
-  }
-
-  /// Builds the back button or a placeholder with equal width
-  Widget _buildBackButton(Color? foregroundColor) {
-    if (screenTheme.showBackButton == true) {
-      return Padding(
-        padding: const EdgeInsets.only(left: 4),
-        child: IconButton(
-          key: const ValueKey('screen_form_back_btn'),
-          onPressed: widget.onBack ?? () => Navigator.pop(context),
-          icon:
-              widget.backButton ??
-              Icon(Icons.arrow_back, size: 22, color: foregroundColor),
-        ),
-      );
-    } else {
-      return const SizedBox(width: 56);
-    }
-  }
-
-  /// Builds the title and description column
-  Widget _buildTitleAndDescription(Color? foregroundColor) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Align(
-          alignment: isCenterTitle ? Alignment.center : Alignment.centerLeft,
-          child: _buildTitle(foregroundColor),
-        ),
-        if (widget.description.isNotNullOrEmpty) ...[
-          const SizedBox(height: 4),
-          Text(
-            widget.description!,
-            textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
-            style: screenTheme.desStyle?.copyWith(color: foregroundColor),
-          ),
-        ],
-      ],
-    );
-  }
-
-  /// Builds the title widget, using custom builder if provided
-  Widget _buildTitle(Color? foregroundColor) {
+  /// Builds the title widget for the AppBar
+  Widget? _buildTitleWidget(Color? foregroundColor) {
     if (widget.titleWidgetBuilder != null) {
       return widget.titleWidgetBuilder!.call(
         context,
@@ -324,13 +285,38 @@ class _ScreenFormState extends State<ScreenForm> with AfterLayoutMixin {
       );
     }
 
-    return Text(
-      widget.title ?? '',
-      style: screenTheme.titleStyle?.copyWith(color: foregroundColor),
-      textAlign: isCenterTitle ? TextAlign.center : TextAlign.start,
-      maxLines: screenTheme.titleMaxLines,
-      overflow: TextOverflow.ellipsis,
-    );
+    if (widget.title.isNotNullOrEmpty) {
+      final Widget titleWidget = Text(
+        widget.title!,
+        style: screenTheme.titleStyle?.copyWith(color: foregroundColor),
+        maxLines: screenTheme.titleMaxLines,
+        overflow: TextOverflow.ellipsis,
+      );
+
+      // If there's a description, wrap title and description in a column
+      if (widget.description.isNotNullOrEmpty) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: isCenterTitle
+              ? CrossAxisAlignment.center
+              : CrossAxisAlignment.start,
+          children: [
+            titleWidget,
+            Text(
+              widget.description!,
+              style: screenTheme.desStyle?.copyWith(color: foregroundColor),
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        );
+      }
+
+      return titleWidget;
+    }
+
+    return null;
   }
 
   /// Returns the border radius for the app bar based on configuration

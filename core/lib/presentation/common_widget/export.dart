@@ -20,6 +20,7 @@ export 'dropdown/single/dropdown_widget.dart';
 export 'empty_data.dart';
 export 'expandable_widget_list.dart';
 export 'footer_widget.dart';
+export 'forms/appbar_decoration.dart';
 export 'forms/main_page_form.dart';
 export 'forms/screen_form.dart';
 export 'gender_selection.dart';
