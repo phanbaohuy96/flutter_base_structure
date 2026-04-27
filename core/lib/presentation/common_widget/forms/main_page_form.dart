@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 import '../../../core.dart';
@@ -104,7 +102,6 @@ class MainPageForm extends StatelessWidget {
       body: Column(
         children: [
           _buildAppBar(context, screenTheme),
-          if (screenTheme.showAppbarDivider == true) const Divider(),
           Expanded(child: body ?? const SizedBox()),
         ],
       ),
@@ -133,32 +130,37 @@ class MainPageForm extends StatelessWidget {
 
   /// Builds the app bar with title, actions, and styling.
   Widget _buildAppBar(BuildContext context, MainPageFormTheme screenTheme) {
-    final mediaData = MediaQuery.of(context);
-    final appbarColor = screenTheme.appbarColor ?? context.themeColor.primary;
+    final appbarColor =
+        screenTheme.appbarColor ??
+        context.themeColor.appbarBackgroundColor ??
+        context.theme.appBarTheme.backgroundColor;
+
     final appbarForegroundColor =
         screenTheme.appbarForegroundColor ??
         context.themeColor.appbarForegroundColor;
 
-    return ClipRRect(
-      borderRadius: _getAppBarBorderRadius(screenTheme),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: _getAppBarBorderRadius(screenTheme),
-          image: _getHeaderBackgroundImage(screenTheme),
-          gradient: _createAppBarGradient(screenTheme, appbarColor),
-        ),
-        child: Column(
-          children: [
-            // Status bar padding
-            SizedBox(height: max(mediaData.padding.top, 24)),
-            // Title and actions
-            if (title != null || actions != null)
-              _buildAppBarContent(screenTheme, appbarForegroundColor),
-            // Extension widget
-            extention ?? const SizedBox(),
-          ],
-        ),
+    return Container(
+      decoration: BoxDecoration(
+        color: appbarColor,
+        borderRadius: _getAppBarBorderRadius(screenTheme),
+        image: _getHeaderBackgroundImage(screenTheme),
+        border: _getAppBarBorder(context, screenTheme),
+      ),
+      foregroundDecoration: BottomBorderDecoration(
+        showBottomBorder: screenTheme.showAppbarDivider == true,
+        borderColor: context.themeColor.dividerColor,
+        borderWidth: 1,
+        borderRadius: _getAppBarBorderRadius(screenTheme),
+      ),
+      child: AppBar(
+        backgroundColor: screenTheme.showHeaderImage == true
+            ? Colors.transparent
+            : appbarColor,
+        foregroundColor: appbarForegroundColor,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        title: _buildAppBarContent(screenTheme, appbarForegroundColor),
+        actions: actions,
       ),
     );
   }
@@ -168,35 +170,12 @@ class MainPageForm extends StatelessWidget {
     MainPageFormTheme screenTheme,
     Color? appbarForegroundColor,
   ) {
-    return Stack(
-      alignment: AlignmentDirectional.center,
-      children: [
-        // Centered title
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Text(
-            title ?? '',
-            style: screenTheme.titleStyle?.copyWith(
-              color: appbarForegroundColor,
-            ),
-            textAlign: TextAlign.center,
-            maxLines: screenTheme.titleMaxLines,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        // Actions positioned at the end
-        Material(
-          color: Colors.transparent,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const SizedBox(width: 16),
-              ...actions ?? const <Widget>[],
-              const SizedBox(width: 16),
-            ],
-          ),
-        ),
-      ],
+    return Text(
+      title ?? '',
+      style: screenTheme.titleStyle?.copyWith(color: appbarForegroundColor),
+      textAlign: TextAlign.center,
+      maxLines: screenTheme.titleMaxLines,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -226,19 +205,16 @@ class MainPageForm extends StatelessWidget {
     return null;
   }
 
-  /// Creates a gradient for the app bar background.
-  LinearGradient _createAppBarGradient(
+  /// Returns the app bar bottom border if divider is enabled
+  BoxBorder? _getAppBarBorder(
+    BuildContext context,
     MainPageFormTheme screenTheme,
-    Color appbarColor,
   ) {
-    return LinearGradient(
-      begin: Alignment.bottomCenter,
-      end: Alignment.topCenter,
-      stops: const [0.01, 0.01],
-      colors: [
-        screenTheme.showAppbarDivider == true ? Colors.black12 : appbarColor,
-        appbarColor,
-      ],
-    );
+    if (screenTheme.showAppbarDivider) {
+      return Border(
+        bottom: BorderSide(color: context.themeColor.dividerColor, width: 1),
+      );
+    }
+    return null;
   }
 }
