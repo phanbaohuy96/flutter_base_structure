@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class ScreenTheme extends ThemeExtension<ScreenTheme> {
@@ -33,6 +35,8 @@ class ScreenTheme extends ThemeExtension<ScreenTheme> {
   }
 }
 
+const _kDefaultBackButtonSize = 22.0;
+
 class ScreenFormTheme {
   final bool showHeaderImage;
   final bool showBackButton;
@@ -48,11 +52,21 @@ class ScreenFormTheme {
   final Color? appbarForegroundColor;
   final int? titleMaxLines;
 
+  /// Asset path for the back button icon (e.g. 'assets/icons/back.png').
+  /// When null, the default [Icons.chevron_left] is used.
+  final String? backButtonAsset;
+
+  /// Size of the back button icon. Defaults to 22 when null.
+  final double backButtonSize;
+
   /// default is [TextTheme.titleLarge]
   final TextStyle? titleStyle;
 
   /// default is [TextTheme.titleSmall]
   final TextStyle? desStyle;
+
+  /// Optional spacing between the leading widget and the title in the AppBar.
+  final double? titleSpacing;
 
   const ScreenFormTheme({
     this.showHeaderImage = false,
@@ -66,6 +80,9 @@ class ScreenFormTheme {
     this.appbarForegroundColor,
     this.titleStyle,
     this.desStyle,
+    this.backButtonAsset,
+    this.backButtonSize = _kDefaultBackButtonSize,
+    this.titleSpacing,
   });
 
   ScreenFormTheme copyWith({
@@ -80,6 +97,9 @@ class ScreenFormTheme {
     int? titleMaxLines,
     TextStyle? titleStyle,
     TextStyle? desStyle,
+    String? backButtonAsset,
+    double? backButtonSize,
+    double? titleSpacing,
   }) {
     return ScreenFormTheme(
       showHeaderImage: showHeaderImage ?? this.showHeaderImage,
@@ -95,6 +115,9 @@ class ScreenFormTheme {
       titleMaxLines: titleMaxLines ?? this.titleMaxLines,
       titleStyle: titleStyle ?? this.titleStyle,
       desStyle: desStyle ?? this.desStyle,
+      backButtonAsset: backButtonAsset ?? this.backButtonAsset,
+      backButtonSize: backButtonSize ?? this.backButtonSize,
+      titleSpacing: titleSpacing ?? this.titleSpacing,
     );
   }
 
@@ -118,6 +141,11 @@ class ScreenFormTheme {
       ),
       titleStyle: TextStyle.lerp(other.titleStyle, titleStyle, t),
       desStyle: TextStyle.lerp(other.desStyle, desStyle, t),
+      backButtonAsset: other.backButtonAsset,
+      backButtonSize:
+          lerpDouble(backButtonSize, other.backButtonSize, t) ??
+          _kDefaultBackButtonSize,
+      titleSpacing: lerpDouble(titleSpacing, other.titleSpacing, t),
     );
   }
 }
