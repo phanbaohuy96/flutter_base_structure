@@ -7,10 +7,7 @@ class RetryInterceptor extends Interceptor {
   final Dio dio;
   final int retries;
 
-  RetryInterceptor({
-    required this.dio,
-    this.retries = 3,
-  });
+  RetryInterceptor({required this.dio, this.retries = 3});
 
   final _rand = math.Random();
   @override

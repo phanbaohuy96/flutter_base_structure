@@ -36,7 +36,7 @@ enum LocaleType {
   tw,
   fi,
   uk,
-  he
+  he,
 }
 
 final _i18nModel = <LocaleType, Map<String, Object>>{
@@ -343,15 +343,7 @@ final _i18nModel = <LocaleType, Map<String, Object>>{
       'November',
       'December',
     ],
-    'day': [
-      'Ma',
-      'Di',
-      'Wo',
-      'Do',
-      'Vr',
-      'Za',
-      'Zo',
-    ],
+    'day': ['Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za', 'Zo'],
     'am': 'AM',
     'pm': 'PM',
   },
@@ -870,7 +862,7 @@ final _i18nModel = <LocaleType, Map<String, Object>>{
     'pm': 'PM',
   },
   LocaleType.da: {
-//Danish
+    //Danish
     'cancel': 'Annullér',
     'done': 'OK',
     'today': 'I dag',
@@ -907,7 +899,7 @@ final _i18nModel = <LocaleType, Map<String, Object>>{
     'pm': 'PM',
   },
   LocaleType.bn: {
-//Bengali
+    //Bengali
     'cancel': 'বাতিল',
     'done': 'সম্পন্ন',
     'today': 'আজ',
@@ -996,7 +988,7 @@ final _i18nModel = <LocaleType, Map<String, Object>>{
     'pm': 'CH',
   },
   LocaleType.hy: {
-//Armenian
+    //Armenian
     'cancel': 'Չեղարկել',
     'done': 'հաստատել',
     'today': 'Այսօր',

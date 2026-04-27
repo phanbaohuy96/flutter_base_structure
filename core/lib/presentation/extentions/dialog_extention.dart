@@ -155,9 +155,10 @@ Future<T?> showNoticeConfirmWithReasonDialog<T>({
             if (_icReasonCtr.value.focusNode.hasFocus) {
               CoreCommonFunction().hideKeyboard(context);
             } else if (barrierDismissible) {
-              Navigator.of(context, rootNavigator: useRootNavigator).pop(
-                _icReasonCtr.text,
-              );
+              Navigator.of(
+                context,
+                rootNavigator: useRootNavigator,
+              ).pop(_icReasonCtr.text);
             }
           },
           child: themeDialog.buildConfirmWithReasonDialog(

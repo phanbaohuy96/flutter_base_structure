@@ -36,10 +36,7 @@ class DropdownMenuButton<T> extends StatelessWidget {
         customButton: customButton,
         items: [
           ...items.map(
-            (e) => DropdownMenuItem<T>(
-              value: e,
-              child: itemBuilder(e),
-            ),
+            (e) => DropdownMenuItem<T>(value: e, child: itemBuilder(e)),
           ),
         ],
         value: value,
@@ -51,7 +48,8 @@ class DropdownMenuButton<T> extends StatelessWidget {
             onTap?.call();
           }
         },
-        dropdownStyleData: dropdownStyleData ??
+        dropdownStyleData:
+            dropdownStyleData ??
             DropdownStyleData(
               decoration: BoxDecoration(
                 color: Colors.white,

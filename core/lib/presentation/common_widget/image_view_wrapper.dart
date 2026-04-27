@@ -19,9 +19,9 @@ class ImageViewWrapper extends ImageView {
     String? placeHolder,
     super.errorPlaceHolder,
   }) : super(
-          source: injector<StorageAssetProvider>().url(source),
-          placeHolder: placeHolder ?? coreImageConstant.icUserAvatar,
-        );
+         source: injector<StorageAssetProvider>().url(source),
+         placeHolder: placeHolder ?? coreImageConstant.icUserAvatar,
+       );
 
   ImageViewWrapper.item(
     String source, {
@@ -36,9 +36,9 @@ class ImageViewWrapper extends ImageView {
     String? placeHolder,
     super.errorPlaceHolder,
   }) : super(
-          source: injector<StorageAssetProvider>().url(source),
-          placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
-        );
+         source: injector<StorageAssetProvider>().url(source),
+         placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
+       );
 
   ImageViewWrapper.banner(
     String source, {
@@ -53,9 +53,9 @@ class ImageViewWrapper extends ImageView {
     String? placeHolder,
     super.errorPlaceHolder,
   }) : super(
-          source: injector<StorageAssetProvider>().url(source),
-          placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
-        );
+         source: injector<StorageAssetProvider>().url(source),
+         placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
+       );
 
   static ImageViewProviderFactory provider(String source) =>
       ImageViewProviderFactory(injector<StorageAssetProvider>().url(source));

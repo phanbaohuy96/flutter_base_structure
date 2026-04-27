@@ -40,11 +40,7 @@ class ThemeBottomSheet {
                     child: const SizedBox(
                       height: 50,
                       width: 50,
-                      child: Icon(
-                        Icons.close,
-                        size: 24,
-                        color: Colors.grey,
-                      ),
+                      child: Icon(Icons.close, size: 24, color: Colors.grey),
                     ),
                   ),
                 ],
@@ -135,15 +131,10 @@ class ThemeBottomSheet {
             onPressed: onCancelPressed,
             elevation: 0,
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 16,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Text(
                 localization.cancel,
-                style: theme.textTheme.labelLarge?.copyWith(
-                  color: Colors.blue,
-                ),
+                style: theme.textTheme.labelLarge?.copyWith(color: Colors.blue),
               ),
             ),
           ),

@@ -7,9 +7,6 @@ extension AuthenticationCoordinator on BuildContext {
   Future<bool?> openSignIn({
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(
-      this,
-      SignInScreen.routeName,
-    );
+    return pushBehavior.push(this, SignInScreen.routeName);
   }
 }

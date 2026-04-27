@@ -16,9 +16,7 @@ GetIt get injector => GetIt.instance;
     ExternalModule(DataSourcePackageModule),
   ],
 )
-Future<dynamic> configureDependencies({
-  required String env,
-}) async {
+Future<dynamic> configureDependencies({required String env}) async {
   injector.allowReassignment = true;
   return $initGetIt(injector, environment: env);
 }

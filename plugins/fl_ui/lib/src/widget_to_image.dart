@@ -52,10 +52,7 @@ class WidgetToImage extends StatelessWidget {
     if (exportConstraints != null) {
       return Stack(
         children: [
-          RepaintBoundary(
-            key: controller.containerKey,
-            child: child,
-          ),
+          RepaintBoundary(key: controller.containerKey, child: child),
           RepaintBoundary(
             key: controller.constraintsKey,
             child: ConstrainedBox(
@@ -69,9 +66,6 @@ class WidgetToImage extends StatelessWidget {
         ],
       );
     }
-    return RepaintBoundary(
-      key: controller.containerKey,
-      child: child,
-    );
+    return RepaintBoundary(key: controller.containerKey, child: child);
   }
 }

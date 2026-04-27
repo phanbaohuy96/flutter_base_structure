@@ -87,11 +87,10 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
   }
 
   void _setupController({T? oldSelected}) {
-    _controller = widget.controller ??
+    _controller =
+        widget.controller ??
         _controller ??
-        DropdownController<T, DropdownData<T>>(
-          value: DropdownData<T>(),
-        );
+        DropdownController<T, DropdownData<T>>(value: DropdownData<T>());
     final initial = widget.selected != oldSelected
         ? widget.selected
         : widget.controller?.data ?? widget.selected;
@@ -137,10 +136,7 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
-            InputTitleWidget(
-              title: widget.title,
-              required: widget.required,
-            ),
+            InputTitleWidget(title: widget.title, required: widget.required),
             const SizedBox(height: spacing),
             _buildDropdown(),
             ValueListenableBuilder(
@@ -187,36 +183,33 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
             }).toList(),
             selectedItemBuilder: ConditionBuilder.on(
               condition: () => widget.selectedItemBuilder != null,
-              value: () => (context) => widget.items
-                  .map((e) => widget.selectedItemBuilder!(e))
-                  .toList(),
-            ).build(
-              orElse: () => null,
-            ),
+              value: () =>
+                  (context) => widget.items
+                      .map((e) => widget.selectedItemBuilder!(e))
+                      .toList(),
+            ).build(orElse: () => null),
             onChanged: ConditionBuilder.on(
               condition: () => widget.enable,
               value: () => (value) {
                 _controller!.setData(value);
                 widget.onChanged?.call(value);
               },
-            ).build(
-              orElse: () => null,
-            ),
+            ).build(orElse: () => null),
             iconSize: 24,
             icon: ConditionBuilder.on(
               condition: () => widget.enable,
-              value: () => ConditionBuilder.on(
-                condition: () => widget.suffixIcon != null,
-                value: () => widget.suffixIcon,
-              ).build(
-                orElse: () => Icon(
-                  Icons.keyboard_arrow_down,
-                  color: widget.iconColor ?? context.themeColor.schemeAction,
-                ),
-              ),
-            ).build(
-              orElse: SizedBox.shrink,
-            ),
+              value: () =>
+                  ConditionBuilder.on(
+                    condition: () => widget.suffixIcon != null,
+                    value: () => widget.suffixIcon,
+                  ).build(
+                    orElse: () => Icon(
+                      Icons.keyboard_arrow_down,
+                      color:
+                          widget.iconColor ?? context.themeColor.schemeAction,
+                    ),
+                  ),
+            ).build(orElse: SizedBox.shrink),
             style: context.textTheme.textInput,
             isExpanded: widget.isExpanded,
             isDense: widget.isDense,
@@ -235,18 +228,17 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
               title: ConditionBuilder.on(
                 condition: () => widget.titleMode == TitleMode.floating,
                 value: () => widget.title,
-              ).build(
-                orElse: () => null,
-              ),
+              ).build(orElse: () => null),
               required: widget.required,
               titleStyle: widget.titleStyle,
-              errorText: ConditionBuilder.on(
-                condition: () => widget.titleMode == TitleMode.floating,
-                value: () => value.validation,
-              ).build(
-                // set error text to empty to enable error decoration
-                orElse: () => value.validation != null ? '' : null,
-              ),
+              errorText:
+                  ConditionBuilder.on(
+                    condition: () => widget.titleMode == TitleMode.floating,
+                    value: () => value.validation,
+                  ).build(
+                    // set error text to empty to enable error decoration
+                    orElse: () => value.validation != null ? '' : null,
+                  ),
               prefixIcon: _getPrefixIcon(),
               prefixIconSize: prefixIconSize,
               prefixIconPadding: widget.prefixIconPadding,
@@ -262,7 +254,8 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
   Widget? _getPrefixIcon() {
     return widget.prefixIcon?.let(
       (icon) => Padding(
-        padding: widget.prefixIconPadding ??
+        padding:
+            widget.prefixIconPadding ??
             EdgeInsets.symmetric(horizontal: prefixIconSize),
         child: icon,
       ),

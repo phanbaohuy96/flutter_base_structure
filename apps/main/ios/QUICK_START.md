@@ -14,22 +14,22 @@
 Go to [Apple Developer Portal](https://developer.apple.com/account/resources/profiles/list) and create provisioning profiles:
 
 #### Development Profile
-- **Bundle ID**: `com.example.app.dev`
+- **Bundle ID**: `com.pbh.myflutterbase.dev`
 - **Type**: iOS App Development
 - **Certificate**: iOS Development
 
 #### Staging Profile  
-- **Bundle ID**: `com.example.app.staging`
+- **Bundle ID**: `com.pbh.myflutterbase.staging`
 - **Type**: Ad Hoc or App Store
 - **Certificate**: iOS Distribution
 
 #### Sandbox Profile
-- **Bundle ID**: `com.example.app.sandbox`
+- **Bundle ID**: `com.pbh.myflutterbase.sandbox`
 - **Type**: Ad Hoc or App Store
 - **Certificate**: iOS Distribution
 
 #### Production Profile
-- **Bundle ID**: `com.example.app`
+- **Bundle ID**: `com.pbh.myflutterbase`
 - **Type**: App Store
 - **Certificate**: iOS Distribution
 
@@ -74,19 +74,19 @@ Update the iOS section with your provisioning profile names:
 ```yaml
 ios:
   dev:
-    package: com.example.app.dev
+    package: com.pbh.myflutterbase.dev
     name: YourApp DEV
     provisioning_profile_specifier: "YOUR_DEV_PROFILE_NAME_HERE"
   staging:
-    package: com.example.app.staging
+    package: com.pbh.myflutterbase.staging
     name: YourApp Staging
     provisioning_profile_specifier: "YOUR_STAGING_PROFILE_NAME_HERE"
   sandbox:
-    package: com.example.app.sandbox
+    package: com.pbh.myflutterbase.sandbox
     name: YourApp Sandbox
     provisioning_profile_specifier: "YOUR_SANDBOX_PROFILE_NAME_HERE"
   prod:
-    package: com.example.app
+    package: com.pbh.myflutterbase
     name: YourApp
     provisioning_profile_specifier: "YOUR_PROD_PROFILE_NAME_HERE"
 ```
@@ -102,22 +102,22 @@ Or directly edit `AppSpecific.xcconfig`:
 ```xcconfig
 // dev
 DEV_APP_DISPLAY_NAME=YourApp DEV
-DEV_PRODUCT_BUNDLE_IDENTIFIER=com.example.app.dev
+DEV_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase.dev
 DEV_PROVISIONING_PROFILE_SPECIFIER=YOUR_DEV_PROFILE_NAME_HERE
 
 // staging
 STAGING_APP_DISPLAY_NAME=YourApp Staging
-STAGING_PRODUCT_BUNDLE_IDENTIFIER=com.example.app.staging
+STAGING_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase.staging
 STAGING_PROVISIONING_PROFILE_SPECIFIER=YOUR_STAGING_PROFILE_NAME_HERE
 
 // sandbox
 SANDBOX_APP_DISPLAY_NAME=YourApp Sandbox
-SANDBOX_PRODUCT_BUNDLE_IDENTIFIER=com.example.app.sandbox
+SANDBOX_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase.sandbox
 SANDBOX_PROVISIONING_PROFILE_SPECIFIER=YOUR_SANDBOX_PROFILE_NAME_HERE
 
 // prod
 PROD_APP_DISPLAY_NAME=YourApp
-PROD_PRODUCT_BUNDLE_IDENTIFIER=com.example.app
+PROD_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase
 PROD_PROVISIONING_PROFILE_SPECIFIER=YOUR_PROD_PROFILE_NAME_HERE
 ```
 

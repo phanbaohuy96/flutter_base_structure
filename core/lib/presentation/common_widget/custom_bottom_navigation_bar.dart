@@ -90,9 +90,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                     color: Theme.of(context).primaryColor,
                     borderRadius: widget.borderRadius,
                   ),
-                  padding: const EdgeInsets.only(
-                    bottom: 16,
-                  ),
+                  padding: const EdgeInsets.only(bottom: 16),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: widget.items!.mapIndex<Widget>((item, idx) {

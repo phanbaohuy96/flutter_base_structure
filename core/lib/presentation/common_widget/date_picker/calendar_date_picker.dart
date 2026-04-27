@@ -96,9 +96,7 @@ class _DateInputCalendarPickerState extends State<DateInputCalendarPicker> {
     );
   }
 
-  Widget _buildDateInputField({
-    required AppTextTheme textTheme,
-  }) {
+  Widget _buildDateInputField({required AppTextTheme textTheme}) {
     final idTheme = context.theme.inputDecorationTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -111,9 +109,11 @@ class _DateInputCalendarPickerState extends State<DateInputCalendarPicker> {
         HighlightBoxColor(
           borderColor: idTheme.border?.borderSide.color,
           borderWidth: idTheme.border?.borderSide.width,
-          borderRadius:
-              asOrNull<OutlineInputBorder>(idTheme.border)?.borderRadius,
-          padding: context.theme.inputDecorationTheme.contentPadding ??
+          borderRadius: asOrNull<OutlineInputBorder>(
+            idTheme.border,
+          )?.borderRadius,
+          padding:
+              context.theme.inputDecorationTheme.contentPadding ??
               const EdgeInsets.all(12),
           bgColor: Colors.transparent,
           child: Row(
@@ -247,9 +247,7 @@ class _WeekInputCalendarPickerState extends State<WeekInputCalendarPicker> {
     );
   }
 
-  Widget _buildWeekInputField({
-    required AppTextTheme textTheme,
-  }) {
+  Widget _buildWeekInputField({required AppTextTheme textTheme}) {
     final idTheme = context.theme.inputDecorationTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -262,9 +260,11 @@ class _WeekInputCalendarPickerState extends State<WeekInputCalendarPicker> {
         HighlightBoxColor(
           borderColor: idTheme.border?.borderSide.color,
           borderWidth: idTheme.border?.borderSide.width,
-          borderRadius:
-              asOrNull<OutlineInputBorder>(idTheme.border)?.borderRadius,
-          padding: context.theme.inputDecorationTheme.contentPadding ??
+          borderRadius: asOrNull<OutlineInputBorder>(
+            idTheme.border,
+          )?.borderRadius,
+          padding:
+              context.theme.inputDecorationTheme.contentPadding ??
               const EdgeInsets.all(12),
           bgColor: Colors.transparent,
           child: Row(
@@ -335,9 +335,7 @@ class TableCalendarDatePicker extends StatelessWidget {
       lastDay: DateTime.now().add(const Duration(days: 365 * 100)),
       focusedDay: value ?? DateTime.now(),
       currentDay: value ?? DateTime.now(),
-      availableCalendarFormats: {
-        CalendarFormat.month: monthStr,
-      },
+      availableCalendarFormats: {CalendarFormat.month: monthStr},
       locale: Localizations.localeOf(context).languageCode,
       onDaySelected: (selectedDay, _) {
         onSelected.call(selectedDay);
@@ -362,10 +360,12 @@ class TableCalendarDatePicker extends StatelessWidget {
         ),
         formatButtonTextStyle: const TextStyle(color: Colors.white),
         formatButtonShowsNext: false,
-        titleTextFormatter: (date, locale) => date.customFormat(
-          ['$monthStr ', 'mm', ', ', 'yyyy'],
-          locale: context.appDateLocale,
-        ),
+        titleTextFormatter: (date, locale) => date.customFormat([
+          '$monthStr ',
+          'mm',
+          ', ',
+          'yyyy',
+        ], locale: context.appDateLocale),
       ),
       calendarBuilders: CalendarBuilders(
         dowBuilder: (context, day) {

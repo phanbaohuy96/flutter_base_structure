@@ -12,10 +12,7 @@ extension HtmlviewerscreenCoordinator on BuildContext {
     return pushBehavior.push(
       this,
       HtmlViewerScreen.routeName,
-      arguments: HtmlviewerScreenArgs(
-        html: html,
-        title: title,
-      ),
+      arguments: HtmlviewerScreenArgs(html: html, title: title),
     );
   }
 }

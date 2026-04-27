@@ -16,7 +16,7 @@ class MultipleChoiceDropdownWidget<T> extends StatefulWidget {
   final Widget Function(T, bool selected) itemBuilder;
   final Widget Function(List<T>) valueBuilder;
   final MultipleChoiceDropdownController<T, MultipleChoiceDropdownData<T>>?
-      controller;
+  controller;
   final Widget? prefixIcon;
   final EdgeInsetsGeometry? prefixIconPadding;
   final EdgeInsetsGeometry? contentPadding;
@@ -80,7 +80,7 @@ class _MultipleChoiceDropdownWidgetState<T>
   Size? childSize;
 
   MultipleChoiceDropdownController<T, MultipleChoiceDropdownData<T>>?
-      _controller;
+  _controller;
 
   @override
   void initState() {
@@ -95,7 +95,8 @@ class _MultipleChoiceDropdownWidgetState<T>
   }
 
   void _setupController() {
-    _controller = widget.controller ??
+    _controller =
+        widget.controller ??
         _controller ??
         MultipleChoiceDropdownController<T, MultipleChoiceDropdownData<T>>(
           value: MultipleChoiceDropdownData<T>(),
@@ -171,10 +172,7 @@ class _MultipleChoiceDropdownWidgetState<T>
                       ..._controller!.data.where((i) => i != e),
                     ]);
                   } else {
-                    _controller!.setData([
-                      ..._controller!.data,
-                      e,
-                    ]);
+                    _controller!.setData([..._controller!.data, e]);
                   }
                   widget.onChanged?.call(_controller!.data);
                 },
@@ -241,7 +239,8 @@ class _MultipleChoiceDropdownWidgetState<T>
                 constraints: const BoxConstraints(minHeight: 48),
                 child: Container(
                   alignment: Alignment.centerLeft,
-                  padding: widget.contentPadding ??
+                  padding:
+                      widget.contentPadding ??
                       themeData.inputDecorationTheme.contentPadding ??
                       EdgeInsets.zero,
                   child: MeasureSize(
@@ -263,9 +262,7 @@ class _MultipleChoiceDropdownWidgetState<T>
                   ),
                 ),
               ),
-              Positioned.fill(
-                child: body,
-              ),
+              Positioned.fill(child: body),
             ],
           ),
         );
@@ -277,34 +274,34 @@ class _MultipleChoiceDropdownWidgetState<T>
       child: switch (widget.titleMode) {
         TitleMode.floating => dropdown,
         _ => Builder(
-            builder: (context) {
-              if (widget.title.isNullOrEmpty) {
-                return dropdown;
-              }
-              const spacing = 8.0;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  InputTitleWidget(
-                    title: widget.title,
-                    required: widget.required,
-                  ),
-                  const SizedBox(height: spacing),
-                  dropdown,
-                  ValueListenableBuilder(
-                    valueListenable: _controller!,
-                    builder: (context, value, child) {
-                      return InputHelperError(
-                        validation: value.validation,
-                        padding: const EdgeInsets.only(top: spacing),
-                      );
-                    },
-                  ),
-                ],
-              );
-            },
-          ),
+          builder: (context) {
+            if (widget.title.isNullOrEmpty) {
+              return dropdown;
+            }
+            const spacing = 8.0;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InputTitleWidget(
+                  title: widget.title,
+                  required: widget.required,
+                ),
+                const SizedBox(height: spacing),
+                dropdown,
+                ValueListenableBuilder(
+                  valueListenable: _controller!,
+                  builder: (context, value, child) {
+                    return InputHelperError(
+                      validation: value.validation,
+                      padding: const EdgeInsets.only(top: spacing),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        ),
       },
     );
   }
@@ -312,7 +309,8 @@ class _MultipleChoiceDropdownWidgetState<T>
   Widget? _getPrefixIcon() {
     return widget.prefixIcon?.let(
       (icon) => Padding(
-        padding: widget.prefixIconPadding ??
+        padding:
+            widget.prefixIconPadding ??
             EdgeInsets.symmetric(horizontal: prefixIconSize),
         child: icon,
       ),

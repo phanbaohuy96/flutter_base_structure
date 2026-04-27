@@ -45,8 +45,9 @@ class CloudFile {
     return CloudFile(
       id: id != null ? id() : this.id,
       filenameDisk: filenameDisk != null ? filenameDisk() : this.filenameDisk,
-      filenameDownload:
-          filenameDownload != null ? filenameDownload() : this.filenameDownload,
+      filenameDownload: filenameDownload != null
+          ? filenameDownload()
+          : this.filenameDownload,
       url: url != null ? url() : this.url,
       mimeType: mimeType != null ? mimeType() : this.mimeType,
       fileSize: fileSize != null ? fileSize() : this.fileSize,

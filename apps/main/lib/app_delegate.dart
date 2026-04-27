@@ -16,35 +16,38 @@ class AppDelegate {
     setUrlStrategy(PathUrlStrategy());
 
     Config.instance.fromConfig(config);
-    return runZonedGuarded(() async {
-      // final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-      // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+    return runZonedGuarded(
+      () async {
+        // final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+        // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-      await Hive.initFlutter();
+        await Hive.initFlutter();
 
-      await configureDependencies(env: Config.instance.appConfig.envName);
+        await configureDependencies(env: Config.instance.appConfig.envName);
 
-      setLocaleMessages(AppLocale.th.languageCode, ThMessages());
-      setLocaleMessages(AppLocale.en.languageCode, EnMessages());
+        setLocaleMessages(AppLocale.vi.languageCode, ViMessages());
+        setLocaleMessages(AppLocale.en.languageCode, EnMessages());
 
-      setDefaultLocale(AppLocale.defaultLocale.languageCode);
+        setDefaultLocale(AppLocale.defaultLocale.languageCode);
 
-      if (kIsWeb) {
-      } else {
-        await SystemChrome.setEnabledSystemUIMode(
-          SystemUiMode.manual,
-          overlays: SystemUiOverlay.values,
-        );
+        if (kIsWeb) {
+        } else {
+          await SystemChrome.setEnabledSystemUIMode(
+            SystemUiMode.manual,
+            overlays: SystemUiOverlay.values,
+          );
 
-        await SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
-        ]);
-      }
+          await SystemChrome.setPreferredOrientations([
+            DeviceOrientation.portraitUp,
+            DeviceOrientation.portraitDown,
+          ]);
+        }
 
-      runApp(const MainApplication());
-    }, (Object error, StackTrace stack) {
-      logUtils.e('Error from runZonedGuarded', error, stack);
-    });
+        runApp(const MainApplication());
+      },
+      (Object error, StackTrace stack) {
+        logUtils.e('Error from runZonedGuarded', error, stack);
+      },
+    );
   }
 }

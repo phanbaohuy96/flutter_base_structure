@@ -25,10 +25,7 @@ class DocumentViewerArgs {
 
 class DocumentViewerScreen extends StatefulWidget {
   static String routeName = '/document-viewer';
-  const DocumentViewerScreen({
-    Key? key,
-    required this.args,
-  }) : super(key: key);
+  const DocumentViewerScreen({Key? key, required this.args}) : super(key: key);
 
   final DocumentViewerArgs args;
 
@@ -68,9 +65,7 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
               return PDFViewer(url: widget.args.url, getDataFrom: getDataFrom);
             default:
           }
-          return const Center(
-            child: Text('Không hỗ trợ'),
-          );
+          return const Center(child: Text('Không hỗ trợ'));
         },
       ),
     );

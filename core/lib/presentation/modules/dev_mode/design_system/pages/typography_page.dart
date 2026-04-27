@@ -9,9 +9,9 @@ class TypographyPage extends StatelessWidget {
     final textTheme = context.textTheme;
 
     return ListView(
-      padding: const EdgeInsets.all(16).copyWith(
-        bottom: MediaQuery.of(context).padding.bottom + 16,
-      ),
+      padding: const EdgeInsets.all(
+        16,
+      ).copyWith(bottom: MediaQuery.of(context).padding.bottom + 16),
       children: [
         ...TextThemeStyle.values.map((e) {
           final style = e.style(textTheme);
@@ -19,7 +19,8 @@ class TypographyPage extends StatelessWidget {
           return TextStyleItem(
             name: e.name,
             style: e.style(textTheme),
-            text: '''family: ${style.fontFamily}
+            text:
+                '''family: ${style.fontFamily}
 weight: ${style.fontWeightText}
 size: ${style.fontSize}''',
           );
@@ -52,24 +53,12 @@ class TextStyleItem extends StatelessWidget {
           const SizedBox(height: 12),
           Container(
             decoration: const BoxDecoration(
-              border: Border(
-                left: BorderSide(
-                  width: 2,
-                  color: Colors.grey,
-                ),
-              ),
+              border: Border(left: BorderSide(width: 2, color: Colors.grey)),
             ),
             padding: const EdgeInsets.only(left: 12),
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
+            child: Text(text, style: const TextStyle(fontSize: 16)),
           ),
-          const Divider(
-            height: 16,
-          ),
+          const Divider(height: 16),
         ],
       ),
     );

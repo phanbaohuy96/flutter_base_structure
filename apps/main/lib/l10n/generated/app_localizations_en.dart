@@ -36,7 +36,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get userRole => 'User role';
 
   @override
-  String get poweredByVNS => 'Powered by VNS';
+  String get poweredByApp => 'Powered by My Flutter Base';
 
   @override
   String get pleaseSelectARoleBeforeLoginMsg =>

@@ -9,8 +9,7 @@ part 'token.g.dart';
 enum TokenType {
   bearer('Bearer'),
   jwt('jwt'),
-  firebase('firebase'),
-  ;
+  firebase('firebase');
 
   const TokenType(this.value);
   final String value;
@@ -81,9 +80,9 @@ class UserToken {
   int get hashCode => accessToken.hashCode ^ type.hashCode;
 
   String get authorization => [
-        if (type != null && type != TokenType.jwt) type?.value,
-        if (accessToken.isNotNullOrEmpty) accessToken,
-      ].join(' ');
+    if (type != null && type != TokenType.jwt) type?.value,
+    if (accessToken.isNotNullOrEmpty) accessToken,
+  ].join(' ');
 
   bool get isValid => type != null && accessToken.isNotNullOrEmpty;
 

@@ -13,8 +13,6 @@ class LanguageHeaderProvider extends HeaderProvider {
     final languageCode =
         localDataManager.getLocalization() ??
         AppLocale.defaultLocale.languageCode;
-    return {
-      RequestHeaderKey.language.key: languageCode,
-    };
+    return {RequestHeaderKey.language.key: languageCode};
   }
 }

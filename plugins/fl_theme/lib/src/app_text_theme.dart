@@ -110,9 +110,7 @@ enum TextThemeStyle {
 class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
   final AppTextTheme textTheme;
 
-  AppTextThemeExtension({
-    required this.textTheme,
-  });
+  AppTextThemeExtension({required this.textTheme});
 
   @override
   AppTextThemeExtension copyWith({AppTextTheme? textTheme}) {
@@ -120,10 +118,7 @@ class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
   }
 
   @override
-  AppTextThemeExtension lerp(
-    covariant AppTextThemeExtension? other,
-    double t,
-  ) {
+  AppTextThemeExtension lerp(covariant AppTextThemeExtension? other, double t) {
     return AppTextThemeExtension(
       textTheme: textTheme.lerp(other?.textTheme, t),
     );
@@ -184,26 +179,17 @@ class AppTextTheme extends TextTheme {
     TextStyle? inputError,
     TextStyle? helper,
     TextStyle? buttonText,
-  })  : titleTiny = titleTiny ??
-            titleSmall?.copyWith(
-              fontSize: titleSmall.fontSize! * 0.85,
-            ),
-        inputTitle = inputTitle ?? titleTiny ?? titleSmall,
-        inputRequired = inputRequired ??
-            bodySmall!.copyWith(
-              color: Colors.red,
-            ),
-        textInput = textInput ?? bodyMedium,
-        inputHint = inputHint ??
-            bodyMedium?.copyWith(
-              color: Colors.grey,
-            ),
-        inputError = inputError ??
-            (titleTiny ?? titleSmall)?.copyWith(
-              color: Colors.red,
-            ),
-        helper = helper ?? bodySmall,
-        buttonText = buttonText ?? labelLarge;
+  }) : titleTiny =
+           titleTiny ??
+           titleSmall?.copyWith(fontSize: titleSmall.fontSize! * 0.85),
+       inputTitle = inputTitle ?? titleTiny ?? titleSmall,
+       inputRequired = inputRequired ?? bodySmall!.copyWith(color: Colors.red),
+       textInput = textInput ?? bodyMedium,
+       inputHint = inputHint ?? bodyMedium?.copyWith(color: Colors.grey),
+       inputError =
+           inputError ?? (titleTiny ?? titleSmall)?.copyWith(color: Colors.red),
+       helper = helper ?? bodySmall,
+       buttonText = buttonText ?? labelLarge;
 
   factory AppTextTheme.create(
     ThemeColor themeColor, {

@@ -52,10 +52,10 @@ declare -a sandbox_profiles
 declare -a prod_profiles
 
 # Bundle IDs we're looking for
-DEV_BUNDLE="com.example.app.dev"
-STAGING_BUNDLE="com.example.app.staging"
-SANDBOX_BUNDLE="com.example.app.sandbox"
-PROD_BUNDLE="com.example.app"
+DEV_BUNDLE="com.pbh.myflutterbase.dev"
+STAGING_BUNDLE="com.pbh.myflutterbase.staging"
+SANDBOX_BUNDLE="com.pbh.myflutterbase.sandbox"
+PROD_BUNDLE="com.pbh.myflutterbase"
 
 for profile in "$PROFILES_DIR"/*.mobileprovision; do
     if [ -f "$profile" ]; then

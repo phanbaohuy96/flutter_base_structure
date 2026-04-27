@@ -9,15 +9,9 @@ class HtmlviewerScreenArgs {
   final String? title;
   final String html;
 
-  HtmlviewerScreenArgs({
-    required this.title,
-    required this.html,
-  });
+  HtmlviewerScreenArgs({required this.title, required this.html});
 
-  HtmlviewerScreenArgs copyWith({
-    String? title,
-    String? html,
-  }) {
+  HtmlviewerScreenArgs copyWith({String? title, String? html}) {
     return HtmlviewerScreenArgs(
       title: title ?? this.title,
       html: html ?? this.html,
@@ -25,10 +19,7 @@ class HtmlviewerScreenArgs {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'title': title,
-      'html': html,
-    };
+    return {'title': title, 'html': html};
   }
 
   factory HtmlviewerScreenArgs.fromMap(Map<String, dynamic> map) {
@@ -49,17 +40,12 @@ class HtmlViewerScreen extends StatelessWidget {
 
   final HtmlviewerScreenArgs params;
 
-  const HtmlViewerScreen({
-    super.key,
-    required this.params,
-  });
+  const HtmlViewerScreen({super.key, required this.params});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(params.title ?? ''),
-      ),
+      appBar: AppBar(title: Text(params.title ?? '')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: HtmlWidgetWrapper(

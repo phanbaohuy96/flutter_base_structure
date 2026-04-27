@@ -30,10 +30,7 @@ class ShakeWidgetState extends State<ShakeWidget>
   void initState() {
     super.initState();
 
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _animation = TweenSequence<double>([
       TweenSequenceItem(tween: Tween(begin: 0, end: 8), weight: 1),

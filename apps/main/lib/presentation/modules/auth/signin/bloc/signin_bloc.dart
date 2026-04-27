@@ -17,13 +17,8 @@ part 'signin_state.dart';
 class SigninBloc extends AppBlocBase<SigninEvent, SigninState> {
   final AuthUsecase _authUsecase;
 
-  SigninBloc(
-    this._authUsecase,
-  ) : super(
-          SigninInitial(
-            data: const _StateData(),
-          ),
-        ) {
+  SigninBloc(this._authUsecase)
+    : super(SigninInitial(data: const _StateData())) {
     on<UpdateSelectedUserModelEvent>(_onUpdateSelectedUserRoleEvent);
     on<GetUserRoleEvent>(_onGetUserRoleEvent);
     on<LoginEvent>(_onLoginEvent);
@@ -35,13 +30,7 @@ class SigninBloc extends AppBlocBase<SigninEvent, SigninState> {
     UpdateSelectedUserModelEvent event,
     Emitter<SigninState> emit,
   ) async {
-    emit(
-      state.copyWith(
-        data: state.data.copyWith(
-          selectedUser: event.user,
-        ),
-      ),
-    );
+    emit(state.copyWith(data: state.data.copyWith(selectedUser: event.user)));
   }
 
   Future<void> _onGetUserRoleEvent(
@@ -49,13 +38,7 @@ class SigninBloc extends AppBlocBase<SigninEvent, SigninState> {
     Emitter<SigninState> emit,
   ) async {
     final users = await _authUsecase.getUsers();
-    emit(
-      state.copyWith(
-        data: state.data.copyWith(
-          users: users,
-        ),
-      ),
-    );
+    emit(state.copyWith(data: state.data.copyWith(users: users)));
   }
 
   Future<void> _onLoginEvent(

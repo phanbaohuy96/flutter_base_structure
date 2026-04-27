@@ -32,10 +32,9 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
 
   @override
   void initState() {
-    _controller = widget.controller ??
-        ExpandableController(
-          initialExpanded: widget.isExpanded,
-        );
+    _controller =
+        widget.controller ??
+        ExpandableController(initialExpanded: widget.isExpanded);
     if (widget.isExpanded != null) {
       if (_controller!.expanded != widget.isExpanded) {
         _controller!.toggle();
@@ -46,11 +45,10 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
 
   @override
   void didUpdateWidget(covariant ExpandableWidget oldWidget) {
-    _controller = widget.controller ??
+    _controller =
+        widget.controller ??
         _controller ??
-        ExpandableController(
-          initialExpanded: widget.isExpanded,
-        );
+        ExpandableController(initialExpanded: widget.isExpanded);
 
     if (oldWidget.isExpanded != widget.isExpanded) {
       if (!_controller!.expanded) {
@@ -96,10 +94,7 @@ class _ExpandableWidgetState extends State<ExpandableWidget> {
   Widget build(BuildContext context) {
     return ExpandableNotifier(
       controller: _controller,
-      child: Expandable(
-        collapsed: _buildHeader(),
-        expanded: _buildExpanded(),
-      ),
+      child: Expandable(collapsed: _buildHeader(), expanded: _buildExpanded()),
     );
   }
 }

@@ -15,12 +15,7 @@ class ApiResponse<T> {
   @JsonKey(name: 'data', includeIfNull: false)
   final T? data;
 
-  ApiResponse({
-    this.code,
-    this.message,
-    this.messageKey,
-    this.data,
-  });
+  ApiResponse({this.code, this.message, this.messageKey, this.data});
 
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
@@ -36,10 +31,7 @@ class ApiResponse<T> {
 
   bool get success {
     final _code = code ?? 0;
-    if ([
-      _code < 200,
-      _code >= 300,
-    ].any((e) => e)) {
+    if ([_code < 200, _code >= 300].any((e) => e)) {
       return false;
     }
     return true;

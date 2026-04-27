@@ -58,16 +58,10 @@ class CommonFunction {
     return _compareVersionNames(currentVersion, newVersion) == 0;
   }
 
-  int compareVersionNames(
-    String oldVersionName,
-    String newVersionName,
-  ) =>
+  int compareVersionNames(String oldVersionName, String newVersionName) =>
       _compareVersionNames(oldVersionName, newVersionName);
 
-  int _compareVersionNames(
-    String oldVersionName,
-    String newVersionName,
-  ) {
+  int _compareVersionNames(String oldVersionName, String newVersionName) {
     var res = 0;
 
     final oldNumbers = oldVersionName.split('.');
@@ -107,9 +101,7 @@ class CommonFunction {
     return String.fromCharCodes(
       Iterable.generate(
         length,
-        (_) => _chars.codeUnitAt(
-          _rnd.nextInt(_chars.length),
-        ),
+        (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length)),
       ),
     );
   }

@@ -58,10 +58,7 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
       body: SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Container(
               decoration: BoxDecoration(
                 color: context.theme.primaryColor,
@@ -122,10 +119,7 @@ class _SelectionDialogState<T> extends State<SelectionDialog<T>> {
       onPressed: () {
         Navigator.of(context).pop();
       },
-      icon: Icon(
-        Icons.close,
-        color: context.themeColor.primary,
-      ),
+      icon: Icon(Icons.close, color: context.themeColor.primary),
     );
   }
 }

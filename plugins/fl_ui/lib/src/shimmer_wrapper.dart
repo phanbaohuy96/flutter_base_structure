@@ -103,19 +103,19 @@ class Shimmer extends StatefulWidget {
     this.direction = ShimmerDirection.ltr,
     this.loop = 0,
     this.enabled = true,
-  })  : gradient = LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.centerRight,
-          colors: <Color>[
-            baseColor,
-            baseColor,
-            highlightColor,
-            baseColor,
-            baseColor,
-          ],
-          stops: const <double>[0.0, 0.35, 0.5, 0.65, 1.0],
-        ),
-        super(key: key);
+  }) : gradient = LinearGradient(
+         begin: Alignment.topLeft,
+         end: Alignment.centerRight,
+         colors: <Color>[
+           baseColor,
+           baseColor,
+           highlightColor,
+           baseColor,
+           baseColor,
+         ],
+         stops: const <double>[0.0, 0.35, 0.5, 0.65, 1.0],
+       ),
+       super(key: key);
 
   @override
   _ShimmerState createState() => _ShimmerState();
@@ -125,11 +125,7 @@ class Shimmer extends StatefulWidget {
     super.debugFillProperties(properties);
     properties
       ..add(
-        DiagnosticsProperty<Gradient>(
-          'gradient',
-          gradient,
-          defaultValue: null,
-        ),
+        DiagnosticsProperty<Gradient>('gradient', gradient, defaultValue: null),
       )
       ..add(EnumProperty<ShimmerDirection>('direction', direction))
       ..add(DiagnosticsProperty<Duration>('period', period, defaultValue: null))

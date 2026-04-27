@@ -18,9 +18,7 @@ class HorizontalImages extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final imagesInView = images.take(
-          visibleCount,
-        );
+        final imagesInView = images.take(visibleCount);
         final remaining = max(images.length - visibleCount, 0);
         final itemWidth = constraints.maxWidth / visibleCount;
         return SizedBox(
@@ -46,10 +44,7 @@ class HorizontalImages extends StatelessWidget {
                             tag: '$hashCode $runtimeType $index $e',
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
-                              child: ImageView(
-                                source: e,
-                                fit: BoxFit.cover,
-                              ),
+                              child: ImageView(source: e, fit: BoxFit.cover),
                             ),
                           );
                           if (index == visibleCount - 1 && remaining > 0) {

@@ -22,22 +22,13 @@ class ScreenTheme extends ThemeExtension<ScreenTheme> {
   }
 
   @override
-  ScreenTheme lerp(
-    covariant ScreenTheme? other,
-    double t,
-  ) {
+  ScreenTheme lerp(covariant ScreenTheme? other, double t) {
     if (other == null) {
       return this;
     }
     return ScreenTheme(
-      screenFormTheme: screenFormTheme.lerp(
-        other.screenFormTheme,
-        t,
-      ),
-      mainPageFormTheme: mainPageFormTheme.lerp(
-        other.mainPageFormTheme,
-        t,
-      ),
+      screenFormTheme: screenFormTheme.lerp(other.screenFormTheme, t),
+      mainPageFormTheme: mainPageFormTheme.lerp(other.mainPageFormTheme, t),
     );
   }
 }
@@ -107,10 +98,7 @@ class ScreenFormTheme {
     );
   }
 
-  ScreenFormTheme lerp(
-    covariant ScreenFormTheme? other,
-    double t,
-  ) {
+  ScreenFormTheme lerp(covariant ScreenFormTheme? other, double t) {
     if (other == null) {
       return copyWith();
     }
@@ -123,8 +111,11 @@ class ScreenFormTheme {
       forceCenterTitle: other.forceCenterTitle,
       titleMaxLines: other.titleMaxLines,
       appbarColor: Color.lerp(appbarColor, other.appbarColor, t),
-      appbarForegroundColor:
-          Color.lerp(appbarForegroundColor, other.appbarForegroundColor, t),
+      appbarForegroundColor: Color.lerp(
+        appbarForegroundColor,
+        other.appbarForegroundColor,
+        t,
+      ),
       titleStyle: TextStyle.lerp(other.titleStyle, titleStyle, t),
       desStyle: TextStyle.lerp(other.desStyle, desStyle, t),
     );
@@ -182,10 +173,7 @@ class MainPageFormTheme {
     );
   }
 
-  MainPageFormTheme lerp(
-    covariant MainPageFormTheme? other,
-    double t,
-  ) {
+  MainPageFormTheme lerp(covariant MainPageFormTheme? other, double t) {
     if (other == null) {
       return copyWith();
     }
@@ -194,8 +182,11 @@ class MainPageFormTheme {
       showAppbarDivider: other.showAppbarDivider,
       titleMaxLines: other.titleMaxLines,
       appbarColor: Color.lerp(appbarColor, other.appbarColor, t),
-      appbarForegroundColor:
-          Color.lerp(appbarForegroundColor, other.appbarForegroundColor, t),
+      appbarForegroundColor: Color.lerp(
+        appbarForegroundColor,
+        other.appbarForegroundColor,
+        t,
+      ),
       titleStyle: TextStyle.lerp(other.titleStyle, titleStyle, t),
     );
   }
