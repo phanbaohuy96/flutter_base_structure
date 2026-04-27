@@ -148,6 +148,7 @@ Callers: `context.goToFeature(object: item)` or `context.goToFeatureById(id: '42
 - [ ] Builder wraps the screen in `BlocProvider` and creates the bloc via `injector.get(...)`.
 - [ ] `extraFromUrlQueries` provided when the screen should be deep-linkable.
 - [ ] Coordinator extension exposes typed `goToX` methods, all taking `PushBehavior`.
+- [ ] Route/coordinator methods have concise Dartdoc when they are newly introduced public APIs.
 - [ ] New `IRoute` registered in the parent / app-level `IRoute`.
 - [ ] No direct `package:go_router/go_router.dart` imports in feature code.
 
