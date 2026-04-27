@@ -48,7 +48,7 @@ the available roles:
 ## Letting skills auto-load
 
 Just describe what you want. The agent picks the right skill from
-[`INDEX.md`](./INDEX.md):
+[`INDEX.md`](./INDEX.md). For non-trivial work, start with `behavioral-guardrails` to clarify assumptions, keep the diff small, and define verification:
 
 ```
 "Add a farm-registration feature with a list and detail screen."
@@ -65,13 +65,14 @@ You can also call a skill explicitly:
 
 ### New feature
 
-1. `module-scaffold` — generate the module via `make run_module_generator`
-2. `bloc-pattern` — author events, `_StateData`, state classes
-3. `route-config` — register the route, expose a coordinator
-4. `theme-usage` — style with `context.themeColor` / `context.textTheme`
-5. `localization` — add strings to `apps/main/lib/l10n/localizations.csv`
-6. `code-generation` — `make gen_all` (and `make lang` if strings changed)
-7. `testing` — bloc + widget tests
+1. `behavioral-guardrails` — clarify scope, success criteria, and verification
+2. `module-scaffold` — generate the module via `make run_module_generator`
+3. `bloc-pattern` — author events, `_StateData`, state classes
+4. `route-config` — register the route, expose a coordinator
+5. `theme-usage` — style with `context.themeColor` / `context.textTheme`
+6. `localization` — add strings to `apps/main/lib/l10n/localizations.csv`
+7. `code-generation` — `make gen_all` (and `make lang` if strings changed)
+8. `testing` — bloc + widget tests
 
 ### API integration
 
