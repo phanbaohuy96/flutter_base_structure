@@ -26,16 +26,12 @@ class FilesHelper {
     bool overrideFile = true,
   }) async {
     final runBash = File(pathFile);
-    final runBashExists = await runBash.exists();
 
-    if (!runBashExists) {
-      await runBash.create();
-
+    if (overrideFile) {
+      await runBash.parent.create(recursive: true);
       await runBash.writeAsString(content);
-    } else if (overrideFile) {
-      await runBash.delete();
-      await runBash.create();
-
+    } else if (!await runBash.exists()) {
+      await runBash.parent.create(recursive: true);
       await runBash.writeAsString(content);
     } else {
       print('''[Warning] $pathFile already exists but do not allow to override

@@ -1,16 +1,26 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
 import 'generator/generate_assets.dart' as generate_assets;
+import 'generator/generate_assets.dart' show AssetStructure;
 
-/// Configuration model for asset generation
 class AssetConfig {
   final List<String> assetPaths;
   final String outputPath;
+  final AssetStructure structure;
+  final bool recursive;
+  final bool failOnDuplicates;
 
-  const AssetConfig({required this.assetPaths, required this.outputPath});
+  const AssetConfig({
+    required this.assetPaths,
+    required this.outputPath,
+    this.structure = AssetStructure.tree,
+    this.recursive = true,
+    this.failOnDuplicates = false,
+  });
 
   factory AssetConfig.fromYaml(YamlMap config) {
     final assets = config['assets'] as List?;
@@ -22,14 +32,61 @@ class AssetConfig {
       );
     }
 
+    final generationConfig = config['asset_generation'] as Map?;
+    final structureName = generationConfig?['structure']?.toString() ?? 'tree';
+
     return AssetConfig(
       assetPaths: assets.map((e) => e.toString()).toList(),
       outputPath: assetsGenerated,
+      structure: assetStructureFromName(structureName),
+      recursive: _readBool(generationConfig, 'recursive', defaultValue: true),
+      failOnDuplicates: _readBool(
+        generationConfig,
+        'fail_on_duplicates',
+        defaultValue: structureName == 'flat',
+      ),
     );
   }
 }
 
-/// Custom exception for configuration errors
+class GenerateAssetOptions {
+  final String projectDir;
+  final String? root;
+  final AssetStructure? structure;
+  final bool? recursive;
+  final bool? failOnDuplicates;
+  final bool verbose;
+
+  const GenerateAssetOptions({
+    this.projectDir = '.',
+    this.root,
+    this.structure,
+    this.recursive,
+    this.failOnDuplicates,
+    this.verbose = false,
+  });
+}
+
+class RemoveUnusedAssetsOptions {
+  final String projectDir;
+  final String? root;
+  final AssetStructure? structure;
+  final bool recursive;
+  final bool dryRun;
+  final List<String> scanRoots;
+  final bool verbose;
+
+  const RemoveUnusedAssetsOptions({
+    this.projectDir = '.',
+    this.root,
+    this.structure,
+    this.recursive = true,
+    this.dryRun = true,
+    this.scanRoots = const ['lib'],
+    this.verbose = false,
+  });
+}
+
 class ConfigException implements Exception {
   final String message;
   const ConfigException(this.message);
@@ -38,18 +95,14 @@ class ConfigException implements Exception {
   String toString() => 'ConfigException: $message';
 }
 
-/// Reads and merges configuration from pubspec.yaml and assets.yaml
-Future<YamlMap?> readConfig() async {
+Future<YamlMap?> readConfig({String projectDir = '.'}) async {
   try {
     final config = <String, dynamic>{};
+    final projectPath = path.absolute(projectDir);
 
-    // Read from pubspec.yaml first
-    await _mergeConfigFromFile('pubspec.yaml', config);
+    await _mergeConfigFromFile(path.join(projectPath, 'pubspec.yaml'), config);
+    await _mergeConfigFromFile(path.join(projectPath, 'assets.yaml'), config);
 
-    // Override with assets.yaml if exists
-    await _mergeConfigFromFile('assets.yaml', config);
-
-    // Validate required fields
     if (!_isValidConfig(config)) {
       _showAssetYamlError();
       return null;
@@ -62,7 +115,6 @@ Future<YamlMap?> readConfig() async {
   }
 }
 
-/// Merges configuration from a YAML file into the existing config
 Future<void> _mergeConfigFromFile(
   String filePath,
   Map<String, dynamic> config,
@@ -83,61 +135,85 @@ Future<void> _mergeConfigFromFile(
   }
 }
 
-/// Validates the configuration structure
 bool _isValidConfig(Map<String, dynamic> config) {
   return config['assets'] is List && config['assets_generated'] is String;
 }
 
-/// Generates assets based on configuration
+Future<generate_assets.AssetGenerationResult> generateAssetWithOptions(
+  GenerateAssetOptions options,
+) async {
+  final config = await readConfig(projectDir: options.projectDir);
+  if (config == null) {
+    throw const ConfigException('Asset configuration not found');
+  }
+
+  final assetConfig = AssetConfig.fromYaml(config);
+  _logGenerationInfo(assetConfig, options.projectDir);
+
+  return generate_assets.generateAsset(
+    paths: assetConfig.assetPaths,
+    output: assetConfig.outputPath,
+    root: options.root,
+    projectDir: options.projectDir,
+    recursive: options.recursive ?? assetConfig.recursive,
+    structure: options.structure ?? assetConfig.structure,
+    failOnDuplicates: options.failOnDuplicates ?? assetConfig.failOnDuplicates,
+    verbose: options.verbose,
+  );
+}
+
+Future<generate_assets.RemoveUnusedAssetsResult> removeUnusedAssetsWithOptions(
+  RemoveUnusedAssetsOptions options,
+) async {
+  final config = await readConfig(projectDir: options.projectDir);
+  if (config == null) {
+    throw const ConfigException('Asset configuration not found');
+  }
+
+  final assetConfig = AssetConfig.fromYaml(config);
+
+  return generate_assets.removeUnusedAssets(
+    resPaths: assetConfig.assetPaths,
+    output: assetConfig.outputPath,
+    root: options.root,
+    projectDir: options.projectDir,
+    recursive: options.recursive,
+    structure: options.structure ?? assetConfig.structure,
+    failOnDuplicates: assetConfig.failOnDuplicates,
+    dryRun: options.dryRun,
+    scanRoots: options.scanRoots,
+    verbose: options.verbose,
+  );
+}
+
 Future<void> generateAsset({required List<String> args}) async {
   try {
-    final config = await readConfig();
-    if (config == null) return;
-
-    final assetConfig = AssetConfig.fromYaml(config);
     final root = args.isNotEmpty ? args.first : null;
-
-    _logGenerationInfo(assetConfig);
-
-    await generate_assets.generateAsset(
-      paths: assetConfig.assetPaths,
-      output: assetConfig.outputPath,
-      root: root,
-    );
+    await generateAssetWithOptions(GenerateAssetOptions(root: root));
   } catch (e) {
     print('Error generating assets: $e');
+    rethrow;
   }
 }
 
-/// Removes unused assets based on configuration
 Future<void> removeUnusedAssets({required List<String> args}) async {
   try {
-    final config = await readConfig();
-    if (config == null) return;
-
-    final assetConfig = AssetConfig.fromYaml(config);
     final root = args.isNotEmpty ? args.first : null;
-
-    await generate_assets.removeUnusedAssets(
-      resPaths: assetConfig.assetPaths,
-      output: assetConfig.outputPath,
-      root: root,
-    );
+    await removeUnusedAssetsWithOptions(RemoveUnusedAssetsOptions(root: root));
   } catch (e) {
     print('Error removing unused assets: $e');
+    rethrow;
   }
 }
 
-/// Logs information about the asset generation process
-void _logGenerationInfo(AssetConfig config) {
-  print('Generating assets to ${config.outputPath}');
+void _logGenerationInfo(AssetConfig config, String projectDir) {
+  print('Generating assets for $projectDir to ${config.outputPath}');
   print('Generating assets from:');
-  for (final path in config.assetPaths) {
-    print(' - $path');
+  for (final assetPath in config.assetPaths) {
+    print(' - $assetPath');
   }
 }
 
-/// Shows error message and example configuration
 void _showAssetYamlError() {
   const errorMessage = '''
 Please provide assets.yaml file
@@ -149,7 +225,33 @@ flutter:
     - assets/svg/
     - assets/images/
   assets_generated: lib/generated/
+  asset_generation:
+    structure: flat
+    recursive: true
 ##########################################''';
 
   print(errorMessage);
+}
+
+AssetStructure assetStructureFromName(String name) {
+  switch (name) {
+    case 'folder':
+    case 'tree':
+      return AssetStructure.tree;
+    case 'flat':
+      return AssetStructure.flat;
+    default:
+      throw ConfigException('Unsupported asset structure: $name');
+  }
+}
+
+AssetStructure? optionalAssetStructureFromName(String? name) {
+  return name == null ? null : assetStructureFromName(name);
+}
+
+bool _readBool(Map? config, String key, {required bool defaultValue}) {
+  final value = config?[key];
+  if (value is bool) return value;
+  if (value is String) return value.toLowerCase() == 'true';
+  return defaultValue;
 }
