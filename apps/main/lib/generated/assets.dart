@@ -2,25 +2,35 @@
 ///DO NOT EDIT, all your changes would be lost.
 ///dart run module_generator:generate_asset <path-to-root-preview-image>
 
-part 'audio_assets.dart';
-part 'gif_assets.dart';
-part 'image_assets.dart';
-part 'other_assets.dart';
-part 'rive_assets.dart';
-part 'svg_assets.dart';
-
 class Assets {
-  Assets._();
+  const Assets._();
+  static const ImagesAssets images = ImagesAssets();
+}
 
-  static ImageAssets get image => ImageAssets();
+class ImagesAssets {
+  const ImagesAssets();
 
-  static SvgAssets get svg => SvgAssets();
+  ImagesPngAssets get png => const ImagesPngAssets();
 
-  static GifAssets get gif => GifAssets();
+  ImagesSvgAssets get svg => const ImagesSvgAssets();
 
-  static AudioAssets get audio => AudioAssets();
+  // [apps/main/assets/images/native_splash_icon.png]
+  String get nativeSplashIcon => 'assets/images/native_splash_icon.png';
+}
 
-  static RiveAssets get rive => RiveAssets();
+class ImagesPngAssets {
+  const ImagesPngAssets();
 
-  static OtherAssets get other => OtherAssets();
+  // [apps/main/assets/images/png/empty_search_state.png]
+  String get emptySearchState => 'assets/images/png/empty_search_state.png';
+
+  // [apps/main/assets/images/png/logo.png]
+  String get logo => 'assets/images/png/logo.png';
+}
+
+class ImagesSvgAssets {
+  const ImagesSvgAssets();
+
+  // [apps/main/assets/images/svg/ic_user_avatar.svg]
+  String get icUserAvatar => 'assets/images/svg/ic_user_avatar.svg';
 }

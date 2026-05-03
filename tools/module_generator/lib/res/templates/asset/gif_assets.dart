@@ -7,6 +7,7 @@ const gifAssetsRes =
 part of 'assets.dart';
 
 class GifAssets {
-  GifAssets();$contentKey
+  const GifAssets();$contentKey
 }
+$nestedContentKey
 ''';

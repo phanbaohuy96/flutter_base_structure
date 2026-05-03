@@ -72,7 +72,11 @@ class _AccountSelectionState extends StateBase<AccountSelection> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset(Assets.image.logo, height: 100, fit: BoxFit.fitHeight),
+          Image.asset(
+            Assets.images.png.logo,
+            height: 100,
+            fit: BoxFit.fitHeight,
+          ),
           const SizedBox(height: 20),
           Text('My Flutter Base'.hardcode, style: textTheme.titleMedium),
           const SizedBox(height: 30),

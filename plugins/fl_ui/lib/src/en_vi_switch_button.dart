@@ -45,7 +45,7 @@ class EnViSwitch extends StatelessWidget {
       onChanged: onChanged,
       colorBuilder: (b) => Colors.transparent,
       iconBuilder: (value) => ImageView(
-        source: value ? Assets.svg.icVi : Assets.svg.icEn,
+        source: value ? Assets.icons.icVi : Assets.icons.icEn,
         package: 'fl_ui',
         width: indicatorSize.width * .8,
         height: indicatorSize.width * .8,

@@ -7,6 +7,7 @@ const otherAssetsRes =
 part of 'assets.dart';
 
 class OtherAssets {
-  OtherAssets();$contentKey
+  const OtherAssets();$contentKey
 }
+$nestedContentKey
 ''';
