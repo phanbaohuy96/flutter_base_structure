@@ -2,19 +2,17 @@
 ///DO NOT EDIT, all your changes would be lost.
 ///dart run module_generator:generate_asset <path-to-root-preview-image>
 
-part 'image_assets.dart';
-part 'svg_assets.dart';
-part 'other_assets.dart';
-part 'rive_assets.dart';
-
 class Assets {
-  Assets._();
+  const Assets._();
+  static const IconsAssets icons = IconsAssets();
+}
 
-  static ImageAssets get image => ImageAssets();
+class IconsAssets {
+  const IconsAssets();
 
-  static SvgAssets get svg => SvgAssets();
+  // [plugins/fl_ui/assets/icons/ic_en.svg]
+  String get icEn => 'assets/icons/ic_en.svg';
 
-  static RiveAssets get rive => RiveAssets();
-
-  static OtherAssets get other => OtherAssets();
+  // [plugins/fl_ui/assets/icons/ic_vi.svg]
+  String get icVi => 'assets/icons/ic_vi.svg';
 }

@@ -7,8 +7,9 @@ const riveAssetsRes =
 part of 'assets.dart';
 
 class RiveAssets {
-  RiveAssets();$contentKey
+  const RiveAssets();$contentKey
 }
+$nestedContentKey
 ''';
 
 final riveAssetsArtboardRes =

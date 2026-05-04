@@ -102,7 +102,7 @@
         {
             "label": "gen_assets apps:main",
             "type": "shell",
-            "command": "cd apps/main/; dart run module_generator:generate_asset apps/main",
+            "command": "cd apps/main/; dart run module_generator:generate_asset --project-dir . --root apps/main",
         },
         {
             "label": "dart format all",

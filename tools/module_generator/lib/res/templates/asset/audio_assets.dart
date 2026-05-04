@@ -7,6 +7,7 @@ const audioAssetsRes =
 part of 'assets.dart';
 
 class AudioAssets {
-  AudioAssets();$contentKey
+  const AudioAssets();$contentKey
 }
+$nestedContentKey
 ''';

@@ -191,6 +191,15 @@ make gen_main
 make gen_all
 ```
 
+Asset generation defaults to a tree API based on physical paths under `assets/`:
+
+```text
+assets/icons/ic_en.svg       -> Assets.icons.icEn
+assets/images/png/logo.png   -> Assets.images.png.logo
+```
+
+Run `make asset` for the main app or `make asset_all` for every package currently wired for asset generation. The unused-asset cleanup command is dry-run by default and keeps raw paths, generated accessors, semantic aliases, and detected dynamic raw-path patterns. See `tools/module_generator/README.md` for full configuration, migration notes, and benchmark usage.
+
 ## Localization
 
 CSV files are the source of truth for localized strings:

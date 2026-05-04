@@ -7,7 +7,7 @@ FLUTTER := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo 
 DART    := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "dart")
 
 # Main targets
-.PHONY: setup build run test clean asset lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
+.PHONY: setup build run test clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
 	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
 
@@ -40,7 +40,10 @@ help:
 	@echo "  make gen_main           - Generate code for main app"
 	@echo ""
 	@echo "Asset and Localization:"
-	@echo "  make asset              - Generate assets"
+	@echo "  make asset              - Generate main app assets"
+	@echo "  make asset_main         - Generate main app assets"
+	@echo "  make asset_fl_ui        - Generate fl_ui plugin assets"
+	@echo "  make asset_all          - Generate all known package assets"
 	@echo "  make lang               - Generate all language files"
 	@echo "  make gen_translation    - Generate translation CSV with status column (for tracking changes)"
 	@echo "  make apply_translation  - Apply completed translations back to current localization file"
@@ -126,9 +129,17 @@ pub_get_main:
 ################################################################################
 
 # Asset generation
-asset:
+asset: asset_main
+
+asset_main:
 	cd apps/main/; \
-	$(DART) run module_generator:generate_asset apps/main
+	$(DART) run module_generator:generate_asset --project-dir . --root apps/main
+
+asset_fl_ui:
+	cd plugins/fl_ui/; \
+	$(DART) run module_generator:generate_asset --project-dir . --root plugins/fl_ui
+
+asset_all: asset_main asset_fl_ui
 
 # Generate all language files
 lang:

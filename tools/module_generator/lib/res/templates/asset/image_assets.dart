@@ -7,6 +7,7 @@ const imageAssetsRes =
 part of 'assets.dart';
 
 class ImageAssets {
-  ImageAssets();$contentKey
+  const ImageAssets();$contentKey
 }
+$nestedContentKey
 ''';

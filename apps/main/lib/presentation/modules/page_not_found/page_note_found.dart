@@ -24,7 +24,7 @@ class _NotFoundPageState extends State<NotFoundPage> {
           Center(
             child: EmptyData(
               message: trans.pageNotFound,
-              icon: Assets.image.emptySearchState,
+              icon: Assets.images.png.emptySearchState,
               iconWidth: 220,
               iconHeight: 220,
             ),
