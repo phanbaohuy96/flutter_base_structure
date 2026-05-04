@@ -16,6 +16,7 @@ dependencies:
   fl_utils:
     path: ../fl_utils
 
+  flex_color_scheme: ^8.4.0
   pedantic: ^1.11.1
 
 dev_dependencies:

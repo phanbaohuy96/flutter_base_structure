@@ -1,119 +1,143 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
+import 'app_component_theme.dart';
+import 'app_decoration_theme.dart';
+import 'app_design_system.dart';
 import 'app_text_theme.dart';
+import 'app_typography_theme.dart';
 import 'screen_theme.dart';
 import 'theme_color.dart';
 
-/// Type definitions for theme component builders
+/// Builds a legacy [InputDecorationTheme] from semantic colors and text roles.
+///
+/// Prefer configuring [AppDesignSystem.components] and
+/// [AppDesignSystem.decoration] for new code. This callback remains for callers
+/// still using [AppTheme.factory] or legacy [AppThemeConfig] fields.
 typedef InputDecorationThemeBuilder =
     InputDecorationTheme Function({
       required ThemeColor themeColor,
       required AppTextTheme appTextTheme,
     });
 
+/// Builds a legacy [TextButtonThemeData] from semantic colors and text roles.
 typedef TextButtonThemeBuilder =
     TextButtonThemeData Function({
       required AppTextTheme textTheme,
       required ThemeColor themeColor,
     });
 
+/// Builds a legacy [ElevatedButtonThemeData] from semantic colors and text
+/// roles.
 typedef ElevatedButtonThemeBuilder =
     ElevatedButtonThemeData Function({
       required ThemeColor themeColor,
       required AppTextTheme textTheme,
     });
 
+/// Builds a legacy [OutlinedButtonThemeData] from semantic colors and text
+/// roles.
 typedef OutlinedButtonThemeBuilder =
     OutlinedButtonThemeData Function({
       required ThemeColor themeColor,
       required AppTextTheme textTheme,
     });
 
+/// Builds a legacy [TabBarThemeData] from semantic colors and text roles.
 typedef TabBarThemeBuilder =
     TabBarThemeData Function({
       required AppTextTheme textTheme,
       required ThemeColor themeColor,
     });
 
+/// Builds a legacy [CheckboxThemeData] from semantic colors and text roles.
 typedef CheckboxThemeBuilder =
     CheckboxThemeData Function({
       required ThemeColor themeColor,
       required AppTextTheme textTheme,
     });
 
+/// Builds a legacy [MenuThemeData] from semantic colors and text roles.
 typedef MenuThemeBuilder =
     MenuThemeData Function({
       required ThemeColor themeColor,
       required AppTextTheme textTheme,
     });
 
+/// Builds a legacy [ChipThemeData] from semantic colors and text roles.
 typedef ChipThemeBuilder =
     ChipThemeData Function({
       required ThemeColor themeColor,
       required AppTextTheme textTheme,
     });
 
-/// Configuration class for creating AppTheme instances
+/// Configuration used to create an [AppTheme].
 ///
-/// This class encapsulates all the configuration options needed to create
-/// a consistent theme across the application. It provides a cleaner API
-/// by grouping related parameters and setting sensible defaults.
+/// New code should provide [designSystem], which groups colors, typography,
+/// screen chrome, decoration tokens, component behavior, FlexColorScheme
+/// overrides, platform, Material version, and font family in one reusable
+/// object.
 ///
-/// Example usage:
-/// ```dart
-/// final config = AppThemeConfig(
-///   screenTheme: myScreenTheme,
-///   themeColor: myThemeColor,
-///   fontFamily: 'Poppins',
-/// );
-/// final appTheme = AppTheme.create(config);
-/// ```
+/// The legacy fields remain supported for existing apps that already pass
+/// [screenTheme], [themeColor], an optional [appTextTheme], and component
+/// builder callbacks. When [designSystem] is omitted, [AppTheme.create]
+/// normalizes those legacy pieces into an [AppDesignSystem] internally.
 class AppThemeConfig {
-  /// Screen-specific theme configuration for different device sizes
-  final ScreenTheme screenTheme;
+  /// Preferred design-system configuration for generated themes.
+  final AppDesignSystem? designSystem;
 
-  /// Color palette and theme colors for the application
-  final ThemeColor themeColor;
+  /// Legacy screen theme used when [designSystem] is not provided.
+  final ScreenTheme? screenTheme;
 
-  /// Whether to use Material 3 design system
+  /// Legacy semantic colors used when [designSystem] is not provided.
+  final ThemeColor? themeColor;
+
+  /// Whether generated themes should use Material 3 defaults.
   final bool useMaterial3;
 
-  /// Default font family for the application
+  /// Optional font family for generated themes.
   final String? fontFamily;
 
-  /// Pre-configured text theme, if null will be created from themeColor
+  /// Optional legacy text theme override.
   final AppTextTheme? appTextTheme;
 
-  /// Custom input decoration theme builder
+  /// Legacy input decoration builder override.
   final InputDecorationThemeBuilder inputDecorationThemeBuilder;
 
-  /// Custom text button theme builder
+  /// Legacy text button theme builder override.
   final TextButtonThemeBuilder textButtonThemeBuilder;
 
-  /// Custom elevated button theme builder
+  /// Legacy elevated button theme builder override.
   final ElevatedButtonThemeBuilder elevatedButtonThemeBuilder;
 
-  /// Custom outlined button theme builder
+  /// Legacy outlined button theme builder override.
   final OutlinedButtonThemeBuilder outlinedButtonThemeBuilder;
 
-  /// Custom tab bar theme builder
+  /// Legacy tab bar theme builder override.
   final TabBarThemeBuilder tabBarThemeBuilder;
 
-  /// Custom checkbox theme builder
+  /// Legacy checkbox theme builder override.
   final CheckboxThemeBuilder checkboxThemeBuilder;
 
-  /// Custom menu theme builder
+  /// Legacy menu theme builder override.
   final MenuThemeBuilder menuThemeBuilder;
 
-  /// Custom chip theme builder
+  /// Legacy chip theme builder override.
   final ChipThemeBuilder chipThemeBuilder;
 
-  /// Target platform for platform-specific theming
+  /// Optional platform override for generated [ThemeData].
   final TargetPlatform? targetPlatform;
 
+  /// Creates theme configuration from a design system or legacy theme pieces.
+  ///
+  /// Provide either [designSystem] or both [screenTheme] and [themeColor]. If
+  /// both are supplied, [designSystem] wins and legacy builder callbacks are
+  /// ignored
+  /// for design-system-owned components.
   const AppThemeConfig({
-    required this.screenTheme,
-    required this.themeColor,
+    this.designSystem,
+    this.screenTheme,
+    this.themeColor,
     this.useMaterial3 = true,
     this.fontFamily,
     this.appTextTheme,
@@ -126,41 +150,21 @@ class AppThemeConfig {
     this.menuThemeBuilder = AppTheme.buildMenuTheme,
     this.chipThemeBuilder = AppTheme.buildChipTheme,
     this.targetPlatform,
-  });
+  }) : assert(
+         designSystem != null || (screenTheme != null && themeColor != null),
+         'Provide designSystem or both screenTheme and themeColor.',
+       );
 }
 
-/// A comprehensive theme wrapper that provides a complete Flutter ThemeData
-/// with consistent styling for all UI components.
+/// Material theme wrapper that attaches app semantic theme extensions.
 ///
-/// This class serves as the main entry point for theme creation in the
-/// application. It combines various theme components
-/// (colors, text styles, component themes) into a cohesive design system.
-///
-/// Features:
-/// - Consistent color palette across all components
-/// - Standardized text styles and typography
-/// - Material Design 3 support
-/// - Platform-specific adaptations
-/// - Customizable component themes
-/// - Extension-based theme data for custom components
-///
-/// Usage:
-/// ```dart
-/// // Using the simplified factory
-/// final theme = AppTheme.create(AppThemeConfig(
-///   screenTheme: screenTheme,
-///   themeColor: themeColor,
-/// ));
-///
-/// // Using the legacy factory for backward compatibility
-/// final theme = AppTheme.factory(
-///   screenTheme: screenTheme,
-///   themeColor: themeColor,
-///   useMaterial3: true,
-/// );
-/// ```
+/// [AppTheme.create] builds a Flutter [ThemeData] through FlexColorScheme, then
+/// applies repo-specific overrides and attaches [ScreenTheme],
+/// [ThemeColorExtension], [AppTextThemeExtension], and [AppDecorationTheme].
+/// Apps pass [theme] to `MaterialApp.theme` or `MaterialApp.darkTheme`, while
+/// [name]
+/// is useful for pickers, playgrounds, and debug tooling.
 class AppTheme {
-  // Design constants for consistent UI elements
   static const double _defaultBorderRadius = 8.0;
   static const Size _minimumButtonSize = Size(88, 40);
   static const EdgeInsets _buttonPadding = EdgeInsets.symmetric(horizontal: 16);
@@ -169,39 +173,39 @@ class AppTheme {
     vertical: 6,
   );
 
-  /// Human-readable name for the theme (e.g., "light", "dark")
+  /// Human-readable theme name.
   final String name;
 
-  /// The complete Flutter theme data
+  /// Generated Flutter Material theme data.
   final ThemeData theme;
 
+  /// Creates a named theme wrapper around generated [ThemeData].
   const AppTheme({required this.name, required this.theme});
 
-  /// Primary factory method for creating AppTheme instances
+  /// Creates an app theme from [config].
   ///
-  /// This method uses the configuration pattern to create themes with
-  /// sensible defaults while allowing full customization when needed.
-  ///
-  /// [config] - Configuration object containing all theme parameters
-  ///
-  /// Returns an [AppTheme] instance with the specified configuration
+  /// The preferred path resolves [AppThemeConfig.designSystem], creates or
+  /// reuses its [AppTextTheme], builds Material defaults with FlexColorScheme,
+  /// and then attaches the semantic extensions used by `context.themeColor`,
+  /// `context.textTheme`, `context.screenTheme`, and `context.decorationTheme`.
   factory AppTheme.create(AppThemeConfig config) {
+    final designSystem = _resolveDesignSystem(config);
     final appTextTheme =
-        config.appTextTheme ?? AppTextTheme.create(config.themeColor);
-    final brightness = config.themeColor.brightness;
+        designSystem.textTheme ??
+        designSystem.typography.create(designSystem.colors);
 
     return AppTheme(
-      name: brightness.name,
-      theme: _buildThemeData(config, appTextTheme),
+      name: designSystem.name,
+      theme: _buildThemeData(config, designSystem, appTextTheme),
     );
   }
 
-  /// Legacy factory method for backward compatibility
+  /// Creates an app theme from legacy theme pieces.
   ///
-  /// This method maintains the original API while internally using
-  /// the new configuration-based approach. Use [AppTheme.create] for new code.
-  ///
-  /// @deprecated Use [AppTheme.create] with [AppThemeConfig] instead
+  /// Prefer [AppTheme.create] with [AppThemeConfig.designSystem] for new code.
+  /// This factory remains a compatibility wrapper for older app code that
+  /// passes [ScreenTheme], [ThemeColor], and optional per-component builder
+  /// callbacks.
   factory AppTheme.factory({
     required ScreenTheme screenTheme,
     required ThemeColor themeColor,
@@ -242,93 +246,216 @@ class AppTheme {
     );
   }
 
-  /// Builds the complete ThemeData from configuration and text theme
-  ///
-  /// This method orchestrates the creation of all theme components:
-  /// - Basic theme properties (colors, fonts, platform)
-  /// - Component-specific themes (buttons, inputs, app bar, etc.)
-  /// - Theme extensions for custom components
-  ///
-  /// [config] - Theme configuration containing all settings
-  /// [appTextTheme] - Text theme to be used throughout the app
-  ///
-  /// Returns a complete [ThemeData] instance
+  static AppDesignSystem _resolveDesignSystem(AppThemeConfig config) {
+    final designSystem = config.designSystem;
+    if (designSystem != null) {
+      return designSystem;
+    }
+
+    final themeColor = config.themeColor!;
+    final appTextTheme = config.appTextTheme;
+    return AppDesignSystem(
+      name: themeColor.brightness.name,
+      colors: themeColor,
+      screenTheme: config.screenTheme!,
+      typography: AppTypographyTheme(
+        override: appTextTheme == null ? null : (_) => appTextTheme,
+      ),
+      textTheme: appTextTheme,
+      targetPlatform: config.targetPlatform,
+      useMaterial3: config.useMaterial3,
+      fontFamily: config.fontFamily,
+    );
+  }
+
   static ThemeData _buildThemeData(
     AppThemeConfig config,
+    AppDesignSystem designSystem,
     AppTextTheme appTextTheme,
   ) {
-    return ThemeData(
-      // Core theme properties
-      brightness: config.themeColor.brightness,
-      fontFamily: config.fontFamily,
+    final colors = designSystem.colors;
+    final decoration = designSystem.decoration;
+    final components = designSystem.components;
+    final baseTheme = _buildFlexThemeData(designSystem, appTextTheme);
+    final useDesignSystem = config.designSystem != null;
+
+    return baseTheme.copyWith(
+      brightness: colors.brightness,
       textTheme: appTextTheme,
-      useMaterial3: config.useMaterial3,
-      platform: config.targetPlatform,
-
-      // Color properties
-      primaryColor: config.themeColor.themePrimary,
-      primaryColorLight: config.themeColor.themePrimaryLight,
-      primaryColorDark: config.themeColor.themePrimaryDark,
-      cardColor: config.themeColor.cardBackground,
-      canvasColor: config.themeColor.canvasColor,
-      scaffoldBackgroundColor: config.themeColor.scaffoldBackgroundColor,
-      unselectedWidgetColor: config.themeColor.disableColor,
-      splashColor: config.themeColor.splashColor,
-      shadowColor: config.themeColor.shadowColor,
-      disabledColor: config.themeColor.disableColor,
-      dividerColor: config.themeColor.dividerColor,
-
-      // Component themes - using builder pattern for customization
-      inputDecorationTheme: config.inputDecorationThemeBuilder(
-        themeColor: config.themeColor,
-        appTextTheme: appTextTheme,
-      ),
-      textSelectionTheme: _buildTextSelectionTheme(config.themeColor),
+      primaryTextTheme: appTextTheme,
+      platform: designSystem.targetPlatform,
+      primaryColor: colors.themePrimary,
+      primaryColorLight: colors.themePrimaryLight,
+      primaryColorDark: colors.themePrimaryDark,
+      cardColor: colors.cardBackground,
+      canvasColor: colors.canvasColor,
+      scaffoldBackgroundColor: colors.scaffoldBackgroundColor,
+      unselectedWidgetColor: colors.disableColor,
+      splashColor: colors.splashColor,
+      shadowColor: colors.shadowColor,
+      disabledColor: colors.disableColor,
+      dividerColor: colors.dividerColor,
+      inputDecorationTheme: useDesignSystem
+          ? components.inputDecorationTheme(
+              colors: colors,
+              textTheme: appTextTheme,
+              decoration: decoration,
+            )
+          : config.inputDecorationThemeBuilder(
+              themeColor: colors,
+              appTextTheme: appTextTheme,
+            ),
+      textSelectionTheme: _buildTextSelectionTheme(colors),
       buttonTheme: _buildButtonTheme(),
       textButtonTheme: config.textButtonThemeBuilder(
         textTheme: appTextTheme,
-        themeColor: config.themeColor,
+        themeColor: colors,
       ),
       elevatedButtonTheme: config.elevatedButtonThemeBuilder(
         textTheme: appTextTheme,
-        themeColor: config.themeColor,
+        themeColor: colors,
       ),
       outlinedButtonTheme: config.outlinedButtonThemeBuilder(
         textTheme: appTextTheme,
-        themeColor: config.themeColor,
+        themeColor: colors,
       ),
-      appBarTheme: _buildAppBarTheme(config.themeColor),
+      appBarTheme: _buildAppBarTheme(colors, components),
       tabBarTheme: config.tabBarThemeBuilder(
         textTheme: appTextTheme,
-        themeColor: config.themeColor,
+        themeColor: colors,
       ),
-      checkboxTheme: config.checkboxThemeBuilder(
-        themeColor: config.themeColor,
-        textTheme: appTextTheme,
-      ),
-      chipTheme: config.chipThemeBuilder(
-        themeColor: config.themeColor,
-        textTheme: appTextTheme,
-      ),
+      checkboxTheme: useDesignSystem
+          ? components.checkboxTheme(colors: colors, decoration: decoration)
+          : config.checkboxThemeBuilder(
+              themeColor: colors,
+              textTheme: appTextTheme,
+            ),
+      chipTheme: useDesignSystem
+          ? components.chipTheme(
+              colors: colors,
+              textTheme: appTextTheme,
+              decoration: decoration,
+            )
+          : config.chipThemeBuilder(
+              themeColor: colors,
+              textTheme: appTextTheme,
+            ),
       menuTheme: config.menuThemeBuilder(
-        themeColor: config.themeColor,
+        themeColor: colors,
         textTheme: appTextTheme,
       ),
-      popupMenuTheme: _buildPopupMenuTheme(config.themeColor, appTextTheme),
-      menuButtonTheme: _buildMenuButtonTheme(config.themeColor, appTextTheme),
-      dividerTheme: _buildDividerTheme(config.themeColor),
-      colorScheme: _buildColorScheme(config.themeColor),
-
-      // Theme extensions for custom components
+      popupMenuTheme: _buildPopupMenuTheme(colors, appTextTheme, decoration),
+      menuButtonTheme: _buildMenuButtonTheme(colors, appTextTheme, decoration),
+      dividerTheme: _buildDividerTheme(colors, decoration),
+      cardTheme: components.cardTheme(colors: colors, decoration: decoration),
+      scrollbarTheme: components.scrollbarTheme(
+        colors: colors,
+        decoration: decoration,
+      ),
+      dialogTheme: components.dialogTheme(
+        colors: colors,
+        textTheme: appTextTheme,
+        decoration: decoration,
+      ),
+      bottomSheetTheme: components.bottomSheetTheme(
+        colors: colors,
+        decoration: decoration,
+      ),
+      snackBarTheme: components.snackBarTheme(
+        colors: colors,
+        textTheme: appTextTheme,
+        decoration: decoration,
+      ),
+      listTileTheme: components.listTileTheme(
+        colors: colors,
+        textTheme: appTextTheme,
+        decoration: decoration,
+      ),
+      iconTheme: components.iconTheme(colors: colors),
+      primaryIconTheme: components.iconTheme(colors: colors),
+      floatingActionButtonTheme: components.floatingActionButtonTheme(
+        colors: colors,
+        textTheme: appTextTheme,
+        decoration: decoration,
+      ),
+      navigationBarTheme: components.navigationBarTheme(
+        colors: colors,
+        textTheme: appTextTheme,
+        decoration: decoration,
+      ),
+      drawerTheme: components.drawerTheme(
+        colors: colors,
+        decoration: decoration,
+      ),
+      tooltipTheme: components.tooltipTheme(
+        colors: colors,
+        textTheme: appTextTheme,
+        decoration: decoration,
+      ),
+      progressIndicatorTheme: components.progressIndicatorTheme(
+        colors: colors,
+        decoration: decoration,
+      ),
+      switchTheme: components.switchTheme(colors: colors),
+      radioTheme: components.radioTheme(colors: colors),
+      colorScheme: _buildColorScheme(colors),
       extensions: [
-        config.screenTheme,
-        ThemeColorExtension(colors: config.themeColor),
+        designSystem.screenTheme,
+        ThemeColorExtension(colors: colors),
         AppTextThemeExtension(textTheme: appTextTheme),
+        decoration,
       ],
     );
   }
 
-  /// Creates text selection theme for consistent cursor and selection colors
+  static ThemeData _buildFlexThemeData(
+    AppDesignSystem designSystem,
+    AppTextTheme textTheme,
+  ) {
+    final colors = designSystem.colors;
+    final schemeColor = FlexSchemeColor(
+      primary: colors.primary,
+      primaryContainer: colors.primaryVariant,
+      secondary: colors.secondary,
+      secondaryContainer: colors.secondaryVariant,
+      tertiary: colors.schemeAction,
+      appBarColor: colors.appbarBackgroundColor,
+      error: colors.error,
+    );
+    final subThemesData =
+        designSystem.flexSubThemesData ??
+        designSystem.components.flexSubThemesData(
+          decoration: designSystem.decoration,
+          textTheme: textTheme,
+        );
+
+    if (colors.brightness == Brightness.dark) {
+      return FlexColorScheme.dark(
+        colors: designSystem.flexSchemeData?.dark ?? schemeColor,
+        subThemesData: subThemesData,
+        useMaterial3: designSystem.useMaterial3,
+        fontFamily: designSystem.fontFamily,
+        textTheme: textTheme,
+        primaryTextTheme: textTheme,
+        platform: designSystem.targetPlatform,
+        scaffoldBackground: colors.scaffoldBackgroundColor,
+        appBarBackground: colors.appbarBackgroundColor,
+      ).toTheme;
+    }
+
+    return FlexColorScheme.light(
+      colors: designSystem.flexSchemeData?.light ?? schemeColor,
+      subThemesData: subThemesData,
+      useMaterial3: designSystem.useMaterial3,
+      fontFamily: designSystem.fontFamily,
+      textTheme: textTheme,
+      primaryTextTheme: textTheme,
+      platform: designSystem.targetPlatform,
+      scaffoldBackground: colors.scaffoldBackgroundColor,
+      appBarBackground: colors.appbarBackgroundColor,
+    ).toTheme;
+  }
+
   static TextSelectionThemeData _buildTextSelectionTheme(
     ThemeColor themeColor,
   ) {
@@ -339,30 +466,32 @@ class AppTheme {
     );
   }
 
-  /// Creates basic button theme with standard height
   static ButtonThemeData _buildButtonTheme() {
     return const ButtonThemeData(height: 38);
   }
 
-  /// Creates app bar theme with background and foreground colors
-  static AppBarTheme _buildAppBarTheme(ThemeColor themeColor) {
+  static AppBarTheme _buildAppBarTheme(
+    ThemeColor themeColor,
+    AppComponentTheme components,
+  ) {
     return AppBarTheme(
       backgroundColor: themeColor.appbarBackgroundColor ?? themeColor.primary,
       foregroundColor: themeColor.appbarForegroundColor,
-      centerTitle: true,
+      centerTitle: components.appBarCenterTitle,
     );
   }
 
-  /// Creates divider theme with consistent styling
-  static DividerThemeData _buildDividerTheme(ThemeColor themeColor) {
+  static DividerThemeData _buildDividerTheme(
+    ThemeColor themeColor,
+    AppDecorationTheme decoration,
+  ) {
     return DividerThemeData(
       color: themeColor.dividerColor,
-      thickness: 1,
-      space: 1,
+      thickness: decoration.borderThin,
+      space: decoration.borderThin,
     );
   }
 
-  /// Creates Material 3 color scheme from theme colors
   static ColorScheme _buildColorScheme(ThemeColor themeColor) {
     return ColorScheme(
       primary: themeColor.primary,
@@ -379,17 +508,10 @@ class AppTheme {
     );
   }
 
-  /// Standard border radius for consistent UI elements
   static BorderRadius get _borderRadius =>
       BorderRadius.circular(_defaultBorderRadius);
 
-  /// Creates text button theme with proper state management
-  ///
-  /// Configures text buttons with:
-  /// - Consistent text styling
-  /// - State-based color resolution
-  /// - Standard sizing and padding
-  /// - Rounded corners
+  /// Builds the default legacy text button theme.
   static TextButtonThemeData buildTextButtonTheme({
     required AppTextTheme textTheme,
     required ThemeColor themeColor,
@@ -412,13 +534,7 @@ class AppTheme {
     );
   }
 
-  /// Creates elevated button theme with background and foreground colors
-  ///
-  /// Configures elevated buttons with:
-  /// - Disabled state handling
-  /// - Consistent elevation and shadows
-  /// - State-based color resolution
-  /// - Standard sizing and padding
+  /// Builds the default legacy elevated button theme.
   static ElevatedButtonThemeData buildElevatedButtonTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
@@ -448,12 +564,7 @@ class AppTheme {
     );
   }
 
-  /// Creates outlined button theme with borders and state management
-  ///
-  /// Configures outlined buttons with:
-  /// - State-dependent border colors
-  /// - Background color handling
-  /// - Consistent styling with other buttons
+  /// Builds the default legacy outlined button theme.
   static OutlinedButtonThemeData buildOutlinedButtonTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
@@ -486,13 +597,7 @@ class AppTheme {
     );
   }
 
-  /// Creates input decoration theme for form fields
-  ///
-  /// Configures text fields with:
-  /// - Consistent border styles for all states
-  /// - Proper label behavior
-  /// - Error state styling
-  /// - Standard padding
+  /// Builds the default legacy input decoration theme.
   static InputDecorationTheme buildInputDecorationTheme({
     required ThemeColor themeColor,
     required AppTextTheme appTextTheme,
@@ -500,8 +605,7 @@ class AppTheme {
   }) {
     final bdRadius = borderRadius ?? _borderRadius;
 
-    /// Helper method to create consistent input field borders
-    OutlineInputBorder _createInputBorder(
+    OutlineInputBorder createInputBorder(
       Color color,
       BorderRadius borderRadius,
     ) {
@@ -512,11 +616,11 @@ class AppTheme {
     }
 
     return InputDecorationTheme(
-      border: _createInputBorder(themeColor.borderColor, bdRadius),
-      enabledBorder: _createInputBorder(themeColor.borderColor, bdRadius),
-      focusedBorder: _createInputBorder(themeColor.primary, bdRadius),
-      disabledBorder: _createInputBorder(themeColor.disableColor, bdRadius),
-      errorBorder: _createInputBorder(
+      border: createInputBorder(themeColor.borderColor, bdRadius),
+      enabledBorder: createInputBorder(themeColor.borderColor, bdRadius),
+      focusedBorder: createInputBorder(themeColor.primary, bdRadius),
+      disabledBorder: createInputBorder(themeColor.disableColor, bdRadius),
+      errorBorder: createInputBorder(
         appTextTheme.inputError?.color ?? Colors.red,
         bdRadius,
       ),
@@ -527,7 +631,7 @@ class AppTheme {
     );
   }
 
-  /// Creates tab bar theme with label styling and indicator colors
+  /// Builds the default legacy tab bar theme.
   static TabBarThemeData buildTabBarTheme({
     required AppTextTheme textTheme,
     required ThemeColor themeColor,
@@ -543,113 +647,30 @@ class AppTheme {
     );
   }
 
-  /// Creates checkbox theme with state-based styling
-  ///
-  /// Configures checkboxes with:
-  /// - State-dependent fill colors
-  /// - Consistent check marks and borders
-  /// - Hover and focus state styling
-  /// - Material state overlays
+  /// Builds the default legacy checkbox theme.
   static CheckboxThemeData buildCheckboxTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {
-    return CheckboxThemeData(
-      checkColor: WidgetStateProperty.resolveWith<Color?>((states) {
-        // Color of the check mark inside the checkbox
-        if (states.contains(WidgetState.disabled)) {
-          return themeColor.checkboxCheckColor.withValues(alpha: 0.5);
-        }
-        return themeColor.checkboxCheckColor;
-      }),
-      fillColor: WidgetStateProperty.resolveWith<Color?>((states) {
-        // Background color of the checkbox
-        if (states.contains(WidgetState.disabled)) {
-          return themeColor.checkboxDisabledColor;
-        }
-        if (states.contains(WidgetState.selected)) {
-          return themeColor.checkboxActiveColor;
-        }
-        return Colors.transparent;
-      }),
-      overlayColor: WidgetStateProperty.resolveWith<Color?>((states) {
-        // Hover/ripple effect color
-        if (states.contains(WidgetState.pressed)) {
-          return themeColor.checkboxActiveColor.withValues(alpha: 0.1);
-        }
-        if (states.contains(WidgetState.hovered)) {
-          return themeColor.checkboxActiveColor.withValues(alpha: 0.08);
-        }
-        if (states.contains(WidgetState.focused)) {
-          return themeColor.checkboxActiveColor.withValues(alpha: 0.12);
-        }
-        return null;
-      }),
-      side: WidgetStateBorderSide.resolveWith((states) {
-        // Border styling for unchecked state
-        if (states.contains(WidgetState.disabled)) {
-          return BorderSide(color: themeColor.checkboxDisabledColor, width: 1);
-        }
-        if (states.contains(WidgetState.selected)) {
-          return BorderSide(color: themeColor.checkboxActiveColor, width: 1);
-        }
-        return BorderSide(color: themeColor.checkboxBorderColor, width: 1);
-      }),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      visualDensity: VisualDensity.compact,
+    return const AppComponentTheme().checkboxTheme(
+      colors: themeColor,
+      decoration: const AppDecorationTheme(),
     );
   }
 
-  /// Creates chip theme for Chip widgets
-  ///
-  /// Configures chips with:
-  /// - Consistent background and border colors
-  /// - State-based styling for selection and disabled states
-  /// - Proper text styling for chip labels
-  /// - Material elevation and rounded borders
-  /// - Hover and press state effects
+  /// Builds the default legacy chip theme.
   static ChipThemeData buildChipTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
   }) {
-    return ChipThemeData(
-      backgroundColor: themeColor.chipBackgroundColor,
-      disabledColor: themeColor.chipDisabledColor,
-      selectedColor: themeColor.chipSelectedColor,
-      secondarySelectedColor: themeColor.chipSelectedColor.withValues(
-        alpha: 0.12,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      labelStyle: textTheme.bodyMedium?.copyWith(
-        color: themeColor.chipLabelColor,
-      ),
-      secondaryLabelStyle: textTheme.bodySmall?.copyWith(
-        color: themeColor.chipLabelColor,
-      ),
-      brightness: themeColor.brightness,
-      elevation: 0,
-      pressElevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: themeColor.chipBorderColor, width: 1),
-      ),
-      selectedShadowColor: Colors.transparent,
-      showCheckmark: true,
-      checkmarkColor: themeColor.checkboxCheckColor,
-      deleteIconColor: themeColor.deleteIconColor,
-      iconTheme: IconThemeData(color: themeColor.chipLabelColor, size: 18),
+    return const AppComponentTheme().chipTheme(
+      colors: themeColor,
+      textTheme: textTheme,
+      decoration: const AppDecorationTheme(),
     );
   }
 
-  /// Creates menu theme for context menus, dropdowns, and popup menus
-  ///
-  /// Configures menus based on the design with:
-  /// - Consistent background colors and shadows
-  /// - Proper text styling for menu items
-  /// - State-based styling for selection and hover
-  /// - Material elevation and border radius
-  /// - Comprehensive styling for MenuAnchor, DropdownMenu, and PopupMenuButton
+  /// Builds the default legacy menu theme.
   static MenuThemeData buildMenuTheme({
     required ThemeColor themeColor,
     required AppTextTheme textTheme,
@@ -680,21 +701,18 @@ class AppTheme {
     );
   }
 
-  /// Creates popup menu theme for PopupMenuButton widgets
-  ///
-  /// Configures popup menus with consistent styling that complements
-  /// the main menu theme, specifically for traditional popup menu buttons.
   static PopupMenuThemeData _buildPopupMenuTheme(
     ThemeColor themeColor,
     AppTextTheme textTheme,
+    AppDecorationTheme decoration,
   ) {
     return PopupMenuThemeData(
       color: themeColor.cardBackground,
-      elevation: 8.0,
+      elevation: decoration.elevationMd,
       shadowColor: themeColor.shadowColor.withValues(alpha: 0.16),
       surfaceTintColor: Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(_defaultBorderRadius),
+        borderRadius: decoration.radiusMdBorder,
         side: BorderSide(
           color: themeColor.borderColor.withValues(alpha: 0.12),
           width: 0.5,
@@ -705,13 +723,10 @@ class AppTheme {
     );
   }
 
-  /// Creates menu button theme for MenuAnchor and related button widgets
-  ///
-  /// Provides consistent styling for buttons that trigger menus,
-  /// ensuring visual harmony between menu triggers and menu content.
   static MenuButtonThemeData _buildMenuButtonTheme(
     ThemeColor themeColor,
     AppTextTheme textTheme,
+    AppDecorationTheme decoration,
   ) {
     return MenuButtonThemeData(
       style: ButtonStyle(
@@ -745,23 +760,23 @@ class AppTheme {
           return Colors.transparent;
         }),
         padding: WidgetStateProperty.all(
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          EdgeInsets.symmetric(
+            horizontal: decoration.spaceMd,
+            vertical: decoration.spaceSm,
+          ),
         ),
-        minimumSize: WidgetStateProperty.all(const Size(0, 36)),
+        minimumSize: WidgetStateProperty.all(Size(0, decoration.spaceXxl + 4)),
         shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          RoundedRectangleBorder(borderRadius: decoration.radiusSmBorder),
         ),
-        elevation: WidgetStateProperty.all(0),
+        elevation: WidgetStateProperty.all(decoration.elevationNone),
         visualDensity: VisualDensity.compact,
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
     );
   }
 
-  /// Creates a copy of this theme with optional modifications
-  ///
-  /// Useful for creating theme variations or overriding specific properties
-  /// while maintaining the rest of the theme configuration.
+  /// Creates a copy with selected theme wrapper values replaced.
   AppTheme copyWith({String? name, ThemeData? theme}) {
     return AppTheme(name: name ?? this.name, theme: theme ?? this.theme);
   }

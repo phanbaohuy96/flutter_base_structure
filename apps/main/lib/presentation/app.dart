@@ -47,6 +47,14 @@ class _MyAppState extends State<MainApplication>
   }
 
   @override
+  void didChangePlatformBrightness() {
+    super.didChangePlatformBrightness();
+    if (appBloc.state.themeMode == ThemeMode.system) {
+      _updateStatusBarColor();
+    }
+  }
+
+  @override
   void afterFirstLayout(BuildContext context) {
     _updateStatusBarColor();
   }
@@ -57,11 +65,36 @@ class _MyAppState extends State<MainApplication>
     }
   }
 
+  void _scheduleStatusBarUpdate() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        _updateStatusBarColor();
+      }
+    });
+  }
+
   void _updateStatusBarColor() {
-    if (appBloc.state.themeMode == ThemeMode.dark) {
-      globalNavigatorKey.currentContext?.themeColor.setDarkStatusBar();
+    final currentContext = globalNavigatorKey.currentContext;
+    if (currentContext == null) {
+      return;
+    }
+
+    final themeColor = currentContext.themeColor;
+    if (_effectiveBrightness(currentContext) == Brightness.dark) {
+      themeColor.setDarkStatusBar();
     } else {
-      globalNavigatorKey.currentContext?.themeColor.setLightStatusBar();
+      themeColor.setLightStatusBar();
+    }
+  }
+
+  Brightness _effectiveBrightness(BuildContext context) {
+    switch (appBloc.state.themeMode) {
+      case ThemeMode.dark:
+        return Brightness.dark;
+      case ThemeMode.light:
+        return Brightness.light;
+      case ThemeMode.system:
+        return MediaQuery.platformBrightnessOf(context);
     }
   }
 
@@ -72,10 +105,14 @@ class _MyAppState extends State<MainApplication>
         BlocProvider(create: (_) => appBloc),
         BlocProvider(create: (_) => injector<LocationCubit>()),
       ],
-      child: BlocBuilder<AppGlobalBloc, AppGlobalState>(
-        builder: (context, state) {
-          return _buildApplication(state, context);
+      child: BlocConsumer<AppGlobalBloc, AppGlobalState>(
+        listenWhen: (previous, current) {
+          return previous.themeMode != current.themeMode ||
+              previous.lightTheme != current.lightTheme ||
+              previous.darkTheme != current.darkTheme;
         },
+        listener: (_, _) => _scheduleStatusBarUpdate(),
+        builder: (context, state) => _buildApplication(state, context),
       ),
     );
   }

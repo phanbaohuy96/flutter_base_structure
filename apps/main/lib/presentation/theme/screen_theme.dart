@@ -1,43 +1,15 @@
 import 'package:core/core.dart';
 
-class AppScreenFormTheme extends ScreenFormTheme {
-  AppScreenFormTheme(AppTextTheme textTheme)
-    : super(
-        showHeaderImage: false,
-        hasBottomBorderRadius: false,
-        showAppbarDivider: false,
-        centerTitle: false,
-        titleStyle: textTheme.bodyLarge,
-      );
-}
+class AppScreenThemes {
+  AppScreenThemes._();
 
-class AppMainPageFormTheme extends MainPageFormTheme {
-  AppMainPageFormTheme(AppTextTheme textTheme)
-    : super(
-        showHeaderImage: false,
-        hasBottomBorderRadius: false,
-        showAppbarDivider: false,
-        titleStyle: textTheme.bodyLarge,
-      );
-}
-
-class AppScreenFormDarkTheme extends ScreenFormTheme {
-  AppScreenFormDarkTheme(AppTextTheme textTheme)
-    : super(
-        showHeaderImage: false,
-        hasBottomBorderRadius: false,
-        showAppbarDivider: false,
-        centerTitle: false,
-        titleStyle: textTheme.bodyLarge,
-      );
-}
-
-class AppMainPageFormDarkTheme extends MainPageFormTheme {
-  AppMainPageFormDarkTheme(AppTextTheme textTheme)
-    : super(
-        showHeaderImage: false,
-        hasBottomBorderRadius: false,
-        showAppbarDivider: false,
-        titleStyle: textTheme.bodyLarge,
-      );
+  static ScreenTheme create(AppTextTheme textTheme) {
+    return ScreenTheme.fromTextTheme(
+      textTheme,
+      showHeaderImage: false,
+      hasBottomBorderRadius: false,
+      showAppbarDivider: true,
+      centerTitle: true,
+    );
+  }
 }

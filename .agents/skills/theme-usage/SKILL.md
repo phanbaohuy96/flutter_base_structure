@@ -18,13 +18,14 @@ metadata:
 
 ## What this template uses
 
-`fl_theme` (in `plugins/fl_theme/`) registers three `ThemeExtension`s on `MaterialApp`'s `ThemeData`:
+`fl_theme` (in `plugins/fl_theme/`) builds app themes from an `AppDesignSystem` or a `ThemeJsonConfig`, then registers semantic extensions on `MaterialApp`'s `ThemeData`:
 
 - `ThemeColorExtension` → semantic palette, accessed via `context.themeColor`.
 - `AppTextThemeExtension` → typography, accessed via `context.textTheme`. It extends Flutter's `TextTheme` with extra slots for inputs/buttons.
 - `ScreenTheme` → screen-form + main-page defaults, accessed via `context.screenTheme`.
+- `AppDecorationTheme` → spacing, radius, padding, border, and elevation tokens, accessed via `context.decorationTheme`.
 
-`fl_theme` also exports `ThemeButton.primary(context)` etc. for consistent button styling.
+`fl_theme` also exports `AppTheme.create(AppThemeConfig(designSystem: ...))`, JSON DTOs for portable theme configuration, and `ThemeButton.primary(context)` etc. for consistent button styling.
 
 There is **no `BrandColor`** in this template. Always go through `context.themeColor`.
 
@@ -55,6 +56,23 @@ Container(
 - Text-on-bg: `displayText`, `headlineText`, `titleText`, `bodyText`, `labelText`, `warningText`, `hyperLink`
 
 The full list with doc comments lives in `plugins/fl_theme/lib/src/theme_color.dart`. Use IDE autocomplete on `context.themeColor.` instead of memorizing.
+
+## Decoration tokens
+
+Use `context.decorationTheme` for reusable spacing, radius, padding, borders, and elevations instead of scattering raw layout numbers through reusable UI.
+
+```dart
+final decoration = context.decorationTheme;
+
+Card(
+  elevation: decoration.elevationSm,
+  shape: RoundedRectangleBorder(borderRadius: decoration.radiusMdBorder),
+  child: Padding(
+    padding: EdgeInsets.all(decoration.spaceMd),
+    child: child,
+  ),
+);
+```
 
 ## Typography
 
@@ -105,6 +123,12 @@ ScreenForm(
 
 `MainPageForm` is the corresponding wrapper for main-tab pages.
 
+## JSON themes and playground
+
+Use `ThemeJsonConfig` for portable theme import/export and `AppDesignSystem.fromJsonConfig` to compose runtime theme pieces. Keep preview-only UI choices, such as device-frame wrappers in examples, outside the JSON schema.
+
+The canonical interactive example is `plugins/fl_theme/example`. When changing theme configuration behavior, update or smoke-test that playground so JSON import/export, presets, controls, and preview components remain aligned.
+
 ## Buttons
 
 Lean on `ThemeButton` defaults rather than constructing `ButtonStyle` from scratch:
@@ -126,6 +150,8 @@ When you do override, scope changes to `style: ButtonStyle(...)` rather than mix
 - [ ] No invented text tokens (`titleMd`, `bodyXs`, `labelXs`) — use Material 3 names plus the input/button slots.
 - [ ] Screens use `ScreenForm`/`MainPageForm`, not raw `Scaffold`.
 - [ ] Buttons reuse `ThemeButton.*` defaults where possible.
+- [ ] Shared spacing/radius/elevation reads from `context.decorationTheme` where those tokens apply.
+- [ ] Theme JSON stays portable; preview-only example state is not serialized.
 
 ## Common mistakes
 
