@@ -7,6 +7,7 @@ const svgAssetsRes =
 part of 'assets.dart';
 
 class SvgAssets {
-  SvgAssets();$contentKey
+  const SvgAssets();$contentKey
 }
+$nestedContentKey
 ''';

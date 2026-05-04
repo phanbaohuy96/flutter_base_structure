@@ -10,10 +10,10 @@ ImageConstant get imageConstant =>
 @Singleton(as: core_const.CoreImageConstant)
 class ImageConstant extends core_const.CoreImageConstant {
   @override
-  String get icUserAvatar => Assets.svg.icUserAvatar;
+  String get icUserAvatar => Assets.images.svg.icUserAvatar;
 
   @override
-  String get icGroupAvatar => Assets.svg.icUserAvatar;
+  String get icGroupAvatar => Assets.images.svg.icUserAvatar;
 
   @override
   String get imgScreenFormHeader => '';
@@ -22,8 +22,8 @@ class ImageConstant extends core_const.CoreImageConstant {
   String get imgMainPageFormHeader => '';
 
   @override
-  String get logo => Assets.image.logo;
+  String get logo => Assets.images.png.logo;
 
   @override
-  String get icDefaultItem => Assets.image.logo;
+  String get icDefaultItem => Assets.images.png.logo;
 }
