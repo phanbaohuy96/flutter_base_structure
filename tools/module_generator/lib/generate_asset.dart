@@ -13,6 +13,7 @@ class AssetConfig {
   final AssetStructure structure;
   final bool recursive;
   final bool failOnDuplicates;
+  final Map<String, List<String>> semanticGroups;
 
   const AssetConfig({
     required this.assetPaths,
@@ -20,6 +21,7 @@ class AssetConfig {
     this.structure = AssetStructure.tree,
     this.recursive = true,
     this.failOnDuplicates = false,
+    this.semanticGroups = const {},
   });
 
   factory AssetConfig.fromYaml(YamlMap config) {
@@ -45,6 +47,7 @@ class AssetConfig {
         'fail_on_duplicates',
         defaultValue: structureName == 'flat',
       ),
+      semanticGroups: _readSemanticGroups(generationConfig),
     );
   }
 }
@@ -55,6 +58,7 @@ class GenerateAssetOptions {
   final AssetStructure? structure;
   final bool? recursive;
   final bool? failOnDuplicates;
+  final Map<String, List<String>>? semanticGroups;
   final bool verbose;
 
   const GenerateAssetOptions({
@@ -63,6 +67,7 @@ class GenerateAssetOptions {
     this.structure,
     this.recursive,
     this.failOnDuplicates,
+    this.semanticGroups,
     this.verbose = false,
   });
 }
@@ -71,6 +76,7 @@ class RemoveUnusedAssetsOptions {
   final String projectDir;
   final String? root;
   final AssetStructure? structure;
+  final Map<String, List<String>>? semanticGroups;
   final bool recursive;
   final bool dryRun;
   final List<String> scanRoots;
@@ -80,6 +86,7 @@ class RemoveUnusedAssetsOptions {
     this.projectDir = '.',
     this.root,
     this.structure,
+    this.semanticGroups,
     this.recursive = true,
     this.dryRun = true,
     this.scanRoots = const ['lib'],
@@ -158,6 +165,7 @@ Future<generate_assets.AssetGenerationResult> generateAssetWithOptions(
     recursive: options.recursive ?? assetConfig.recursive,
     structure: options.structure ?? assetConfig.structure,
     failOnDuplicates: options.failOnDuplicates ?? assetConfig.failOnDuplicates,
+    semanticGroups: options.semanticGroups ?? assetConfig.semanticGroups,
     verbose: options.verbose,
   );
 }
@@ -180,6 +188,7 @@ Future<generate_assets.RemoveUnusedAssetsResult> removeUnusedAssetsWithOptions(
     recursive: options.recursive,
     structure: options.structure ?? assetConfig.structure,
     failOnDuplicates: assetConfig.failOnDuplicates,
+    semanticGroups: options.semanticGroups ?? assetConfig.semanticGroups,
     dryRun: options.dryRun,
     scanRoots: options.scanRoots,
     verbose: options.verbose,
@@ -254,4 +263,27 @@ bool _readBool(Map? config, String key, {required bool defaultValue}) {
   if (value is bool) return value;
   if (value is String) return value.toLowerCase() == 'true';
   return defaultValue;
+}
+
+Map<String, List<String>> _readSemanticGroups(Map? config) {
+  final value = config?['semantic_groups'];
+  if (value == null) return const {};
+  if (value is! Map) {
+    throw const ConfigException(
+      'asset_generation.semantic_groups must be a map',
+    );
+  }
+
+  return value.map((key, rawPaths) {
+    if (rawPaths is! List) {
+      throw ConfigException(
+        'asset_generation.semantic_groups.$key must be a list',
+      );
+    }
+
+    return MapEntry(
+      key.toString(),
+      rawPaths.map((path) => path.toString()).toList(),
+    );
+  });
 }
