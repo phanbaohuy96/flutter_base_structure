@@ -50,6 +50,15 @@ enum AssetType {
 
 enum AssetStructure { flat, tree }
 
+class AssetGenerationException implements Exception {
+  final String message;
+
+  const AssetGenerationException(this.message);
+
+  @override
+  String toString() => 'AssetGenerationException: $message';
+}
+
 class AssetGenerationResult {
   final List<AssetFile> assets;
   final List<String> warnings;
@@ -60,11 +69,13 @@ class AssetGenerationResult {
 class RemoveUnusedAssetsResult {
   final List<AssetFile> unusedAssets;
   final List<AssetFile> usedAssets;
+  final List<String> warnings;
   final bool dryRun;
 
   const RemoveUnusedAssetsResult({
     required this.unusedAssets,
     required this.usedAssets,
+    this.warnings = const [],
     required this.dryRun,
   });
 }
@@ -345,6 +356,7 @@ Future<AssetGenerationResult> generateAsset({
   bool recursive = true,
   AssetStructure structure = AssetStructure.flat,
   bool failOnDuplicates = true,
+  Map<String, List<String>> semanticGroups = const {},
   bool verbose = false,
 }) async {
   try {
@@ -365,8 +377,12 @@ Future<AssetGenerationResult> generateAsset({
     }
 
     final groupedAssets = AssetProcessor.groupAssetsByType(allAssets);
+    final semanticAssets = structure == AssetStructure.tree
+        ? _buildSemanticAssets(allAssets, semanticGroups)
+        : const <AssetFile>[];
+    final treeAssets = [...allAssets, ...semanticAssets];
     final treeContent = structure == AssetStructure.tree
-        ? AssetProcessor.generateTreeAssetContent(allAssets, root)
+        ? AssetProcessor.generateTreeAssetContent(treeAssets, root)
         : _typedAssetFacadeContent();
 
     print(
@@ -505,6 +521,7 @@ Future<RemoveUnusedAssetsResult> removeUnusedAssets({
   bool recursive = true,
   AssetStructure structure = AssetStructure.flat,
   bool failOnDuplicates = true,
+  Map<String, List<String>> semanticGroups = const {},
   bool dryRun = true,
   List<String> scanRoots = const ['lib'],
   bool verbose = false,
@@ -527,13 +544,24 @@ Future<RemoveUnusedAssetsResult> removeUnusedAssets({
     final scannedFiles = await _getAllTextFilesInDirs(projectPath, scanRoots);
     print('Scanning ${scannedFiles.length} files for asset usage...');
 
-    final usageScanner = _AssetUsageScanner(allAssets, structure);
+    final usageScanner = _AssetUsageScanner(
+      allAssets,
+      structure,
+      semanticGroups: semanticGroups,
+    );
     final usedAssetSet = <AssetFile>{};
+    final warnings = <String>{};
 
     for (final file in scannedFiles) {
       final content = await file.readAsString();
-      usedAssetSet.addAll(usageScanner.findUsedAssets(content));
+      final usageResult = usageScanner.findUsedAssets(content);
+      usedAssetSet.addAll(usageResult.assets);
+      warnings.addAll(usageResult.warnings);
       if (usedAssetSet.length == allAssets.length) break;
+    }
+
+    for (final warning in warnings) {
+      print(warning);
     }
 
     final usedAssets = <AssetFile>[];
@@ -564,6 +592,7 @@ Future<RemoveUnusedAssetsResult> removeUnusedAssets({
         recursive: recursive,
         structure: structure,
         failOnDuplicates: failOnDuplicates,
+        semanticGroups: semanticGroups,
       );
       print('Asset cleanup completed successfully!');
     } else if (dryRun && unusedAssets.isNotEmpty) {
@@ -581,6 +610,7 @@ Future<RemoveUnusedAssetsResult> removeUnusedAssets({
     return RemoveUnusedAssetsResult(
       unusedAssets: unusedAssets,
       usedAssets: usedAssets,
+      warnings: warnings.toList(),
       dryRun: dryRun,
     );
   } catch (e, stackTrace) {
@@ -593,13 +623,17 @@ Future<RemoveUnusedAssetsResult> removeUnusedAssets({
 class _AssetUsageScanner {
   final Map<String, AssetFile> _assetsByPath;
   final Map<String, AssetFile> _assetsByAccessor;
+  final Map<_DynamicAssetUsage, List<AssetFile>> _dynamicUsageCache = {};
   final RegExp? _pathPattern;
   final RegExp? _accessorPattern;
 
-  _AssetUsageScanner(List<AssetFile> assets, AssetStructure structure)
-    : this._({
-        for (final asset in assets) asset.filePath: asset,
-      }, _buildAssetsByAccessor(assets, structure));
+  _AssetUsageScanner(
+    List<AssetFile> assets,
+    AssetStructure structure, {
+    Map<String, List<String>> semanticGroups = const {},
+  }) : this._({
+         for (final asset in assets) asset.filePath: asset,
+       }, _buildAssetsByAccessor(assets, structure, semanticGroups));
 
   _AssetUsageScanner._(this._assetsByPath, this._assetsByAccessor)
     : _pathPattern = _buildUsagePattern(_assetsByPath.keys),
@@ -608,28 +642,140 @@ class _AssetUsageScanner {
         wordBoundaries: true,
       );
 
-  Iterable<AssetFile> findUsedAssets(String content) sync* {
+  _AssetUsageResult findUsedAssets(String content) {
+    final assets = <AssetFile>{};
+    final warnings = <String>{};
+
     final pathPattern = _pathPattern;
     if (pathPattern != null) {
       for (final match in pathPattern.allMatches(content)) {
         final asset = _assetsByPath[match.group(0)];
-        if (asset != null) yield asset;
+        if (asset != null) assets.add(asset);
       }
     }
 
     final accessorPattern = _accessorPattern;
-    if (accessorPattern == null) return;
-
-    for (final match in accessorPattern.allMatches(content)) {
-      final asset = _assetsByAccessor[match.group(0)];
-      if (asset != null) yield asset;
+    if (accessorPattern != null) {
+      for (final match in accessorPattern.allMatches(content)) {
+        final asset = _assetsByAccessor[match.group(0)];
+        if (asset != null) assets.add(asset);
+      }
     }
+
+    for (final usage in _findDynamicAssetUsages(content)) {
+      final retainedAssets = _assetsMatchingDynamicUsage(usage);
+      if (retainedAssets.isEmpty) continue;
+
+      assets.addAll(retainedAssets);
+      warnings.add(
+        'Warning: kept ${retainedAssets.length} assets under '
+        '${usage.prefix}${usage.extension ?? ''} because a dynamic asset path '
+        'was found.',
+      );
+    }
+
+    return _AssetUsageResult(assets: assets, warnings: warnings);
   }
+
+  List<AssetFile> _assetsMatchingDynamicUsage(_DynamicAssetUsage usage) {
+    return _dynamicUsageCache.putIfAbsent(
+      usage,
+      () => _assetsByPath.entries
+          .where((entry) {
+            final assetPath = entry.key;
+            if (!assetPath.startsWith(usage.prefix)) return false;
+            final extension = usage.extension;
+            return extension == null || assetPath.endsWith(extension);
+          })
+          .map((entry) => entry.value)
+          .toList(),
+    );
+  }
+}
+
+class _AssetUsageResult {
+  final Set<AssetFile> assets;
+  final Set<String> warnings;
+
+  const _AssetUsageResult({required this.assets, required this.warnings});
+}
+
+class _DynamicAssetUsage {
+  final String prefix;
+  final String? extension;
+
+  const _DynamicAssetUsage({required this.prefix, this.extension});
+
+  @override
+  bool operator ==(Object other) {
+    return other is _DynamicAssetUsage &&
+        other.prefix == prefix &&
+        other.extension == extension;
+  }
+
+  @override
+  int get hashCode => Object.hash(prefix, extension);
+}
+
+Iterable<_DynamicAssetUsage> _findDynamicAssetUsages(String content) sync* {
+  final usages = <_DynamicAssetUsage>{};
+  final interpolationPattern = RegExp(
+    r'''["'](assets/[^"'\$]*(?:\$\w+|\$\{[^}]+\})[^"']*)["']''',
+  );
+  final concatenationPattern = RegExp(
+    r'''["'](assets/[^"']*/)["']\s*\+[^;\n]*(?:\+\s*["']([^"']+)["'])''',
+  );
+
+  for (final match in interpolationPattern.allMatches(content)) {
+    final usage = _dynamicUsageFromInterpolatedPath(match.group(1)!);
+    if (usage != null) usages.add(usage);
+  }
+
+  for (final match in concatenationPattern.allMatches(content)) {
+    usages.add(
+      _DynamicAssetUsage(
+        prefix: match.group(1)!,
+        extension: _extensionFromSuffix(match.group(2)),
+      ),
+    );
+  }
+
+  yield* usages;
+}
+
+_DynamicAssetUsage? _dynamicUsageFromInterpolatedPath(String value) {
+  final dynamicStart = _firstDynamicTokenStart(value);
+  if (dynamicStart == -1) return null;
+
+  final prefix = value.substring(0, dynamicStart);
+  if (!prefix.startsWith('assets/') || !prefix.endsWith('/')) return null;
+
+  return _DynamicAssetUsage(
+    prefix: prefix,
+    extension: _extensionFromSuffix(value.substring(dynamicStart)),
+  );
+}
+
+int _firstDynamicTokenStart(String value) {
+  final variableIndex = value.indexOf(RegExp(r'\$\w'));
+  final expressionIndex = value.indexOf(r'${');
+
+  if (variableIndex == -1) return expressionIndex;
+  if (expressionIndex == -1) return variableIndex;
+  return variableIndex < expressionIndex ? variableIndex : expressionIndex;
+}
+
+String? _extensionFromSuffix(String? value) {
+  if (value == null) return null;
+  final extensionTarget = value.startsWith('.') ? 'asset$value' : value;
+  final extension = path.posix.extension(extensionTarget).toLowerCase();
+  return extension.isEmpty ? null : extension;
 }
 
 Map<String, AssetFile> _buildAssetsByAccessor(
   List<AssetFile> assets,
   AssetStructure structure,
+  Map<String, List<String>> semanticGroups,
 ) {
   final assetsByAccessor = <String, AssetFile>{};
   for (final asset in assets) {
@@ -637,16 +783,31 @@ Map<String, AssetFile> _buildAssetsByAccessor(
   }
 
   if (structure == AssetStructure.tree) {
-    final treeAccessors = _buildTreeAccessorsByPath(assets);
-    for (final asset in assets) {
-      final treeAccessor = treeAccessors[asset.filePath];
-      if (treeAccessor != null) {
-        assetsByAccessor[treeAccessor] = asset;
-      }
-    }
+    final assetsByFilePath = {
+      for (final asset in assets) asset.filePath: asset,
+    };
+    _addTreeAccessors(assetsByAccessor, assetsByFilePath, assets);
+    _addTreeAccessors(
+      assetsByAccessor,
+      assetsByFilePath,
+      _buildSemanticAssets(assets, semanticGroups),
+    );
   }
 
   return assetsByAccessor;
+}
+
+void _addTreeAccessors(
+  Map<String, AssetFile> assetsByAccessor,
+  Map<String, AssetFile> assetsByFilePath,
+  List<AssetFile> assets,
+) {
+  for (final entry in _buildTreeAccessorsByPath(assets).entries) {
+    final asset = assetsByFilePath[entry.key];
+    if (asset != null) {
+      assetsByAccessor[entry.value] = asset;
+    }
+  }
 }
 
 RegExp? _buildUsagePattern(
@@ -893,6 +1054,73 @@ AssetContent _typedAssetFacadeContent() {
   static const OtherAssets other = OtherAssets();''',
     nestedClasses: '',
   );
+}
+
+List<AssetFile> _buildSemanticAssets(
+  List<AssetFile> assets,
+  Map<String, List<String>> semanticGroups,
+) {
+  if (semanticGroups.isEmpty) return const [];
+
+  final semanticAssets = <AssetFile>[];
+  final usedGroupNames = <String>{};
+
+  for (final entry in semanticGroups.entries) {
+    final groupName = _toDartIdentifier(entry.key);
+    if (groupName.isEmpty) {
+      throw AssetGenerationException(
+        'Invalid semantic asset group: ${entry.key}',
+      );
+    }
+    if (!usedGroupNames.add(groupName)) {
+      throw AssetGenerationException(
+        'Duplicate semantic asset group: $groupName',
+      );
+    }
+
+    for (final groupPath in entry.value) {
+      final prefix = _normalizeAssetPrefix(groupPath);
+
+      for (final asset in assets) {
+        if (!asset.filePath.startsWith(prefix)) continue;
+
+        final relativePath = asset.filePath.substring(prefix.length);
+        final relativeSegments = _folderSegmentsFor(relativePath);
+        final semanticSegments = [groupName, ...relativeSegments];
+        if (_isPhysicalTreeAlias(asset.folderSegments, semanticSegments)) {
+          continue;
+        }
+
+        semanticAssets.add(
+          AssetFile(
+            variableName: asset.variableName,
+            filePath: asset.filePath,
+            absolutePath: asset.absolutePath,
+            type: asset.type,
+            folderSegments: semanticSegments,
+          ),
+        );
+      }
+    }
+  }
+
+  return semanticAssets;
+}
+
+bool _isPhysicalTreeAlias(
+  List<String> physicalSegments,
+  List<String> segments,
+) {
+  if (physicalSegments.length != segments.length) return false;
+  for (var index = 0; index < physicalSegments.length; index++) {
+    if (physicalSegments[index] != segments[index]) return false;
+  }
+  return true;
+}
+
+String _normalizeAssetPrefix(String value) {
+  final normalized = _toPosixPath(path.posix.normalize(value));
+  return normalized.endsWith('/') ? normalized : '$normalized/';
 }
 
 AssetContent _generateFolderAccessors(List<AssetFile> assets, String? root) {
