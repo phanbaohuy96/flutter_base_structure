@@ -425,7 +425,7 @@ flutter analyze    # From the relevant package if no make target is available
 flutter test       # From the relevant package if tests exist
 ```
 
-For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. If you cannot run the UI in this environment, say so explicitly.
+For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. For interactive web examples or playgrounds, prefer Playwright MCP or another real browser check that covers the golden path, responsive layout, import/export flows, invalid input handling, and browser console errors. If you cannot run the UI in this environment, say so explicitly.
 
 ## Final Reminders
 

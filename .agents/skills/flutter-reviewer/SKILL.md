@@ -53,6 +53,16 @@ metadata:
 - [ ] Typography uses Material 3 slot names (`titleMedium`, `bodySmall`, …) plus the `AppTextTheme` extras (`titleTiny`, `inputTitle`, `buttonText`, …) — not invented tokens like `titleMd`/`bodyXs`.
 - [ ] Buttons reuse `ThemeButton.*` defaults; per-call `style:` overrides are scoped, not redundant.
 - [ ] Existing project controls are reused before custom UI is introduced.
+- [ ] Shared spacing, radii, padding, and elevations use `context.decorationTheme` where reusable theme tokens apply.
+- [ ] Theme JSON/configuration UI keeps preview-only state separate from serialized theme config.
+
+### Interactive examples and playgrounds
+
+- [ ] Presets/imports do not leave stale form fields; use controlled editors, synced controllers, or keyed rebuilds.
+- [ ] Narrow layouts avoid fixed heights that clip tab views or preview content.
+- [ ] JSON import/export, invalid JSON errors, preset switching, and preview-only toggles are covered by tests or smoke checks.
+- [ ] Preview surfaces cover disabled/error/menu/navigation states when the playground claims to demonstrate component theming.
+- [ ] A real browser smoke check was run for web playground changes when possible, including console warnings/errors.
 
 ### Performance
 
@@ -86,6 +96,8 @@ Reply with:
 - A custom control recreated when an existing project widget already fits.
 - A `Text(...)` with a literal English string anywhere in production code.
 - `setState` inside a `BlocBuilder.builder` (rebuild loop).
+- A playground editor using stale `initialValue` fields after imported/preset state changes.
+- Preview-only example options leaking into serialized runtime JSON.
 
 ## Related
 

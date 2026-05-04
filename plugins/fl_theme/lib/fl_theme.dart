@@ -1,7 +1,18 @@
 library fl_theme;
 
+export 'src/app_component_theme.dart';
+export 'src/app_decoration_theme.dart';
+export 'src/app_design_system.dart';
 export 'src/app_text_theme.dart';
+export 'src/app_typography_theme.dart';
 export 'src/extension.dart';
+export 'src/json/theme_json_codec.dart';
+export 'src/json/theme_json_color.dart';
+export 'src/json/theme_json_component.dart';
+export 'src/json/theme_json_config.dart';
+export 'src/json/theme_json_decoration.dart';
+export 'src/json/theme_json_screen.dart';
+export 'src/json/theme_json_typography.dart';
 export 'src/screen_theme.dart';
 export 'src/theme_button.dart';
 export 'src/theme_color.dart';

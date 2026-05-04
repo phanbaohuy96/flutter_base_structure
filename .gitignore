@@ -86,3 +86,6 @@ app.*.map.json
 *.info
 test/.test_coverage.dart
 .claude/settings.local.json
+
+# Playwright related
+.playwright-mcp/

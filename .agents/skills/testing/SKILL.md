@@ -48,7 +48,7 @@ flutter test test/unit/bloc/foo_bloc_test.dart
 make coverage_main                            # coverage on apps/main, via coverage.sh
 ```
 
-There is no `make test` / `make analyze` aggregate target — invoke `flutter test` and `flutter analyze` (or `dart analyze`) per package as needed.
+Use project make targets when they exist; otherwise invoke `flutter test` and `flutter analyze` (or `dart analyze`) per package as needed. Do not assume every branch has aggregate analyze/test targets.
 
 ## Bloc tests
 

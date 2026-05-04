@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'theme_color.dart';
 
+/// Semantic text role names exposed by [AppTextTheme].
+///
+/// The first values mirror Flutter's Material 3 [TextTheme] slots. The extra
+/// values at the end are app-specific roles for inputs, validation, helpers,
+/// and buttons.
 enum TextThemeStyle {
   /// Largest of the display styles.
   ///
@@ -57,6 +62,7 @@ enum TextThemeStyle {
   /// medium-emphasis text.
   titleSmall,
 
+  /// Extra-small title role used for dense labels and form metadata.
   titleTiny,
 
   /// Largest of the body styles.
@@ -99,17 +105,35 @@ enum TextThemeStyle {
   /// content body, like captions.
   labelSmall,
 
+  /// Text entered into input controls.
   textInput,
+
+  /// Labels and titles for input controls.
   inputTitle,
+
+  /// Required-field indicators and required helper text.
   inputRequired,
+
+  /// Placeholder and hint text inside input controls.
   inputHint,
+
+  /// Validation error text for input controls.
   inputError,
+
+  /// Text used by app button themes.
   buttonText,
 }
 
+/// Theme extension that stores the app semantic text theme in [ThemeData].
+///
+/// It is attached by [AppTheme] and read through `context.textTheme` so widgets
+/// can use app-specific roles without reaching into `Theme.of(context)`
+/// directly.
 class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
+  /// Semantic text theme for app widgets and generated Material themes.
   final AppTextTheme textTheme;
 
+  /// Creates a text theme extension.
   AppTextThemeExtension({required this.textTheme});
 
   @override
@@ -125,6 +149,13 @@ class AppTextThemeExtension extends ThemeExtension<AppTextThemeExtension> {
   }
 }
 
+/// Material text theme with app-specific semantic text roles.
+///
+/// `AppTextTheme` keeps Flutter's Material 3 text slots and adds roles used by
+/// this template's inputs, helpers, validation messages, and button themes. It
+/// is generated from [ThemeColor] by [AppTextTheme.create], optionally
+/// adjusted by typography configuration, and attached to [ThemeData] with
+/// [AppTextThemeExtension].
 class AppTextTheme extends TextTheme {
   /// Default using [TextTheme.titleSmall] with 85% font size
   ///
@@ -155,6 +186,12 @@ class AppTextTheme extends TextTheme {
   /// with color is [Colors.red]
   final TextStyle? helper;
 
+  /// Creates an app text theme with Material and custom semantic roles.
+  ///
+  /// Any omitted custom role is derived from the closest Material text slot.
+  /// The generated defaults are useful when manually creating a theme, but most
+  /// apps should use [AppTextTheme.create] or [AppTypographyTheme.create] so
+  /// colors and role overrides stay consistent.
   AppTextTheme({
     super.displayLarge,
     super.displayMedium,
@@ -191,6 +228,11 @@ class AppTextTheme extends TextTheme {
        helper = helper ?? bodySmall,
        buttonText = buttonText ?? labelLarge;
 
+  /// Creates the default semantic text roles from [themeColor].
+  ///
+  /// The optional [wrapper] is applied to every base [TextStyle]. This is
+  /// useful for global font adapters because it runs before custom roles such
+  /// as [inputTitle] and [buttonText] are derived or overridden.
   factory AppTextTheme.create(
     ThemeColor themeColor, {
     TextStyle Function(TextStyle)? wrapper,
@@ -279,6 +321,7 @@ class AppTextTheme extends TextTheme {
     );
   }
 
+  /// Linearly interpolates every Material and custom text role.
   AppTextTheme lerp(AppTextTheme? other, double t) {
     return AppTextTheme(
       displayLarge: TextStyle.lerp(displayLarge, other?.displayLarge, t),
@@ -306,6 +349,10 @@ class AppTextTheme extends TextTheme {
     );
   }
 
+  /// Creates a copy with selected Material or custom text roles replaced.
+  ///
+  /// This method intentionally returns [AppTextTheme], unlike Flutter's base
+  /// `TextTheme.copyWith`, so custom roles remain available after overrides.
   AppTextTheme copyWithTypography({
     TextStyle? displayLarge,
     TextStyle? displayMedium,
