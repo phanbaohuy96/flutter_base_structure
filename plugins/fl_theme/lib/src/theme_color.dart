@@ -3,6 +3,14 @@ import 'package:flutter/services.dart';
 
 import 'utils/extension.dart';
 
+/// Semantic color palette used by `fl_theme` and app widgets.
+///
+/// `ThemeColor` is the color source for generated Material [ThemeData],
+/// FlexColorScheme input colors, and the `context.themeColor` extension. Apps
+/// usually provide only [primary], [secondary], and [brightness]; the
+/// constructor derives sensible Material scheme colors, surfaces, component
+/// state colors, and semantic text colors from those values. Override
+/// individual brand tokens when needed.
 class ThemeColor {
   /// Override [ThemeData.primaryColor].
   ///
@@ -200,16 +208,37 @@ class ThemeColor {
   /// Color of delete icon in chip
   final Color deleteIconColor;
 
+  /// Brightness that selects light or dark fallback values.
   final Brightness brightness;
-  // Text Color
+
+  /// Semantic color for display text roles.
   final Color displayText;
+
+  /// Semantic color for headline text roles.
   final Color headlineText;
+
+  /// Semantic color for title text roles.
   final Color titleText;
+
+  /// Semantic color for body text roles.
   final Color bodyText;
+
+  /// Semantic color for label text roles.
   final Color labelText;
+
+  /// Semantic color for warning text.
   final Color warningText;
+
+  /// Semantic color for links.
   final Color hyperLink;
 
+  /// Creates a semantic palette with brightness-aware fallback tokens.
+  ///
+  /// Required [primary], [secondary], and [brightness] define the brand and
+  /// mode. All other values are optional overrides. When omitted, colors are
+  /// derived from Material defaults, the brand colors, or light/dark fallback
+  /// surfaces so `AppTheme.create` can build a complete theme from a small
+  /// palette.
   ThemeColor({
     required this.primary,
     required this.secondary,
@@ -417,7 +446,7 @@ class ThemeColor {
        selectedLabelColor = selectedLabelColor ?? primary,
        selected = selected ?? primary;
 
-  //HEX code color
+  /// Legacy convenience swatches kept for existing app widgets.
   final lightGrey = const Color(0xFFbebebe);
   final greyDC = const Color(0xFFdcdcdc);
   final black = const Color(0xFF000000);
@@ -445,6 +474,7 @@ class ThemeColor {
   final lightGreen = const Color(0xFFE7F6E9);
   final green33B64F = const Color(0xFF33B64F);
 
+  /// Applies transparent light-theme status bar styling to the platform chrome.
   void setLightStatusBar() {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -455,6 +485,7 @@ class ThemeColor {
     );
   }
 
+  /// Applies transparent dark-theme status bar styling to the platform chrome.
   void setDarkStatusBar() {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
@@ -465,6 +496,7 @@ class ThemeColor {
     );
   }
 
+  /// Linearly interpolates semantic colors that participate in theme changes.
   ThemeColor lerp(covariant ThemeColor other, double t) {
     return ThemeColor(
       primary: Color.lerp(primary, other.primary, t) ?? other.primary,
@@ -576,6 +608,7 @@ class ThemeColor {
     );
   }
 
+  /// Two-layer soft shadow used by elevated custom surfaces.
   List<BoxShadow> get boxShadowBlur => [
     BoxShadow(
       offset: const Offset(0, 2),
@@ -589,19 +622,26 @@ class ThemeColor {
     ),
   ];
 
+  /// Lightest reusable shadow preset.
   List<BoxShadow> get boxShadowLightest => [
     BoxShadow(blurRadius: 1.5, color: shadowColor),
     BoxShadow(blurRadius: 1, color: shadowColor),
   ];
+
+  /// Light reusable shadow preset.
   List<BoxShadow> get boxShadowLight => [
     BoxShadow(blurRadius: 4, color: shadowColor),
     BoxShadow(blurRadius: 4, color: shadowColor),
   ];
+
+  /// Medium reusable shadow preset.
   List<BoxShadow> get boxShadowMedium => [
     ...boxShadowLight,
     BoxShadow(blurRadius: 8, color: shadowColor),
     BoxShadow(blurRadius: 8, color: shadowColor),
   ];
+
+  /// Strong reusable shadow preset.
   List<BoxShadow> get boxShadowDark => [
     ...boxShadowMedium,
     BoxShadow(blurRadius: 10.9, color: shadowColor),
@@ -609,9 +649,16 @@ class ThemeColor {
   ];
 }
 
+/// Theme extension that stores [ThemeColor] in [ThemeData].
+///
+/// It is attached by [AppTheme] and read through `context.themeColor`, giving
+/// widgets access to semantic colors without depending on raw Material palette
+/// slots.
 class ThemeColorExtension extends ThemeExtension<ThemeColorExtension> {
+  /// Semantic colors for the current theme.
   final ThemeColor colors;
 
+  /// Creates a semantic color extension.
   ThemeColorExtension({required this.colors});
 
   @override
@@ -624,7 +671,6 @@ class ThemeColorExtension extends ThemeExtension<ThemeColorExtension> {
     if (other == null) {
       return this;
     }
-    // improve handle lerp to using switch color animation
     return ThemeColorExtension(colors: colors.lerp(other.colors, t));
   }
 }
