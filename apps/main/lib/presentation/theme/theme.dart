@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'screen_theme.dart';
@@ -12,49 +11,32 @@ class MainAppTheme {
   const MainAppTheme({required this.light, required this.dark});
 
   factory MainAppTheme.normal() {
-    return MainAppTheme(light: _buildLightTheme(), dark: _buildDarkTheme());
-  }
-
-  static AppTheme _buildLightTheme() {
-    final themeColor = AppThemeColor();
-    final textTheme = _createTextTheme(themeColor);
-
-    return AppTheme.factory(
-      screenTheme: _createScreenTheme(
-        screenFormTheme: AppScreenFormTheme(textTheme),
-        mainPageFormTheme: AppMainPageFormTheme(textTheme),
-      ),
-      appTextTheme: textTheme,
-      themeColor: themeColor,
-      targetPlatform: _getTargetPlatform(),
+    return MainAppTheme(
+      light: _buildTheme(AppThemeColor()),
+      dark: _buildTheme(AppDarkThemeColor()),
     );
   }
 
-  static AppTheme _buildDarkTheme() {
-    final themeColor = AppDarkThemeColor();
-    final textTheme = _createTextTheme(themeColor);
+  static AppTheme _buildTheme(ThemeColor themeColor) {
+    final typography = _createTypographyTheme();
+    final textTheme = typography.create(themeColor);
 
-    return AppTheme.factory(
-      screenTheme: _createScreenTheme(
-        screenFormTheme: AppScreenFormDarkTheme(textTheme),
-        mainPageFormTheme: AppMainPageFormDarkTheme(textTheme),
+    return AppTheme.create(
+      AppThemeConfig(
+        designSystem: AppDesignSystem(
+          name: themeColor.brightness.name,
+          colors: themeColor,
+          screenTheme: AppScreenThemes.create(textTheme),
+          typography: typography,
+          textTheme: textTheme,
+        ),
       ),
-      appTextTheme: textTheme,
-      themeColor: themeColor,
-      targetPlatform: _getTargetPlatform(),
     );
   }
 
-  static AppTextTheme _createTextTheme(ThemeColor themeColor) {
-    return AppTextTheme.create(
-      themeColor,
-      wrapper: (style) {
-        /// You can use Google Fonts to apply font family
-        /// e.g., return GoogleFonts.poppins(textStyle: style);
-        return style;
-      },
-    ).let(
-      (textTheme) => textTheme.copyWithTypography(
+  static AppTypographyTheme _createTypographyTheme() {
+    return AppTypographyTheme(
+      override: (textTheme) => textTheme.copyWithTypography(
         inputTitle: textTheme.bodyMedium,
         buttonText: textTheme.bodyMedium?.copyWith(
           fontSize: 15,
@@ -62,19 +44,5 @@ class MainAppTheme {
         ),
       ),
     );
-  }
-
-  static ScreenTheme _createScreenTheme({
-    required dynamic screenFormTheme,
-    required dynamic mainPageFormTheme,
-  }) {
-    return ScreenTheme(
-      screenFormTheme: screenFormTheme,
-      mainPageFormTheme: mainPageFormTheme,
-    );
-  }
-
-  static TargetPlatform? _getTargetPlatform() {
-    return kIsWeb ? null : TargetPlatform.iOS;
   }
 }

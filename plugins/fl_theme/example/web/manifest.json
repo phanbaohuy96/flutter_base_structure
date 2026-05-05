@@ -1,0 +1,9 @@
+{
+  "name": "fl_theme JSON playground",
+  "short_name": "fl_theme",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#3B82F6",
+  "description": "Preview and export JSON theme configurations for fl_theme."
+}
