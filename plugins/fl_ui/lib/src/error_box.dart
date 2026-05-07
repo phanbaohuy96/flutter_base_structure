@@ -1,3 +1,4 @@
+import 'package:fl_theme/fl_theme.dart';
 import 'package:fl_utils/fl_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -10,7 +11,7 @@ class ErrorBox extends StatefulWidget {
   final EdgeInsetsGeometry errorTextPadding;
   final EdgeInsetsGeometry? errorBoxPadding;
   final TextStyle? errorStyle;
-  final BorderRadius borderRadius;
+  final BorderRadius? borderRadius;
   final Color normalBorderColor;
   final String? validation;
 
@@ -19,7 +20,7 @@ class ErrorBox extends StatefulWidget {
     required this.child,
     this.controller,
     this.errorStyle,
-    this.borderRadius = BorderRadius.zero,
+    this.borderRadius,
     this.normalBorderColor = Colors.transparent,
     this.errorBoxPadding,
     this.errorTextPadding = const EdgeInsets.only(top: 8),
@@ -42,11 +43,16 @@ class _ErrorBoxState extends State<ErrorBox> {
 
   @override
   void didUpdateWidget(covariant ErrorBox oldWidget) {
-    if (oldWidget.controller == null) {
-      controller?.dispose();
+    if (oldWidget.controller != widget.controller) {
+      if (oldWidget.controller == null) {
+        controller?.dispose();
+      }
+      controller =
+          widget.controller ?? ErrorBoxController(value: widget.validation);
+    } else if (widget.controller == null &&
+        oldWidget.validation != widget.validation) {
+      controller?.value = widget.validation;
     }
-    controller =
-        widget.controller ?? ErrorBoxController(value: widget.validation);
     super.didUpdateWidget(oldWidget);
   }
 
@@ -71,6 +77,10 @@ class _ErrorBoxState extends State<ErrorBox> {
       child: ValueListenableBuilder<String?>(
         valueListenable: controller!,
         builder: (context, value, child) {
+          final themeColor = context.themeColor;
+          final decoration = context.decorationTheme;
+          final borderRadius =
+              widget.borderRadius ?? decoration.inputRadiusBorder;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisSize: MainAxisSize.min,
@@ -79,11 +89,12 @@ class _ErrorBoxState extends State<ErrorBox> {
                 padding: value != null
                     ? widget.errorBoxPadding ?? EdgeInsets.zero
                     : EdgeInsets.zero,
-                borderRadius: widget.borderRadius,
+                borderRadius: borderRadius,
+                borderWidth: decoration.borderThin,
                 bgColor: Colors.transparent,
                 borderColor: value == null
                     ? widget.normalBorderColor
-                    : Colors.red,
+                    : themeColor.error,
                 child: child,
               ),
               Builder(
@@ -100,8 +111,8 @@ class _ErrorBoxState extends State<ErrorBox> {
                         value!,
                         style:
                             widget.errorStyle ??
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                              color: Colors.red,
+                            context.textTheme.inputError?.copyWith(
+                              color: themeColor.error,
                             ),
                       ),
                     ),
@@ -139,5 +150,11 @@ class ErrorBoxController extends ValueNotifier<String?> {
 
   void requestFocus() {
     _focusNode.requestFocus();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 }

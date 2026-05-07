@@ -15,8 +15,6 @@ dependencies:
   pedantic: ^1.11.1
   uuid: 
 
-  flutter_spinkit: ^5.1.0
-  dotted_border: ^2.0.0
   carousel_slider: ^5.0.0
   dots_indicator: ^2.1.0
   badges: ^3.0.2 
