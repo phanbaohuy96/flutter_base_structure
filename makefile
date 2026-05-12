@@ -9,7 +9,7 @@ DART    := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "da
 # Main targets
 .PHONY: setup build run test clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
-	app_identifier reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
+	app_identifier create_project reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
 
 # Default target
 all: setup build
@@ -23,6 +23,7 @@ help:
 	@echo "Available commands:"
 	@echo ""
 	@echo "Project Setup:"
+	@echo "  make create_project     - Create a new project folder from this template"
 	@echo "  make setup              - Complete project setup (clean, pub get, language files, assets, code generation)"
 	@echo "  make reset              - Reset project (clean and regenerate everything)"
 	@echo ""
@@ -69,6 +70,10 @@ help:
 ################################################################################
 # Project Setup
 ################################################################################
+
+# Create a new project from this template
+create_project:
+	sh create_project.sh $(ARGS)
 
 # Setup the project (run `cp apps/main/.env.example apps/main/.env` first)
 setup: clean pub_get lang asset gen_all

@@ -72,6 +72,7 @@ Useful make targets:
 | Target | Purpose |
 | --- | --- |
 | `make help` | Show every available target |
+| `make create_project` | Create a new project folder from this template |
 | `make setup` | `clean` + `pub_get` + `lang` + `asset` + `gen_all` |
 | `make reset` | Clean and regenerate language files, assets and generated code |
 | `make pub_get` | Run `flutter pub get` for plugins, `core`, and `apps/main` |
@@ -245,9 +246,58 @@ Distribution and CI/CD related files live in:
 `apps/main/dist_config.sh` currently defines dev and staging distribution values.
 Extend it before using scripted sandbox or prod distribution targets.
 
-## Customizing the template
+## Creating a new project
 
-When forking this template for a real app:
+Use the project creator when starting a real app from this template. It copies the
+skeleton to a separate destination folder, then rewrites the app display name,
+Dart package slug, Android/iOS package IDs, Android namespace/Kotlin package,
+web metadata, localization brand strings, release notes, Fastlane config,
+signing paths, and known docs/helper scripts in the copied project.
+
+Interactive mode:
+
+```bash
+make create_project
+```
+
+Non-interactive mode:
+
+```bash
+make create_project ARGS='\
+  --destination ../acme_mobile \
+  --display-name "Acme Mobile" \
+  --slug acme_mobile \
+  --base-package com.acme.mobile \
+  --non-interactive'
+```
+
+The wrapper accepts the same arguments directly:
+
+```bash
+sh create_project.sh \
+  --destination ../acme_mobile \
+  --display-name "Acme Mobile" \
+  --slug acme_mobile \
+  --base-package com.acme.mobile \
+  --non-interactive
+```
+
+After generation, review any reported remaining template references, copy the
+local environment/signing examples, fill in real credentials, then run setup in
+the generated project:
+
+```bash
+cd ../acme_mobile
+cp apps/main/.env.example apps/main/.env
+cp apps/main/android/keystores/keystore.properties.example \
+   apps/main/android/keystores/keystore.properties
+make pub_get
+make setup
+```
+
+## Customizing the template manually
+
+If you choose not to use `make create_project`:
 
 1. Update `apps/main/app_identifier.yaml` with the new names and package IDs.
 2. Regenerate native identifiers with `make app_identifier`.
