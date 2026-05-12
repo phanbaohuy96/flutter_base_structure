@@ -1,10 +1,11 @@
 import 'package:badges/badges.dart' as badge;
+import 'package:fl_theme/fl_theme.dart';
 import 'package:flutter/material.dart';
 
 class BadgeBox extends StatelessWidget {
   final int count;
-  final Color countTextColor;
-  final Color backgroundColor;
+  final Color? countTextColor;
+  final Color? backgroundColor;
   final Widget child;
   final badge.BadgePosition? badgePosition;
   final int maxCount;
@@ -13,22 +14,27 @@ class BadgeBox extends StatelessWidget {
     Key? key,
     required this.count,
     required this.child,
-    this.countTextColor = Colors.white,
-    this.backgroundColor = const Color(0xFFEC3505),
+    this.countTextColor,
+    this.backgroundColor,
     this.badgePosition,
     this.maxCount = 99,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeColor = context.themeColor;
+    final decoration = context.decorationTheme;
+    final resolvedBackgroundColor = backgroundColor ?? themeColor.error;
+    final resolvedTextColor = countTextColor ?? themeColor.onError;
+
     return badge.Badge(
       showBadge: count > 0,
       badgeContent: Container(
         alignment: Alignment.center,
         child: Text(
           count > maxCount ? '$maxCount+' : '$count',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: countTextColor,
+          style: context.textTheme.labelSmall?.copyWith(
+            color: resolvedTextColor,
             fontWeight: FontWeight.bold,
           ),
           maxLines: 1,
@@ -40,10 +46,13 @@ class BadgeBox extends StatelessWidget {
         animationDuration: Duration(milliseconds: 250),
       ),
       badgeStyle: badge.BadgeStyle(
-        badgeColor: backgroundColor,
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+        badgeColor: resolvedBackgroundColor,
+        padding: EdgeInsets.symmetric(
+          horizontal: decoration.spaceXs,
+          vertical: decoration.spaceXxs / 2,
+        ),
         shape: badge.BadgeShape.square,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: decoration.chipRadiusBorder,
       ),
       child: child,
     );

@@ -1,3 +1,4 @@
+import 'package:fl_theme/fl_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'availability_widget.dart';
@@ -38,12 +39,6 @@ class _CheckboxWithTitleState extends State<CheckboxWithTitle> {
   }
 
   @override
-  void didChangeDependencies() {
-    _value = widget.value ?? false;
-    super.didChangeDependencies();
-  }
-
-  @override
   void didUpdateWidget(covariant CheckboxWithTitle oldWidget) {
     if (widget.value != oldWidget.value) {
       _value = widget.value ?? _value;
@@ -53,8 +48,8 @@ class _CheckboxWithTitleState extends State<CheckboxWithTitle> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
+    final decoration = context.decorationTheme;
+    final textTheme = context.textTheme;
     return AvailabilityWidget(
       enable: widget.enable,
       child: InkWell(
@@ -65,7 +60,7 @@ class _CheckboxWithTitleState extends State<CheckboxWithTitle> {
           });
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
+          padding: EdgeInsets.symmetric(vertical: decoration.spaceSm),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -73,18 +68,14 @@ class _CheckboxWithTitleState extends State<CheckboxWithTitle> {
                 height: widget.size,
                 width: widget.size,
                 child: Checkbox(
-                  side: WidgetStateBorderSide.resolveWith(
-                    (states) => BorderSide(
-                      width: 1.0,
-                      color: _value
-                          ? theme.colorScheme.primary
-                          : theme.disabledColor,
-                    ),
-                  ),
-                  activeColor: theme.colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
+                  side: widget.borderColor == null
+                      ? null
+                      : WidgetStateBorderSide.resolveWith(
+                          (states) => BorderSide(
+                            width: decoration.borderThin,
+                            color: widget.borderColor!,
+                          ),
+                        ),
                   value: _value,
                   onChanged: (bool? v) {
                     if (mounted) {
@@ -97,7 +88,7 @@ class _CheckboxWithTitleState extends State<CheckboxWithTitle> {
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
               ),
-              SizedBox(width: widget.space ?? 5),
+              SizedBox(width: widget.space ?? decoration.spaceXs),
               Expanded(
                 child: Text(
                   widget.title,
