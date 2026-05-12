@@ -1,6 +1,26 @@
 # Module Generator
 
-Utilities for generating feature modules, exports, localization helpers, and asset accessors in this Flutter template.
+Utilities for generating projects, feature modules, exports, localization helpers, and asset accessors in this Flutter template.
+
+## Project creation
+
+Create a new project folder from this template and rewrite the copied app identity:
+
+```bash
+dart run module_generator:create_project \
+  --destination ../acme_mobile \
+  --display-name "Acme Mobile" \
+  --slug acme_mobile \
+  --base-package com.acme.mobile \
+  --non-interactive
+```
+
+Omit the flags to run interactively, or add `--dry-run` to preview the planned copy
+and rewrite operations. The command keeps this template checkout unchanged,
+excludes local cache/VCS folders, updates source-of-truth identity files, moves
+the Android Kotlin package path, refreshes generated app identifier files, and
+attempts to run Flutter localization generation in the copied project.
+
 
 ## Asset generation
 
@@ -151,6 +171,13 @@ Useful checks while editing the generator:
 fvm dart analyze tools/module_generator
 fvm flutter test tools/module_generator
 make asset_all
+
+dart run module_generator:create_project \
+  --destination /private/tmp/acme_mobile \
+  --display-name "Acme Mobile" \
+  --slug acme_mobile \
+  --base-package com.acme.mobile \
+  --non-interactive
 ```
 
 For package-level smoke testing:
