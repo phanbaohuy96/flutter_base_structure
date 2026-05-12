@@ -78,9 +78,9 @@ class HighlightBoxColor extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _borderRadius =
-        borderRadius ?? const BorderRadius.all(Radius.circular(8));
-    final _borderWidth = borderWidth ?? 1;
+    final decoration = context.decorationTheme;
+    final _borderRadius = borderRadius ?? decoration.radiusMdBorder;
+    final _borderWidth = borderWidth ?? decoration.borderThin;
     return InkWell(
       onTap: onTap,
       borderRadius: _borderRadius,

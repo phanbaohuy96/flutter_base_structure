@@ -1,3 +1,4 @@
+import 'package:fl_theme/fl_theme.dart';
 import 'package:flutter/material.dart';
 
 import 'availability_widget.dart';
@@ -31,7 +32,7 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final textTheme = context.textTheme;
     final titleWidget = title is Widget
         ? title
         : Padding(
@@ -62,11 +63,6 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
                   child: Radio<T>(
                     value: value,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    fillColor: WidgetStateProperty.resolveWith<Color>((
-                      Set<WidgetState> states,
-                    ) {
-                      return Theme.of(context).colorScheme.primary;
-                    }),
                   ),
                 ),
               ),
