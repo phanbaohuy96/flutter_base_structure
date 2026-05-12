@@ -82,6 +82,14 @@ These generic agent rules come before implementation details. For the full check
 2. **Simplicity first**: write the minimum code that solves the current request. Reuse existing repo patterns, widgets, helpers, and skills before adding new abstractions.
 3. **Surgical changes**: every changed line should trace to the request or required generated output. Do not refactor adjacent code, reformat unrelated files, or delete unrelated dead code unless asked.
 4. **Goal-driven execution**: for multi-step work, define success criteria before coding, then verify with concrete checks such as `rg`, generation commands, analyzer, tests, or UI smoke tests.
+5. **Use the model only for judgment calls**: use the model for classification, drafting, summarization, and extraction. Do not use it for routing, retries, or deterministic transforms. If code can answer, code answers.
+6. **Token budgets are not advisory**: per-task budget is 4,000 tokens and per-session budget is 30,000 tokens. If approaching budget, summarize and start fresh. Surface the breach; do not silently overrun.
+7. **Surface conflicts, don't average them**: if two patterns contradict, pick one based on which is more recent or more tested. Explain why and flag the other for cleanup. Do not blend conflicting patterns.
+8. **Read before you write**: before adding code, read exports, immediate callers, and shared utilities. "Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
+9. **Tests verify intent, not just behavior**: tests must encode why behavior matters, not only what it does. A test that cannot fail when business logic changes is wrong.
+10. **Checkpoint after every significant step**: summarize what was done, what is verified, and what is left. Do not continue from a state you cannot describe back. If you lose track, stop and restate.
+11. **Match the codebase's conventions, even if you disagree**: conformance is more important than taste inside the codebase. If you genuinely think a convention is harmful, surface it instead of forking silently.
+12. **Fail loud**: "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
 
 ## Generalized implementation guidance
 
