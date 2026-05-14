@@ -4,8 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../di/di.dart';
 import '../l10n/generated/app_localizations.dart';
-import 'modules/auth/signin/views/signin_screen.dart';
-import 'modules/page_not_found/page_note_found.dart';
 import 'route/route.dart';
 import 'theme/theme.dart';
 
@@ -19,6 +17,7 @@ class MainApplication extends StatefulWidget {
 class _MyAppState extends State<MainApplication>
     with WidgetsBindingObserver, AfterLayoutMixin {
   final themeSetting = MainAppTheme.normal();
+  GoRouter? _router;
 
   late final appBloc = injector<AppGlobalBloc>(
     param1: AppGlobalState(
@@ -36,6 +35,7 @@ class _MyAppState extends State<MainApplication>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _router?.dispose();
     super.dispose();
   }
 
@@ -117,8 +117,8 @@ class _MyAppState extends State<MainApplication>
     );
   }
 
-  MaterialApp _buildApplication(AppGlobalState state, BuildContext context) {
-    return MaterialApp(
+  Widget _buildApplication(AppGlobalState state, BuildContext context) {
+    return MaterialApp.router(
       title: 'My Flutter Base',
       scrollBehavior: const MobileLikeScrollBehavior(),
       theme: state.lightTheme?.theme,
@@ -135,17 +135,7 @@ class _MyAppState extends State<MainApplication>
       ],
       supportedLocales: AppLocale.supportedLocales,
       locale: state.locale,
-      onGenerateRoute: (settings) => injector<RouteGenerator>().generateRoute(
-        context,
-        settings,
-        supportUnknownRoute: false,
-      ),
-      onUnknownRoute: (settings) {
-        return buildRoute((_) => const NotFoundPage(), settings: settings);
-      },
-      navigatorObservers: [myNavigatorObserver],
-      navigatorKey: globalNavigatorKey,
-      initialRoute: SignInScreen.routeName,
+      routerConfig: _router ??= buildAppRouter(context),
       builder: EasyLoading.init(
         builder: (_, child) {
           return MobileSizeLayoutConstraints(

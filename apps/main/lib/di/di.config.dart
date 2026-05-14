@@ -25,7 +25,6 @@ import '../data/data_source/local/preferences_helper/preferences_helper.dart'
 import '../data/data_source/local/sqlite/sqlite_database.impl.dart' as _i833;
 import '../domain/usecases/auth/auth_usecase.dart' as _i738;
 import '../presentation/modules/auth/signin/bloc/signin_bloc.dart' as _i893;
-import '../presentation/route/route.dart' as _i722;
 import '../presentation/theme/theme_dialog.dart' as _i83;
 
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -38,8 +37,6 @@ Future<_i174.GetIt> $initGetIt(
   await _i918.CorePackageModule().init(gh);
   await _i541.DataSourcePackageModule().init(gh);
   final appDatasourceModule = _$AppDatasourceModule();
-  gh.factory<_i722.RouteGenerator>(() => _i722.RouteGenerator());
-  gh.singleton<_i965.CoreImageConstant>(() => _i835.ImageConstant());
   gh.singleton<_i494.SQLiteDatabase>(() => _i833.SQLiteDatabaseImpl());
   gh.factory<_i212.PreferencesHelper>(
     () => _i212.PreferencesHelperImpl(gh<_i494.SharedPreferences>()),
@@ -50,12 +47,13 @@ Future<_i174.GetIt> $initGetIt(
       gh<_i494.CorePreferencesHelper>(),
     ),
   );
-  gh.factoryParam<_i494.ThemeDialog, _i409.BuildContext, dynamic>(
-    (context, _) => _i83.AppThemeDialog(context),
-  );
   gh.factory<_i494.CoreLocalDataManager>(
     () =>
         appDatasourceModule.coreLocalDataManager(gh<_i655.LocalDataManager>()),
+  );
+  gh.singleton<_i965.CoreImageConstant>(() => _i835.ImageConstant());
+  gh.factoryParam<_i494.ThemeDialog, _i409.BuildContext, dynamic>(
+    (context, _) => _i83.AppThemeDialog(context),
   );
   gh.factory<_i738.AuthUsecase>(
     () => _i738.AuthInteractorImpl(gh<_i655.LocalDataManager>()),

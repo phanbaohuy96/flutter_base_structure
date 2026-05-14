@@ -43,12 +43,22 @@ test/
 ## Running tests
 
 ```bash
-flutter test                                  # current package
-flutter test test/unit/bloc/foo_bloc_test.dart
-make coverage_main                            # coverage on apps/main, via coverage.sh
+fvm flutter test                                  # current package
+fvm flutter test test/unit/bloc/foo_bloc_test.dart
+make coverage_main                                # coverage on apps/main, via coverage.sh
 ```
 
-Use project make targets when they exist; otherwise invoke `flutter test` and `flutter analyze` (or `dart analyze`) per package as needed. Do not assume every branch has aggregate analyze/test targets.
+Use project make targets when they exist. For direct commands, check `.fvm_cache`; when `USING_FVM=1`, invoke `fvm flutter test`, `fvm flutter analyze`, or `fvm dart analyze` instead of local tools. Do not assume every branch has aggregate analyze/test targets.
+
+## Browser E2E smoke checks
+
+Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification of Flutter web changes. Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests.
+
+Build only the affected web package from the repo root, using that package's normal FVM build command.
+
+Serve the affected `build/web` directory with SPA fallback before navigating with Playwright MCP, because path URL strategy routes must resolve to `index.html`.
+
+For assertions, verify the behavior the user requested: URL changes, visible/semantic UI state, route state intentionally exposed by the app, and browser console errors. A missing favicon 404 can be noted separately from app failures.
 
 ## Bloc tests
 
@@ -164,7 +174,7 @@ For interactions, drive a real bloc through the actions extension instead of moc
 - [ ] Each test exercises one behavior.
 - [ ] Mocked dependencies use `mocktail` consistently across the file.
 - [ ] Widget tests provide the same locale + theme + bloc context the screen needs.
-- [ ] `flutter test` passes locally before commit.
+- [ ] `fvm flutter test` passes locally before commit.
 
 ## Common mistakes
 

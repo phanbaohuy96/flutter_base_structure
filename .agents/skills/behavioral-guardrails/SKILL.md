@@ -78,6 +78,7 @@ Prefer concrete checks:
 - `make gen_core`, `make gen_main`, or `make gen_all` only after relevant generated inputs change.
 - `fvm flutter analyze --no-pub` from affected packages.
 - UI smoke tests for user-facing flow changes when a device/browser is available.
+- Use Playwright MCP for Flutter web route/playground E2E checks only when the user requests E2E or Playwright verification.
 
 ## 5. Flutter base source-of-truth rules
 
