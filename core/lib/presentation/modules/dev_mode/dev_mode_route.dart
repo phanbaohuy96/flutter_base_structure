@@ -1,3 +1,4 @@
+import '../../../common/services/network_log/network_log_service.dart';
 import '../../route/route.dart';
 import 'app_config/app_config_screen.dart';
 import 'dashboard/dev_mode_dashboard_screen.dart';
@@ -31,7 +32,10 @@ class DevModeRoute extends IRoute {
       CustomRouter(
         path: NetworkLogDetailScreen.routeName,
         builder: (context, uri, extra) {
-          return NetworkLogDetailScreen(log: extra);
+          return buildRequiredRouteExtra<NetworkLog>(
+            extra,
+            (log) => NetworkLogDetailScreen(log: log),
+          );
         },
       ),
       CustomRouter(

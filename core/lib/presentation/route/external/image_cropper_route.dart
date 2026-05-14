@@ -11,7 +11,10 @@ class ImageCropperRoute extends IRoute {
       CustomRouter(
         path: ImageCropperScreen.routeName,
         builder: (context, uri, extra) {
-          return ImageCropperScreen(imagefile: extra as File);
+          return buildRequiredRouteExtra<File>(
+            extra,
+            (imagefile) => ImageCropperScreen(imagefile: imagefile),
+          );
         },
       ),
     ];

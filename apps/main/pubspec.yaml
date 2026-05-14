@@ -25,6 +25,8 @@ dependencies:
   flutter_native_splash: ^2.2.8
   core:
     path: ../../core
+  fl_navigation:
+    path: ../../plugins/fl_navigation
 
   mobile_scanner: ^7.0.0
   image: ^4.0.17

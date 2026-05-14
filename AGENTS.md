@@ -113,6 +113,8 @@ Prefer project-standard commands over ad-hoc direct commands.
 2. **Make commands** from the root `makefile`
 3. **Direct Flutter/Dart commands** only when there is no make target or MCP tool
 
+When a direct Flutter/Dart command is needed, check `.fvm_cache` first. If it contains `USING_FVM=1`, use `fvm flutter ...` or `fvm dart ...` instead of the local Flutter/Dart installation.
+
 Useful make targets:
 
 ```bash
@@ -125,7 +127,7 @@ make lang        # Regenerate all localization outputs
 make format      # dart format .
 make test        # Run tests when available
 make coverage_main
-make analyze     # If present in this branch; otherwise use flutter analyze directly
+make analyze     # If present in this branch; otherwise use fvm flutter analyze directly
 make help        # Show available commands
 ```
 
@@ -429,11 +431,13 @@ make format
 make lang          # If localization CSV changed
 make gen_core      # If core generated inputs changed
 make gen_main      # If app generated inputs changed
-flutter analyze    # From the relevant package if no make target is available
-flutter test       # From the relevant package if tests exist
+fvm flutter analyze    # From the relevant package if no make target is available
+fvm flutter test       # From the relevant package if tests exist
 ```
 
-For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. For interactive web examples or playgrounds, prefer Playwright MCP or another real browser check that covers the golden path, responsive layout, import/export flows, invalid input handling, and browser console errors. If you cannot run the UI in this environment, say so explicitly.
+For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. If you cannot run the UI in this environment, say so explicitly.
+
+Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification. For requested web route E2E, build only the affected Flutter web package with FVM and serve its `build/web` directory with SPA fallback. Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the testing skill for the generic browser workflow.
 
 ## Final Reminders
 
