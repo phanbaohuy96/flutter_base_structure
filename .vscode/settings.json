@@ -67,6 +67,5 @@
     "Schyler",
     "sprintf",
     "xcconfig"
-  ],
-  "dart.flutterSdkPath": ".fvm/versions/3.41.7"
+  ]
 }
