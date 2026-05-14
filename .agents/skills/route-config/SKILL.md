@@ -19,16 +19,18 @@ metadata:
 
 ## What this template uses
 
-Defined in `core/lib/presentation/route/route.dart` and re-exported via `package:core/core.dart`:
+Navigation primitives live in `plugins/fl_navigation/` and are re-exported by `core/lib/presentation/route/route.dart` and `package:core/core.dart`:
 
-- `IRoute` — module-level provider; implements `routers()` returning `List<CustomRouter>`.
-- `CustomRouter<T>` — one route entry, parameterized on the type of `extra`. Supports `path`, `builder`, `extraFromUrlQueries`, and `pathVerify`.
+- `IRoute` — module-level provider; implements `routers()` returning `List<CustomRouter>` and can expose GoRouter routes through `toGoRoutes()`.
+- `CustomRouter<T>` — one route entry, parameterized on the type of `extra`. Supports `path`, `name`, `builder`, `pageBuilder`, `parentNavigatorKey`, `extraFromUrlQueries`, `pathVerify`, nested `routes`, and `redirect`.
+- `buildFlGoRouter` — app-level adapter that combines `IRoute` providers, standalone `CustomRouter`s, and raw `RouteBase`s into a `GoRouter`.
+- `buildRequiredRouteExtra<T>` — core helper for screens that require a typed `extra`; it returns `UnsupportedPage` instead of scattering unsafe casts.
 
-Navigation is invoked via `PushBehavior` strategies (`PushNamedBehavior`, `GoBehavior`, etc.) over a `BuildContext` extension — the "coordinator" pattern.
+Navigation is invoked via `PushBehavior` strategies (`PushNamedBehavior`, `PushReplacementNamedBehavior`, `PushNamedAndRemoveUntilBehavior`, etc.) over a `BuildContext` extension — the coordinator pattern.
 
-The plugin `plugins/fl_navigation/` ships a richer variant (with `routes:`, `redirect:`, `toGoRoute()` bridges) but is **not** imported by `apps/` or `core/` here — feature code uses the core variant only.
+GoRouter-backed pushes default to path/location navigation. Set `goRouterNavigationTarget: GoRouterNavigationTarget.name` only when the route has a `name` and named navigation is required.
 
-Do **not** import `package:go_router/go_router.dart` directly from feature code. Go through `IRoute`/`CustomRouter`.
+Do **not** import `package:go_router/go_router.dart` directly from feature code. Go through `IRoute`/`CustomRouter` and the `fl_navigation`/`core` exports.
 
 ## Reference: route file
 
@@ -61,6 +63,20 @@ class FeatureRoute extends IRoute {
 
 The `routeName` lives on the screen as `static String routeName = '/feature';`. `injector.get(param1: ...)` flows the `@factoryParam` from the bloc constructor.
 
+For routes that cannot render without a typed extra, use the shared helper instead of repeating casts:
+
+```dart
+CustomRouter<FeatureArgs>(
+  path: FeatureScreen.routeName,
+  builder: (context, uri, extra) {
+    return buildRequiredRouteExtra<FeatureArgs>(
+      extra,
+      (args) => FeatureScreen(args: args),
+    );
+  },
+)
+```
+
 ## Compound modules
 
 A parent `IRoute` aggregates child `IRoute`s with the spread operator:
@@ -76,7 +92,7 @@ class DashboardRoute extends IRoute {
 }
 ```
 
-The app's top-level route registry (e.g. `apps/main/lib/presentation/route/route.dart`) does the same to bring every module into the router.
+The app's top-level route registry (e.g. `apps/main/lib/presentation/route/route.dart`) passes route providers into `buildFlGoRouter` to bring every module into the `MaterialApp.router` tree.
 
 ## Args + URL params
 
@@ -149,14 +165,18 @@ Callers: `context.goToFeature(object: item)` or `context.goToFeatureById(id: '42
 - [ ] `extraFromUrlQueries` provided when the screen should be deep-linkable.
 - [ ] Coordinator extension exposes typed `goToX` methods, all taking `PushBehavior`.
 - [ ] Route/coordinator methods have concise Dartdoc when they are newly introduced public APIs.
-- [ ] New `IRoute` registered in the parent / app-level `IRoute`.
+- [ ] New `IRoute` registered in the parent route or app-level `buildFlGoRouter` provider list.
+- [ ] Required extras use `buildRequiredRouteExtra<T>` or another shared guard instead of repeated unsafe casts.
+- [ ] Web-deep-linkable routes have `extraFromUrlQueries`; when the user requests E2E, verify them with a browser smoke check.
 - [ ] No direct `package:go_router/go_router.dart` imports in feature code.
 
 ## Common mistakes
 
 - Hard-coding route paths in callers instead of going through a coordinator.
 - Forgetting to spread sub-module `routers()` into the parent.
+- Registering a top-level module route but not adding its `IRoute` provider to `buildFlGoRouter`.
 - Using `extra` without an `Args` type, then casting in the screen — it loses URL-param support.
+- Adding a GoRouter named push without setting `name` on the matching `CustomRouter`.
 
 ## Related
 

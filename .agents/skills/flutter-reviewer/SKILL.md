@@ -43,6 +43,8 @@ metadata:
 - [ ] `CustomRouter<Args>` (typed) when extras are non-null.
 - [ ] Builder wraps the screen in `BlocProvider`; bloc created via `injector.get(...)`.
 - [ ] `extraFromUrlQueries` set when the screen should be deep-linkable.
+- [ ] Required typed extras use `buildRequiredRouteExtra<T>` or equivalent shared guard instead of repeated unsafe casts.
+- [ ] App-level route aggregation uses `buildFlGoRouter` with the relevant `IRoute` providers.
 - [ ] Coordinator extension on `BuildContext` exposes typed `goToX`, all taking a `PushBehavior`.
 - [ ] No direct `package:go_router/go_router.dart` imports in feature code.
 
@@ -62,7 +64,8 @@ metadata:
 - [ ] Narrow layouts avoid fixed heights that clip tab views or preview content.
 - [ ] JSON import/export, invalid JSON errors, preset switching, and preview-only toggles are covered by tests or smoke checks.
 - [ ] Preview surfaces cover disabled/error/menu/navigation states when the playground claims to demonstrate component theming.
-- [ ] A real browser smoke check was run for web playground changes when possible, including console warnings/errors.
+- [ ] When the user requested E2E or Playwright verification, a real browser smoke check was run for web playground changes, preferably with Playwright MCP, including console warnings/errors.
+- [ ] When E2E is requested for web route examples, route changes cover direct path URLs and observable route state.
 
 ### Performance
 

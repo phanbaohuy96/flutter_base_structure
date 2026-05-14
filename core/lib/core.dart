@@ -9,9 +9,15 @@ export 'package:dots_indicator/dots_indicator.dart';
 export 'package:dotted_border/dotted_border.dart';
 export 'package:equatable/equatable.dart';
 export 'package:fl_media/fl_media.dart';
+export 'package:fl_navigation/fl_navigation.dart';
 export 'package:fl_theme/fl_theme.dart';
 export 'package:fl_ui/fl_ui.dart';
-export 'package:fl_utils/fl_utils.dart';
+export 'package:fl_utils/fl_utils.dart'
+    hide
+        PushBehavior,
+        PushNamedAndRemoveUntilBehavior,
+        PushNamedBehavior,
+        PushReplacementNamedBehavior;
 export 'package:flashy_flushbar/flashy_flushbar.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:flutter_easyloading/flutter_easyloading.dart';

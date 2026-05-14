@@ -1,4 +1,10 @@
-export 'package:fl_utils/fl_utils.dart';
+export 'package:fl_navigation/fl_navigation.dart';
+export 'package:fl_utils/fl_utils.dart'
+    hide
+        PushBehavior,
+        PushNamedAndRemoveUntilBehavior,
+        PushNamedBehavior,
+        PushReplacementNamedBehavior;
 
 export 'calendar.dart';
 export 'utils/bloc_utils.dart';

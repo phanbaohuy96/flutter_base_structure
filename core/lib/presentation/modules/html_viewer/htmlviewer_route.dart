@@ -8,8 +8,10 @@ class HtmlViewerRoute extends IRoute {
       CustomRouter(
         path: HtmlViewerScreen.routeName,
         builder: (context, uri, extra) {
-          final args = extra as HtmlviewerScreenArgs;
-          return HtmlViewerScreen(params: args);
+          return buildRequiredRouteExtra<HtmlviewerScreenArgs>(
+            extra,
+            (args) => HtmlViewerScreen(params: args),
+          );
         },
       ),
     ];

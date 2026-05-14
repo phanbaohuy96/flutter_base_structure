@@ -33,6 +33,8 @@ dependencies:
 
   fl_utils:
     path: ../fl_utils
+  fl_navigation:
+    path: ../fl_navigation
   fl_ui:
     path: ../fl_ui
 

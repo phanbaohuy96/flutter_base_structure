@@ -37,6 +37,8 @@ dependencies:
   equatable: ^2.0.5
   fl_utils:
     path: ../plugins/fl_utils
+  fl_navigation:
+    path: ../plugins/fl_navigation
   event_bus: ^2.0.0
   geolocator: ^13.0.1
   diacritic:
