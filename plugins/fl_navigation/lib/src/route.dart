@@ -26,6 +26,10 @@ typedef CoreRouteBuilder = Widget Function(BuildContext, Uri, dynamic extra);
 typedef ExtraFromUrlQueries<T> =
     T? Function(Map<String, dynamic> queryParameters);
 
+/// Function signature for building a page from route data.
+typedef CorePageBuilder =
+    Page<dynamic> Function(BuildContext context, Uri uri, dynamic extra);
+
 /// A custom router implementation for handling navigation in the application.
 ///
 /// The [CustomRouter] class provides functionality for routing to specific
@@ -39,8 +43,17 @@ class CustomRouter<T> {
   /// [pathVerify] function returns true.
   final String path;
 
+  /// Optional route name for GoRouter named-location APIs.
+  final String? name;
+
   /// The function that builds the widget for this route.
   final CoreRouteBuilder _builder;
+
+  /// Optional function that builds a custom page for GoRouter.
+  final CorePageBuilder? pageBuilder;
+
+  /// Optional root or shell navigator key for GoRouter placement.
+  final GlobalKey<NavigatorState>? parentNavigatorKey;
 
   /// Optional function to extract extra data from URL query parameters.
   /// This allows routes to accept parameters via URL query strings.
@@ -69,6 +82,9 @@ class CustomRouter<T> {
   const CustomRouter({
     required this.path,
     required CoreRouteBuilder builder,
+    this.name,
+    this.pageBuilder,
+    this.parentNavigatorKey,
     this.extraFromUrlQueries,
     this.pathVerify,
     this.routes,
@@ -88,11 +104,18 @@ class CustomRouter<T> {
   GoRoute toGoRoute() {
     return GoRoute(
       path: path,
-      builder: (context, state) {
-        final uri = state.uri;
-        final extra = buildExtra(uri, state.extra);
-        return _builder(context, uri, extra);
-      },
+      name: name,
+      pageBuilder: pageBuilder?.let((builder) {
+        return (context, state) {
+          final uri = state.uri;
+          final extra = buildExtra(uri, state.extra);
+          return builder(context, uri, extra);
+        };
+      }),
+      builder: pageBuilder == null
+          ? (context, state) => build(context, state.uri, state.extra)
+          : null,
+      parentNavigatorKey: parentNavigatorKey,
       redirect: redirect,
       routes: routes?.map((route) => route.toGoRoute()).toList() ?? [],
     );

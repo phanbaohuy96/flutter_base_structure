@@ -1,4 +1,5 @@
-import '../../route/route.dart';
+import 'package:fl_navigation/fl_navigation.dart';
+
 import 'webview_screen.dart';
 
 class WebViewRoute extends IRoute {

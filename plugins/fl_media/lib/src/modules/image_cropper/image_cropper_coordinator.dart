@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fl_utils/fl_utils.dart';
+import 'package:fl_navigation/fl_navigation.dart';
 import 'package:flutter/material.dart';
 
 import 'image_cropper.dart';
