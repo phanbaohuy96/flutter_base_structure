@@ -4,6 +4,7 @@ import '../../../di/di.dart';
 import 'signin/bloc/signin_bloc.dart';
 import 'signin/views/signin_screen.dart';
 
+@FlRouteProvider()
 class AuthenticationRoute extends IRoute {
   @override
   List<CustomRouter> routers() {

@@ -2,13 +2,13 @@ import 'package:collection/collection.dart';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import '../modules/auth/authentication_route.dart';
 import '../modules/auth/signin/views/signin_screen.dart';
 import '../modules/page_not_found/page_note_found.dart';
+import 'route_providers.config.dart';
 
 GoRouter buildAppRouter(BuildContext context) {
   return buildFlGoRouter(
-    routeProviders: [CoreRoute(), AuthenticationRoute()],
+    routeProviders: buildAppRouteProviders(),
     initialLocation: SignInScreen.routeName,
     navigatorKey: globalNavigatorKey,
     observers: [myNavigatorObserver],

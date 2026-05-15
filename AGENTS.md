@@ -146,13 +146,14 @@ Generated files include:
 - `lib/l10n/generated/*localizations*.dart`
 - `intl_*.arb` generated from localization CSVs
 - generated export barrels from `module_generator:generate_export`
+- route provider registries from the `fl_navigation` build_runner builder
 
 Common generation commands:
 
 ```bash
 make lang          # CSV -> ARB -> localization Dart for app/core/fl_media
 make gen_core      # build_runner + export generation in core
-make gen_main      # build_runner in apps/main
+make gen_main      # route provider registry + build_runner in apps/main
 make gen_all       # core + data_source + apps/main
 sh gen_app_identifier.sh apps/main
 ```
