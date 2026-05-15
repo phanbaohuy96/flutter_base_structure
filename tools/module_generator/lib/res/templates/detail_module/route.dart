@@ -14,6 +14,7 @@ class ${classNameKey}Route extends IRoute {
     return [
       CustomRouter<${classNameKey}Args>(
         path: ${classNameKey}Screen.routeName,
+        name: ${classNameKey}Screen.routeName,
         builder: (context, uri, extra) {
           final args = asOrNull<${classNameKey}Args>(extra);
           return BlocProvider<${classNameKey}Bloc>(

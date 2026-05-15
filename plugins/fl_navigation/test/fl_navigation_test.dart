@@ -40,6 +40,30 @@ void main() {
       expect(_routePaths(router), contains('/provider'));
     });
 
+    test('rejects duplicate sibling route paths in debug mode', () {
+      expect(
+        () => buildFlGoRouter(
+          routes: [
+            _textRoute('/duplicate', 'First'),
+            _textRoute('/duplicate', 'Second'),
+          ],
+        ),
+        throwsA(isA<StateError>()),
+      );
+    });
+
+    test('rejects duplicate route names in debug mode', () {
+      expect(
+        () => buildFlGoRouter(
+          routes: [
+            _textRoute('/first', 'First', name: 'duplicate'),
+            _textRoute('/second', 'Second', name: 'duplicate'),
+          ],
+        ),
+        throwsA(isA<StateError>()),
+      );
+    });
+
     test('interceptor can skip a whole provider', () {
       final skippedProvider = _TestRouteProvider([
         _customTextRouter('/skipped', 'Skipped'),
@@ -268,6 +292,14 @@ void main() {
       expect(goRoute.routes, hasLength(1));
       expect((goRoute.routes.single as GoRoute).path, 'second');
     });
+
+    test('matches exact route paths and path-segment descendants only', () {
+      final router = _customTextRouter('/sign', 'Sign');
+
+      expect(router.canLaunchUri(Uri.parse('/sign')), isTrue);
+      expect(router.canLaunchUri(Uri.parse('/sign/details')), isTrue);
+      expect(router.canLaunchUri(Uri.parse('/signin')), isFalse);
+    });
   });
 
   group('PushBehavior', () {
@@ -375,9 +407,10 @@ GoRouter _buildTextRouter({
   );
 }
 
-GoRoute _textRoute(String path, String text) {
+GoRoute _textRoute(String path, String text, {String? name}) {
   return GoRoute(
     path: path,
+    name: name,
     builder: (_, _) => Material(child: Text(text)),
   );
 }

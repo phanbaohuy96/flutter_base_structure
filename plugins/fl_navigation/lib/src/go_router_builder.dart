@@ -42,6 +42,10 @@ GoRouter buildFlGoRouter({
     ...routers.map((router) => router.toGoRoute()),
     ...routes,
   ];
+  assert(() {
+    _debugValidateUniqueRoutes(goRoutes);
+    return true;
+  }(), 'Route paths and names must be unique.');
 
   return GoRouter(
     routes: goRoutes,
@@ -62,6 +66,30 @@ GoRouter buildFlGoRouter({
     restorationScopeId: restorationScopeId,
     requestFocus: requestFocus,
   );
+}
+
+void _debugValidateUniqueRoutes(List<RouteBase> routes) {
+  final routeNames = <String>{};
+
+  void visit(List<RouteBase> routes) {
+    final siblingPaths = <String>{};
+    for (final route in routes) {
+      if (route is GoRoute) {
+        if (!siblingPaths.add(route.path)) {
+          throw StateError('Duplicate GoRoute path: ${route.path}');
+        }
+
+        final name = route.name;
+        if (name != null && !routeNames.add(name)) {
+          throw StateError('Duplicate GoRoute name: $name');
+        }
+      }
+
+      visit(route.routes);
+    }
+  }
+
+  visit(routes);
 }
 
 Iterable<GoRoute> _resolveRouteProviderRoutes(

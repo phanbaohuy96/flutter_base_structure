@@ -237,8 +237,29 @@ class CustomRouter<T> {
       return pathVerify!(uri);
     }
 
-    return uri.path.isNotEmpty && uri.path.paramCase.startsWith(path.paramCase);
+    final routePath = _normalizeRoutePath(path);
+    final uriPath = _normalizeRoutePath(uri.path);
+    if (routePath.isEmpty || uriPath.isEmpty) {
+      return false;
+    }
+    if (routePath == '/') {
+      return uriPath == routePath;
+    }
+    return uriPath == routePath || uriPath.startsWith('$routePath/');
   }
+}
+
+String _normalizeRoutePath(String value) {
+  final normalized = value
+      .split('/')
+      .map((segment) {
+        return segment.isEmpty ? segment : segment.paramCase;
+      })
+      .join('/');
+  if (normalized.length > 1 && normalized.endsWith('/')) {
+    return normalized.substring(0, normalized.length - 1);
+  }
+  return normalized;
 }
 
 /// Interface for route providers with GoRouter support.

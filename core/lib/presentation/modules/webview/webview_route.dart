@@ -8,6 +8,7 @@ class WebViewRoute extends IRoute {
     return [
       CustomRouter<WebViewArgs>(
         path: WebViewScreen.routeName,
+        name: WebViewScreen.routeName,
         builder: (context, uri, extra) {
           final args = extra as WebViewArgs?;
           return WebViewScreen(params: args);
