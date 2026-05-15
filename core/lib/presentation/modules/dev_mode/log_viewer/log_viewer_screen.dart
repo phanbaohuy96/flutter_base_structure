@@ -8,7 +8,7 @@ import '../../../common_widget/forms/screen_form.dart';
 import '../../../extentions/context_extention.dart';
 
 class LogViewerScreen extends StatefulWidget {
-  static String routeName = '/log-viewer';
+  static const String routeName = '/log-viewer';
 
   const LogViewerScreen({Key? key}) : super(key: key);
 

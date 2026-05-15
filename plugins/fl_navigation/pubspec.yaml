@@ -1,5 +1,5 @@
 name: fl_navigation
-description: A new Flutter Navigation utility.
+description: Navigation utilities, route-provider generation, and GoRouter integration for the Flutter base template.
 version: 1.0.0
 homepage:
 

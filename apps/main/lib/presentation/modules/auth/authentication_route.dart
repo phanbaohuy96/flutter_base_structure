@@ -11,6 +11,7 @@ class AuthenticationRoute extends IRoute {
     return [
       CustomRouter(
         path: SignInScreen.routeName,
+        name: SignInScreen.routeName,
         builder: (context, uri, extra) {
           return BlocProvider<SigninBloc>(
             create: (context) => injector.get(),

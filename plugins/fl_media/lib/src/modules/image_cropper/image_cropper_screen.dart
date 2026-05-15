@@ -16,7 +16,7 @@ import '../../l10n/localization_ext.dart';
 part 'image_cropper.action.dart';
 
 class ImageCropperScreen extends StatefulWidget {
-  static String routeName = '/image-cropper';
+  static const String routeName = '/image-cropper';
 
   const ImageCropperScreen({
     Key? key,

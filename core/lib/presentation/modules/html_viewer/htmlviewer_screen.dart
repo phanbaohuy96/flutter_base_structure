@@ -36,7 +36,7 @@ class HtmlviewerScreenArgs {
 }
 
 class HtmlViewerScreen extends StatelessWidget {
-  static const routeName = '/html';
+  static const String routeName = '/html';
 
   final HtmlviewerScreenArgs params;
 
