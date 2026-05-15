@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:fl_utils/fl_utils.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
@@ -51,21 +52,18 @@ Future<String> buildRouteProvidersContent({
     includePathDependencies: includePathDependencies,
     extraScanPaths: extraScanPaths,
   );
-  final providers = <_RouteProviderDeclaration>[];
-
-  for (final target in targets) {
-    providers.addAll(
-      await _scanTarget(
+  final currentAssets = await currentPackageAssets;
+  final scannedProviders = await Future.wait(
+    targets.map((target) {
+      return _scanTarget(
         target,
         outputPath: outputPath,
-        currentPackageAssets: target.isCurrentPackage
-            ? await currentPackageAssets
-            : null,
-      ),
-    );
-  }
-
-  providers.sort(_compareRouteProviders);
+        currentPackageAssets: target.isCurrentPackage ? currentAssets : null,
+      );
+    }),
+  );
+  final providers = scannedProviders.expand((items) => items).toList()
+    ..sort(_compareRouteProviders);
 
   return _buildFileContent(
     providers,
@@ -80,6 +78,15 @@ bool shouldScanRouteProviderPath(String filePath) {
       !basename.endsWith('.g.dart') &&
       !basename.endsWith('.freezed.dart') &&
       !basename.endsWith('.config.dart');
+}
+
+final _routeProviderAnnotationPattern = RegExp(
+  r'@(?:[A-Za-z_]\w*\.)?FlRouteProvider\b\s*(?:\(([\s\S]*?)\))?',
+  multiLine: true,
+);
+
+bool hasRouteProviderAnnotation(String content) {
+  return _routeProviderAnnotationPattern.hasMatch(content);
 }
 
 Future<List<_ScanTarget>> _buildScanTargets({
@@ -156,7 +163,7 @@ Future<List<_RouteProviderDeclaration>> _scanTarget(
     }
 
     final content = await entity.readAsString();
-    if (!content.contains('@FlRouteProvider')) {
+    if (!hasRouteProviderAnnotation(content)) {
       continue;
     }
     final relativePath = _toPosix(
@@ -200,29 +207,153 @@ List<_RouteProviderDeclaration> _readRouteProviders({
   required String importUri,
   required bool isCurrentPackage,
 }) {
-  final matches = RegExp(
-    r'@FlRouteProvider\s*(?:\(([\s\S]*?)\))?\s*class\s+([A-Za-z_]\w*)\s+extends\s+IRoute\b',
-    multiLine: true,
-  ).allMatches(content);
+  final matches = _routeProviderAnnotationPattern.allMatches(content);
   final declarations = <_RouteProviderDeclaration>[];
 
   for (final match in matches) {
-    final annotationArgs = match.group(1) ?? '';
-    final isRoot = RegExp(r'\bisRoot\s*:\s*true\b').hasMatch(annotationArgs);
-    if (!isCurrentPackage && !isRoot) {
-      continue;
-    }
-
-    declarations.add(
-      _RouteProviderDeclaration(
-        className: match.group(2)!,
-        importUri: importUri,
-        isRoot: isRoot,
-      ),
+    final declaration = _readRouteProviderDeclaration(
+      content: content,
+      annotationEnd: match.end,
+      annotationArgs: match.group(1) ?? '',
+      importUri: importUri,
+      isCurrentPackage: isCurrentPackage,
     );
+    if (declaration != null) {
+      declarations.add(declaration);
+    }
   }
 
   return declarations;
+}
+
+_RouteProviderDeclaration? _readRouteProviderDeclaration({
+  required String content,
+  required int annotationEnd,
+  required String annotationArgs,
+  required String importUri,
+  required bool isCurrentPackage,
+}) {
+  final classStart = _skipWhitespaceAndMetadata(content, annotationEnd);
+  final classMatch = RegExp(
+    r'(?:(?:abstract|base|final|interface|sealed)\s+)*class\s+'
+    r'([A-Za-z_]\w*)\b([\s\S]*?)(?=\{)',
+    multiLine: true,
+  ).matchAsPrefix(content, classStart);
+  if (classMatch == null || !_hasIRouteSupertype(classMatch.group(2)!)) {
+    return null;
+  }
+
+  final isRoot = RegExp(r'\bisRoot\s*:\s*true\b').hasMatch(annotationArgs);
+  if (!isCurrentPackage && !isRoot) {
+    return null;
+  }
+
+  return _RouteProviderDeclaration(
+    className: classMatch.group(1)!,
+    importUri: importUri,
+    isRoot: isRoot,
+  );
+}
+
+bool _hasIRouteSupertype(String classHeader) {
+  const iRouteType = r'(?:[A-Za-z_]\w*\.)?IRoute';
+  return RegExp(r'\bextends\s+' + iRouteType + r'\b').hasMatch(classHeader) ||
+      RegExp(
+        r'\bimplements\b[\s\S]*?(?:^|[\s,<])' + iRouteType + r'\b',
+      ).hasMatch(classHeader);
+}
+
+int _skipWhitespaceAndMetadata(String content, int index) {
+  var cursor = index;
+  while (true) {
+    cursor = _skipWhitespace(content, cursor);
+    if (cursor >= content.length || content.codeUnitAt(cursor) != 0x40) {
+      return cursor;
+    }
+
+    final nextCursor = _skipAnnotation(content, cursor);
+    if (nextCursor == cursor) {
+      return cursor;
+    }
+    cursor = nextCursor;
+  }
+}
+
+int _skipAnnotation(String content, int index) {
+  var cursor = _skipQualifiedIdentifier(content, index + 1);
+  if (cursor == index + 1) {
+    return index;
+  }
+
+  cursor = _skipWhitespace(content, cursor);
+  if (cursor < content.length && content.codeUnitAt(cursor) == 0x28) {
+    return _skipBalancedParentheses(content, cursor);
+  }
+  return cursor;
+}
+
+int _skipQualifiedIdentifier(String content, int index) {
+  var cursor = _skipIdentifier(content, index);
+  while (cursor < content.length && content.codeUnitAt(cursor) == 0x2E) {
+    final nextCursor = _skipIdentifier(content, cursor + 1);
+    if (nextCursor == cursor + 1) {
+      return cursor;
+    }
+    cursor = nextCursor;
+  }
+  return cursor;
+}
+
+int _skipIdentifier(String content, int index) {
+  var cursor = index;
+  while (cursor < content.length) {
+    final codeUnit = content.codeUnitAt(cursor);
+    if (!_isIdentifierCodeUnit(codeUnit)) {
+      return cursor;
+    }
+    cursor++;
+  }
+  return cursor;
+}
+
+bool _isIdentifierCodeUnit(int codeUnit) {
+  return codeUnit == 0x5F ||
+      codeUnit >= 0x30 && codeUnit <= 0x39 ||
+      codeUnit >= 0x41 && codeUnit <= 0x5A ||
+      codeUnit >= 0x61 && codeUnit <= 0x7A;
+}
+
+int _skipWhitespace(String content, int index) {
+  var cursor = index;
+  while (cursor < content.length && _isWhitespace(content.codeUnitAt(cursor))) {
+    cursor++;
+  }
+  return cursor;
+}
+
+bool _isWhitespace(int codeUnit) {
+  return codeUnit == 0x09 ||
+      codeUnit == 0x0A ||
+      codeUnit == 0x0D ||
+      codeUnit == 0x20;
+}
+
+int _skipBalancedParentheses(String content, int index) {
+  var cursor = index;
+  var depth = 0;
+  while (cursor < content.length) {
+    final codeUnit = content.codeUnitAt(cursor);
+    if (codeUnit == 0x28) {
+      depth++;
+    } else if (codeUnit == 0x29) {
+      depth--;
+      if (depth == 0) {
+        return cursor + 1;
+      }
+    }
+    cursor++;
+  }
+  return cursor;
 }
 
 String _buildFileContent(
@@ -301,7 +432,7 @@ List<String> _buildAccessorNames(List<_RouteProviderDeclaration> providers) {
   final usedNames = <String, int>{};
 
   return providers.map((provider) {
-    final baseName = _lowerCamel(provider.className);
+    final baseName = provider.className.camelCase;
     final count = (usedNames[baseName] ?? 0) + 1;
     usedNames[baseName] = count;
     if (count == 1) {
@@ -309,13 +440,6 @@ List<String> _buildAccessorNames(List<_RouteProviderDeclaration> providers) {
     }
     return '$baseName$count';
   }).toList();
-}
-
-String _lowerCamel(String value) {
-  if (value.isEmpty) {
-    return value;
-  }
-  return value[0].toLowerCase() + value.substring(1);
 }
 
 int _compareRouteProviders(

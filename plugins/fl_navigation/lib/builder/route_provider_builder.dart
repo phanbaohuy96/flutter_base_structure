@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:build/build.dart';
 import 'package:glob/glob.dart';
+import 'package:path/path.dart' as path;
 
 import '../src/route_provider_generator.dart';
 
@@ -26,6 +27,31 @@ class RouteProviderBuilder implements Builder {
       options.config['registry_class_name'] as String? ??
       defaultRegistryClassName;
 
+  bool get includePathDependencies =>
+      options.config['include_path_dependencies'] as bool? ?? true;
+
+  List<Directory> get extraScanPaths {
+    final value = options.config['extra_scan_paths'];
+    if (value == null) {
+      return const [];
+    }
+    if (value is String) {
+      return [_resolveScanPath(value)];
+    }
+    if (value is Iterable) {
+      return value.map((item) => _resolveScanPath(item.toString())).toList();
+    }
+    throw ArgumentError.value(
+      value,
+      'extra_scan_paths',
+      'Expected a string or list of strings.',
+    );
+  }
+
+  Directory _resolveScanPath(String value) {
+    return Directory(path.normalize(path.absolute(value)));
+  }
+
   @override
   Map<String, List<String>> get buildExtensions => const {
     r'$lib$': [outputPath],
@@ -39,8 +65,8 @@ class RouteProviderBuilder implements Builder {
       outputPath: outputPath,
       functionName: functionName,
       registryClassName: registryClassName,
-      includePathDependencies: true,
-      extraScanPaths: const [],
+      includePathDependencies: includePathDependencies,
+      extraScanPaths: extraScanPaths,
       currentPackageAssets: _readCurrentPackageAssets(buildStep),
     );
 
@@ -60,7 +86,7 @@ class RouteProviderBuilder implements Builder {
         continue;
       }
       final content = await buildStep.readAsString(assetId);
-      if (!content.contains('@FlRouteProvider')) {
+      if (!hasRouteProviderAnnotation(content)) {
         continue;
       }
       sources.add(RouteProviderSource(path: path, content: content));

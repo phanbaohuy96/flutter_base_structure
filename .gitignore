@@ -89,3 +89,6 @@ test/.test_coverage.dart
 
 # Playwright related
 .playwright-mcp/
+
+# Local agent scratch files
+tmp/
