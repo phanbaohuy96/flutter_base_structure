@@ -95,6 +95,7 @@ These generic agent rules come before implementation details. For the full check
 
 - When the user names an existing architecture or pattern, follow that structure directly; ask before substituting a lighter-weight shortcut.
 - For multi-screen features, keep parent modules responsible for route/coordinator aggregation and give non-trivial child screens their own module state.
+- Keep generated route-provider registration automatic. For role, platform, feature-flag, or business restrictions, use runtime `routeProviderInterceptors` to skip providers or filter routers instead of manually composing generated provider accessors.
 - Reuse existing project widgets, helpers, and abstractions before creating new ones.
 - Design reusable row/list components so trailing content aligns consistently and can accept widgets when needed.
 - Add concise Dartdoc to newly introduced public APIs in reusable or cross-layer surfaces.
@@ -146,13 +147,14 @@ Generated files include:
 - `lib/l10n/generated/*localizations*.dart`
 - `intl_*.arb` generated from localization CSVs
 - generated export barrels from `module_generator:generate_export`
+- route provider registries from the `fl_navigation` build_runner builder
 
 Common generation commands:
 
 ```bash
 make lang          # CSV -> ARB -> localization Dart for app/core/fl_media
 make gen_core      # build_runner + export generation in core
-make gen_main      # build_runner in apps/main
+make gen_main      # route provider registry + build_runner in apps/main
 make gen_all       # core + data_source + apps/main
 sh gen_app_identifier.sh apps/main
 ```

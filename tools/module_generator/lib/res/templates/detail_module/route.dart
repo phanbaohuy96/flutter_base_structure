@@ -7,6 +7,7 @@ import '$importPartKey/../../di/di.dart';
 import 'bloc/${moduleNameKey}_bloc.dart';
 import 'views/${moduleNameKey}_screen.dart';
 
+@FlRouteProvider()
 class ${classNameKey}Route extends IRoute {
   @override
   List<CustomRouter> routers() {

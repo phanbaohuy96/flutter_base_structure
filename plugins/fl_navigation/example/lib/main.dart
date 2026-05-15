@@ -19,7 +19,10 @@ class NavigationDemoApp extends StatefulWidget {
 
 class _NavigationDemoAppState extends State<NavigationDemoApp> {
   late final GoRouter _router = buildFlGoRouter(
-    routeProviders: [DemoRoute()],
+    routeProviders: [DemoRoute(), InterceptorDemoRoute(), SkippedDemoRoute()],
+    routeProviderInterceptors: const [DemoRouteProviderInterceptor()],
+    errorBuilder: (_, state) =>
+        DemoNotFoundScreen(location: state.uri.toString()),
     debugLogDiagnostics: true,
   );
 
@@ -77,6 +80,70 @@ class DemoRoute extends IRoute {
         extraFromUrlQueries: DemoArgs.fromQuery,
       ),
     ];
+  }
+}
+
+class InterceptorDemoRoute extends IRoute {
+  @override
+  List<CustomRouter> routers() {
+    return [
+      CustomRouter(
+        path: InterceptorDemoScreen.routeName,
+        name: InterceptorDemoScreen.routeName,
+        builder: (_, __, ___) => const InterceptorDemoScreen(),
+      ),
+      CustomRouter(
+        path: InterceptorAllowedScreen.routeName,
+        name: InterceptorAllowedScreen.routeName,
+        builder: (_, __, ___) => const InterceptorAllowedScreen(),
+      ),
+      CustomRouter(
+        path: InterceptorFilteredScreen.routeName,
+        name: InterceptorFilteredScreen.routeName,
+        builder: (_, __, ___) => const InterceptorFilteredScreen(),
+      ),
+    ];
+  }
+}
+
+class SkippedDemoRoute extends IRoute {
+  @override
+  List<CustomRouter> routers() {
+    return [
+      CustomRouter(
+        path: SkippedProviderScreen.routeName,
+        name: SkippedProviderScreen.routeName,
+        builder: (_, __, ___) => const SkippedProviderScreen(),
+      ),
+    ];
+  }
+}
+
+class DemoRouteProviderInterceptor extends RouteProviderInterceptor {
+  const DemoRouteProviderInterceptor();
+
+  @override
+  void onResolve(
+    RouteProviderResolution resolution,
+    RouteProviderInterceptorHandler handler,
+  ) {
+    if (resolution.provider is SkippedDemoRoute) {
+      handler.skip();
+      return;
+    }
+
+    if (resolution.provider is InterceptorDemoRoute) {
+      handler.next(
+        resolution.copyWith(
+          routers: resolution.routers.where((router) {
+            return router.path != InterceptorFilteredScreen.routeName;
+          }).toList(),
+        ),
+      );
+      return;
+    }
+
+    handler.next(resolution);
   }
 }
 
@@ -150,6 +217,126 @@ class DemoHomeScreen extends StatelessWidget {
           },
           child: const Text('Reset stack'),
         ),
+        const Divider(),
+        FilledButton.tonal(
+          key: const ValueKey('interceptor-demo-button'),
+          onPressed: () {
+            const PushNamedBehavior().push<void>(
+              context,
+              InterceptorDemoScreen.routeName,
+            );
+          },
+          child: const Text('Open interceptor demo'),
+        ),
+      ],
+    );
+  }
+}
+
+class InterceptorDemoScreen extends StatelessWidget {
+  const InterceptorDemoScreen({super.key});
+
+  static const routeName = '/interceptor';
+
+  @override
+  Widget build(BuildContext context) {
+    return _DemoScaffold(
+      title: 'Interceptor demo',
+      routeName: routeName,
+      markerMessage: 'interceptor-demo',
+      children: [
+        const Text(
+          'Route providers are registered first, then filtered at runtime.',
+        ),
+        FilledButton(
+          key: const ValueKey('allowed-provider-router-button'),
+          onPressed: () {
+            const PushNamedBehavior().push<void>(
+              context,
+              InterceptorAllowedScreen.routeName,
+            );
+          },
+          child: const Text('Open allowed router'),
+        ),
+        FilledButton(
+          key: const ValueKey('filtered-router-button'),
+          onPressed: () {
+            const PushNamedBehavior().push<void>(
+              context,
+              InterceptorFilteredScreen.routeName,
+            );
+          },
+          child: const Text('Try filtered router'),
+        ),
+        FilledButton(
+          key: const ValueKey('skipped-provider-button'),
+          onPressed: () {
+            const PushNamedBehavior().push<void>(
+              context,
+              SkippedProviderScreen.routeName,
+            );
+          },
+          child: const Text('Try skipped provider'),
+        ),
+        FilledButton.tonal(
+          key: const ValueKey('interceptor-back-home-button'),
+          onPressed: () {
+            context.go(DemoHomeScreen.routeName);
+          },
+          child: const Text('Back home'),
+        ),
+      ],
+    );
+  }
+}
+
+class InterceptorAllowedScreen extends StatelessWidget {
+  const InterceptorAllowedScreen({super.key});
+
+  static const routeName = '/interceptor/allowed';
+
+  @override
+  Widget build(BuildContext context) {
+    return const _DemoScaffold(
+      title: 'Allowed router',
+      routeName: routeName,
+      markerMessage: 'allowed-router',
+      children: [
+        Text('This router remains after route-provider interception.'),
+      ],
+    );
+  }
+}
+
+class InterceptorFilteredScreen extends StatelessWidget {
+  const InterceptorFilteredScreen({super.key});
+
+  static const routeName = '/interceptor/filtered-router';
+
+  @override
+  Widget build(BuildContext context) {
+    return const _DemoScaffold(
+      title: 'Filtered router',
+      routeName: routeName,
+      markerMessage: 'filtered-router',
+      children: [Text('This screen is removed by router-level interception.')],
+    );
+  }
+}
+
+class SkippedProviderScreen extends StatelessWidget {
+  const SkippedProviderScreen({super.key});
+
+  static const routeName = '/interceptor/skipped-provider';
+
+  @override
+  Widget build(BuildContext context) {
+    return const _DemoScaffold(
+      title: 'Skipped provider',
+      routeName: routeName,
+      markerMessage: 'skipped-provider',
+      children: [
+        Text('This screen is removed because its whole provider is skipped.'),
       ],
     );
   }
@@ -231,6 +418,34 @@ class DemoResetScreen extends StatelessWidget {
         Text(
           'Can pop: ${context.canPop()}',
           key: const ValueKey('can-pop-label'),
+        ),
+      ],
+    );
+  }
+}
+
+class DemoNotFoundScreen extends StatelessWidget {
+  const DemoNotFoundScreen({required this.location, super.key});
+
+  final String location;
+
+  @override
+  Widget build(BuildContext context) {
+    return _DemoScaffold(
+      title: 'Route not found',
+      routeName: location,
+      markerMessage: 'not-found',
+      children: [
+        Text(
+          'No route registered for $location',
+          key: const ValueKey('not-found-message'),
+        ),
+        FilledButton.tonal(
+          key: const ValueKey('not-found-back-demo-button'),
+          onPressed: () {
+            context.go(InterceptorDemoScreen.routeName);
+          },
+          child: const Text('Back to interceptor demo'),
         ),
       ],
     );
