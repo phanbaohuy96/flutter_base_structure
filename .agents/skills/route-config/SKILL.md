@@ -22,6 +22,7 @@ metadata:
 Navigation primitives live in `plugins/fl_navigation/` and are re-exported by `core/lib/presentation/route/route.dart` and `package:core/core.dart`:
 
 - `IRoute` — module-level provider; implements `routers()` returning `List<CustomRouter>` and can expose GoRouter routes through `toGoRoutes()`.
+- `FlRouteProvider` — annotation consumed by the `fl_navigation` build_runner builder for app-level provider registration.
 - `CustomRouter<T>` — one route entry, parameterized on the type of `extra`. Supports `path`, `name`, `builder`, `pageBuilder`, `parentNavigatorKey`, `extraFromUrlQueries`, `pathVerify`, nested `routes`, and `redirect`.
 - `buildFlGoRouter` — app-level adapter that combines `IRoute` providers, standalone `CustomRouter`s, and raw `RouteBase`s into a `GoRouter`.
 - `buildRequiredRouteExtra<T>` — core helper for screens that require a typed `extra`; it returns `UnsupportedPage` instead of scattering unsafe casts.
@@ -41,6 +42,7 @@ import '../../../di/di.dart';
 import 'bloc/feature_bloc.dart';
 import 'views/feature_screen.dart';
 
+@FlRouteProvider()
 class FeatureRoute extends IRoute {
   @override
   List<CustomRouter> routers() {
@@ -82,6 +84,7 @@ CustomRouter<FeatureArgs>(
 A parent `IRoute` aggregates child `IRoute`s with the spread operator:
 
 ```dart
+@FlRouteProvider(isRoot: true)
 class DashboardRoute extends IRoute {
   @override
   List<CustomRouter> routers() => [
@@ -92,7 +95,7 @@ class DashboardRoute extends IRoute {
 }
 ```
 
-The app's top-level route registry (e.g. `apps/main/lib/presentation/route/route.dart`) passes route providers into `buildFlGoRouter` to bring every module into the `MaterialApp.router` tree.
+App-level providers use `@FlRouteProvider()`. Dependency aggregators that should be included by an app use `@FlRouteProvider(isRoot: true)`. Run `make gen_main` to let build_runner update `route_providers.config.dart`, then the app route can either pass `buildAppRouteProviders()` into `buildFlGoRouter` or use `AppRouteProviders` accessors for platform, role, or business-rule gating.
 
 ## Args + URL params
 
@@ -165,7 +168,7 @@ Callers: `context.goToFeature(object: item)` or `context.goToFeatureById(id: '42
 - [ ] `extraFromUrlQueries` provided when the screen should be deep-linkable.
 - [ ] Coordinator extension exposes typed `goToX` methods, all taking `PushBehavior`.
 - [ ] Route/coordinator methods have concise Dartdoc when they are newly introduced public APIs.
-- [ ] New `IRoute` registered in the parent route or app-level `buildFlGoRouter` provider list.
+- [ ] New top-level `IRoute` has `@FlRouteProvider()` and `make gen_main` was run to refresh the generated provider registry.
 - [ ] Required extras use `buildRequiredRouteExtra<T>` or another shared guard instead of repeated unsafe casts.
 - [ ] Web-deep-linkable routes have `extraFromUrlQueries`; when the user requests E2E, verify them with a browser smoke check.
 - [ ] No direct `package:go_router/go_router.dart` imports in feature code.
@@ -174,7 +177,7 @@ Callers: `context.goToFeature(object: item)` or `context.goToFeatureById(id: '42
 
 - Hard-coding route paths in callers instead of going through a coordinator.
 - Forgetting to spread sub-module `routers()` into the parent.
-- Registering a top-level module route but not adding its `IRoute` provider to `buildFlGoRouter`.
+- Adding a top-level route provider without `@FlRouteProvider()` or without regenerating `route_providers.config.dart`.
 - Using `extra` without an `Args` type, then casting in the screen — it loses URL-param support.
 - Adding a GoRouter named push without setting `name` on the matching `CustomRouter`.
 

@@ -1,0 +1,7 @@
+builders:
+  route_provider_builder:
+    import: "package:fl_navigation/builder/route_provider_builder.dart"
+    builder_factories: ["routeProviderBuilder"]
+    build_extensions: { "$lib$": ["presentation/route/route_providers.config.dart"] }
+    auto_apply: none
+    build_to: source

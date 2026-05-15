@@ -7,6 +7,7 @@ import '../modules/html_viewer/htmlviewer_route.dart';
 import '../modules/webview/webview_route.dart';
 import 'external/image_cropper_route.dart';
 
+@FlRouteProvider(isRoot: true)
 class CoreRoute extends IRoute {
   @override
   List<CustomRouter> routers() {
