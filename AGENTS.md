@@ -95,6 +95,7 @@ These generic agent rules come before implementation details. For the full check
 
 - When the user names an existing architecture or pattern, follow that structure directly; ask before substituting a lighter-weight shortcut.
 - For multi-screen features, keep parent modules responsible for route/coordinator aggregation and give non-trivial child screens their own module state.
+- Keep generated route-provider registration automatic. For role, platform, feature-flag, or business restrictions, use runtime `routeProviderInterceptors` to skip providers or filter routers instead of manually composing generated provider accessors.
 - Reuse existing project widgets, helpers, and abstractions before creating new ones.
 - Design reusable row/list components so trailing content aligns consistently and can accept widgets when needed.
 - Add concise Dartdoc to newly introduced public APIs in reusable or cross-layer surfaces.
