@@ -1,6 +1,9 @@
 targets:
   $default:
     builders:
+      fl_navigation:route_provider_builder:
+        generate_for:
+          - lib/$lib$
       hive_generator:
         generate_for:
           - lib/data/data_source/local/**.dart

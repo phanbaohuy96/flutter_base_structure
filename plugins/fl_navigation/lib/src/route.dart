@@ -91,6 +91,31 @@ class CustomRouter<T> {
     this.redirect,
   }) : _builder = builder;
 
+  /// Creates a copy with selected route metadata replaced.
+  CustomRouter<T> copyWith({
+    String? path,
+    String? name,
+    CoreRouteBuilder? builder,
+    CorePageBuilder? pageBuilder,
+    GlobalKey<NavigatorState>? parentNavigatorKey,
+    ExtraFromUrlQueries<T>? extraFromUrlQueries,
+    RoutePathVerify? pathVerify,
+    List<CustomRouter>? routes,
+    String? Function(BuildContext, GoRouterState)? redirect,
+  }) {
+    return CustomRouter<T>(
+      path: path ?? this.path,
+      name: name ?? this.name,
+      builder: builder ?? _builder,
+      pageBuilder: pageBuilder ?? this.pageBuilder,
+      parentNavigatorKey: parentNavigatorKey ?? this.parentNavigatorKey,
+      extraFromUrlQueries: extraFromUrlQueries ?? this.extraFromUrlQueries,
+      pathVerify: pathVerify ?? this.pathVerify,
+      routes: routes ?? this.routes,
+      redirect: redirect ?? this.redirect,
+    );
+  }
+
   Widget build(BuildContext context, Uri uri, dynamic extra) {
     return _builder(context, uri, buildExtra(uri, extra));
   }
@@ -233,4 +258,48 @@ abstract class IRoute {
   List<GoRoute> toGoRoutes() {
     return routers().map((router) => router.toGoRoute()).toList();
   }
+}
+
+/// Route-provider state passed through runtime interceptors.
+class RouteProviderResolution {
+  const RouteProviderResolution({
+    required this.provider,
+    required this.routers,
+  });
+
+  final IRoute provider;
+  final List<CustomRouter> routers;
+
+  RouteProviderResolution copyWith({
+    IRoute? provider,
+    List<CustomRouter>? routers,
+  }) {
+    return RouteProviderResolution(
+      provider: provider ?? this.provider,
+      routers: routers ?? this.routers,
+    );
+  }
+}
+
+/// Intercepts generated route providers before GoRoute conversion.
+abstract class RouteProviderInterceptor {
+  const RouteProviderInterceptor();
+
+  void onResolve(
+    RouteProviderResolution resolution,
+    RouteProviderInterceptorHandler handler,
+  ) {
+    handler.next(resolution);
+  }
+}
+
+/// Controls the route-provider interceptor chain.
+abstract class RouteProviderInterceptorHandler {
+  void next(RouteProviderResolution resolution);
+
+  void resolve(RouteProviderResolution resolution);
+
+  void skip();
+
+  void reject(Object error, [StackTrace? stackTrace]);
 }
