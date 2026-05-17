@@ -14,6 +14,7 @@ class ${classNameKey}Route extends IRoute {
     return [
       CustomRouter(
         path: ${classNameKey}Screen.routeName,
+        name: ${classNameKey}Screen.routeName,
         builder: (context, uri, extra) {
           return BlocProvider<${classNameKey}Bloc>(
             create: (context) => injector(),
