@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fl_utils/fl_utils.dart';
 import 'package:path/path.dart' as path;
 import 'package:yaml/yaml.dart';
 
@@ -432,7 +431,7 @@ List<String> _buildAccessorNames(List<_RouteProviderDeclaration> providers) {
   final usedNames = <String, int>{};
 
   return providers.map((provider) {
-    final baseName = provider.className.camelCase;
+    final baseName = _lowerCamel(provider.className);
     final count = (usedNames[baseName] ?? 0) + 1;
     usedNames[baseName] = count;
     if (count == 1) {
@@ -440,6 +439,13 @@ List<String> _buildAccessorNames(List<_RouteProviderDeclaration> providers) {
     }
     return '$baseName$count';
   }).toList();
+}
+
+String _lowerCamel(String value) {
+  if (value.isEmpty) {
+    return value;
+  }
+  return value[0].toLowerCase() + value.substring(1);
 }
 
 int _compareRouteProviders(
