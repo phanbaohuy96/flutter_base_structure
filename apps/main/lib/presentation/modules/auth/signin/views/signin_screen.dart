@@ -11,7 +11,7 @@ import 'pages/account_selection.dart';
 part 'signin.action.dart';
 
 class SignInScreen extends StatefulWidget {
-  static String routeName = '/signin';
+  static const String routeName = '/signin';
   static const String usernameKey = 'username_text_input';
   static const String passwordKey = 'password_text_input';
   static const String loginBtnKey = 'login_button';

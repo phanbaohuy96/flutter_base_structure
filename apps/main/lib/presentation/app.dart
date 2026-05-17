@@ -135,7 +135,7 @@ class _MyAppState extends State<MainApplication>
       ],
       supportedLocales: AppLocale.supportedLocales,
       locale: state.locale,
-      routerConfig: _router ??= buildAppRouter(context),
+      routerConfig: _router ??= buildAppRouter(appBloc),
       builder: EasyLoading.init(
         builder: (_, child) {
           return MobileSizeLayoutConstraints(
