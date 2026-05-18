@@ -296,6 +296,12 @@ class CreateProjectGenerator {
       );
     }
 
+    if (!_isValidDisplayName(identity.displayName)) {
+      throw CreateProjectException(
+        'Display name must be non-empty and free of control characters.',
+      );
+    }
+
     if (!_isValidDartPackageName(identity.slug)) {
       throw CreateProjectException(
         'Slug must be a valid Dart package name, for example my_new_app.',
@@ -329,6 +335,10 @@ class CreateProjectGenerator {
         'Destination already exists and is not empty. Use --force to replace it.',
       );
     }
+  }
+
+  bool _isValidDisplayName(String value) {
+    return value.trim().isNotEmpty && !RegExp(r'[\x00-\x1f]').hasMatch(value);
   }
 
   bool _isValidDartPackageName(String value) {
