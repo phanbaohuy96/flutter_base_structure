@@ -9,3 +9,7 @@ Shared coding-agent guidance lives in [AGENTS.md](AGENTS.md). Follow it for arch
 - Never commit `.env`, credentials, tokens, keystores, or generated secrets.
 - Keep `.env.example` files safe and non-secret.
 - Prefer the project-standard commands listed in `AGENTS.md` for setup, generation, localization, formatting, and tests.
+
+## Domain docs
+
+Single-context — one `CONTEXT.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
