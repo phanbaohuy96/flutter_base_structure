@@ -1,0 +1,107 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "command": "sh",
+            "type": "shell",
+            "label": "app main generate: generate_app_identifier",
+            "args": [
+                "gen_app_identifier.sh",
+                "apps/main"
+            ],
+            "options": {
+                "cwd": "./"
+            }
+        },
+        {
+            "command": "sh",
+            "type": "shell",
+            "label": "core generate: generate_app_localizations",
+            "args": [
+                "gen_localization.sh",
+                "core"
+            ],
+            "options": {
+                "cwd": "./"
+            },
+        },
+        {
+            "command": "sh",
+            "type": "shell",
+            "label": "app main generate: generate_app_localizations",
+            "args": [
+                "gen_localization.sh",
+                "apps/main"
+            ],
+            "options": {
+                "cwd": "./"
+            },
+        },
+        // usage: cmd + shift + P -> Run Task -> <task_lable>
+        //-----GIT-----------
+        {
+            "label": "GIT: clean merged branches",
+            "type": "shell",
+            "command": "git branch --merged | egrep -v \"(^\\*|master|prod/|develop)\" | xargs git branch -d"
+        },
+        //-----FLUTTER_PUB_GET-----
+        {
+            "label": "flutter_pub_get plugins:fl_ui",
+            "type": "shell",
+            "command": "cd plugins/fl_ui/; flutter pub get"
+        },
+        {
+            "label": "flutter_pub_get plugins:fl_utils",
+            "type": "shell",
+            "command": "cd plugins/fl_utils/; flutter pub get"
+        },
+        {
+            "label": "flutter_pub_get plugins:fl_theme",
+            "type": "shell",
+            "command": "cd plugins/fl_theme/; flutter pub get"
+        },
+        {
+            "label": "flutter_pub_get plugins:fl_media",
+            "type": "shell",
+            "command": "cd plugins/fl_media/; flutter pub get"
+        },
+        {
+            "label": "flutter_pub_get core",
+            "type": "shell",
+            "command": "cd core/; flutter pub get"
+        },
+        {
+            "label": "flutter_pub_get apps:main",
+            "type": "shell",
+            "command": "cd apps/main/; flutter pub get"
+        },
+        //-----BUILD RUNNER-----
+        {
+            "label": "build_runner core",
+            "type": "shell",
+            "command": "cd core/; dart run build_runner build --delete-conflicting-outputs; dart run module_generator:generate_export",
+        },
+        {
+            "label": "build_runner modules:data_source",
+            "type": "shell",
+            "command": "cd modules/data_source/; dart run build_runner build --delete-conflicting-outputs; dart run module_generator:generate_export",
+        },
+        {
+            "label": "build_runner apps:main",
+            "type": "shell",
+            "command": "cd apps/main/; dart run module_generator:generate_build_runner_config; dart run build_runner build --delete-conflicting-outputs",
+        },
+        //-----Generate Asset-----
+        {
+            "label": "gen_assets apps:main",
+            "type": "shell",
+            "command": "cd apps/main/; dart run module_generator:generate_asset apps/main",
+        },
+        {
+            "label": "dart format all",
+            "command": "dart format .",
+        },
+    ]
+}

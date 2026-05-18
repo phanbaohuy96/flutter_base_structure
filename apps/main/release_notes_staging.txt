@@ -1,0 +1,2 @@
+What's new?
+ - The app with Flutter Core Template 

@@ -1,0 +1,51 @@
+flutter_native_splash:
+  # This package generates native code to customize Flutter's default white native splash screen
+  # with background color and splash image.
+  # Customize the parameters below, and run the following command in the terminal:
+  # dart run flutter_native_splash:create
+  # To restore Flutter's default white splash screen, run the following command in the terminal:
+  # dart run flutter_native_splash:remove
+
+  image: assets/images/native_splash_icon.png
+  color: "#FFFFFF"
+
+  # Android 12 handles the splash screen differently than previous versions.  Please visit
+  # https://developer.android.com/guide/topics/ui/splash-screen
+  # Following are Android 12 specific parameter.
+  # android_12:
+  #   # The image parameter sets the splash screen icon image.  If this parameter is not specified,
+  #   # the app's launcher icon will be used instead.
+  #   # Please note that the splash screen will be clipped to a circle on the center of the screen.
+  #   # App icon with an icon background: This should be 960×960 pixels, and fit within a circle
+  #   # 640 pixels in diameter.
+  #   # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
+  #   # 768 pixels in diameter.
+  #   image: assets/native_splash_icon_android12.png
+
+  #   # Splash screen background color.
+  #   color: "#FFFFFF"
+
+  # The android, ios and web parameters can be used to disable generating a splash screen on a given
+  # platform.
+  #android: false
+  #ios: false
+  web: false
+
+  # The position of the splash image can be set with android_gravity, ios_content_mode, and
+  # web_image_mode parameters.  All default to center.
+  #
+  # android_gravity can be one of the following Android Gravity (see
+  # https://developer.android.com/reference/android/view/Gravity): bottom, center,
+  # center_horizontal, center_vertical, clip_horizontal, clip_vertical, end, fill, fill_horizontal,
+  # fill_vertical, left, right, start, or top.
+  # android_gravity: fill
+  android_gravity: center
+  #
+  # ios_content_mode can be one of the following iOS UIView.ContentMode (see
+  # https://developer.apple.com/documentation/uikit/uiview/contentmode): scaleToFill,
+  # scaleAspectFit, scaleAspectFill, center, top, bottom, left, right, topLeft, topRight,
+  # bottomLeft, or bottomRight.
+  # ios_content_mode: scaleToFill
+  ios_content_mode: center
+
+  fullscreen: true

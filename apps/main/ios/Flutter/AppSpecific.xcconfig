@@ -1,0 +1,11 @@
+// dev
+DEV_APP_DISPLAY_NAME=Flutter DEV
+DEV_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.core.dev
+
+// staging
+STAGING_APP_DISPLAY_NAME=Flutter STAGING
+STAGING_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.core.staging
+
+// prod
+PROD_APP_DISPLAY_NAME=Flutter Core
+PROD_PRODUCT_BUNDLE_IDENTIFIER=net.vnsilicon.core

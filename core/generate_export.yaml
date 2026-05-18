@@ -1,0 +1,13 @@
+---
+- folder: lib/common/
+  file_name: common.dart
+- folder: lib/data/
+  file_name: data.dart
+- folder: lib/presentation/base/
+  file_name: base.dart
+- folder: lib/presentation/common_bloc/
+  file_name: common_bloc.dart
+- folder: lib/presentation/common_widget/
+  file_name: export.dart
+- folder: lib/domain/
+  file_name: domain.dart

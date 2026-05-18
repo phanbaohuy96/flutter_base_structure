@@ -1,0 +1,238 @@
+// ignore_for_file: prefer_asserts_with_message
+
+part of '../group_sliver.dart';
+
+class _RenderSliverGroup extends RenderSliver with RenderSliverHelpers {
+  _RenderSliverGroup({
+    required EdgeInsetsGeometry margin,
+    BorderRadius? borderRadius,
+    RenderBox? decoration,
+    RenderSliver? child,
+  }) {
+    this.margin = margin;
+    this.borderRadius = borderRadius;
+    this.decoration = decoration;
+    this.child = child;
+  }
+  RRect? _clipRRect;
+
+  EdgeInsetsGeometry get margin => _margin!;
+  EdgeInsetsGeometry? _margin;
+  set margin(EdgeInsetsGeometry value) {
+    assert(value.isNonNegative);
+    if (_margin == value) {
+      return;
+    }
+    _margin = value;
+    markNeedsLayout();
+  }
+
+  BorderRadiusGeometry? get borderRadius => _borderRadius;
+  BorderRadiusGeometry? _borderRadius;
+  set borderRadius(BorderRadiusGeometry? value) {
+    if (value == _borderRadius) {
+      return;
+    }
+    _borderRadius = value;
+    markNeedsPaint();
+  }
+
+  RenderBox? get decoration => _decoration;
+  RenderBox? _decoration;
+  set decoration(RenderBox? value) {
+    if (_decoration != null) {
+      dropChild(_decoration!);
+    }
+    _decoration = value;
+    if (_decoration != null) {
+      adoptChild(_decoration!);
+    }
+  }
+
+  RenderSliver? get child => _child;
+  RenderSliver? _child;
+  set child(RenderSliver? value) {
+    if (_child != null) {
+      dropChild(_child!);
+    }
+    _child = value;
+    if (_child != null) {
+      adoptChild(_child!);
+    }
+  }
+
+  @override
+  void setupParentData(RenderObject child) {
+    if (child.parentData is! SliverPhysicalParentData) {
+      child.parentData = SliverPhysicalParentData();
+    }
+  }
+
+  @override
+  void attach(PipelineOwner owner) {
+    super.attach(owner);
+    if (_decoration != null) {
+      _decoration!.attach(owner);
+    }
+    if (_child != null) {
+      _child!.attach(owner);
+    }
+  }
+
+  @override
+  void detach() {
+    super.detach();
+    if (_decoration != null) {
+      _decoration!.detach();
+    }
+    if (_child != null) {
+      _child!.detach();
+    }
+  }
+
+  @override
+  void redepthChildren() {
+    if (_decoration != null) {
+      redepthChild(_decoration!);
+    }
+    if (_child != null) {
+      redepthChild(_child!);
+    }
+  }
+
+  @override
+  void visitChildren(RenderObjectVisitor visitor) {
+    if (_decoration != null) {
+      visitor(_decoration!);
+    }
+    if (_child != null) {
+      visitor(_child!);
+    }
+  }
+
+  @override
+  List<DiagnosticsNode> debugDescribeChildren() {
+    final result = <DiagnosticsNode>[];
+    if (decoration != null) {
+      result.add(decoration!.toDiagnosticsNode(name: 'decoration'));
+    }
+    if (child != null) {
+      result.add(child!.toDiagnosticsNode(name: 'child'));
+    }
+    return result;
+  }
+
+  @override
+  bool hitTestChildren(
+    HitTestResult result, {
+    required double mainAxisPosition,
+    required double crossAxisPosition,
+  }) {
+    assert(geometry!.hitTestExtent > 0.0);
+    return child!.hitTest(
+      result as SliverHitTestResult,
+      mainAxisPosition: mainAxisPosition,
+      crossAxisPosition: crossAxisPosition,
+    );
+  }
+
+  @override
+  void performLayout() {
+    if (child == null) {
+      geometry = const SliverGeometry();
+      return;
+    }
+    // child not null
+    final axisDirection = applyGrowthDirectionToAxisDirection(
+      constraints.axisDirection,
+      constraints.growthDirection,
+    );
+    // layout sliver
+    child!.layout(constraints, parentUsesSize: true);
+    final childLayoutGeometry = child!.geometry;
+    geometry = childLayoutGeometry;
+
+    // layout decoration with child size + margin
+    final margin = this.margin.resolve(TextDirection.ltr);
+    if (decoration != null) {
+      decoration!.layout(
+        constraints.asBoxConstraints(
+          maxExtent: childLayoutGeometry!.maxPaintExtent + margin.horizontal,
+          crossAxisExtent: constraints.crossAxisExtent + margin.vertical,
+        ),
+        parentUsesSize: true,
+      );
+    }
+    // compute decoration offset
+    final headerParentData =
+        decoration!.parentData as SliverPhysicalParentData?;
+    final headerPosition = -constraints.scrollOffset;
+    switch (axisDirection) {
+      case AxisDirection.up:
+        headerParentData!.paintOffset =
+            Offset(0.0, geometry!.paintExtent - 0 - 0);
+        break;
+      case AxisDirection.down:
+        headerParentData!.paintOffset =
+            Offset(-margin.left, headerPosition - margin.top);
+        break;
+      case AxisDirection.left:
+        headerParentData!.paintOffset =
+            Offset(geometry!.paintExtent - 0 - 0, 0.0);
+        break;
+      case AxisDirection.right:
+        headerParentData!.paintOffset = const Offset(0, 0.0);
+        break;
+    }
+    //compute child clip
+    if (borderRadius != null) {
+      final borderRadius = this.borderRadius!.resolve(TextDirection.ltr);
+      _clipRRect = borderRadius.toRRect(
+        Rect.fromLTRB(
+          0,
+          0,
+          constraints.crossAxisExtent,
+          geometry!.maxPaintExtent,
+        ),
+      );
+      final offSetY = headerPosition;
+      _clipRRect = _clipRRect!.shift(Offset(0, offSetY));
+    }
+  }
+
+  @override
+  void applyPaintTransform(RenderObject child, Matrix4 transform) {
+    (child.parentData as SliverPhysicalParentData)
+        .applyPaintTransform(transform);
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) {
+    if (geometry!.visible) {
+      // paint decoration
+      if (decoration != null) {
+        final childParentData =
+            decoration!.parentData as SliverPhysicalParentData;
+        context.paintChild(decoration!, offset + childParentData.paintOffset);
+      }
+      // paint child
+      if (child != null && child!.geometry!.visible) {
+        final childParentData = child!.parentData as SliverPhysicalParentData?;
+        final painter = (PaintingContext context, Offset offset) {
+          context.paintChild(child!, offset);
+        };
+        if (_clipRRect != null && _clipRRect != RRect.zero) {
+          context.pushClipRRect(
+            needsCompositing,
+            offset + childParentData!.paintOffset,
+            _clipRRect!.outerRect,
+            _clipRRect!,
+            painter,
+          );
+        } else {
+          painter(context, offset + childParentData!.paintOffset);
+        }
+      }
+    }
+  }
+}

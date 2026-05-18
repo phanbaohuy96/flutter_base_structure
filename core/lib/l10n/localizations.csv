@@ -1,0 +1,74 @@
+key,en,th
+inform,Inform,Inform
+ok,Ok,Ok
+cancel,Cancel,Cancel
+confirm,Confirm,Confirm
+noInternet,"Connection errors.
+Please check your network connection and try again","Connection errors.
+Please check your network connection and try again"
+technicalIssues,"Oops! .There seems to be a technical problem.
+Please check your connection or try again later","Oops! .There seems to be a technical problem.
+Please check your connection or try again later"
+requestRestricted,"Request sent too many times\nPlease wait a moment and try again.","Request sent too many times\nPlease wait a moment and try again."
+serverMaintenance,Server is unavailable at this time. Please try again later.,Server is unavailable at this time. Please try again later.
+connectionTimeout,Connection timmed out.,Connection timmed out.
+unknownError,"Something went wrong.
+Please try again later","Something went wrong.
+Please try again later"
+dataParsingError,"Data parsing error, please try again later","Data parsing error, please try again later"
+sessionExpired,Your session is expired. Please log in again!,Your session is expired. Please log in again!
+loading,Loading,Loading
+male,Male,Male
+female,Female,Female
+close,Close,Close
+error,Error,Error
+search,Search,Search
+warning,Warning,Warning
+haveNoPermission,No access. Please go to settings and grant permission to the app to continue.,No access. Please go to settings and grant permission to the app to continue.
+openSetting,Open Setting,Open Setting
+openInExternalBrowser,External Browser,External Browser
+copyLink,Copy link,Copy link
+copied,Copied,Copied
+featureUnderDevelopment,Feature under development,Feature under development
+requestPermission,Request permission,Request permission
+firebaseAuthExceptionTypeAccountExistsWithDifferentCredential,An error occurred while signing in.,An error occurred while signing in.
+firebaseAuthExceptionTypeInvalidCredential,An error occurred while signing in.,An error occurred while signing in.
+firebaseAuthExceptionTypeOperationNotAllowed,An error occurred while signing in.,An error occurred while signing in.
+firebaseAuthExceptionTypeUserDisabled,The user associated with this credential has been disabled.,The user associated with this credential has been disabled.
+firebaseAuthExceptionTypeUserNotFound,User not found. Please check your credentials and try again.,User not found. Please check your credentials and try again.
+firebaseAuthExceptionTypeInvalidVerificationCode,Invalid verification code.,Invalid verification code.
+firebaseAuthExceptionTypeInvalidVerificationId,Invalid verification ID.,Invalid verification ID.
+firebaseAuthExceptionTypeWrongPassword,Wrong password. Please check your credentials and try again.,Wrong password. Please check your credentials and try again.
+firebaseAuthExceptionTypeUnknown,An error occurred while signing in.,An error occurred while signing in.
+firebaseAuthExceptionSessionExpired,The OTP has expired. Please re-send the new OTP to try again.,The OTP has expired. Please re-send the new OTP to try again.
+today,Today,Today
+yesterday,Yesterday,Yesterday
+thisWeek,This week,This week
+weekAgo,Week ago,Week ago
+thisMonth,This month,This month
+monthAgo,Month ago,Month ago
+selectDate,Select date,Select date
+fromDate,From date,From date
+toDate,To date,To date
+month,Month,Month
+threeDaysAgo,3 days ago,3 days ago
+sevenDaysAgo,7 days ago,7 days ago
+thirtyDaysAgo,30 days ago,30 days ago
+thisQuarter,This quarter,This quarter
+quarterAgo,Quarter ago,Quarter ago
+thisYear,This year,This year
+yearAgo,Year ago,Year ago
+selectTimePeriod,Select time period,Select time period
+reset,Reset,Reset
+apply,Apply,Apply
+manual,Manual,Manual
+day,Day,Day
+viewMore,See more,See more
+seeLess,See less,See less
+fullTime,Full time,Full time
+camera,Camera,Camera
+gallery,Gallery,Gallery
+choosePhoto,Select photo,Select photo
+choosePhotoOrVideo,Select media,Select media
+chooseVideo,Select video,Select video
+pleaseEnableGPS,Please enable location to continue the experience,Please enable location to continue the experience

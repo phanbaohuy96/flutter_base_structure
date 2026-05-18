@@ -1,0 +1,42 @@
+targets:
+  $default:
+    builders:
+      hive_generator:
+        generate_for:
+          - lib/data/data_source/local/**.dart
+      retrofit_generator:
+        enabled: false
+      freezed:
+        generate_for:
+          - lib/data/**.dart
+          - lib/domain/entities/**.dart
+          - lib/presentation/modules/**.dart
+      json_serializable:
+        generate_for:
+          - lib/common/constants/**.dart
+          - lib/data/models/**.dart
+          - lib/domain/entities/**.dart
+      injectable_generator:injectable_builder:
+        generate_for:
+          - lib/common/constants/image_constants.dart
+          - lib/data/data_source/datasource_module.dart
+          - lib/data/data_source/local/local_data_manager.dart
+          - lib/data/data_source/local/preferences_helper/preferences_helper.dart
+          - lib/data/data_source/local/sqlite/sqlite_database.impl.dart
+          - lib/di/di.config.dart
+          - lib/di/di.dart
+          - lib/domain/usecases/auth/auth_usecase.dart
+          - lib/presentation/modules/auth/signin/bloc/signin_bloc.dart
+          - lib/presentation/theme/theme_dialog.dart
+      injectable_generator:injectable_config_builder:
+        generate_for:
+          - lib/common/constants/image_constants.dart
+          - lib/data/data_source/datasource_module.dart
+          - lib/data/data_source/local/local_data_manager.dart
+          - lib/data/data_source/local/preferences_helper/preferences_helper.dart
+          - lib/data/data_source/local/sqlite/sqlite_database.impl.dart
+          - lib/di/di.config.dart
+          - lib/di/di.dart
+          - lib/domain/usecases/auth/auth_usecase.dart
+          - lib/presentation/modules/auth/signin/bloc/signin_bloc.dart
+          - lib/presentation/theme/theme_dialog.dart
