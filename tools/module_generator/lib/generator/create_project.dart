@@ -227,7 +227,12 @@ class CreateProjectGenerator {
       movedPaths,
       warnings,
     );
-    await _renameSigningDirectory(destination, options.identity, movedPaths);
+    await _renameSigningDirectory(
+      destination,
+      options.identity,
+      movedPaths,
+      warnings,
+    );
 
     if (options.runPostGeneration) {
       await _regenerateDerivedOutputs(
@@ -682,6 +687,7 @@ class CreateProjectGenerator {
     String projectRoot,
     ProjectIdentity identity,
     List<MovedPath> movedPaths,
+    List<String> warnings,
   ) async {
     final oldDirectory = Directory(
       path.join(projectRoot, 'apps', 'main', 'ios', 'signing_res', _oldSlug),
@@ -704,6 +710,11 @@ class CreateProjectGenerator {
 
     await newDirectory.parent.create(recursive: true);
     if (await newDirectory.exists()) {
+      warnings.add(
+        'iOS signing directory rename skipped: '
+        '${path.relative(newDirectory.path, from: projectRoot)} already exists; '
+        '${path.relative(oldDirectory.path, from: projectRoot)} was left in place.',
+      );
       return;
     }
 
