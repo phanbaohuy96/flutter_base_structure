@@ -8,6 +8,7 @@ import 'package:path/path.dart' as path;
 import '../generate_app_localizations.dart' as app_localizations;
 import 'generate_app_identifier.dart' as app_identifier;
 
+const _mainAppDir = 'apps/main';
 const _oldDisplayName = 'My Flutter Base';
 const _oldSlug = 'my_flutter_base';
 const _oldBasePackage = 'com.pbh.myflutterbase';
@@ -167,7 +168,7 @@ class CreateProjectGenerator {
 
     while (true) {
       final hasMainApp = File(
-        path.join(current.path, 'apps', 'main', 'app_identifier.yaml'),
+        path.join(current.path, _mainAppDir, 'app_identifier.yaml'),
       ).existsSync();
       final hasGenerator = Directory(
         path.join(current.path, 'tools', 'module_generator'),
@@ -292,7 +293,7 @@ class CreateProjectGenerator {
     required bool force,
   }) async {
     final templateMarker = File(
-      path.join(templateRoot, 'apps', 'main', 'app_identifier.yaml'),
+      path.join(templateRoot, _mainAppDir, 'app_identifier.yaml'),
     );
     if (!await templateMarker.exists()) {
       throw CreateProjectException(
@@ -430,7 +431,7 @@ class CreateProjectGenerator {
     List<String> changedFiles,
   ) async {
     final file = File(
-      path.join(projectRoot, 'apps', 'main', 'app_identifier.yaml'),
+      path.join(projectRoot, _mainAppDir, 'app_identifier.yaml'),
     );
     await file.writeAsString(_appIdentifierYaml(identity));
     changedFiles.add(path.relative(file.path, from: projectRoot));
@@ -460,7 +461,7 @@ class CreateProjectGenerator {
     ProjectIdentity identity,
     List<String> changedFiles,
   ) async {
-    final file = File(path.join(projectRoot, 'apps', 'main', 'pubspec.yaml'));
+    final file = File(path.join(projectRoot, _mainAppDir, 'pubspec.yaml'));
     if (!await file.exists()) {
       return;
     }
@@ -483,7 +484,7 @@ class CreateProjectGenerator {
     ProjectIdentity identity,
     List<String> changedFiles,
   ) async {
-    final appDir = path.join(projectRoot, 'apps', 'main');
+    final appDir = path.join(projectRoot, _mainAppDir);
     final indexFile = File(path.join(appDir, 'web', 'index.html'));
     if (await indexFile.exists()) {
       final escapedName = const HtmlEscape().convert(identity.displayName);
@@ -522,14 +523,7 @@ class CreateProjectGenerator {
     List<String> changedFiles,
   ) async {
     final file = File(
-      path.join(
-        projectRoot,
-        'apps',
-        'main',
-        'lib',
-        'l10n',
-        'localizations.csv',
-      ),
+      path.join(projectRoot, _mainAppDir, 'lib', 'l10n', 'localizations.csv'),
     );
     if (!await file.exists()) {
       return;
@@ -565,7 +559,7 @@ class CreateProjectGenerator {
     List<MovedPath> movedPaths,
     List<String> warnings,
   ) async {
-    final appDir = path.join(projectRoot, 'apps', 'main');
+    final appDir = path.join(projectRoot, _mainAppDir);
     final buildGradle = File(
       path.join(appDir, 'android', 'app', 'build.gradle'),
     );
@@ -691,13 +685,12 @@ class CreateProjectGenerator {
     List<String> warnings,
   ) async {
     final oldDirectory = Directory(
-      path.join(projectRoot, 'apps', 'main', 'ios', 'signing_res', _oldSlug),
+      path.join(projectRoot, _mainAppDir, 'ios', 'signing_res', _oldSlug),
     );
     final newDirectory = Directory(
       path.join(
         projectRoot,
-        'apps',
-        'main',
+        _mainAppDir,
         'ios',
         'signing_res',
         identity.iosSigningDirName,
@@ -793,7 +786,7 @@ class CreateProjectGenerator {
     List<String> changedFiles,
     List<String> warnings,
   ) async {
-    final appDir = path.join(projectRoot, 'apps', 'main');
+    final appDir = path.join(projectRoot, _mainAppDir);
     final previousDirectory = Directory.current.path;
 
     try {
@@ -801,12 +794,12 @@ class CreateProjectGenerator {
       await app_identifier.generateAppIdentifier(
         project: _appIdentifierProject(identity),
       );
-      changedFiles.add('apps/main/android/app_specific.properties');
-      changedFiles.add('apps/main/ios/Flutter/AppSpecific.xcconfig');
+      changedFiles.add('$_mainAppDir/android/app_specific.properties');
+      changedFiles.add('$_mainAppDir/ios/Flutter/AppSpecific.xcconfig');
 
       await app_localizations.generateAppLocalizations();
-      changedFiles.add('apps/main/lib/l10n/intl_en.arb');
-      changedFiles.add('apps/main/lib/l10n/intl_vi.arb');
+      changedFiles.add('$_mainAppDir/lib/l10n/intl_en.arb');
+      changedFiles.add('$_mainAppDir/lib/l10n/intl_vi.arb');
     } finally {
       Directory.current = previousDirectory;
     }
@@ -815,7 +808,7 @@ class CreateProjectGenerator {
     if (flutterWarning != null) {
       warnings.add(flutterWarning);
     } else {
-      changedFiles.add('apps/main/lib/l10n/generated');
+      changedFiles.add('$_mainAppDir/lib/l10n/generated');
     }
   }
 
@@ -906,23 +899,23 @@ class CreateProjectGenerator {
 
   List<String> _plannedFiles(String templateRoot) {
     const candidates = [
-      'apps/main/app_identifier.yaml',
-      'apps/main/pubspec.yaml',
-      'apps/main/android/app/build.gradle',
-      'apps/main/android/app/src/main/kotlin/$_oldPackagePath/MainActivity.kt',
-      'apps/main/web/index.html',
-      'apps/main/web/manifest.json',
-      'apps/main/lib/l10n/localizations.csv',
-      'apps/main/dist_config.sh',
-      'apps/main/fastlane/Fastfile',
+      '$_mainAppDir/app_identifier.yaml',
+      '$_mainAppDir/pubspec.yaml',
+      '$_mainAppDir/android/app/build.gradle',
+      '$_mainAppDir/android/app/src/main/kotlin/$_oldPackagePath/MainActivity.kt',
+      '$_mainAppDir/web/index.html',
+      '$_mainAppDir/web/manifest.json',
+      '$_mainAppDir/lib/l10n/localizations.csv',
+      '$_mainAppDir/dist_config.sh',
+      '$_mainAppDir/fastlane/Fastfile',
       'README.md',
       'AGENTS.md',
-      'apps/main/README.md',
-      'apps/main/CICD_SECRETS_SETUP.md',
-      'apps/main/ios/QUICK_START.md',
-      'apps/main/ios/PROVISIONING_PROFILE_SETUP.md',
-      'apps/main/ios/CICD_PROVISIONING_GUIDE.md',
-      'apps/main/ios/check_provisioning_profiles.sh',
+      '$_mainAppDir/README.md',
+      '$_mainAppDir/CICD_SECRETS_SETUP.md',
+      '$_mainAppDir/ios/QUICK_START.md',
+      '$_mainAppDir/ios/PROVISIONING_PROFILE_SETUP.md',
+      '$_mainAppDir/ios/CICD_PROVISIONING_GUIDE.md',
+      '$_mainAppDir/ios/check_provisioning_profiles.sh',
     ];
     return [
       for (final relative in candidates)
@@ -933,7 +926,7 @@ class CreateProjectGenerator {
   List<MovedPath> _plannedMoves(String templateRoot, ProjectIdentity identity) {
     final moves = <MovedPath>[];
     final mainActivity = path.join(
-      'apps/main/android/app/src/main/kotlin',
+      '$_mainAppDir/android/app/src/main/kotlin',
       _oldPackagePath,
       'MainActivity.kt',
     );
@@ -942,19 +935,19 @@ class CreateProjectGenerator {
         MovedPath(
           mainActivity,
           path.join(
-            'apps/main/android/app/src/main/kotlin',
+            '$_mainAppDir/android/app/src/main/kotlin',
             identity.packagePath,
             'MainActivity.kt',
           ),
         ),
       );
     }
-    final signing = 'apps/main/$_oldSigningPath';
+    final signing = '$_mainAppDir/$_oldSigningPath';
     if (Directory(path.join(templateRoot, signing)).existsSync()) {
       moves.add(
         MovedPath(
           signing,
-          'apps/main/ios/signing_res/${identity.iosSigningDirName}',
+          '$_mainAppDir/ios/signing_res/${identity.iosSigningDirName}',
         ),
       );
     }
