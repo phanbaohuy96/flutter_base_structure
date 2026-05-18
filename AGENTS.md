@@ -419,7 +419,7 @@ Distribution-related files:
 - `deploy.sh`
 - `apps/main/fastlane/Fastfile`
 - `apps/main/ios/Flutter/AppSpecific.xcconfig`
-- `apps/main/ios/signing_res/my_flutter_base/`
+- `apps/main/ios/signing_res/`
 - `apps/main/android/keystores/`
 
 Do not change package IDs, bundle IDs, signing paths, CI secrets, provisioning docs, or Fastlane lanes casually. These changes affect external systems such as Firebase, Apple Developer, Play Console, and CI/CD.

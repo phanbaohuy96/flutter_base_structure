@@ -8,7 +8,6 @@ const _oldDisplayName = 'My Flutter Base';
 const _oldSlug = 'my_flutter_base';
 const _oldBasePackage = 'com.pbh.myflutterbase';
 const _oldPackagePath = 'com/pbh/myflutterbase';
-const _oldSigningDir = 'my_flutter_base';
 
 void main() {
   late Directory tempDir;
@@ -181,10 +180,13 @@ void main() {
     expect(fastfile, contains('package_name: "com.example.mobile"'));
 
     final distConfig = await _read(destination, 'apps/main/dist_config.sh');
-    expect(distConfig, contains('ios/signing_res/example_mobile/development'));
+    expect(distConfig, contains('ios/signing_res/development'));
     expect(
-      Directory(
-        path.join(destination, 'apps/main/ios/signing_res/example_mobile'),
+      File(
+        path.join(
+          destination,
+          'apps/main/ios/signing_res/development/ExportOptions.plist',
+        ),
       ).existsSync(),
       isTrue,
     );
@@ -298,7 +300,7 @@ Base package ID: $_oldBasePackage
 ''');
   await _write(root, 'README.md', '''
 # $_oldDisplayName
-Signing path: apps/main/ios/signing_res/$_oldSigningDir/
+Signing path: apps/main/ios/signing_res/
 ''');
   await _write(root, '.git/HEAD', 'ref: refs/heads/master');
   await _write(root, '.claude/settings.json', '{}');
@@ -374,7 +376,7 @@ key,en,vi
 poweredByApp,Powered by $_oldDisplayName,Được cung cấp bởi $_oldDisplayName
 ''');
   await _write(root, 'apps/main/dist_config.sh', '''
-dev_development_exportOptionsPlist="ios/signing_res/$_oldSigningDir/development/ExportOptions.plist"
+dev_development_exportOptionsPlist="ios/signing_res/development/ExportOptions.plist"
 ''');
   await _write(root, 'apps/main/fastlane/Fastfile', '''
 upload_to_play_store(
@@ -389,7 +391,7 @@ upload_to_play_store(
   await _write(root, 'apps/main/ios/QUICK_START.md', '$_oldBasePackage.dev');
   await _write(
     root,
-    'apps/main/ios/signing_res/$_oldSigningDir/development/ExportOptions.plist',
+    'apps/main/ios/signing_res/development/ExportOptions.plist',
     '<plist />',
   );
 }

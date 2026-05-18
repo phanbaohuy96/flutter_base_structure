@@ -13,7 +13,6 @@ const _oldDisplayName = 'My Flutter Base';
 const _oldSlug = 'my_flutter_base';
 const _oldBasePackage = 'com.pbh.myflutterbase';
 const _oldPackagePath = 'com/pbh/myflutterbase';
-const _oldSigningPath = 'ios/signing_res/my_flutter_base';
 
 final _excludedCopySegments = {
   '.dart_tool',
@@ -76,16 +75,11 @@ class ProjectIdentity {
     required this.displayName,
     required this.slug,
     required this.basePackage,
-    String? iosSigningDirName,
-  }) : iosSigningDirName =
-           iosSigningDirName == null || iosSigningDirName.isEmpty
-           ? slug
-           : iosSigningDirName;
+  });
 
   final String displayName;
   final String slug;
   final String basePackage;
-  final String iosSigningDirName;
 
   String get devPackage => '$basePackage.dev';
 
@@ -235,13 +229,6 @@ class CreateProjectGenerator {
       movedPaths,
       warnings,
     );
-    await _renameSigningDirectory(
-      destination,
-      options.identity,
-      movedPaths,
-      warnings,
-    );
-
     if (options.runPostGeneration) {
       await _regenerateDerivedOutputs(
         destination,
@@ -271,8 +258,7 @@ class CreateProjectGenerator {
     return content.contains(_oldDisplayName) ||
         content.contains(_oldSlug) ||
         content.contains(_oldBasePackage) ||
-        content.contains(_oldPackagePath) ||
-        content.contains(_oldSigningPath);
+        content.contains(_oldPackagePath);
   }
 
   String _resolveDestination(String destination, String workingDirectory) {
@@ -319,12 +305,6 @@ class CreateProjectGenerator {
       );
     }
 
-    if (!_isValidSigningDirName(identity.iosSigningDirName)) {
-      throw CreateProjectException(
-        'iOS signing directory name can only contain letters, digits, underscores, and dashes.',
-      );
-    }
-
     if (path.equals(templateRoot, destination) ||
         path.isWithin(templateRoot, destination)) {
       throw CreateProjectException(
@@ -353,10 +333,6 @@ class CreateProjectGenerator {
 
   bool _isValidBasePackage(String value) {
     return RegExp(r'^[a-z][a-z0-9]*(\.[a-z][a-z0-9]*)+$').hasMatch(value);
-  }
-
-  bool _isValidSigningDirName(String value) {
-    return RegExp(r'^[A-Za-z0-9_-]+$').hasMatch(value);
   }
 
   Future<bool> _isDirectoryEmpty(Directory directory) async {
@@ -678,49 +654,6 @@ class CreateProjectGenerator {
     }
   }
 
-  Future<void> _renameSigningDirectory(
-    String projectRoot,
-    ProjectIdentity identity,
-    List<MovedPath> movedPaths,
-    List<String> warnings,
-  ) async {
-    final oldDirectory = Directory(
-      path.join(projectRoot, _mainAppDir, 'ios', 'signing_res', _oldSlug),
-    );
-    final newDirectory = Directory(
-      path.join(
-        projectRoot,
-        _mainAppDir,
-        'ios',
-        'signing_res',
-        identity.iosSigningDirName,
-      ),
-    );
-
-    if (!await oldDirectory.exists() ||
-        path.equals(oldDirectory.path, newDirectory.path)) {
-      return;
-    }
-
-    await newDirectory.parent.create(recursive: true);
-    if (await newDirectory.exists()) {
-      warnings.add(
-        'iOS signing directory rename skipped: '
-        '${path.relative(newDirectory.path, from: projectRoot)} already exists; '
-        '${path.relative(oldDirectory.path, from: projectRoot)} was left in place.',
-      );
-      return;
-    }
-
-    await oldDirectory.rename(newDirectory.path);
-    movedPaths.add(
-      MovedPath(
-        path.relative(oldDirectory.path, from: projectRoot),
-        path.relative(newDirectory.path, from: projectRoot),
-      ),
-    );
-  }
-
   Future<List<String>> _runIdentitySweep(
     String projectRoot,
     ProjectIdentity identity,
@@ -766,7 +699,6 @@ class CreateProjectGenerator {
   // or display name. Dart preserves Map literal insertion order.
   Map<String, String> _replacementRules(ProjectIdentity identity) {
     return {
-      _oldSigningPath: 'ios/signing_res/${identity.iosSigningDirName}',
       '$_oldBasePackage.dev': identity.devPackage,
       '$_oldBasePackage.staging': identity.stagingPackage,
       '$_oldBasePackage.sandbox': identity.sandboxPackage,
@@ -939,15 +871,6 @@ class CreateProjectGenerator {
             identity.packagePath,
             'MainActivity.kt',
           ),
-        ),
-      );
-    }
-    final signing = '$_mainAppDir/$_oldSigningPath';
-    if (Directory(path.join(templateRoot, signing)).existsSync()) {
-      moves.add(
-        MovedPath(
-          signing,
-          '$_mainAppDir/ios/signing_res/${identity.iosSigningDirName}',
         ),
       );
     }

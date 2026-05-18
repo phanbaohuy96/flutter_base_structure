@@ -32,7 +32,6 @@ Future<int> runCreateProjectCommand(List<String> arguments) async {
     var slug = _optionalString(results, 'slug');
     var basePackage = _optionalString(results, 'base-package');
     var destination = _optionalString(results, 'destination');
-    var iosSigningDirName = _optionalString(results, 'ios-signing-dir-name');
 
     if (nonInteractive) {
       _requireOption(displayName, 'display-name');
@@ -53,17 +52,12 @@ Future<int> runCreateProjectCommand(List<String> arguments) async {
         message: 'Destination path',
         defaultValue: '../$slug',
       );
-      iosSigningDirName ??= await _enterWithDefault(
-        message: 'iOS signing resource directory name',
-        defaultValue: slug,
-      );
     }
 
     final identity = ProjectIdentity(
       displayName: displayName!,
       slug: slug!,
       basePackage: basePackage!,
-      iosSigningDirName: iosSigningDirName,
     );
 
     final templateRoot = _optionalString(results, 'template-root');
@@ -125,10 +119,6 @@ ArgParser _buildParser() {
     ..addOption(
       'base-package',
       help: 'Base Android/iOS package ID, for example com.acme.mobile.',
-    )
-    ..addOption(
-      'ios-signing-dir-name',
-      help: 'iOS signing resource directory name. Defaults to the slug.',
     )
     ..addOption(
       'template-root',
@@ -200,7 +190,6 @@ Flavor packages:
   staging: ${identity.stagingPackage}
   sandbox: ${identity.sandboxPackage}
   prod: ${identity.prodPackage}
-iOS signing directory: ${identity.iosSigningDirName}
 ${force ? 'Existing destination will be replaced if needed.\n' : ''}''');
 }
 
