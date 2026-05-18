@@ -15,7 +15,7 @@ part '${moduleNameKey}_event.dart';
 part '${moduleNameKey}_state.dart';
 
 @Injectable()
-class ${classNameKey}Bloc extends AppBlocBase<${classNameKey}Event, ${classNameKey}State> {
+class ${classNameKey}Bloc extends CoreBlocBase<${classNameKey}Event, ${classNameKey}State> {
   final ${classNameKey}Usecase _usecase;
   
   ${classNameKey}Bloc(this._usecase) : 

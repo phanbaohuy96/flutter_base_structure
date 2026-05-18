@@ -7,14 +7,13 @@ import 'package:injectable/injectable.dart';
 
 import '../../../../../domain/entities/auth/response.dart';
 import '../../../../../domain/usecases/auth/auth_usecase.dart';
-import '../../../../base/base.dart';
 
 part 'signin_bloc.freezed.dart';
 part 'signin_event.dart';
 part 'signin_state.dart';
 
 @Injectable()
-class SigninBloc extends AppBlocBase<SigninEvent, SigninState> {
+class SigninBloc extends CoreBlocBase<SigninEvent, SigninState> {
   final AuthUsecase _authUsecase;
 
   SigninBloc(this._authUsecase)
