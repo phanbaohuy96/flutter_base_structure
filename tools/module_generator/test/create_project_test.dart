@@ -81,6 +81,29 @@ void main() {
     );
   });
 
+  test('rejects display names with control chars or empty', () async {
+    final generator = CreateProjectGenerator();
+    final destination = path.join(outputBaseDir.path, 'invalid_name');
+
+    for (final badName in ['', '   ', 'Line\nBreak', 'Tab\tName']) {
+      await expectLater(
+        generator.run(
+          CreateProjectOptions(
+            templateRoot: templateDir.path,
+            destination: destination,
+            identity: ProjectIdentity(
+              displayName: badName,
+              slug: 'bad_name',
+              basePackage: 'com.bad.name',
+            ),
+            runPostGeneration: false,
+          ),
+        ),
+        throwsA(isA<CreateProjectException>()),
+      );
+    }
+  });
+
   test('copies template and rewrites project identity', () async {
     final destination = path.join(outputBaseDir.path, 'example_mobile');
 
