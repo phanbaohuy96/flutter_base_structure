@@ -225,6 +225,7 @@ class CreateProjectGenerator {
       options.identity,
       changedFiles,
       movedPaths,
+      warnings,
     );
     await _renameSigningDirectory(destination, options.identity, movedPaths);
 
@@ -556,6 +557,7 @@ class CreateProjectGenerator {
     ProjectIdentity identity,
     List<String> changedFiles,
     List<MovedPath> movedPaths,
+    List<String> warnings,
   ) async {
     final appDir = path.join(projectRoot, 'apps', 'main');
     final buildGradle = File(
@@ -577,6 +579,7 @@ class CreateProjectGenerator {
       identity,
       changedFiles,
       movedPaths,
+      warnings,
     );
   }
 
@@ -586,6 +589,7 @@ class CreateProjectGenerator {
     ProjectIdentity identity,
     List<String> changedFiles,
     List<MovedPath> movedPaths,
+    List<String> warnings,
   ) async {
     final kotlinRoot = Directory(
       path.join(appDir, 'android', 'app', 'src', 'main', 'kotlin'),
@@ -604,9 +608,18 @@ class CreateProjectGenerator {
         'MainActivity.kt',
       ]),
     );
-    final sourceFile = await oldFile.exists()
-        ? oldFile
-        : await _findMainActivity(kotlinRoot);
+    final File? sourceFile;
+    if (await oldFile.exists()) {
+      sourceFile = oldFile;
+    } else {
+      sourceFile = await _findMainActivity(kotlinRoot);
+      if (sourceFile != null) {
+        warnings.add(
+          'MainActivity.kt was not at the expected template path; '
+          'used ${path.relative(sourceFile.path, from: projectRoot)} instead.',
+        );
+      }
+    }
 
     if (sourceFile == null) {
       return;
