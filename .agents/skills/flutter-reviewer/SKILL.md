@@ -1,6 +1,6 @@
 ---
 name: flutter-reviewer
-description: Reviews UI-layer changes — screens, blocs, widgets, routes — against the template's StateBase + AppBlocBase + fl_theme conventions
+description: Reviews UI-layer changes — screens, blocs, widgets, routes — against the template's StateBase + CoreBlocBase + fl_theme conventions
 license: MIT
 compatibility: all
 metadata:
@@ -19,7 +19,7 @@ metadata:
 
 ### Bloc shape
 
-- [ ] Bloc extends `AppBlocBase<E, S>` (not `Bloc`/`Cubit` directly) and is `@Injectable()`.
+- [ ] Bloc extends `CoreBlocBase<E, S>` (not `Bloc`/`Cubit` directly) and is `@Injectable()`.
 - [ ] `<feature>_bloc.dart` has the three `part` directives (freezed/event/state) in the right order.
 - [ ] `_StateData` is `@freezed sealed class` with `@Default(...)` on collections.
 - [ ] Concrete state classes are `extends FeatureState` (abstract base), **not** a freezed union — and every concrete class is registered in `_factories`.
@@ -45,7 +45,8 @@ metadata:
 - [ ] `extraFromUrlQueries` set when the screen should be deep-linkable.
 - [ ] Required typed extras use `buildRequiredRouteExtra<T>` or equivalent shared guard instead of repeated unsafe casts.
 - [ ] App-level route aggregation uses `buildFlGoRouter` with the relevant `IRoute` providers.
-- [ ] Coordinator extension on `BuildContext` exposes typed `goToX`, all taking a `PushBehavior`.
+- [ ] Coordinator extension is present **only** when the module is compound or has non-trivial entry logic; simple one-screen modules push the route name directly.
+- [ ] When a coordinator exists, it exposes typed `goToX` on `BuildContext`, all taking a `PushBehavior`, and uses `Args(...).adaptiveArguments` rather than the retired `adaptive`.
 - [ ] No direct `package:go_router/go_router.dart` imports in feature code.
 
 ### Theming

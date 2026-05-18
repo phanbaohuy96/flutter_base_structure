@@ -1,6 +1,6 @@
 ---
 name: data-reviewer
-description: Reviews data-layer changes — Freezed DTOs, Retrofit clients, hive_ce stores, and repositories — against the template's conventions
+description: Reviews data-layer changes — Freezed DTOs, Retrofit clients, the storage seam, optional hive_ce stores, and repositories — against the template's conventions
 license: MIT
 compatibility: all
 metadata:
@@ -36,7 +36,18 @@ metadata:
 - [ ] `Multipart` endpoints declared with `@Multipart` and `@PartFile()`.
 - [ ] No `try/catch` in the client; let `DioException` propagate.
 
-### Hive stores
+### Storage seam (local persistence)
+
+See `data-layer` §Storage seam for rationale.
+
+- [ ] New persisted fields land on the existing seam (`CoreLocalDataManager` / `LocalDataManager`), not on a fresh helper type.
+- [ ] App-scope `LocalDataManager` and its `@module` bridge are both `@lazySingleton`.
+- [ ] No raw `SharedPreferences` / `FlutterSecureStorage` reads in presentation or feature code.
+- [ ] Any new sync getter intended for `GoRoute.redirect` has its async populator awaited once during app init.
+
+### Hive stores (only when actually used)
+
+Most data-layer PRs leave Hive untouched. When a PR does add one:
 
 - [ ] Unique `@HiveType(typeId: …)`. Cross-check the existing types.
 - [ ] `@HiveField(n)` indices are stable; never reuse a deleted index.

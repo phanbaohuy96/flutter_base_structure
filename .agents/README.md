@@ -19,12 +19,12 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 |---|---|
 | [`behavioral-guardrails`](./skills/behavioral-guardrails/SKILL.md) | Clarify ambiguity, avoid overengineering, keep diffs surgical, verify outcomes |
 | [`module-scaffold`](./skills/module-scaffold/SKILL.md) | Scaffold a feature module via `make run_module_generator` or by hand |
-| [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `AppBlocBase` + abstract state hierarchy + freezed `_StateData` |
+| [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `CoreBlocBase` + abstract state hierarchy + freezed `_StateData` |
 | [`bus-event`](./skills/bus-event/SKILL.md) | Cross-feature synchronization with `EventBusManager` |
 | [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
-| [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + hive_ce + repository wired through injectable |
+| [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repository wired through injectable (Hive optional) |
 | [`error-handling`](./skills/error-handling/SKILL.md) | Throw → `CoreBlocBase.onError` → `StateBase` `ErrorType` router |
 | [`localization`](./skills/localization/SKILL.md) | CSV → ARB → generated `AppLocalizations` |
 | [`code-generation`](./skills/code-generation/SKILL.md) | `make gen_all` / `make gen_<scope>` / `make lang` |
@@ -43,6 +43,8 @@ These skills assume the structure shipped by the template:
 - Cross-feature synchronization via `BusEvent` + `EventBusManager`.
 - Routing via `IRoute` + `CustomRouter` from `core/lib/presentation/route/`
   (re-exported via `package:core/core.dart`).
+- Local persistence via the storage seam (`CoreLocalDataManager` /
+  `LocalDataManager`) — never raw `SharedPreferences` / `FlutterSecureStorage`.
 - Theming via `plugins/fl_theme/` — Material 3 token names plus
   `AppTextTheme` extras; reach colors with `context.themeColor`.
 - Localization via CSV in `apps/main/lib/l10n/localizations.csv`,

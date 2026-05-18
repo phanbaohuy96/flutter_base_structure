@@ -151,31 +151,49 @@ class FeatureArgs {
   final Item? initial;
   final String? id;
 
-  FeatureArgs({this.initial, this.id});
+  const FeatureArgs({this.initial, this.id});
 
   factory FeatureArgs.fromUrlParams(Map<String, dynamic> queryParameters) =>
       FeatureArgs(id: asOrNull(queryParameters['id']));
 
   // For web, flatten to a query map; for native, pass the rich object.
-  dynamic get adaptive {
+  // The canonical getter name is `adaptiveArguments` (never `adaptive`).
+  dynamic get adaptiveArguments {
     if (kIsWeb) {
       return {'id': initial?.id ?? id}..removeWhere((_, v) => v.isNullOrEmpty);
     }
     return this;
   }
+
+  /// String form for `GoRoute.redirect` callbacks (and interceptors that
+  /// wrap them) that can't pass a typed `extra`.
+  String toRouteLocation() {
+    return Uri(
+      path: FeatureScreen.routeName,
+      queryParameters: id == null ? null : {'id': id},
+    ).toString();
+  }
 }
 ```
 
-`CustomRouter.buildExtra` resolves either path: a real `Args` object passed via `arguments`, or query params on a deep link.
+`CustomRouter.buildExtra` resolves either path: a real `Args` object passed via `arguments`, or query params on a deep link. Coordinators and interceptors should pick the right Args output for their consumer — `adaptiveArguments` for `pushBehavior.push(arguments: ...)`, `toRouteLocation()` for `redirect` callbacks that must return a string URL.
 
 ## Coordinator (navigation extension)
 
-Every module exposes its routes through a `BuildContext` extension so callers don't typo route paths:
+Coordinators are not free. Add one only for **compound modules** or modules with non-trivial entry logic (parameter translation, pre-nav guards, post-nav handling). A one-line `pushBehavior.push(context, FeatureScreen.routeName)` wrapper is shallow — call the screen route directly from feature code instead. See `CONTEXT.md`.
+
+When a coordinator exists, it owns:
+
+1. `*Args` construction (`adaptiveArguments` for the platform-correct payload).
+2. Pre-nav guards — e.g. signin's coordinator reads the storage seam and short-circuits to the post-login destination when a valid token is already present.
+3. Post-nav handling — refreshing parent state if the child mutated something the caller needs.
 
 ```dart
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../di/di.dart';
+import '../../../../data/data_source/local/local_data_manager.dart';
 import 'feature.dart';
 
 extension FeatureCoordinator on BuildContext {
@@ -186,24 +204,39 @@ extension FeatureCoordinator on BuildContext {
     return pushBehavior.push(
       this,
       FeatureScreen.routeName,
-      arguments: FeatureArgs(initial: object).adaptive,
-    );
-  }
-
-  Future<T?> goToFeatureById<T>({
-    required String id,
-    PushBehavior pushBehavior = const PushNamedBehavior(),
-  }) async {
-    return pushBehavior.push(
-      this,
-      FeatureScreen.routeName,
-      arguments: FeatureArgs(id: id).adaptive,
+      arguments: FeatureArgs(initial: object).adaptiveArguments,
     );
   }
 }
 ```
 
-Callers: `context.goToFeature(object: item)` or `context.goToFeatureById(id: '42')`.
+The authentication coordinator is the canonical pre-nav-guard example — it consults `injector<LocalDataManager>().token` before deciding whether to push signin or jump straight to the post-login destination.
+
+## Auth-gate interceptor
+
+See `CONTEXT.md` §Auth-gate interceptor for the definition. The shipped example lives at `apps/main/lib/presentation/route/auth_gate_route_interceptor.dart` and wraps each protected `CustomRouter`'s `redirect` so token enforcement stays at the plumbing level — feature screens never check auth state in `build`.
+
+```dart
+class AuthGateRouteInterceptor extends RouteProviderInterceptor {
+  static bool _defaultIsProtected(IRoute provider) =>
+      provider is! AuthenticationRoute;
+
+  CustomRouter _guardRouter(CustomRouter router) {
+    final existingRedirect = router.redirect;
+    return router.copyWith(
+      redirect: (context, state) {
+        if (localDataManager.isAuthenticated) {
+          return existingRedirect?.call(context, state);
+        }
+        return SigninRouteArgs(redirectTo: state.uri.toString())
+            .toRouteLocation();
+      },
+    );
+  }
+}
+```
+
+Token presence is read via the **synchronous** `isAuthenticated` getter on the storage seam — `GoRoute.redirect` cannot await. That means the seam's async `token` getter must be warmed once during app init so the in-memory cache is populated before the first navigation (see `data-layer`).
 
 ## Checklist
 
@@ -211,7 +244,8 @@ Callers: `context.goToFeature(object: item)` or `context.goToFeatureById(id: '42
 - [ ] Route extends `IRoute` and uses `CustomRouter<Args>` (typed) when extras are non-null.
 - [ ] Builder wraps the screen in `BlocProvider` and creates the bloc via `injector.get(...)`.
 - [ ] `extraFromUrlQueries` provided when the screen should be deep-linkable.
-- [ ] Coordinator extension exposes typed `goToX` methods, all taking `PushBehavior`.
+- [ ] Coordinator added only for compound modules or modules with non-trivial entry logic — simple modules call `pushBehavior.push(context, routeName)` directly.
+- [ ] When a coordinator exists, it exposes typed `goToX` methods, all taking `PushBehavior`, and passes `Args(...).adaptiveArguments` (not the older `adaptive`).
 - [ ] Route/coordinator methods have concise Dartdoc when they are newly introduced public APIs.
 - [ ] New top-level `IRoute` has `@FlRouteProvider()` and `make gen_main` was run to refresh the generated provider registry.
 - [ ] Route restrictions use runtime `routeProviderInterceptors`, not manual generated-provider lists.

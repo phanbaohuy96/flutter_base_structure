@@ -161,7 +161,7 @@ Declare a typed subscription, subscribe in the constructor after registering BLo
 ```dart
 @Injectable()
 class RecordsListingBloc
-    extends AppBlocBase<RecordsListingEvent, RecordsListingState> {
+    extends CoreBlocBase<RecordsListingEvent, RecordsListingState> {
   final RecordsUsecase _usecase;
   StreamSubscription<RecordActivityChangedBusEvent>? _eventSubscription;
 
