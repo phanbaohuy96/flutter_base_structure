@@ -105,6 +105,13 @@ class ProjectIdentity {
   String get packagePath => basePackage.replaceAll('.', '/');
 
   List<String> get packageSegments => basePackage.split('.');
+
+  Map<String, ({String package, String displayName})> get flavorConfigs => {
+    'dev': (package: devPackage, displayName: devDisplayName),
+    'staging': (package: stagingPackage, displayName: stagingDisplayName),
+    'sandbox': (package: sandboxPackage, displayName: sandboxDisplayName),
+    'prod': (package: prodPackage, displayName: prodDisplayName),
+  };
 }
 
 class CreateProjectOptions {
@@ -430,18 +437,12 @@ class CreateProjectGenerator {
   }
 
   String _appIdentifierYaml(ProjectIdentity identity) {
-    final flavors = [
-      ('dev', identity.devPackage, identity.devDisplayName),
-      ('staging', identity.stagingPackage, identity.stagingDisplayName),
-      ('sandbox', identity.sandboxPackage, identity.sandboxDisplayName),
-      ('prod', identity.prodPackage, identity.prodDisplayName),
-    ];
-    final flavorBlock = flavors
+    final flavorBlock = identity.flavorConfigs.entries
         .map(
-          (f) =>
-              '  ${f.$1}:\n'
-              '    package: ${_yamlString(f.$2)}\n'
-              '    name: ${_yamlString(f.$3)}',
+          (e) =>
+              '  ${e.key}:\n'
+              '    package: ${_yamlString(e.value.package)}\n'
+              '    name: ${_yamlString(e.value.displayName)}',
         )
         .join('\n');
     return '# dart run module_generator:generate_app_identifier\n\n'
@@ -821,15 +822,9 @@ class CreateProjectGenerator {
   app_identifier.ProjectConfigDocument _appIdentifierProject(
     ProjectIdentity identity,
   ) {
-    app_identifier.AppConfig config(String package, String name) {
-      return app_identifier.AppConfig(package, name, null);
-    }
-
     final configs = {
-      'dev': config(identity.devPackage, identity.devDisplayName),
-      'staging': config(identity.stagingPackage, identity.stagingDisplayName),
-      'sandbox': config(identity.sandboxPackage, identity.sandboxDisplayName),
-      'prod': config(identity.prodPackage, identity.prodDisplayName),
+      for (final e in identity.flavorConfigs.entries)
+        e.key: app_identifier.AppConfig(e.value.package, e.value.displayName, null),
     };
 
     return app_identifier.ProjectConfigDocument([
