@@ -211,7 +211,7 @@ project_config:
   project_root: .
   conventions:
     - clean_architecture                           # presentation → domain → data
-    - bloc_pattern_with_state_data                 # AppBlocBase + abstract state hierarchy
+    - bloc_pattern_with_state_data                 # CoreBlocBase + abstract state hierarchy
     - freezed_state_data                           # _StateData via @freezed sealed class
     - extension_action_screens                     # *.action.dart part-of screen
     - iroute_navigation_via_core                   # IRoute + CustomRouter from core/, fed into go_router

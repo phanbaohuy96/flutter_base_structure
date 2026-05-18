@@ -1,6 +1,6 @@
 ---
 name: code-generation
-description: Runs build_runner across core, data_source, and apps/main via the makefile after edits to freezed/injectable/retrofit/hive sources
+description: Runs build_runner across core, data_source, and apps/main via the makefile after edits to freezed/injectable/retrofit sources (and the optional Hive type adapters)
 license: MIT
 compatibility: all
 metadata:
@@ -13,7 +13,7 @@ metadata:
 
 ## When to use
 
-After editing any file annotated with `@freezed`, `@JsonSerializable`/`@JsonKey`, `@Injectable`/`@LazySingleton`/`@Singleton`/`@module`, `@RestApi`, `@HiveType`, or that declares a `_StateData` for a bloc.
+After editing any file annotated with `@freezed`, `@JsonSerializable`/`@JsonKey`, `@Injectable`/`@LazySingleton`/`@Singleton`/`@module`, `@RestApi`, `@FlRouteProvider`, the optional `@HiveType`, or that declares a `_StateData` for a bloc.
 
 ## Commands
 
@@ -38,7 +38,7 @@ When you don't know the scope of your change, run `make gen_all`. It's slower bu
 | Pattern | Producer | Hand-edit? |
 |---|---|---|
 | `*.freezed.dart` | freezed | Never |
-| `*.g.dart` | json_serializable, retrofit, hive_ce | Never |
+| `*.g.dart` | json_serializable, retrofit (and hive_ce, when used) | Never |
 | `*.config.dart` | injectable | Never |
 | `app_localizations*.dart` | flutter intl tooling via `make lang` | Never |
 
@@ -75,7 +75,7 @@ git diff --exit-code -- '**/*.freezed.dart' '**/*.g.dart' '**/*.config.dart' \
 
 ## Checklist
 
-- [ ] After adding/changing a `@freezed`/`@Injectable`/`@RestApi`/`@HiveType` source, `make gen_all` (or the narrow target) was run.
+- [ ] After adding/changing a `@freezed`/`@Injectable`/`@RestApi`/`@FlRouteProvider`/(optional `@HiveType`) source, `make gen_all` (or the narrow target) was run.
 - [ ] After editing `localizations.csv`, `make lang` was run.
 - [ ] No hand-edited generated files in the diff.
 - [ ] All generated files are staged for commit.

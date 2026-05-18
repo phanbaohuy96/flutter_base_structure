@@ -1,6 +1,6 @@
 ---
 name: data-layer
-description: Builds the data layer with Freezed DTOs, Retrofit clients, hive_ce local stores, and repositories wired through injectable
+description: Builds the data layer with Freezed DTOs, Retrofit clients, the storage-seam local data manager, and repositories wired through injectable
 license: MIT
 compatibility: all
 metadata:
@@ -23,10 +23,11 @@ metadata:
 |---|---|---|
 | DTO + value classes | `freezed` + `freezed_annotation` + `json_serializable` | `*.freezed.dart`, `*.g.dart` |
 | REST client | `retrofit` + `dio` + `retrofit_generator` | `*.g.dart` |
-| Local store | `hive_ce` + `hive_ce_generator` | `*.g.dart` |
+| Key/value persistence | `shared_preferences` + `flutter_secure_storage` (private state behind the storage seam) | — |
+| Local store (optional, on demand) | `hive_ce` + `hive_ce_generator` | `*.g.dart` |
 | DI | `injectable` + `injectable_generator` | `*.config.dart` |
 
-The shared module `modules/data_source/` exposes Retrofit + hive_ce plumbing; per-feature clients live there or, for app-specific endpoints, under `apps/main/lib/data/data_source/`. Models that are shared across apps go in `core/lib/data/models/`.
+The shared module `modules/data_source/` exposes Retrofit plumbing; per-feature clients live there or, for app-specific endpoints, under `apps/main/lib/data/data_source/`. Models that are shared across apps go in `core/lib/data/models/`. Local persistence flows through the **storage seam** (see below) — go through it rather than reaching for raw `SharedPreferences` or `FlutterSecureStorage` instances in presentation or feature code.
 
 Run `make gen_all` after edits.
 
@@ -119,21 +120,29 @@ Future<UploadResponse> upload(
 );
 ```
 
-## Hive local store
+## Storage seam (local persistence)
 
-For simple key/value caches use a hive_ce-backed data source. Generated boxes live under `data_source/local/` and surface a single class consumed by the repository.
+See `CONTEXT.md` §Storage seam for the definition. Operational rules:
 
-```dart
-@HiveType(typeId: 7)
-class UserHive extends HiveObject {
-  UserHive({required this.id, required this.name});
+- Bind the app-scope `LocalDataManager` **and** the `@module` bridge that exposes `CoreLocalDataManager` as `@lazySingleton`. The seam holds in-memory caches (e.g. `_memCacheToken`); a factory binding silently desyncs every consumer.
+- Warm async-only fields once during app init (`await injector<CoreLocalDataManager>().token;`) so the synchronous `isAuthenticated` getter is usable from `GoRoute.redirect`.
+- Add a new persisted field by extending the seam interface — don't add a parallel preferences helper.
 
-  @HiveField(0) final String id;
-  @HiveField(1) final String name;
-}
-```
+## Mock remote source
 
-Don't reuse a `typeId` — pick a unique one across the app.
+See `CONTEXT.md` §Mock remote source for the definition. `MockAuthRemoteSource` is the shipped example: an `@injectable` class with no separate interface, injected directly into `AuthRepositoryImpl`. Downstream apps swap it by defining `RetrofitAuthRemoteSource implements MockAuthRemoteSource` and rebinding — the repository depending on the mock keeps compiling.
+
+Rules when introducing one:
+
+- Keep the contract narrow — one `Future<DomainModel?>` (or domain entity) per operation.
+- Return the refreshed domain object, not a `bool`. Callers that need to update state shouldn't have to issue a second read.
+
+## Hive local store (optional)
+
+Reach for the storage seam first. Only introduce a Hive box when you need typed collections beyond key/value scope. Rules:
+
+- Pick a unique `@HiveType(typeId: …)`; never re-use a deleted `@HiveField(n)` index.
+- Register the adapter in the DI module that owns the box.
 
 ## Local storage APIs
 
@@ -143,30 +152,37 @@ When a mutation produces data the caller needs, return the updated domain result
 
 ## Repository
 
-Repositories accept the API client (and optionally a local data source) by constructor and decide cache/refresh policy. They are the only layer feature blocs depend on.
+Repositories accept the API client (or a remote source) by constructor and are the only layer feature blocs depend on.
+
+The module-generator's `repository.impl.dart` template uses the `DataRepository` mixin, which exposes `restApi` (a `RestApiRepository` reached via DI) for shared transport calls, and wraps the call in `try/on Exception` so the impl can translate transport errors into domain errors before they reach the use case:
 
 ```dart
+import 'package:core/core.dart';
 import 'package:injectable/injectable.dart';
 
-import '../api/user_api_client.dart';
+import '../../domain/repositories/user_repository.dart';
 import '../models/user_model.dart';
 
-@LazySingleton(as: UserRepository)
-class UserRepositoryImpl implements UserRepository {
-  UserRepositoryImpl(this._api);
-
-  final UserApiClient _api;
-
+@Injectable(as: UserRepository)
+class UserRepositoryImpl with DataRepository implements UserRepository {
   @override
-  Future<UserModel> getUser(String id) => _api.getUser(id);
-
-  @override
-  Future<List<UserModel>> getUsers({int page = 1, int limit = 20}) =>
-      _api.getUsers(page: page, limit: limit);
+  Future<User> getUser(String id) async {
+    try {
+      final dto = await restApi.getUser(id);
+      return dto.toEntity();
+    } on Exception catch (error, stackTrace) {
+      // Wrap as NotFoundError / NetworkError / etc. so use cases can
+      // switch on intent instead of catching raw DioException.
+      Error.throwWithStackTrace(error, stackTrace);
+    }
+  }
 }
 ```
 
-Errors surface as `DioException` and are translated by the screen-level error handler (see `error-handling`). Don't wrap them at the repository layer unless you need a domain-specific failure type.
+Two rules the template encodes:
+
+- `with DataRepository implements XRepository` — `DataRepository` is a mixin, not a base class. Don't extend it.
+- DTOs stop at the repository boundary; return domain entities (use a `toEntity()` mapper or equivalent). When a repository forwards a single endpoint with no mapping needed, keep it shallow — don't invent an entity layer for its own sake.
 
 ## DI
 
@@ -195,7 +211,9 @@ abstract class ApiModule {
 - Mutable lists/maps in DTOs (drop the default and end up with nullables).
 - Repositories making `Dio` calls directly, bypassing Retrofit.
 - Forgetting `part 'foo.g.dart';` — Retrofit won't compile.
-- Reusing `@HiveType(typeId: …)` across types.
+- Reaching into `SharedPreferences` / `FlutterSecureStorage` from presentation or feature code instead of going through the storage seam.
+- Binding `LocalDataManager` / `CoreLocalDataManager` as `@Injectable()` (factory) — the in-memory token cache silently desyncs across consumers. Must be `@lazySingleton`.
+- Reusing `@HiveType(typeId: …)` across types when the optional Hive path is used.
 
 ## Related
 

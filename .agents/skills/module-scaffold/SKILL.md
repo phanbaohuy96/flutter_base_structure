@@ -44,9 +44,9 @@ After generating, run `make gen_all` so freezed/injectable code is emitted, then
 
 ```
 apps/main/lib/presentation/modules/<feature>/
-├── <feature>.dart                # Barrel: exports route/bloc/screen/coordinator
+├── <feature>.dart                # Barrel: exports route/bloc/screen (+ coordinator if compound)
 ├── <feature>_route.dart          # IRoute → CustomRouter<Args>
-├── <feature>_coordinator.dart    # extension on BuildContext
+├── <feature>_coordinator.dart    # ONLY for compound modules / non-trivial entry — see CONTEXT.md
 ├── bloc/
 │   ├── <feature>_bloc.dart       # part directives for event/state/freezed
 │   ├── <feature>_event.dart      # abstract class + concrete events
@@ -56,6 +56,8 @@ apps/main/lib/presentation/modules/<feature>/
     ├── <feature>.action.dart     # part of screen — handlers/listeners
     └── widgets/                  # screen-local widgets (optional)
 ```
+
+The module generator omits the coordinator file when the chosen template's source map lacks a `coordinator` key (see `tools/module_generator/lib/generator/module_generator_ext.dart`). Simple modules call `pushBehavior.push(context, FeatureScreen.routeName)` directly; only compound modules and modules with non-trivial entry logic (arg translation, pre-nav guards) keep a coordinator. A one-line `pushBehavior.push` wrapper is shallow — don't add one.
 
 Domain + data live alongside, not under `presentation/`:
 
@@ -102,9 +104,9 @@ Stick to the names below — `_factories`, `Args`, `routeName`, the part wiring 
 - [ ] Module placed under `lib/presentation/modules/<feature>/`.
 - [ ] Multi-screen feature uses a parent route/coordinator/barrel plus child sub-modules.
 - [ ] Screen extends `StateBase<T>` and has a `static String routeName`.
-- [ ] Bloc extends `AppBlocBase<E, S>` and is `@Injectable()`.
+- [ ] Bloc extends `CoreBlocBase<E, S>` and is `@Injectable()`.
 - [ ] Route extends `IRoute` and wraps the screen in `BlocProvider`.
-- [ ] Coordinator is an extension on `BuildContext` using `PushBehavior`.
+- [ ] If present, the coordinator is an extension on `BuildContext` using `PushBehavior` — added only for compound modules or non-trivial entry logic (see `route-config` §Coordinator).
 - [ ] Route registered in the app's parent `IRoute`.
 - [ ] `make gen_all` run; generated files committed.
 

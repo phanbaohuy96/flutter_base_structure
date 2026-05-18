@@ -99,8 +99,8 @@ You can also call a skill explicitly:
 ## Conventions in one screen
 
 - Clean architecture: `presentation/` → `domain/` → `data/`.
-- Bloc: extends `AppBlocBase<E, S>`; abstract state hierarchy with a
-  freezed `_StateData` and a `_factories` map.
+- Bloc: extends `CoreBlocBase<E, S>` (from `package:core/core.dart`);
+  abstract state hierarchy with a freezed `_StateData` and a `_factories` map.
 - Bus events: use `BusEvent` + `EventBusManager` for cross-feature synchronization,
   not local UI callbacks or single-BLoC state.
 - Screens: `StateBase<T>`, wrapped in `ScreenForm` / `MainPageForm`,
@@ -111,8 +111,12 @@ You can also call a skill explicitly:
   slots plus the `AppTextTheme` extras (`titleTiny`, `inputTitle`, …).
 - Localization: edit `localizations.csv`, run `make lang`. Use
   `trans.<key>` or `context.l10n.<key>`.
+- Local storage: go through the **storage seam** (`CoreLocalDataManager` /
+  `LocalDataManager`); SharedPreferences/FlutterSecureStorage are private
+  state inside it. Hive is available as an optional dep but no default
+  store ships with the template.
 - Codegen: `make gen_all` after touching `@freezed`, `@RestApi`,
-  `@Injectable`, `@HiveType`, `_StateData`, etc.
+  `@Injectable`, `@FlRouteProvider`, optional `@HiveType`, `_StateData`, etc.
 
 ## Reference docs
 

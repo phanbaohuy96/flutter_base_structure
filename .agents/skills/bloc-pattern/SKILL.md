@@ -1,6 +1,6 @@
 ---
 name: bloc-pattern
-description: Implements BLoC state management using AppBlocBase, an abstract State hierarchy, and a freezed _StateData
+description: Implements BLoC state management using CoreBlocBase, an abstract State hierarchy, and a freezed _StateData
 license: MIT
 compatibility: all
 metadata:
@@ -20,12 +20,12 @@ metadata:
 
 This template uses a specific bloc shape that is **not** the typical "freezed sealed union" pattern. The state hierarchy is hand-written `abstract class` siblings sharing a freezed `_StateData`; events are hand-written subclasses of an abstract event. Follow this shape exactly — `state.copyWith<T>()` and the `_factories` map depend on it.
 
-1. Bloc extends `AppBlocBase<E, S>` (defined in `apps/main/lib/presentation/base/bloc_base.dart`, ultimately `CoreBlocBase` from `core/`).
+1. Bloc extends `CoreBlocBase<E, S>` (defined in `core/lib/presentation/base/bloc/bloc_base.dart`). The template no longer ships a separate `AppBlocBase` layer — feature blocs inherit `CoreBlocBase` directly. If an app needs cross-cutting bloc behavior (analytics fan-out, common error mapping, feature-flag plumbing), it can reintroduce an `AppBlocBase<E, S> extends CoreBlocBase<E, S>` under `apps/main/lib/presentation/base/` and have feature blocs extend that instead. Don't add the indirection pre-emptively — an empty layer is what was removed.
 2. Bloc is annotated `@Injectable()`. Use `@factoryParam` for runtime args.
 3. Event classes inherit from a single abstract `<X>Event` — no freezed union.
 4. State classes inherit from a single abstract `<X>State` and share a freezed `_StateData`. The base provides `copyWith<T extends <X>State>({_StateData? data})` backed by a `_factories` map.
 5. `_StateData` is `@freezed sealed class _StateData with _$StateData` — generator declares it that way; do not change.
-6. Imports: `package:core/core.dart` (re-exports flutter_bloc, AppBlocBase, helpers), `package:freezed_annotation/freezed_annotation.dart`, `package:injectable/injectable.dart`.
+6. Imports: `package:core/core.dart` (re-exports flutter_bloc, `CoreBlocBase`, helpers), `package:freezed_annotation/freezed_annotation.dart`, `package:injectable/injectable.dart`.
 7. Run `make gen_all` after editing — `<feature>_bloc.freezed.dart` is generated.
 
 ## Reference: bloc file (`<feature>_bloc.dart`)
@@ -38,14 +38,13 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../domain/usecases/<feature>/<feature>_usecase.dart';
-import '../../../base/base.dart';
 
 part '<feature>_bloc.freezed.dart';
 part '<feature>_event.dart';
 part '<feature>_state.dart';
 
 @Injectable()
-class FeatureBloc extends AppBlocBase<FeatureEvent, FeatureState> {
+class FeatureBloc extends CoreBlocBase<FeatureEvent, FeatureState> {
   final FeatureUsecase _usecase;
 
   FeatureBloc(
@@ -127,7 +126,9 @@ class GetFeatureEvent extends FeatureEvent {
 class LoadMoreEvent extends FeatureEvent {}
 ```
 
-For events that need to surface a result back to the caller (e.g. login flows), pass a `Completer<T>` on the event and complete it inside the handler. Choose `T` to carry the useful result object when the caller needs refreshed state; avoid returning only `bool` and forcing an immediate duplicate query.
+For events that need to surface a result back to the caller (e.g. login flows), **don't** stash a `Completer<T>` on the event — model the outcome as concrete state subclasses (`LoginSuccess`, `LoginFailed`) and let the screen's `_blocListener` react. The signin module is the canonical example. Reserve the completer pattern for callers that must `await` a single-shot side effect outside the BLoC stream (e.g. a coordinator chain), and even there prefer returning the refreshed domain object from a use case over a `bool`.
+
+Guard re-entry at the top of long-running handlers when the success state is terminal (`if (state is LoginSuccess) return;`). This keeps double-taps idempotent without locking the bloc with extra fields.
 
 ## Loading + error handling
 
@@ -172,7 +173,7 @@ Action files (see `extension-action`) typically use `_blocListener(BuildContext 
 
 ## Checklist
 
-- [ ] Bloc extends `AppBlocBase<E, S>` and is `@Injectable()`.
+- [ ] Bloc extends `CoreBlocBase<E, S>` and is `@Injectable()`.
 - [ ] `<feature>_bloc.dart` declares the three `part` directives (freezed, event, state).
 - [ ] `_StateData` is `@freezed sealed class` and uses `@Default(...)` for non-nullable defaults.
 - [ ] Every concrete state subclass has a matching entry in `_factories`.

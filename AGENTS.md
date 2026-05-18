@@ -26,7 +26,7 @@ Primary libraries and patterns:
 - **State management**: BLoC + Freezed
 - **DI**: Injectable + GetIt (`apps/main/lib/di/di.dart`)
 - **Networking**: Retrofit + Dio via `modules/data_source`
-- **Local storage**: Hive, SharedPreferences, secure storage
+- **Local storage**: storage seam (`CoreLocalDataManager` / `LocalDataManager`) over SharedPreferences + FlutterSecureStorage. `hive_ce` is still a declared dep if a feature genuinely needs a box, but the template no longer ships a default Hive store.
 - **Routing**: project route abstractions under `presentation/route`
 - **Localization**: CSV source files -> ARB -> generated localizations
 
@@ -294,7 +294,7 @@ Follow the repository `bloc-pattern` skill. This template does **not** use the t
 
 Rules:
 
-- Bloc extends `AppBlocBase<E, S>` and is annotated `@Injectable()`.
+- Bloc extends `CoreBlocBase<E, S>` and is annotated `@Injectable()`. Apps that need cross-cutting bloc behavior (analytics, common error mapping, feature-flag plumbing) may introduce an `AppBlocBase<E, S> extends CoreBlocBase<E, S>` under `apps/main/lib/presentation/base/` and have feature blocs extend that instead. Don't add the indirection while it would stay empty.
 - Events are hand-written subclasses of one abstract `<Feature>Event`; do not use Freezed unions for events.
 - States are hand-written subclasses of one abstract `<Feature>State`; do not use `FeatureState.loading()` / `.loaded()` Freezed unions.
 - State subclasses share one Freezed `_StateData` class.
@@ -307,7 +307,7 @@ Reference shape:
 
 ```dart
 @Injectable()
-class FeatureBloc extends AppBlocBase<FeatureEvent, FeatureState> {
+class FeatureBloc extends CoreBlocBase<FeatureEvent, FeatureState> {
   final FeatureUsecase _usecase;
 
   FeatureBloc(@factoryParam Item? initial, this._usecase)
