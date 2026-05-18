@@ -1,4 +1,18 @@
-# dart run module_generator:generate_app_identifier
+# Source of truth for app identifiers. Regenerate native config with:
+#   make app_identifier
+#
+# Outputs:
+#   android/app_specific.properties  — applicationId, app name
+#   ios/Flutter/AppSpecific.xcconfig — bundle id, display name,
+#                                       provisioning profile, dev team
+#
+# iOS-only per-flavor fields:
+#   provisioning_profile_specifier — exact NAME of the installed provisioning
+#     profile (Xcode > Signing & Capabilities > "Provisioning Profile" field).
+#     Leave empty for automatic signing.
+#   team_id — 10-char Apple Developer Team ID
+#     (https://developer.apple.com/account > Membership). Required for manual
+#     signing. Typically the same across flavors of the same app.
 
 android:
   dev:
@@ -13,16 +27,25 @@ android:
   prod:
     package: com.pbh.myflutterbase
     name: My Flutter Base
+
 ios:
   dev:
     package: com.pbh.myflutterbase.dev
     name: My Flutter Base DEV
+    provisioning_profile_specifier: # e.g. "My Flutter Base Dev"
+    team_id: # e.g. "ABCDE12345"
   staging:
     package: com.pbh.myflutterbase.staging
     name: My Flutter Base STAGING
+    provisioning_profile_specifier: # e.g. "My Flutter Base Staging"
+    team_id: # e.g. "ABCDE12345"
   sandbox:
     package: com.pbh.myflutterbase.sandbox
     name: My Flutter Base SANDBOX
+    provisioning_profile_specifier: # e.g. "My Flutter Base Sandbox"
+    team_id: # e.g. "ABCDE12345"
   prod:
     package: com.pbh.myflutterbase
     name: My Flutter Base
+    provisioning_profile_specifier: # e.g. "My Flutter Base AppStore"
+    team_id: # e.g. "ABCDE12345"
