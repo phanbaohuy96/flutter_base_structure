@@ -102,6 +102,13 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
 
   UserToken? _memCacheToken;
 
+  /// Synchronous "is a session in memory" check, intended for hot paths that
+  /// can't await secure storage (e.g. `GoRoute.redirect`). Reflects whatever
+  /// the async [token] getter last loaded plus any subsequent [setToken]
+  /// writes. Bootstrap by `await`-ing [token] once during app init so this
+  /// is populated before the first navigation.
+  bool get isAuthenticated => _memCacheToken != null;
+
   @override
   Future<UserToken?> get token async {
     if (_memCacheToken != null) {
@@ -113,6 +120,7 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
     }
     final parsed = UserToken.fromJson(jsonDecode(source!));
     if (parsed.isValid) {
+      _memCacheToken = parsed;
       return parsed;
     }
     return null;

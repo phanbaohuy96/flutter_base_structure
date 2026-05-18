@@ -29,6 +29,15 @@ class SigninRouteArgs {
     }
     return this;
   }
+
+  /// Builds the absolute route location for this args instance — useful for
+  /// `GoRoute.redirect` callbacks which need a string URL, not a typed object.
+  String toRouteLocation() {
+    return Uri(
+      path: SignInScreen.routeName,
+      queryParameters: redirectTo == null ? null : {'redirect': redirectTo},
+    ).toString();
+  }
 }
 
 class SignInScreen extends StatefulWidget {
