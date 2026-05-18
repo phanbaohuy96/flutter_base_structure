@@ -1,0 +1,87 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+node_modules
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+**/.gradle
+local.properties
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+**/build/
+.firebase
+*.env
+
+# Symbolication related
+app.*.symbols
+**/.symlinks/**
+**/Pods/**
+
+## Generated files and user-specific settings (do not commit)
+**/GeneratedPluginRegistrant.java
+
+# android
+**/android/gradle/wrapper/gradle-wrapper.jar
+**/android/gradlew
+**/android/gradlew.bat
+**/keystore.properties
+
+# Android Studio will place build artifacts here
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+
+# iOS
+**/ios/Runner/GeneratedPluginRegistrant.h
+**/ios/Runner/GeneratedPluginRegistrant.m
+**/UserInterfaceState.xcuserstate
+**/xcschememanagement.plist
+**/Generated.xcconfig
+**/Flutter.podspec
+**/flutter_export_environment.sh
+
+# Obfuscation related
+app.*.map.json
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# Fastlane
+**/report.xml
+
+.dist_cache
+
+# FVM Version Cache
+.fvm/
+.fvmrc
+.fvm_cache
+
+# Coverage related
+**/coverage
+.test_coverage.dart
+*.lcov
+*.info
+test/.test_coverage.dart

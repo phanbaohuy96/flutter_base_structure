@@ -1,0 +1,80 @@
+{
+    "version": "1.0.0",
+    "configurations": [
+        {
+            "name": "Dev Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main_dev.dart",
+            "args": [
+                "--flavor",
+                "dev",
+            ],
+        },
+        {
+            "name": "Dev Debug - Web",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main_dev.dart",
+            "args": [
+                "--web-port",
+                "3000"
+            ],
+        },
+        {
+            "name": "Dev Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main_dev.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "dev",
+            ],
+        },
+        /// STAGING
+        {
+            "name": "Staging Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main_staging.dart",
+            "args": [
+                "--flavor",
+                "staging",
+            ],
+        },
+        {
+            "name": "Staging Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main_staging.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "staging",
+            ],
+        },
+        /// PRODUCTION
+        {
+            "name": "Production Debug",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main.dart",
+            "args": [
+                "--flavor",
+                "prod",
+            ],
+        },
+        {
+            "name": "Production Release",
+            "request": "launch",
+            "type": "dart",
+            "program": "${workspaceRoot}/apps/main/lib/main.dart",
+            "args": [
+                "--release",
+                "--flavor",
+                "prod",
+            ],
+        },
+    ]
+}

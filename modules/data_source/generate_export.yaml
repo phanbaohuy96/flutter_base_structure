@@ -1,0 +1,6 @@
+---
+
+- folder: lib/src/
+  file_name: sources.dart
+- folder: lib/src/data/
+  file_name: data.dart

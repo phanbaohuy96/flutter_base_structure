@@ -1,0 +1,52 @@
+name: fl_media
+description: A new Flutter plugin project.
+version: 1.0.0
+homepage:
+publish_to: none
+
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  #language
+  flutter_localizations:
+    sdk: flutter
+    
+  extended_image: ^10.0.1
+  flutter_svg_provider: ^1.0.3
+  flutter_svg: ^2.0.9
+  flutter_avif: ^3.1.0
+  file_picker: 10.3.10
+  image_picker: 1.2.1
+  image_editor: ^1.0.0
+  flutter_easyloading: ^3.0.3
+  mime: ^2.0.0
+  video_player: ^2.9.2
+  chewie: ^1.8.5
+  visibility_detector: ^0.4.0+2
+
+  pedantic: ^1.11.1
+
+  fl_utils:
+    path: ../fl_utils
+  fl_ui:
+    path: ../fl_ui
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  module_generator:
+    path: ../../tools/module_generator
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+  # l10n required
+  generate: true

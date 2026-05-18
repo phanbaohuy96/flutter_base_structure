@@ -1,0 +1,111 @@
+name: flutter_core
+description: VNS Flutter Core
+
+version: 1.0.0+1
+version_staging: 1.0.0+1
+version_prod: 1.0.0+1
+
+publish_to: none
+
+environment:
+  sdk: '>=3.8.0 <4.0.0'
+  flutter: ">=3.32.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+
+  # language
+  flutter_localizations:
+    sdk: flutter
+
+  # base
+  flutter_native_splash: ^2.2.8
+  core:
+    path: ../../core
+
+  mobile_scanner: ^7.0.0
+  image: ^4.0.17
+  path_provider: ^2.1.2
+  permission_handler: ^12.0.0+1
+  image_picker: ^1.1.2
+  dio: ^5.4.0
+  http:
+  rxdart: ^0.28.0
+  intl:
+
+  # utils
+  date_format: ^2.0.2
+  vibration: ^3.1.3
+  collection: ^1.19.0
+
+  # data
+  freezed_annotation: 3.1.0
+  data_source:
+    path: ../../modules/data_source
+
+  #ui
+  fl_chart: ^1.0.0
+  gap: ^3.0.1
+  flutter_sticky_header: ^0.8.0
+  pin_code_fields: ^8.0.1
+
+  #image
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.0.0
+
+dev_dependencies:
+  #test
+  flutter_test:
+    sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  test: ^1.24.3
+  mockito: ^5.4.0
+
+  build_runner: ^2.0.4
+  retrofit_generator: 10.2.3
+  hive_ce_generator: ^1.9.3
+  json_serializable: ^6.11.1
+  freezed: 3.2.3
+  injectable_generator: ^2.6.2
+  module_generator:
+    path: ../../tools/module_generator
+
+dependency_overrides:
+  # flutter_avif (via core → fl_media) pins protobuf ^3.1.0; ^4.1.0 satisfies
+  # retrofit_generator and keeps flutter_avif's PbList generated code compiling.
+  protobuf: ^4.1.0
+
+flutter:
+  # l10n required
+  generate: true
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+  # generate: true
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/svg/
+    - assets/images/png/
+    - assets/images/
+    
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # Drop assets/fonts/*.woff2 into assets/fonts/ and declare the family here
+  # when the template is forked — e.g. Poppins, Inter, or your own brand font.
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.woff2
+  #         weight: 400
+
+flutter_intl:
+  enabled: true
