@@ -205,17 +205,8 @@ class CreateProjectGenerator {
     if (options.dryRun) {
       return CreateProjectResult(
         destination: destination,
-        changedFiles: _plannedFiles(),
-        movedPaths: [
-          MovedPath(
-            'apps/main/android/app/src/main/kotlin/$_oldPackagePath/MainActivity.kt',
-            'apps/main/android/app/src/main/kotlin/${options.identity.packagePath}/MainActivity.kt',
-          ),
-          MovedPath(
-            'apps/main/$_oldSigningPath',
-            'apps/main/ios/signing_res/${options.identity.iosSigningDirName}',
-          ),
-        ],
+        changedFiles: _plannedFiles(templateRoot),
+        movedPaths: _plannedMoves(templateRoot, options.identity),
         warnings: warnings,
         remainingIdentityFiles: const [],
         dryRun: true,
@@ -894,8 +885,8 @@ class CreateProjectGenerator {
     return _textExtensions.contains(path.extension(filePath).toLowerCase());
   }
 
-  List<String> _plannedFiles() {
-    return [
+  List<String> _plannedFiles(String templateRoot) {
+    const candidates = [
       'apps/main/app_identifier.yaml',
       'apps/main/pubspec.yaml',
       'apps/main/android/app/build.gradle',
@@ -914,5 +905,40 @@ class CreateProjectGenerator {
       'apps/main/ios/CICD_PROVISIONING_GUIDE.md',
       'apps/main/ios/check_provisioning_profiles.sh',
     ];
+    return [
+      for (final relative in candidates)
+        if (File(path.join(templateRoot, relative)).existsSync()) relative,
+    ];
+  }
+
+  List<MovedPath> _plannedMoves(String templateRoot, ProjectIdentity identity) {
+    final moves = <MovedPath>[];
+    final mainActivity = path.join(
+      'apps/main/android/app/src/main/kotlin',
+      _oldPackagePath,
+      'MainActivity.kt',
+    );
+    if (File(path.join(templateRoot, mainActivity)).existsSync()) {
+      moves.add(
+        MovedPath(
+          mainActivity,
+          path.join(
+            'apps/main/android/app/src/main/kotlin',
+            identity.packagePath,
+            'MainActivity.kt',
+          ),
+        ),
+      );
+    }
+    final signing = 'apps/main/$_oldSigningPath';
+    if (Directory(path.join(templateRoot, signing)).existsSync()) {
+      moves.add(
+        MovedPath(
+          signing,
+          'apps/main/ios/signing_res/${identity.iosSigningDirName}',
+        ),
+      );
+    }
+    return moves;
   }
 }
