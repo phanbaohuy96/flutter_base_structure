@@ -39,8 +39,8 @@ The template is currently aligned to:
 
 | Area | Version / setting |
 | --- | --- |
-| Flutter SDK | `3.41.7` from `fvm_pubspec.yaml` |
-| Dart SDK | `3.11.5` with Flutter 3.41.7 |
+| Flutter SDK | `3.41.9` from `fvm_pubspec.yaml` |
+| Dart SDK | `3.11.5` with Flutter 3.41.9 |
 | Package constraints | Dart `>=3.8.0 <4.0.0`; Flutter mostly `>=3.32.0` |
 | Android | AGP `8.9.1`, Kotlin `2.1.0`, Gradle `8.12`, Java `17` |
 | Android SDK | `minSdkVersion 26`, `targetSdkVersion 35`, NDK `27.0.12077973` |

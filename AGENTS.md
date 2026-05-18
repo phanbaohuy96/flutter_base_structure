@@ -11,7 +11,7 @@ This repository is an opinionated Flutter project template for building multi-fl
 **Secondary locale**: Vietnamese (`vi`)  
 **Base package ID**: `com.pbh.myflutterbase`
 
-**Stack**: Flutter 3.41.7, Dart 3.11.5, Kotlin 2.1.0, AGP 8.9.1, Gradle 8.12, Java 17.
+**Stack**: Flutter 3.41.9, Dart 3.11.5, Kotlin 2.1.0, AGP 8.9.1, Gradle 8.12, Java 17.
 
 ## Architecture
 

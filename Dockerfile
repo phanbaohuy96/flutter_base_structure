@@ -2,7 +2,7 @@
 FROM dart:stable AS builder
 
 # Set Flutter version
-ENV FLUTTER_VERSION=3.41.7
+ENV FLUTTER_VERSION=3.41.9
 
 # Set path
 ENV FLUTTER_HOME=/flutter
