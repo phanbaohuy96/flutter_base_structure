@@ -7,7 +7,7 @@ import '../../../../../common/services/network_log/network_log_service.dart';
 class NetworkLogDetailScreen extends StatefulWidget {
   final NetworkLog log;
 
-  static String routeName = '/network-log-detail';
+  static const String routeName = '/network-log-detail';
 
   const NetworkLogDetailScreen({super.key, required this.log});
 

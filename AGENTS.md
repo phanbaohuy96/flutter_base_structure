@@ -82,11 +82,20 @@ These generic agent rules come before implementation details. For the full check
 2. **Simplicity first**: write the minimum code that solves the current request. Reuse existing repo patterns, widgets, helpers, and skills before adding new abstractions.
 3. **Surgical changes**: every changed line should trace to the request or required generated output. Do not refactor adjacent code, reformat unrelated files, or delete unrelated dead code unless asked.
 4. **Goal-driven execution**: for multi-step work, define success criteria before coding, then verify with concrete checks such as `rg`, generation commands, analyzer, tests, or UI smoke tests.
+5. **Use the model only for judgment calls**: use the model for classification, drafting, summarization, and extraction. Do not use it for routing, retries, or deterministic transforms. If code can answer, code answers.
+6. **Token budgets are not advisory**: per-task budget is 4,000 tokens and per-session budget is 30,000 tokens. If approaching budget, summarize and start fresh. Surface the breach; do not silently overrun.
+7. **Surface conflicts, don't average them**: if two patterns contradict, pick one based on which is more recent or more tested. Explain why and flag the other for cleanup. Do not blend conflicting patterns.
+8. **Read before you write**: before adding code, read exports, immediate callers, and shared utilities. "Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
+9. **Tests verify intent, not just behavior**: tests must encode why behavior matters, not only what it does. A test that cannot fail when business logic changes is wrong.
+10. **Checkpoint after every significant step**: summarize what was done, what is verified, and what is left. Do not continue from a state you cannot describe back. If you lose track, stop and restate.
+11. **Match the codebase's conventions, even if you disagree**: conformance is more important than taste inside the codebase. If you genuinely think a convention is harmful, surface it instead of forking silently.
+12. **Fail loud**: "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
 
 ## Generalized implementation guidance
 
 - When the user names an existing architecture or pattern, follow that structure directly; ask before substituting a lighter-weight shortcut.
 - For multi-screen features, keep parent modules responsible for route/coordinator aggregation and give non-trivial child screens their own module state.
+- Keep generated route-provider registration automatic. For role, platform, feature-flag, or business restrictions, use runtime `routeProviderInterceptors` to skip providers or filter routers instead of manually composing generated provider accessors.
 - Reuse existing project widgets, helpers, and abstractions before creating new ones.
 - Design reusable row/list components so trailing content aligns consistently and can accept widgets when needed.
 - Add concise Dartdoc to newly introduced public APIs in reusable or cross-layer surfaces.
@@ -105,6 +114,8 @@ Prefer project-standard commands over ad-hoc direct commands.
 2. **Make commands** from the root `makefile`
 3. **Direct Flutter/Dart commands** only when there is no make target or MCP tool
 
+When a direct Flutter/Dart command is needed, check `.fvm_cache` first. If it contains `USING_FVM=1`, use `fvm flutter ...` or `fvm dart ...` instead of the local Flutter/Dart installation.
+
 Useful make targets:
 
 ```bash
@@ -117,7 +128,7 @@ make lang        # Regenerate all localization outputs
 make format      # dart format .
 make test        # Run tests when available
 make coverage_main
-make analyze     # If present in this branch; otherwise use flutter analyze directly
+make analyze     # If present in this branch; otherwise use fvm flutter analyze directly
 make help        # Show available commands
 ```
 
@@ -136,13 +147,14 @@ Generated files include:
 - `lib/l10n/generated/*localizations*.dart`
 - `intl_*.arb` generated from localization CSVs
 - generated export barrels from `module_generator:generate_export`
+- route provider registries from the `fl_navigation` build_runner builder
 
 Common generation commands:
 
 ```bash
 make lang          # CSV -> ARB -> localization Dart for app/core/fl_media
 make gen_core      # build_runner + export generation in core
-make gen_main      # build_runner in apps/main
+make gen_main      # route provider registry + build_runner in apps/main
 make gen_all       # core + data_source + apps/main
 sh gen_app_identifier.sh apps/main
 ```
@@ -421,11 +433,13 @@ make format
 make lang          # If localization CSV changed
 make gen_core      # If core generated inputs changed
 make gen_main      # If app generated inputs changed
-flutter analyze    # From the relevant package if no make target is available
-flutter test       # From the relevant package if tests exist
+fvm flutter analyze    # From the relevant package if no make target is available
+fvm flutter test       # From the relevant package if tests exist
 ```
 
-For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. For interactive web examples or playgrounds, prefer Playwright MCP or another real browser check that covers the golden path, responsive layout, import/export flows, invalid input handling, and browser console errors. If you cannot run the UI in this environment, say so explicitly.
+For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. If you cannot run the UI in this environment, say so explicitly.
+
+Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification. For requested web route E2E, build only the affected Flutter web package with FVM and serve its `build/web` directory with SPA fallback. Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the testing skill for the generic browser workflow.
 
 ## Final Reminders
 

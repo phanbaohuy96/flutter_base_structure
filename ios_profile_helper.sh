@@ -6,6 +6,7 @@
 # Get script directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 APPS_DIR="$SCRIPT_DIR/apps"
+APP_IDENTIFIER_FILE="app_identifier.yaml"
 
 echo "=================================================="
 echo "iOS CI/CD Provisioning Profile Encoder"
@@ -19,13 +20,66 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-PROFILES_DIR="$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
+PROFILE_DIR_CANDIDATES=(
+    "$HOME/Library/MobileDevice/Provisioning Profiles"
+    "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"
+)
+
+detect_profiles_dir() {
+    local candidate
+
+    for candidate in "${PROFILE_DIR_CANDIDATES[@]}"; do
+        if compgen -G "$candidate/*.mobileprovision" > /dev/null; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+
+    for candidate in "${PROFILE_DIR_CANDIDATES[@]}"; do
+        if [ -d "$candidate" ]; then
+            echo "$candidate"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+print_profiles_dir_error() {
+    local candidate
+
+    echo -e "${RED}❌ Provisioning profiles directory not found!${NC}"
+    echo "Checked:"
+    for candidate in "${PROFILE_DIR_CANDIDATES[@]}"; do
+        echo "  - $candidate"
+    done
+}
+
+ensure_profiles_dir() {
+    if [ -d "$PROFILES_DIR" ]; then
+        return 0
+    fi
+
+    print_profiles_dir_error
+    return 1
+}
+
+get_profile_name() {
+    security cms -D -i "$1" 2>/dev/null | plutil -extract Name raw - 2>/dev/null
+}
+
+get_profile_bundle_id() {
+    security cms -D -i "$1" 2>/dev/null | plutil -extract Entitlements.application-identifier raw - 2>/dev/null | cut -d. -f2-
+}
+
+PROFILES_DIR="$(detect_profiles_dir)"
 
 # Global variables for selected app
 SELECTED_APP=""
 SELECTED_APP_PATH=""
 declare -a APP_ENVS
 declare -a APP_BUNDLE_IDS
+declare -a PROFILE_FILES
 
 echo -e "${BLUE}This script will help you encode provisioning profiles and certificates${NC}"
 echo -e "${BLUE}for storing as GitHub Secrets or other CI/CD secrets management.${NC}"
@@ -34,36 +88,36 @@ echo ""
 # Function to parse YAML (simple key-value extraction for our use case)
 parse_yaml() {
     local yaml_file="$1"
-    
+
     if [ ! -f "$yaml_file" ]; then
         return 1
     fi
-    
-    # Read iOS bundle IDs from app_identifier.yaml
+
+    # Read iOS bundle IDs from $APP_IDENTIFIER_FILE
     local in_ios_section=0
     local current_env=""
-    
+
     while IFS= read -r line; do
         # Skip empty lines and comments
         [[ -z "$line" || "$line" =~ ^[[:space:]]*# ]] && continue
-        
+
         # Check if we're in the iOS section
         if [[ "$line" =~ ^ios: ]]; then
             in_ios_section=1
             continue
         fi
-        
+
         # Exit iOS section if we hit android or another top-level key
         if [[ $in_ios_section -eq 1 && "$line" =~ ^[a-z]+:[[:space:]]*$ ]]; then
             in_ios_section=0
         fi
-        
+
         # Parse environments and packages in iOS section
         if [[ $in_ios_section -eq 1 ]]; then
             # Match environment like "  dev:" or "  staging:"
             if [[ "$line" =~ ^[[:space:]]+([a-z_]+):[[:space:]]*$ ]]; then
                 current_env="${BASH_REMATCH[1]}"
-            # Match package line like "    package: com.pbh.myflutterbase.dev"
+            # Match package line like "    package: net.vnsilicon.gpass.dev"
             elif [[ "$line" =~ ^[[:space:]]+package:[[:space:]]+(.+)$ && -n "$current_env" ]]; then
                 local package="${BASH_REMATCH[1]}"
                 APP_ENVS+=("$current_env")
@@ -71,8 +125,22 @@ parse_yaml() {
             fi
         fi
     done < "$yaml_file"
-    
+
     return 0
+}
+
+find_env_for_bundle_id() {
+    local bundle_id="$1"
+    local i
+
+    for i in "${!APP_BUNDLE_IDS[@]}"; do
+        if [[ "$bundle_id" == "${APP_BUNDLE_IDS[$i]}" ]]; then
+            echo "${APP_ENVS[$i]}"
+            return 0
+        fi
+    done
+
+    return 1
 }
 
 # Function to select app
@@ -92,7 +160,7 @@ select_app() {
     for app_dir in "$APPS_DIR"/*; do
         if [ -d "$app_dir" ]; then
             local app_name=$(basename "$app_dir")
-            local app_id_file="$app_dir/app_identifier.yaml"
+            local app_id_file="$app_dir/$APP_IDENTIFIER_FILE"
             
             if [ -f "$app_id_file" ]; then
                 app_dirs[$index]="$app_dir"
@@ -103,7 +171,7 @@ select_app() {
     done
     
     if [ ${#app_dirs[@]} -eq 0 ]; then
-        echo -e "${RED}❌ No apps found with app_identifier.yaml!${NC}"
+        echo -e "${RED}❌ No apps found with $APP_IDENTIFIER_FILE!${NC}"
         exit 1
     fi
     
@@ -121,15 +189,15 @@ select_app() {
     echo -e "${GREEN}✅ Selected app: $SELECTED_APP${NC}"
     echo ""
     
-    # Parse app_identifier.yaml
-    local app_id_file="$SELECTED_APP_PATH/app_identifier.yaml"
+    # Parse $APP_IDENTIFIER_FILE
+    local app_id_file="$SELECTED_APP_PATH/$APP_IDENTIFIER_FILE"
     if ! parse_yaml "$app_id_file"; then
-        echo -e "${RED}❌ Failed to parse app_identifier.yaml${NC}"
+        echo -e "${RED}❌ Failed to parse $APP_IDENTIFIER_FILE${NC}"
         exit 1
     fi
     
     if [ ${#APP_BUNDLE_IDS[@]} -eq 0 ]; then
-        echo -e "${RED}❌ No iOS bundle IDs found in app_identifier.yaml${NC}"
+        echo -e "${RED}❌ No iOS bundle IDs found in $APP_IDENTIFIER_FILE${NC}"
         exit 1
     fi
     
@@ -181,31 +249,34 @@ list_profiles() {
     echo ""
     
     local index=1
-    declare -g -a profile_files
-    
-    if [ ! -d "$PROFILES_DIR" ]; then
-        echo -e "${RED}❌ Provisioning profiles directory not found!${NC}"
+    PROFILE_FILES=()
+
+    if ! ensure_profiles_dir; then
         return 1
     fi
     
     for profile in "$PROFILES_DIR"/*.mobileprovision; do
         if [ -f "$profile" ]; then
-            local profile_name=$(security cms -D -i "$profile" 2>/dev/null | plutil -extract Name raw - 2>/dev/null)
-            local bundle_id=$(security cms -D -i "$profile" 2>/dev/null | plutil -extract Entitlements.application-identifier raw - 2>/dev/null | cut -d. -f2-)
-            
-            profile_files[$index]="$profile"
-            echo -e "${YELLOW}$index)${NC} $profile_name"
-            echo "   Bundle ID: $bundle_id"
-            echo "   File: $(basename "$profile")"
-            echo "   Date: $(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$profile")"
-            echo ""
-            
-            ((index++))
+            local bundle_id=$(get_profile_bundle_id "$profile")
+            local env_name=$(find_env_for_bundle_id "$bundle_id")
+
+            if [ -n "$env_name" ]; then
+                local profile_name=$(get_profile_name "$profile")
+                PROFILE_FILES[$index]="$profile"
+                echo -e "${YELLOW}$index)${NC} $profile_name"
+                echo "   Environment: $env_name"
+                echo "   Bundle ID: $bundle_id"
+                echo "   File: $(basename "$profile")"
+                echo "   Date: $(stat -f "%Sm" -t "%Y-%m-%d %H:%M:%S" "$profile")"
+                echo ""
+
+                ((index++))
+            fi
         fi
     done
-    
-    if [ ${#profile_files[@]} -eq 0 ]; then
-        echo -e "${RED}❌ No provisioning profiles found!${NC}"
+
+    if [ ${#PROFILE_FILES[@]} -eq 0 ]; then
+        echo -e "${RED}❌ No provisioning profiles found for bundle IDs in $SELECTED_APP_PATH/$APP_IDENTIFIER_FILE${NC}"
         return 1
     fi
     
@@ -215,11 +286,10 @@ list_profiles() {
 # Function to clean up old/duplicate provisioning profiles
 clean_old_profiles() {
     echo ""
-    echo -e "${BLUE}Checking for duplicate provisioning profiles...${NC}"
+    echo -e "${BLUE}Checking for duplicate provisioning profiles for app: $SELECTED_APP${NC}"
     echo ""
-    
-    if [ ! -d "$PROFILES_DIR" ]; then
-        echo -e "${RED}❌ Provisioning profiles directory not found!${NC}"
+
+    if ! ensure_profiles_dir; then
         read -p "Press Enter to continue..."
         show_menu
         return
@@ -234,19 +304,23 @@ clean_old_profiles() {
     # Collect all profiles with their info
     for profile in "$PROFILES_DIR"/*.mobileprovision; do
         if [ -f "$profile" ]; then
-            local bundle_id=$(security cms -D -i "$profile" 2>/dev/null | plutil -extract Entitlements.application-identifier raw - 2>/dev/null | cut -d. -f2-)
-            local profile_name=$(security cms -D -i "$profile" 2>/dev/null | plutil -extract Name raw - 2>/dev/null)
-            local profile_date=$(stat -f "%m" "$profile")
-            
-            bundle_ids+=("$bundle_id")
-            profile_names+=("$profile_name")
-            profile_paths+=("$profile")
-            profile_dates+=("$profile_date")
+            local bundle_id=$(get_profile_bundle_id "$profile")
+            local env_name=$(find_env_for_bundle_id "$bundle_id")
+
+            if [ -n "$env_name" ]; then
+                local profile_name=$(get_profile_name "$profile")
+                local profile_date=$(stat -f "%m" "$profile")
+
+                bundle_ids+=("$bundle_id")
+                profile_names+=("$profile_name")
+                profile_paths+=("$profile")
+                profile_dates+=("$profile_date")
+            fi
         fi
     done
     
     if [ ${#bundle_ids[@]} -eq 0 ]; then
-        echo -e "${YELLOW}No provisioning profiles found.${NC}"
+        echo -e "${YELLOW}No provisioning profiles found for bundle IDs in $SELECTED_APP_PATH/$APP_IDENTIFIER_FILE.${NC}"
         read -p "Press Enter to continue..."
         show_menu
         return
@@ -386,22 +460,20 @@ encode_provisioning_profile() {
         return
     fi
     
-    if [ -n "${profile_files[$selection]}" ]; then
-        encode_file "${profile_files[$selection]}"
+    if [ -n "${PROFILE_FILES[$selection]}" ]; then
+        encode_file "${PROFILE_FILES[$selection]}"
         
         # Show suggested secret name
-        local profile_name=$(security cms -D -i "${profile_files[$selection]}" 2>/dev/null | plutil -extract Name raw - 2>/dev/null)
-        local bundle_id=$(security cms -D -i "${profile_files[$selection]}" 2>/dev/null | plutil -extract Entitlements.application-identifier raw - 2>/dev/null | cut -d. -f2-)
-        
+        local profile_name=$(get_profile_name "${PROFILE_FILES[$selection]}")
+        local bundle_id=$(get_profile_bundle_id "${PROFILE_FILES[$selection]}")
+        local env_name=$(find_env_for_bundle_id "$bundle_id")
+
         echo -e "${BLUE}💡 Suggested GitHub Secret name:${NC}"
         local env_suffix=""
-        for i in "${!APP_BUNDLE_IDS[@]}"; do
-            if [[ "$bundle_id" == "${APP_BUNDLE_IDS[$i]}" ]]; then
-                env_suffix=$(echo "${APP_ENVS[$i]}" | tr '[:lower:]' '[:upper:]')
-                break
-            fi
-        done
-        
+        if [ -n "$env_name" ]; then
+            env_suffix=$(echo "$env_name" | tr '[:lower:]' '[:upper:]')
+        fi
+
         if [ -n "$env_suffix" ]; then
             echo "IOS_${env_suffix}_PROVISIONING_PROFILE"
         else
@@ -469,24 +541,30 @@ encode_all_project_profiles() {
     echo -e "${BLUE}Encoding all profiles for app: $SELECTED_APP${NC}"
     echo ""
     
+    if ! ensure_profiles_dir; then
+        read -p "Press Enter to continue..."
+        show_menu
+        return
+    fi
+
     local output_file="provisioning_profiles_encoded_${SELECTED_APP}.txt"
     echo "# Encoded Provisioning Profiles for CI/CD" > "$output_file"
     echo "# App: $SELECTED_APP" >> "$output_file"
     echo "# Generated on $(date)" >> "$output_file"
     echo "" >> "$output_file"
-    
+
     local i=0
     for env in "${APP_ENVS[@]}"; do
         local bundle_id="${APP_BUNDLE_IDS[$i]}"
         i=$((i + 1))
-        
+
         local found_profile=0
         for profile in "$PROFILES_DIR"/*.mobileprovision; do
             if [ -f "$profile" ]; then
-                local profile_bundle=$(security cms -D -i "$profile" 2>/dev/null | plutil -extract Entitlements.application-identifier raw - 2>/dev/null | cut -d. -f2-)
-                
+                local profile_bundle=$(get_profile_bundle_id "$profile")
+
                 if [[ "$profile_bundle" == "$bundle_id" ]]; then
-                    local profile_name=$(security cms -D -i "$profile" 2>/dev/null | plutil -extract Name raw - 2>/dev/null)
+                    local profile_name=$(get_profile_name "$profile")
                     local encoded=$(base64 -i "$profile")
                     local env_upper=$(echo "$env" | tr '[:lower:]' '[:upper:]')
                     

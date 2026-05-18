@@ -1,4 +1,5 @@
-import '../../route/route.dart';
+import 'package:fl_navigation/fl_navigation.dart';
+
 import 'webview_screen.dart';
 
 class WebViewRoute extends IRoute {
@@ -7,6 +8,7 @@ class WebViewRoute extends IRoute {
     return [
       CustomRouter<WebViewArgs>(
         path: WebViewScreen.routeName,
+        name: WebViewScreen.routeName,
         builder: (context, uri, extra) {
           final args = extra as WebViewArgs?;
           return WebViewScreen(params: args);

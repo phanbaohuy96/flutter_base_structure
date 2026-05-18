@@ -7,12 +7,14 @@ import '$importPartKey/../../di/di.dart';
 import 'bloc/${moduleNameKey}_bloc.dart';
 import 'views/${moduleNameKey}_screen.dart';
 
+@FlRouteProvider()
 class ${classNameKey}Route extends IRoute {
   @override
   List<CustomRouter> routers() {
     return [
       CustomRouter<${classNameKey}Args>(
         path: ${classNameKey}Screen.routeName,
+        name: ${classNameKey}Screen.routeName,
         builder: (context, uri, extra) {
           final args = asOrNull<${classNameKey}Args>(extra);
           return BlocProvider<${classNameKey}Bloc>(
