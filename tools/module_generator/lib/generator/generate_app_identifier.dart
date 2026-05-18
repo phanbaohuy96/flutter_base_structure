@@ -12,16 +12,22 @@ class AppConfig {
   final String? package;
   final String? name;
   final String? provisioningProfileSpecifier;
+  final String? teamId;
 
-  AppConfig(this.package, this.name, this.provisioningProfileSpecifier);
+  AppConfig({
+    this.package,
+    this.name,
+    this.provisioningProfileSpecifier,
+    this.teamId,
+  });
 
   factory AppConfig.fromMap(Map<String, dynamic> map) {
     return AppConfig(
-      map['package'] != null ? map['package'] as String : null,
-      map['name'] != null ? map['name'] as String : null,
-      map['provisioning_profile_specifier'] != null
-          ? map['provisioning_profile_specifier'] as String
-          : null,
+      package: map['package'] as String?,
+      name: map['name'] as String?,
+      provisioningProfileSpecifier:
+          map['provisioning_profile_specifier'] as String?,
+      teamId: map['team_id'] as String?,
     );
   }
 }
@@ -89,15 +95,13 @@ class AndroidConfigDocument extends ConfigDocument {
 
   @override
   String get contentFile {
-    return [
-      ...document.entries.map(
-        (e) =>
-            '''# ${e.key}
-app.${e.key.toLowerCase()}.name=${e.value.name}
-app.${e.key.toLowerCase()}.package=${e.value.package}
-''',
-      ),
-    ].join('\n');
+    return document.entries.map((e) {
+      final key = e.key.toLowerCase();
+      return '''# ${e.key}
+app.$key.name=${e.value.name}
+app.$key.package=${e.value.package}
+''';
+    }).join('\n');
   }
 }
 
@@ -108,16 +112,15 @@ class IOSConfigDocument extends ConfigDocument {
 
   @override
   String get contentFile {
-    return [
-      ...document.entries.map(
-        (e) =>
-            '''// ${e.key}
-${e.key.toUpperCase()}_APP_DISPLAY_NAME=${e.value.name}
-${e.key.toUpperCase()}_PRODUCT_BUNDLE_IDENTIFIER=${e.value.package}
-${e.key.toUpperCase()}_PROVISIONING_PROFILE_SPECIFIER=${e.value.provisioningProfileSpecifier ?? ''}
-''',
-      ),
-    ].join('\n');
+    return document.entries.map((e) {
+      final prefix = e.key.toUpperCase();
+      return '''// ${e.key}
+${prefix}_APP_DISPLAY_NAME=${e.value.name}
+${prefix}_PRODUCT_BUNDLE_IDENTIFIER=${e.value.package}
+${prefix}_PROVISIONING_PROFILE_SPECIFIER=${e.value.provisioningProfileSpecifier ?? ''}
+${prefix}_DEVELOPMENT_TEAM=${e.value.teamId ?? ''}
+''';
+    }).join('\n');
   }
 }
 

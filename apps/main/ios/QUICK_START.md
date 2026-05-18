@@ -77,18 +77,22 @@ ios:
     package: com.pbh.myflutterbase.dev
     name: YourApp DEV
     provisioning_profile_specifier: "YOUR_DEV_PROFILE_NAME_HERE"
+    team_id: "YOUR_TEAM_ID"
   staging:
     package: com.pbh.myflutterbase.staging
     name: YourApp Staging
     provisioning_profile_specifier: "YOUR_STAGING_PROFILE_NAME_HERE"
+    team_id: "YOUR_TEAM_ID"
   sandbox:
     package: com.pbh.myflutterbase.sandbox
     name: YourApp Sandbox
     provisioning_profile_specifier: "YOUR_SANDBOX_PROFILE_NAME_HERE"
+    team_id: "YOUR_TEAM_ID"
   prod:
     package: com.pbh.myflutterbase
     name: YourApp
     provisioning_profile_specifier: "YOUR_PROD_PROFILE_NAME_HERE"
+    team_id: "YOUR_TEAM_ID"
 ```
 
 Then regenerate the configuration:
@@ -104,21 +108,25 @@ Or directly edit `AppSpecific.xcconfig`:
 DEV_APP_DISPLAY_NAME=YourApp DEV
 DEV_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase.dev
 DEV_PROVISIONING_PROFILE_SPECIFIER=YOUR_DEV_PROFILE_NAME_HERE
+DEV_DEVELOPMENT_TEAM=YOUR_TEAM_ID
 
 // staging
 STAGING_APP_DISPLAY_NAME=YourApp Staging
 STAGING_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase.staging
 STAGING_PROVISIONING_PROFILE_SPECIFIER=YOUR_STAGING_PROFILE_NAME_HERE
+STAGING_DEVELOPMENT_TEAM=YOUR_TEAM_ID
 
 // sandbox
 SANDBOX_APP_DISPLAY_NAME=YourApp Sandbox
 SANDBOX_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase.sandbox
 SANDBOX_PROVISIONING_PROFILE_SPECIFIER=YOUR_SANDBOX_PROFILE_NAME_HERE
+SANDBOX_DEVELOPMENT_TEAM=YOUR_TEAM_ID
 
 // prod
 PROD_APP_DISPLAY_NAME=YourApp
 PROD_PRODUCT_BUNDLE_IDENTIFIER=com.pbh.myflutterbase
 PROD_PROVISIONING_PROFILE_SPECIFIER=YOUR_PROD_PROFILE_NAME_HERE
+PROD_DEVELOPMENT_TEAM=YOUR_TEAM_ID
 ```
 
 **Example with actual names:**
@@ -140,7 +148,7 @@ PROD_PROVISIONING_PROFILE_SPECIFIER=YourApp AppStore Profile
 3. Go to **Signing & Capabilities** tab
 4. Verify for each configuration:
    - ❌ "Automatically manage signing" should be **unchecked**
-   - ✅ Team shows: **95UD7HJB4N**
+   - ✅ Team shows the value from the matching flavor's `ios.<flavor>.team_id` in `apps/main/app_identifier.yaml`
    - ✅ Provisioning Profile shows your profile name
    - ✅ No errors displayed
 

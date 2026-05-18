@@ -117,7 +117,7 @@ parse_yaml() {
             # Match environment like "  dev:" or "  staging:"
             if [[ "$line" =~ ^[[:space:]]+([a-z_]+):[[:space:]]*$ ]]; then
                 current_env="${BASH_REMATCH[1]}"
-            # Match package line like "    package: net.vnsilicon.gpass.dev"
+            # Match package line like "    package: com.example.app.dev"
             elif [[ "$line" =~ ^[[:space:]]+package:[[:space:]]+(.+)$ && -n "$current_env" ]]; then
                 local package="${BASH_REMATCH[1]}"
                 APP_ENVS+=("$current_env")
