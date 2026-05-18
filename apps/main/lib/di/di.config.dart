@@ -41,7 +41,7 @@ Future<_i174.GetIt> $initGetIt(
   final appDatasourceModule = _$AppDatasourceModule();
   gh.factory<_i118.MockAuthRemoteSource>(() => _i118.MockAuthRemoteSource());
   gh.singleton<_i494.SQLiteDatabase>(() => _i833.SQLiteDatabaseImpl());
-  gh.factory<_i655.LocalDataManager>(
+  gh.lazySingleton<_i655.LocalDataManager>(
     () => _i655.LocalDataManager(
       gh<_i494.SharedPreferences>(),
       gh<_i558.FlutterSecureStorage>(),
@@ -61,7 +61,7 @@ Future<_i174.GetIt> $initGetIt(
     ),
   );
   gh.factory<_i893.SigninBloc>(() => _i893.SigninBloc(gh<_i738.AuthUsecase>()));
-  gh.factory<_i494.CoreLocalDataManager>(
+  gh.lazySingleton<_i494.CoreLocalDataManager>(
     () =>
         appDatasourceModule.coreLocalDataManager(gh<_i655.LocalDataManager>()),
   );

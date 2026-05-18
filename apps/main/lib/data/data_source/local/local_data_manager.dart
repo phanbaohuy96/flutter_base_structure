@@ -11,7 +11,7 @@ abstract class AppPreferenceData {
   Future<bool> saveUserInfo(UserModel? user);
 }
 
-@Injectable()
+@lazySingleton
 class LocalDataManager extends CoreLocalDataManager
     implements AppPreferenceData {
   LocalDataManager(super.prefs, super.secureStorage);

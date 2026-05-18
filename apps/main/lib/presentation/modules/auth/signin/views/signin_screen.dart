@@ -67,6 +67,16 @@ class SignInScreenState extends StateBase<SignInScreen> {
 
   late AppLocalizations trans;
 
+  final _phoneController = InputContainerController();
+  final _passwordController = InputContainerController();
+
+  @override
+  void dispose() {
+    _phoneController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     _themeData = context.theme;
@@ -116,6 +126,7 @@ class SignInScreenState extends StateBase<SignInScreen> {
           const SizedBox(height: 30),
           InputContainer(
             key: const Key(SignInScreen.usernameKey),
+            controller: _phoneController,
             title: trans.phoneNumber,
             hint: trans.phoneNumberHint,
             keyboardType: TextInputType.phone,
@@ -125,6 +136,7 @@ class SignInScreenState extends StateBase<SignInScreen> {
           const SizedBox(height: 16),
           InputContainer(
             key: const Key(SignInScreen.passwordKey),
+            controller: _passwordController,
             title: trans.password,
             hint: trans.passwordHint,
             isPassword: true,
