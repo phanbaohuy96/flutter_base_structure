@@ -68,17 +68,21 @@ Future<void> generateModuleWithTemplateSource({
       ),
     );
 
-    // #ROUTE
-    final coordinatorFileName = '${moduleName}_coordinator.dart';
-    await FilesHelper.writeFile(
-      pathFile: '$inputModuleDir/$coordinatorFileName',
-      content: (source['coordinator'] as String).replaceContent(
-        className: className,
-        moduleName: moduleName,
-        modelName: modelName,
-        partCount: partCount,
-      ),
-    );
+    // #COORDINATOR (compound or arg-translating modules only — single-screen
+    // generators omit the 'coordinator' key so no shallow `pushBehavior.push`
+    // wrapper file is emitted; callers navigate via the route name directly.)
+    if (source.containsKey('coordinator')) {
+      final coordinatorFileName = '${moduleName}_coordinator.dart';
+      await FilesHelper.writeFile(
+        pathFile: '$inputModuleDir/$coordinatorFileName',
+        content: (source['coordinator'] as String).replaceContent(
+          className: className,
+          moduleName: moduleName,
+          modelName: modelName,
+          partCount: partCount,
+        ),
+      );
+    }
 
     // #ROUTE
     final routeFileName = '${moduleName}_route.dart';

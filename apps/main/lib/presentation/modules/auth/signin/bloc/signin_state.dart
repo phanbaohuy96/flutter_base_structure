@@ -5,8 +5,8 @@ part of 'signin_bloc.dart';
 @freezed
 abstract class _StateData with _$StateData {
   const factory _StateData({
-    @Default([]) final List<UserModel> users,
-    final UserModel? selectedUser,
+    @Default('') final String phone,
+    @Default('') final String password,
   }) = __StateData;
 }
 
@@ -19,9 +19,8 @@ abstract class SigninState {
     return _factories[T == SigninState ? runtimeType : T]!(data ?? this.data);
   }
 
-  List<UserModel> get users => data.users;
-
-  UserModel? get selectedUser => data.selectedUser;
+  String get phone => data.phone;
+  String get password => data.password;
 }
 
 class SigninInitial extends SigninState {
@@ -32,7 +31,12 @@ class LoginSuccess extends SigninState {
   LoginSuccess({_StateData data = const _StateData()}) : super(data);
 }
 
+class LoginFailed extends SigninState {
+  LoginFailed({_StateData data = const _StateData()}) : super(data);
+}
+
 final _factories = <Type, Function(_StateData data)>{
   SigninInitial: (data) => SigninInitial(data: data),
   LoginSuccess: (data) => LoginSuccess(data: data),
+  LoginFailed: (data) => LoginFailed(data: data),
 };

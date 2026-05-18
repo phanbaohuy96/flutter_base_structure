@@ -21,9 +21,11 @@ class AppDelegate {
         // final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
         // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-        await Hive.initFlutter();
-
         await configureDependencies(env: Config.instance.appConfig.envName);
+
+        // Warm the storage seam's token cache so `AuthGateRouteInterceptor`
+        // can read it synchronously inside `GoRoute.redirect`.
+        await injector<CoreLocalDataManager>().token;
 
         setLocaleMessages(AppLocale.vi.languageCode, ViMessages());
         setLocaleMessages(AppLocale.en.languageCode, EnMessages());

@@ -1,13 +1,20 @@
 import 'package:collection/collection.dart';
 import 'package:core/core.dart';
 
+import '../../di/di.dart';
 import '../modules/auth/signin/views/signin_screen.dart';
 import '../modules/page_not_found/page_note_found.dart';
+import 'auth_gate_route_interceptor.dart';
 import 'route_providers.config.dart';
 
 GoRouter buildAppRouter(AppGlobalBloc appBloc) {
   return buildFlGoRouter(
     routeProviders: buildAppRouteProviders(),
+    routeProviderInterceptors: [
+      AuthGateRouteInterceptor(
+        localDataManager: injector<CoreLocalDataManager>(),
+      ),
+    ],
     initialLocation: SignInScreen.routeName,
     navigatorKey: globalNavigatorKey,
     observers: [myNavigatorObserver],

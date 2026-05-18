@@ -7,11 +7,14 @@ skip,Skip,Bỏ qua
 close,Close,Đóng
 loginRequired,Please login to continue,Vui lòng đăng nhập để tiếp tục
 login,Login,Đăng nhập
-userRole,User role,Vai trò người dùng
 poweredByApp,Powered by My Flutter Base,Được cung cấp bởi My Flutter Base
-pleaseSelectARoleBeforeLoginMsg,Please select a role before logging in.,Vui lòng chọn vai trò trước khi đăng nhập.
 backToHomepage,Back to Homepage,Quay lại trang chủ
 pageNotFound,"404 - Page Not Found","404 - Không tìm thấy trang"
 back,Back,Quay lại
-loginFailed,Failed to fetch user info,Không thể lấy thông tin người dùng
-thisRoleIsNotSupportedYet,This role is not supported yet.,Vai trò này chưa được hỗ trợ
+phoneNumber,Phone number,Số điện thoại
+password,Password,Mật khẩu
+phoneNumberHint,Enter your phone number,Nhập số điện thoại của bạn
+passwordHint,Enter your password,Nhập mật khẩu của bạn
+phoneRequired,Phone number is required,Số điện thoại là bắt buộc
+passwordRequired,Password is required,Mật khẩu là bắt buộc
+loginFailed,Invalid phone or password,Số điện thoại hoặc mật khẩu không đúng

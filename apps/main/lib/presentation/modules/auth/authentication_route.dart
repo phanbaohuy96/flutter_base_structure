@@ -9,15 +9,17 @@ class AuthenticationRoute extends IRoute {
   @override
   List<CustomRouter> routers() {
     return [
-      CustomRouter(
+      CustomRouter<SigninRouteArgs>(
         path: SignInScreen.routeName,
         name: SignInScreen.routeName,
         builder: (context, uri, extra) {
+          final args = extra as SigninRouteArgs?;
           return BlocProvider<SigninBloc>(
             create: (context) => injector.get(),
-            child: const SignInScreen(),
+            child: SignInScreen(redirectTo: args?.redirectTo),
           );
         },
+        extraFromUrlQueries: SigninRouteArgs.fromUrlParams,
       ),
     ];
   }

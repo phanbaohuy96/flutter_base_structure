@@ -1,59 +1,64 @@
 import 'dart:async';
 
 import 'package:core/core.dart';
-import 'package:data_source/data_source.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../../../../domain/entities/auth/response.dart';
 import '../../../../../domain/usecases/auth/auth_usecase.dart';
-import '../../../../base/base.dart';
 
 part 'signin_bloc.freezed.dart';
 part 'signin_event.dart';
 part 'signin_state.dart';
 
 @Injectable()
-class SigninBloc extends AppBlocBase<SigninEvent, SigninState> {
+class SigninBloc extends CoreBlocBase<SigninEvent, SigninState> {
   final AuthUsecase _authUsecase;
 
   SigninBloc(this._authUsecase)
     : super(SigninInitial(data: const _StateData())) {
-    on<UpdateSelectedUserModelEvent>(_onUpdateSelectedUserRoleEvent);
-    on<GetUserRoleEvent>(_onGetUserRoleEvent);
-    on<LoginEvent>(_onLoginEvent);
-
-    add(GetUserRoleEvent());
+    on<UpdatePhoneEvent>(_onUpdatePhone);
+    on<UpdatePasswordEvent>(_onUpdatePassword);
+    on<LoginEvent>(_onLogin);
   }
 
-  Future<void> _onUpdateSelectedUserRoleEvent(
-    UpdateSelectedUserModelEvent event,
+  Future<void> _onUpdatePhone(
+    UpdatePhoneEvent event,
     Emitter<SigninState> emit,
   ) async {
-    emit(state.copyWith(data: state.data.copyWith(selectedUser: event.user)));
+    emit(state.copyWith(data: state.data.copyWith(phone: event.phone.trim())));
   }
 
-  Future<void> _onGetUserRoleEvent(
-    GetUserRoleEvent event,
+  Future<void> _onUpdatePassword(
+    UpdatePasswordEvent event,
     Emitter<SigninState> emit,
   ) async {
-    final users = await _authUsecase.getUsers();
-    emit(state.copyWith(data: state.data.copyWith(users: users)));
+    emit(state.copyWith(data: state.data.copyWith(password: event.password)));
   }
 
-  Future<void> _onLoginEvent(
+  Future<void> _onLogin(
     LoginEvent event,
     Emitter<SigninState> emit,
   ) async {
-    final user = state.selectedUser;
-    if (user == null) {
-      // Do nothing when role is not selected
+    if (state is LoginSuccess) {
       return;
     }
-    final result = await _authUsecase.loginWithUser(user: user);
+    if (state.phone.isEmpty || state.password.isEmpty) {
+      return;
+    }
 
-    emit(state.copyWith<LoginSuccess>());
-
-    event.completer.complete(result);
+    showLoading();
+    try {
+      final user = await _authUsecase.loginWithPhoneNumberPassword(
+        phoneNumber: state.phone,
+        password: state.password,
+      );
+      if (user == null) {
+        emit(state.copyWith<LoginFailed>());
+      } else {
+        emit(state.copyWith<LoginSuccess>());
+      }
+    } finally {
+      hideLoading();
+    }
   }
 }

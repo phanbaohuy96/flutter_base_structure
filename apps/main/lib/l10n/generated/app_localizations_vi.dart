@@ -33,14 +33,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get login => 'Đăng nhập';
 
   @override
-  String get userRole => 'Vai trò người dùng';
-
-  @override
   String get poweredByApp => 'Được cung cấp bởi My Flutter Base';
-
-  @override
-  String get pleaseSelectARoleBeforeLoginMsg =>
-      'Vui lòng chọn vai trò trước khi đăng nhập.';
 
   @override
   String get backToHomepage => 'Quay lại trang chủ';
@@ -52,8 +45,23 @@ class AppLocalizationsVi extends AppLocalizations {
   String get back => 'Quay lại';
 
   @override
-  String get loginFailed => 'Không thể lấy thông tin người dùng';
+  String get phoneNumber => 'Số điện thoại';
 
   @override
-  String get thisRoleIsNotSupportedYet => 'Vai trò này chưa được hỗ trợ';
+  String get password => 'Mật khẩu';
+
+  @override
+  String get phoneNumberHint => 'Nhập số điện thoại của bạn';
+
+  @override
+  String get passwordHint => 'Nhập mật khẩu của bạn';
+
+  @override
+  String get phoneRequired => 'Số điện thoại là bắt buộc';
+
+  @override
+  String get passwordRequired => 'Mật khẩu là bắt buộc';
+
+  @override
+  String get loginFailed => 'Số điện thoại hoặc mật khẩu không đúng';
 }

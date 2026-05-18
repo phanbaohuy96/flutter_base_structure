@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StateData {
 
- List<UserModel> get users; UserModel? get selectedUser;
+ String get phone; String get password;
 /// Create a copy of _StateData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ _$StateDataCopyWith<_StateData> get copyWith => __$StateDataCopyWithImpl<_StateD
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StateData&&const DeepCollectionEquality().equals(other.users, users)&&(identical(other.selectedUser, selectedUser) || other.selectedUser == selectedUser));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StateData&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.password, password) || other.password == password));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(users),selectedUser);
+int get hashCode => Object.hash(runtimeType,phone,password);
 
 @override
 String toString() {
-  return '_StateData(users: $users, selectedUser: $selectedUser)';
+  return '_StateData(phone: $phone, password: $password)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class _$StateDataCopyWith<$Res>  {
   factory _$StateDataCopyWith(_StateData value, $Res Function(_StateData) _then) = __$StateDataCopyWithImpl;
 @useResult
 $Res call({
- List<UserModel> users, UserModel? selectedUser
+ String phone, String password
 });
 
 
@@ -62,11 +62,11 @@ class __$StateDataCopyWithImpl<$Res>
 
 /// Create a copy of _StateData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? users = null,Object? selectedUser = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? phone = null,Object? password = null,}) {
   return _then(_self.copyWith(
-users: null == users ? _self.users : users // ignore: cast_nullable_to_non_nullable
-as List<UserModel>,selectedUser: freezed == selectedUser ? _self.selectedUser : selectedUser // ignore: cast_nullable_to_non_nullable
-as UserModel?,
+phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -151,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<UserModel> users,  UserModel? selectedUser)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String phone,  String password)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case __StateData() when $default != null:
-return $default(_that.users,_that.selectedUser);case _:
+return $default(_that.phone,_that.password);case _:
   return orElse();
 
 }
@@ -172,10 +172,10 @@ return $default(_that.users,_that.selectedUser);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<UserModel> users,  UserModel? selectedUser)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String phone,  String password)  $default,) {final _that = this;
 switch (_that) {
 case __StateData():
-return $default(_that.users,_that.selectedUser);case _:
+return $default(_that.phone,_that.password);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +192,10 @@ return $default(_that.users,_that.selectedUser);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<UserModel> users,  UserModel? selectedUser)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String phone,  String password)?  $default,) {final _that = this;
 switch (_that) {
 case __StateData() when $default != null:
-return $default(_that.users,_that.selectedUser);case _:
+return $default(_that.phone,_that.password);case _:
   return null;
 
 }
@@ -207,17 +207,11 @@ return $default(_that.users,_that.selectedUser);case _:
 
 
 class __StateData implements _StateData {
-  const __StateData({final  List<UserModel> users = const [], this.selectedUser}): _users = users;
+  const __StateData({this.phone = '', this.password = ''});
   
 
- final  List<UserModel> _users;
-@override@JsonKey() List<UserModel> get users {
-  if (_users is EqualUnmodifiableListView) return _users;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_users);
-}
-
-@override final  UserModel? selectedUser;
+@override@JsonKey() final  String phone;
+@override@JsonKey() final  String password;
 
 /// Create a copy of _StateData
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +223,16 @@ _$_StateDataCopyWith<__StateData> get copyWith => __$_StateDataCopyWithImpl<__St
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is __StateData&&const DeepCollectionEquality().equals(other._users, _users)&&(identical(other.selectedUser, selectedUser) || other.selectedUser == selectedUser));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is __StateData&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.password, password) || other.password == password));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_users),selectedUser);
+int get hashCode => Object.hash(runtimeType,phone,password);
 
 @override
 String toString() {
-  return '_StateData(users: $users, selectedUser: $selectedUser)';
+  return '_StateData(phone: $phone, password: $password)';
 }
 
 
@@ -249,7 +243,7 @@ abstract mixin class _$_StateDataCopyWith<$Res> implements _$StateDataCopyWith<$
   factory _$_StateDataCopyWith(__StateData value, $Res Function(__StateData) _then) = __$_StateDataCopyWithImpl;
 @override @useResult
 $Res call({
- List<UserModel> users, UserModel? selectedUser
+ String phone, String password
 });
 
 
@@ -266,11 +260,11 @@ class __$_StateDataCopyWithImpl<$Res>
 
 /// Create a copy of _StateData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? users = null,Object? selectedUser = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? phone = null,Object? password = null,}) {
   return _then(__StateData(
-users: null == users ? _self._users : users // ignore: cast_nullable_to_non_nullable
-as List<UserModel>,selectedUser: freezed == selectedUser ? _self.selectedUser : selectedUser // ignore: cast_nullable_to_non_nullable
-as UserModel?,
+phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+as String,password: null == password ? _self.password : password // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

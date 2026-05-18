@@ -18,8 +18,15 @@ const usecaseImpl =
 
 @Injectable(as: ${classNameKey}Usecase)
 class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
+  ${classNameKey}UsecaseImpl(this._repository);
+
+  final ${classNameKey}Repository _repository;
+
   @override
   Future<dynamic> sampleFunc() async {
-    return Future.value();
+    // TODO: translate the repository result into a typed domain outcome
+    // (e.g. a sealed Result class) so callers can switch on intent rather
+    // than null-check or catch.
+    return _repository.sampleFunc();
   }
 }''';
