@@ -749,7 +749,10 @@ class CreateProjectGenerator {
   ) {
     final configs = {
       for (final e in identity.flavorConfigs.entries)
-        e.key: app_identifier.AppConfig(e.value.package, e.value.displayName, null),
+        e.key: app_identifier.AppConfig(
+          package: e.value.package,
+          name: e.value.displayName,
+        ),
     };
 
     return app_identifier.ProjectConfigDocument([

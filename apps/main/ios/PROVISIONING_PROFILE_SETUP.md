@@ -6,7 +6,8 @@ Your iOS app has been configured for **manual signing** using provisioning profi
 ## Current Configuration
 
 ### Team ID
-- **95UD7HJB4N**
+- Set `ios.<flavor>.team_id` per flavor in `apps/main/app_identifier.yaml`, then run `make app_identifier` to regenerate `apps/main/ios/Flutter/AppSpecific.xcconfig` (exports `<FLAVOR>_DEVELOPMENT_TEAM`, wired into each `Default-*.xcconfig` as `DEVELOPMENT_TEAM`).
+- ⚠️ Do not set the team via Xcode's "Signing & Capabilities" UI — it writes `DEVELOPMENT_TEAM = "...";` directly into `Runner.xcodeproj/project.pbxproj`, which then overrides the xcconfig. If this happens, delete the per-config `DEVELOPMENT_TEAM` lines from the pbxproj and let `AppSpecific.xcconfig` win.
 
 ### Bundle Identifiers (from AppSpecific.xcconfig)
 - **Dev**: `com.pbh.myflutterbase.dev`
@@ -155,7 +156,7 @@ PROVISIONING_PROFILE_SPECIFIER=Your Profile Name Here
 3. Go to "Signing & Capabilities"
 4. Ensure "Automatically manage signing" is **unchecked**
 5. For each build configuration, verify:
-   - Team: **95UD7HJB4N**
+   - Team: value from the matching flavor's `ios.<flavor>.team_id` in `apps/main/app_identifier.yaml`
    - Provisioning Profile: Should show your profile name
    - Signing Certificate: Should match the configuration
 

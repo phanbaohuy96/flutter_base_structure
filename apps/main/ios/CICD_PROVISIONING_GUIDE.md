@@ -326,7 +326,7 @@ app_identifier([
 ])
 
 username("your-apple-id@example.com")
-team_id("95UD7HJB4N")
+team_id("YOUR_TEAM_ID") # set ios.<flavor>.team_id in apps/main/app_identifier.yaml
 ```
 
 ---
