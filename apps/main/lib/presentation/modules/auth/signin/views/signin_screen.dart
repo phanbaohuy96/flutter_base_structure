@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:core/core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../generated/assets.dart';
@@ -11,13 +12,37 @@ import '../bloc/signin_bloc.dart';
 
 part 'signin.action.dart';
 
+class SigninRouteArgs {
+  final String? redirectTo;
+
+  const SigninRouteArgs({this.redirectTo});
+
+  factory SigninRouteArgs.fromUrlParams(Map<String, dynamic> queryParameters) =>
+      SigninRouteArgs(redirectTo: asOrNull(queryParameters['redirect']));
+
+  dynamic get adaptiveArguments {
+    if (kIsWeb) {
+      if (redirectTo == null) {
+        return null;
+      }
+      return <String, dynamic>{'redirect': redirectTo};
+    }
+    return this;
+  }
+}
+
 class SignInScreen extends StatefulWidget {
   static const String routeName = '/signin';
   static const String usernameKey = 'username_text_input';
   static const String passwordKey = 'password_text_input';
   static const String loginBtnKey = 'login_button';
 
-  const SignInScreen({super.key});
+  const SignInScreen({super.key, this.redirectTo});
+
+  /// Where to land after a successful login. Passed through by
+  /// [AuthenticationCoordinator.openSignIn] via [SigninRouteArgs] (route
+  /// arguments or `?redirect=` query). Falls back to the dev-mode dashboard.
+  final String? redirectTo;
 
   @override
   State<SignInScreen> createState() => SignInScreenState();
