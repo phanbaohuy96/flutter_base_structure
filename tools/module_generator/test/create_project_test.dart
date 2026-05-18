@@ -190,6 +190,59 @@ void main() {
     );
   });
 
+  test('refuses to overwrite a non-empty destination without force', () async {
+    final destination = path.join(outputBaseDir.path, 'already_used');
+    await Directory(destination).create(recursive: true);
+    await File(path.join(destination, 'leftover.txt')).writeAsString('hi');
+
+    await expectLater(
+      CreateProjectGenerator().run(
+        CreateProjectOptions(
+          templateRoot: templateDir.path,
+          destination: destination,
+          identity: ProjectIdentity(
+            displayName: 'Overlap App',
+            slug: 'overlap_app',
+            basePackage: 'com.example.overlap',
+          ),
+          runPostGeneration: false,
+        ),
+      ),
+      throwsA(isA<CreateProjectException>()),
+    );
+    expect(
+      File(path.join(destination, 'leftover.txt')).existsSync(),
+      isTrue,
+    );
+  });
+
+  test('force replaces a non-empty destination', () async {
+    final destination = path.join(outputBaseDir.path, 'forced_app');
+    await Directory(destination).create(recursive: true);
+    await File(path.join(destination, 'leftover.txt')).writeAsString('hi');
+
+    final result = await CreateProjectGenerator().run(
+      CreateProjectOptions(
+        templateRoot: templateDir.path,
+        destination: destination,
+        identity: ProjectIdentity(
+          displayName: 'Forced App',
+          slug: 'forced_app',
+          basePackage: 'com.example.forced',
+        ),
+        force: true,
+        runPostGeneration: false,
+      ),
+    );
+
+    expect(result.destination, destination);
+    expect(File(path.join(destination, 'leftover.txt')).existsSync(), isFalse);
+    expect(
+      File(path.join(destination, 'apps/main/pubspec.yaml')).existsSync(),
+      isTrue,
+    );
+  });
+
   test('dry run does not create destination', () async {
     final destination = path.join(outputBaseDir.path, 'dry_run_app');
 
