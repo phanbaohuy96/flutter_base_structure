@@ -243,6 +243,30 @@ void main() {
     );
   });
 
+  test(
+    'reports leftover identity references when the new name overlaps the old',
+    () async {
+      final destination = path.join(outputBaseDir.path, 'overlap_app');
+
+      final result = await CreateProjectGenerator().run(
+        CreateProjectOptions(
+          templateRoot: templateDir.path,
+          destination: destination,
+          // New identity contains the old slug as a substring, so the sweep
+          // rewrites it but the post-sweep scan can still find the old text.
+          identity: ProjectIdentity(
+            displayName: 'My Flutter Base Pro',
+            slug: 'my_flutter_base_pro',
+            basePackage: 'com.pbh.myflutterbasepro',
+          ),
+          runPostGeneration: false,
+        ),
+      );
+
+      expect(result.remainingIdentityFiles, isNotEmpty);
+    },
+  );
+
   test('dry run does not create destination', () async {
     final destination = path.join(outputBaseDir.path, 'dry_run_app');
 
