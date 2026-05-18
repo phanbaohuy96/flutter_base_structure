@@ -236,7 +236,6 @@ class CreateProjectGenerator {
       movedPaths,
     );
     await _renameSigningDirectory(destination, options.identity, movedPaths);
-    await _runIdentitySweep(destination, options.identity, changedFiles);
 
     if (options.runPostGeneration) {
       await _regenerateDerivedOutputs(
@@ -245,10 +244,13 @@ class CreateProjectGenerator {
         changedFiles,
         warnings,
       );
-      await _runIdentitySweep(destination, options.identity, changedFiles);
     }
 
-    final remainingIdentityFiles = await scanRemainingIdentity(destination);
+    final remainingIdentityFiles = await _runIdentitySweep(
+      destination,
+      options.identity,
+      changedFiles,
+    );
 
     return CreateProjectResult(
       destination: destination,
@@ -260,35 +262,12 @@ class CreateProjectGenerator {
     );
   }
 
-  Future<List<String>> scanRemainingIdentity(String projectRoot) async {
-    final matches = <String>[];
-    final root = Directory(projectRoot);
-
-    await for (final entity in root.list(recursive: true, followLinks: false)) {
-      if (entity is! File || !_shouldScanTextFile(entity.path)) {
-        continue;
-      }
-      final relativePath = path.relative(entity.path, from: projectRoot);
-      if (_containsExcludedSegment(relativePath)) {
-        continue;
-      }
-
-      try {
-        final content = await entity.readAsString();
-        if (content.contains(_oldDisplayName) ||
-            content.contains(_oldSlug) ||
-            content.contains(_oldBasePackage) ||
-            content.contains(_oldPackagePath) ||
-            content.contains(_oldSigningPath)) {
-          matches.add(relativePath);
-        }
-      } on FormatException {
-        continue;
-      }
-    }
-
-    matches.sort();
-    return matches;
+  bool _containsOldIdentity(String content) {
+    return content.contains(_oldDisplayName) ||
+        content.contains(_oldSlug) ||
+        content.contains(_oldBasePackage) ||
+        content.contains(_oldPackagePath) ||
+        content.contains(_oldSigningPath);
   }
 
   String _resolveDestination(String destination, String workingDirectory) {
@@ -377,15 +356,8 @@ class CreateProjectGenerator {
     required bool force,
   }) async {
     final destinationDir = Directory(destination);
-    if (await destinationDir.exists()) {
-      if (!await _isDirectoryEmpty(destinationDir)) {
-        if (!force) {
-          throw CreateProjectException(
-            'Destination already exists and is not empty: $destination',
-          );
-        }
-        await destinationDir.delete(recursive: true);
-      }
+    if (force && await destinationDir.exists()) {
+      await destinationDir.delete(recursive: true);
     }
     await destinationDir.create(recursive: true);
   }
@@ -451,35 +423,23 @@ class CreateProjectGenerator {
   }
 
   String _appIdentifierYaml(ProjectIdentity identity) {
-    return '''# dart run module_generator:generate_app_identifier
-
-android:
-  dev:
-    package: ${_yamlString(identity.devPackage)}
-    name: ${_yamlString(identity.devDisplayName)}
-  staging:
-    package: ${_yamlString(identity.stagingPackage)}
-    name: ${_yamlString(identity.stagingDisplayName)}
-  sandbox:
-    package: ${_yamlString(identity.sandboxPackage)}
-    name: ${_yamlString(identity.sandboxDisplayName)}
-  prod:
-    package: ${_yamlString(identity.prodPackage)}
-    name: ${_yamlString(identity.prodDisplayName)}
-ios:
-  dev:
-    package: ${_yamlString(identity.devPackage)}
-    name: ${_yamlString(identity.devDisplayName)}
-  staging:
-    package: ${_yamlString(identity.stagingPackage)}
-    name: ${_yamlString(identity.stagingDisplayName)}
-  sandbox:
-    package: ${_yamlString(identity.sandboxPackage)}
-    name: ${_yamlString(identity.sandboxDisplayName)}
-  prod:
-    package: ${_yamlString(identity.prodPackage)}
-    name: ${_yamlString(identity.prodDisplayName)}
-''';
+    final flavors = [
+      ('dev', identity.devPackage, identity.devDisplayName),
+      ('staging', identity.stagingPackage, identity.stagingDisplayName),
+      ('sandbox', identity.sandboxPackage, identity.sandboxDisplayName),
+      ('prod', identity.prodPackage, identity.prodDisplayName),
+    ];
+    final flavorBlock = flavors
+        .map(
+          (f) =>
+              '  ${f.$1}:\n'
+              '    package: ${_yamlString(f.$2)}\n'
+              '    name: ${_yamlString(f.$3)}',
+        )
+        .join('\n');
+    return '# dart run module_generator:generate_app_identifier\n\n'
+        'android:\n$flavorBlock\n'
+        'ios:\n$flavorBlock\n';
   }
 
   String _yamlString(String value) {
@@ -519,19 +479,17 @@ ios:
     final indexFile = File(path.join(appDir, 'web', 'index.html'));
     if (await indexFile.exists()) {
       final escapedName = const HtmlEscape().convert(identity.displayName);
+      final replacements = <RegExp, String>{
+        RegExp(r'<meta name="description" content="[^"]*">'):
+            '<meta name="description" content="$escapedName">',
+        RegExp(r'<meta name="apple-mobile-web-app-title" content="[^"]*">'):
+            '<meta name="apple-mobile-web-app-title" content="$escapedName">',
+        RegExp(r'<title>.*</title>'): '<title>$escapedName</title>',
+      };
       var content = await indexFile.readAsString();
-      content = content.replaceFirst(
-        RegExp(r'<meta name="description" content="[^"]*">'),
-        '<meta name="description" content="$escapedName">',
-      );
-      content = content.replaceFirst(
-        RegExp(r'<meta name="apple-mobile-web-app-title" content="[^"]*">'),
-        '<meta name="apple-mobile-web-app-title" content="$escapedName">',
-      );
-      content = content.replaceFirst(
-        RegExp(r'<title>.*</title>'),
-        '<title>$escapedName</title>',
-      );
+      replacements.forEach((pattern, replacement) {
+        content = content.replaceFirst(pattern, replacement);
+      });
       await indexFile.writeAsString(content);
       changedFiles.add(path.relative(indexFile.path, from: projectRoot));
     }
@@ -744,12 +702,13 @@ ios:
     );
   }
 
-  Future<void> _runIdentitySweep(
+  Future<List<String>> _runIdentitySweep(
     String projectRoot,
     ProjectIdentity identity,
     List<String> changedFiles,
   ) async {
     final replacements = _replacementRules(identity);
+    final remaining = <String>[];
     final root = Directory(projectRoot);
 
     await for (final entity in root.list(recursive: true, followLinks: false)) {
@@ -771,10 +730,16 @@ ios:
           await entity.writeAsString(content);
           changedFiles.add(relativePath);
         }
+        if (_containsOldIdentity(content)) {
+          remaining.add(relativePath);
+        }
       } on FormatException {
         continue;
       }
     }
+
+    remaining.sort();
+    return remaining;
   }
 
   Map<String, String> _replacementRules(ProjectIdentity identity) {

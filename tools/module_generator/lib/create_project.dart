@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 
+import 'common/common_function.dart';
 import 'common/input_helper.dart';
 import 'generator/create_project.dart';
 
@@ -161,13 +162,12 @@ ArgParser _buildParser() {
 }
 
 String? _optionalString(ArgResults results, String name) {
-  final value = results[name] as String?;
-  final trimmed = value?.trim();
-  return trimmed == null || trimmed.isEmpty ? null : trimmed;
+  final trimmed = (results[name] as String?)?.trim();
+  return trimmed.isNullOrEmpty ? null : trimmed;
 }
 
 void _requireOption(String? value, String name) {
-  if (value == null || value.trim().isEmpty) {
+  if (value?.trim().isNullOrEmpty ?? true) {
     throw CreateProjectException('Missing required option --$name.');
   }
 }
@@ -179,8 +179,8 @@ Future<String> _enterWithDefault({
   final input = await InputHelper.enterText(
     '$message (default: $defaultValue): ',
   );
-  final trimmed = (input ?? '').trim();
-  return trimmed.isEmpty ? defaultValue : trimmed;
+  final trimmed = input?.trim();
+  return trimmed.isNullOrEmpty ? defaultValue : trimmed!;
 }
 
 void _printSummary({
