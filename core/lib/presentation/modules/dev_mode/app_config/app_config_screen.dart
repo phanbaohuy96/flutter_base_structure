@@ -4,7 +4,7 @@ import '../../../../core.dart';
 import '../../../../di/core_micro.dart';
 
 class AppConfigScreen extends StatefulWidget {
-  static String routeName = '/app-config';
+  static const String routeName = '/app-config';
 
   const AppConfigScreen({Key? key}) : super(key: key);
 

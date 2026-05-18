@@ -26,6 +26,10 @@ typedef CoreRouteBuilder = Widget Function(BuildContext, Uri, dynamic extra);
 typedef ExtraFromUrlQueries<T> =
     T? Function(Map<String, dynamic> queryParameters);
 
+/// Function signature for building a page from route data.
+typedef CorePageBuilder =
+    Page<dynamic> Function(BuildContext context, Uri uri, dynamic extra);
+
 /// A custom router implementation for handling navigation in the application.
 ///
 /// The [CustomRouter] class provides functionality for routing to specific
@@ -39,8 +43,17 @@ class CustomRouter<T> {
   /// [pathVerify] function returns true.
   final String path;
 
+  /// Optional route name for GoRouter named-location APIs.
+  final String? name;
+
   /// The function that builds the widget for this route.
   final CoreRouteBuilder _builder;
+
+  /// Optional function that builds a custom page for GoRouter.
+  final CorePageBuilder? pageBuilder;
+
+  /// Optional root or shell navigator key for GoRouter placement.
+  final GlobalKey<NavigatorState>? parentNavigatorKey;
 
   /// Optional function to extract extra data from URL query parameters.
   /// This allows routes to accept parameters via URL query strings.
@@ -69,11 +82,39 @@ class CustomRouter<T> {
   const CustomRouter({
     required this.path,
     required CoreRouteBuilder builder,
+    this.name,
+    this.pageBuilder,
+    this.parentNavigatorKey,
     this.extraFromUrlQueries,
     this.pathVerify,
     this.routes,
     this.redirect,
   }) : _builder = builder;
+
+  /// Creates a copy with selected route metadata replaced.
+  CustomRouter<T> copyWith({
+    String? path,
+    String? name,
+    CoreRouteBuilder? builder,
+    CorePageBuilder? pageBuilder,
+    GlobalKey<NavigatorState>? parentNavigatorKey,
+    ExtraFromUrlQueries<T>? extraFromUrlQueries,
+    RoutePathVerify? pathVerify,
+    List<CustomRouter>? routes,
+    String? Function(BuildContext, GoRouterState)? redirect,
+  }) {
+    return CustomRouter<T>(
+      path: path ?? this.path,
+      name: name ?? this.name,
+      builder: builder ?? _builder,
+      pageBuilder: pageBuilder ?? this.pageBuilder,
+      parentNavigatorKey: parentNavigatorKey ?? this.parentNavigatorKey,
+      extraFromUrlQueries: extraFromUrlQueries ?? this.extraFromUrlQueries,
+      pathVerify: pathVerify ?? this.pathVerify,
+      routes: routes ?? this.routes,
+      redirect: redirect ?? this.redirect,
+    );
+  }
 
   Widget build(BuildContext context, Uri uri, dynamic extra) {
     return _builder(context, uri, buildExtra(uri, extra));
@@ -88,11 +129,18 @@ class CustomRouter<T> {
   GoRoute toGoRoute() {
     return GoRoute(
       path: path,
-      builder: (context, state) {
-        final uri = state.uri;
-        final extra = buildExtra(uri, state.extra);
-        return _builder(context, uri, extra);
-      },
+      name: name,
+      pageBuilder: pageBuilder?.let((builder) {
+        return (context, state) {
+          final uri = state.uri;
+          final extra = buildExtra(uri, state.extra);
+          return builder(context, uri, extra);
+        };
+      }),
+      builder: pageBuilder == null
+          ? (context, state) => build(context, state.uri, state.extra)
+          : null,
+      parentNavigatorKey: parentNavigatorKey,
       redirect: redirect,
       routes: routes?.map((route) => route.toGoRoute()).toList() ?? [],
     );
@@ -189,8 +237,29 @@ class CustomRouter<T> {
       return pathVerify!(uri);
     }
 
-    return uri.path.isNotEmpty && uri.path.paramCase.startsWith(path.paramCase);
+    final routePath = _normalizeRoutePath(path);
+    final uriPath = _normalizeRoutePath(uri.path);
+    if (routePath.isEmpty || uriPath.isEmpty) {
+      return false;
+    }
+    if (routePath == '/') {
+      return uriPath == routePath;
+    }
+    return uriPath == routePath || uriPath.startsWith('$routePath/');
   }
+}
+
+String _normalizeRoutePath(String value) {
+  final normalized = value
+      .split('/')
+      .map((segment) {
+        return segment.isEmpty ? segment : segment.paramCase;
+      })
+      .join('/');
+  if (normalized.length > 1 && normalized.endsWith('/')) {
+    return normalized.substring(0, normalized.length - 1);
+  }
+  return normalized;
 }
 
 /// Interface for route providers with GoRouter support.
@@ -210,4 +279,48 @@ abstract class IRoute {
   List<GoRoute> toGoRoutes() {
     return routers().map((router) => router.toGoRoute()).toList();
   }
+}
+
+/// Route-provider state passed through runtime interceptors.
+class RouteProviderResolution {
+  const RouteProviderResolution({
+    required this.provider,
+    required this.routers,
+  });
+
+  final IRoute provider;
+  final List<CustomRouter> routers;
+
+  RouteProviderResolution copyWith({
+    IRoute? provider,
+    List<CustomRouter>? routers,
+  }) {
+    return RouteProviderResolution(
+      provider: provider ?? this.provider,
+      routers: routers ?? this.routers,
+    );
+  }
+}
+
+/// Intercepts generated route providers before GoRoute conversion.
+abstract class RouteProviderInterceptor {
+  const RouteProviderInterceptor();
+
+  void onResolve(
+    RouteProviderResolution resolution,
+    RouteProviderInterceptorHandler handler,
+  ) {
+    handler.next(resolution);
+  }
+}
+
+/// Controls the route-provider interceptor chain.
+abstract class RouteProviderInterceptorHandler {
+  void next(RouteProviderResolution resolution);
+
+  void resolve(RouteProviderResolution resolution);
+
+  void skip();
+
+  void reject(Object error, [StackTrace? stackTrace]);
 }

@@ -1,6 +1,9 @@
 targets:
   $default:
     builders:
+      fl_navigation:route_provider_builder:
+        generate_for:
+          - lib/$lib$
       hive_generator:
         generate_for:
           - lib/data/data_source/local/**.dart
@@ -27,7 +30,6 @@ targets:
           - lib/di/di.dart
           - lib/domain/usecases/auth/auth_usecase.dart
           - lib/presentation/modules/auth/signin/bloc/signin_bloc.dart
-          - lib/presentation/route/route.dart
           - lib/presentation/theme/theme_dialog.dart
       injectable_generator:injectable_config_builder:
         generate_for:
@@ -40,5 +42,4 @@ targets:
           - lib/di/di.dart
           - lib/domain/usecases/auth/auth_usecase.dart
           - lib/presentation/modules/auth/signin/bloc/signin_bloc.dart
-          - lib/presentation/route/route.dart
           - lib/presentation/theme/theme_dialog.dart
