@@ -146,23 +146,11 @@ abstract class AppLocalizations {
   /// **'Login'**
   String get login;
 
-  /// No description provided for @userRole.
-  ///
-  /// In en, this message translates to:
-  /// **'User role'**
-  String get userRole;
-
   /// No description provided for @poweredByApp.
   ///
   /// In en, this message translates to:
   /// **'Powered by My Flutter Base'**
   String get poweredByApp;
-
-  /// No description provided for @pleaseSelectARoleBeforeLoginMsg.
-  ///
-  /// In en, this message translates to:
-  /// **'Please select a role before logging in.'**
-  String get pleaseSelectARoleBeforeLoginMsg;
 
   /// No description provided for @backToHomepage.
   ///
@@ -182,17 +170,47 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number'**
+  String get phoneNumber;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @phoneNumberHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your phone number'**
+  String get phoneNumberHint;
+
+  /// No description provided for @passwordHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordHint;
+
+  /// No description provided for @phoneRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number is required'**
+  String get phoneRequired;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is required'**
+  String get passwordRequired;
+
   /// No description provided for @loginFailed.
   ///
   /// In en, this message translates to:
-  /// **'Failed to fetch user info'**
+  /// **'Invalid phone or password'**
   String get loginFailed;
-
-  /// No description provided for @thisRoleIsNotSupportedYet.
-  ///
-  /// In en, this message translates to:
-  /// **'This role is not supported yet.'**
-  String get thisRoleIsNotSupportedYet;
 }
 
 class _AppLocalizationsDelegate

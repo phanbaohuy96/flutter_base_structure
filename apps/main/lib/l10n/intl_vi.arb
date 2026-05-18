@@ -7,12 +7,15 @@
   "close": "Đóng",
   "loginRequired": "Vui lòng đăng nhập để tiếp tục",
   "login": "Đăng nhập",
-  "userRole": "Vai trò người dùng",
   "poweredByApp": "Được cung cấp bởi My Flutter Base",
-  "pleaseSelectARoleBeforeLoginMsg": "Vui lòng chọn vai trò trước khi đăng nhập.",
   "backToHomepage": "Quay lại trang chủ",
   "pageNotFound": "404 - Không tìm thấy trang",
   "back": "Quay lại",
-  "loginFailed": "Không thể lấy thông tin người dùng",
-  "thisRoleIsNotSupportedYet": "Vai trò này chưa được hỗ trợ"
+  "phoneNumber": "Số điện thoại",
+  "password": "Mật khẩu",
+  "phoneNumberHint": "Nhập số điện thoại của bạn",
+  "passwordHint": "Nhập mật khẩu của bạn",
+  "phoneRequired": "Số điện thoại là bắt buộc",
+  "passwordRequired": "Mật khẩu là bắt buộc",
+  "loginFailed": "Số điện thoại hoặc mật khẩu không đúng"
 }

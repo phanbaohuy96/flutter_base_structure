@@ -7,12 +7,15 @@
   "close": "Close",
   "loginRequired": "Please login to continue",
   "login": "Login",
-  "userRole": "User role",
   "poweredByApp": "Powered by My Flutter Base",
-  "pleaseSelectARoleBeforeLoginMsg": "Please select a role before logging in.",
   "backToHomepage": "Back to Homepage",
   "pageNotFound": "404 - Page Not Found",
   "back": "Back",
-  "loginFailed": "Failed to fetch user info",
-  "thisRoleIsNotSupportedYet": "This role is not supported yet."
+  "phoneNumber": "Phone number",
+  "password": "Password",
+  "phoneNumberHint": "Enter your phone number",
+  "passwordHint": "Enter your password",
+  "phoneRequired": "Phone number is required",
+  "passwordRequired": "Password is required",
+  "loginFailed": "Invalid phone or password"
 }

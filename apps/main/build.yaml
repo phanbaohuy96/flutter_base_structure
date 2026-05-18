@@ -25,6 +25,8 @@ targets:
           - lib/data/data_source/datasource_module.dart
           - lib/data/data_source/local/local_data_manager.dart
           - lib/data/data_source/local/sqlite/sqlite_database.impl.dart
+          - lib/data/data_source/remote/auth/mock_auth_remote_source.dart
+          - lib/data/repositories/auth_repository.impl.dart
           - lib/di/di.config.dart
           - lib/di/di.dart
           - lib/domain/usecases/auth/auth_usecase.dart
@@ -36,6 +38,8 @@ targets:
           - lib/data/data_source/datasource_module.dart
           - lib/data/data_source/local/local_data_manager.dart
           - lib/data/data_source/local/sqlite/sqlite_database.impl.dart
+          - lib/data/data_source/remote/auth/mock_auth_remote_source.dart
+          - lib/data/repositories/auth_repository.impl.dart
           - lib/di/di.config.dart
           - lib/di/di.dart
           - lib/domain/usecases/auth/auth_usecase.dart

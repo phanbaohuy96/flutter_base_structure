@@ -33,14 +33,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get login => 'Login';
 
   @override
-  String get userRole => 'User role';
-
-  @override
   String get poweredByApp => 'Powered by My Flutter Base';
-
-  @override
-  String get pleaseSelectARoleBeforeLoginMsg =>
-      'Please select a role before logging in.';
 
   @override
   String get backToHomepage => 'Back to Homepage';
@@ -52,8 +45,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get back => 'Back';
 
   @override
-  String get loginFailed => 'Failed to fetch user info';
+  String get phoneNumber => 'Phone number';
 
   @override
-  String get thisRoleIsNotSupportedYet => 'This role is not supported yet.';
+  String get password => 'Password';
+
+  @override
+  String get phoneNumberHint => 'Enter your phone number';
+
+  @override
+  String get passwordHint => 'Enter your password';
+
+  @override
+  String get phoneRequired => 'Phone number is required';
+
+  @override
+  String get passwordRequired => 'Password is required';
+
+  @override
+  String get loginFailed => 'Invalid phone or password';
 }
