@@ -19,18 +19,8 @@ abstract class CoreAppPreferenceData {
 
   Future<bool?> clearData();
 
-  bool isFirstLaunch();
-  Future<bool?> markLaunched();
-  Future<bool?> unMarkLaunched();
-
   Future<UserToken?> get token;
   Future setToken(UserToken? value);
-
-  bool? get allowCookieConsent;
-  Future<bool?> setCookieConsentAccepted(bool? accepted);
-
-  DateTime? get lastDayShowCookieConsent;
-  Future<bool?> setLastDayShowCookieConsent(DateTime? today);
 
   String? get domainReplacement;
   Future<bool?> setDomainReplacement(String? domain);
@@ -68,37 +58,19 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
   @override
   Future<bool?> clearData() async {
     logUtils.i('$runtimeType clearData');
-    final allow = allowCookieConsent;
-    final lastDay = lastDayShowCookieConsent;
 
     final theme = getTheme();
     final locale = getLocalization();
-    final isLaunched = !isFirstLaunch();
 
     await Future.wait([_prefs.clear(), _secureStorage.deleteAll()]);
 
     final results = await Future.wait([
       saveLocalization(locale),
       if (theme != null) setTheme(theme),
-      if (isLaunched) markLaunched(),
-      setCookieConsentAccepted(allow),
-      setLastDayShowCookieConsent(lastDay),
     ]);
 
     return results.any((e) => e == false) == false;
   }
-
-  @override
-  bool isFirstLaunch() =>
-      _prefs.getString(CorePreferencesKey.isLaunched).isNullOrEmpty == true;
-
-  @override
-  Future<bool?> markLaunched() =>
-      _prefs.setString(CorePreferencesKey.isLaunched, 'yes');
-
-  @override
-  Future<bool?> unMarkLaunched() =>
-      _prefs.remove(CorePreferencesKey.isLaunched);
 
   UserToken? _memCacheToken;
 
@@ -141,34 +113,6 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
     return _secureStorage.write(
       key: CorePreferencesKey.token,
       value: jsonEncode(value.toJson()),
-    );
-  }
-
-  @override
-  bool? get allowCookieConsent =>
-      _prefs.getBool(CorePreferencesKey.cookieConsent);
-
-  @override
-  Future<bool?> setCookieConsentAccepted(bool? accepted) {
-    if (accepted == null) {
-      return _prefs.remove(CorePreferencesKey.cookieConsent);
-    }
-    return _prefs.setBool(CorePreferencesKey.cookieConsent, accepted);
-  }
-
-  @override
-  DateTime? get lastDayShowCookieConsent => DateTime.tryParse(
-    _prefs.getString(CorePreferencesKey.lastDayShowCookieConsent) ?? '',
-  );
-
-  @override
-  Future<bool?> setLastDayShowCookieConsent(DateTime? today) {
-    if (today == null) {
-      return _prefs.remove(CorePreferencesKey.lastDayShowCookieConsent);
-    }
-    return _prefs.setString(
-      CorePreferencesKey.lastDayShowCookieConsent,
-      today.toIso8601String(),
     );
   }
 
