@@ -752,6 +752,9 @@ class CreateProjectGenerator {
     return remaining;
   }
 
+  // Order matters: longer prefixes must come before shorter ones so flavor
+  // suffixes (`.dev`, ` DEV`, ...) are matched before the bare base package
+  // or display name. Dart preserves Map literal insertion order.
   Map<String, String> _replacementRules(ProjectIdentity identity) {
     return {
       _oldSigningPath: 'ios/signing_res/${identity.iosSigningDirName}',
