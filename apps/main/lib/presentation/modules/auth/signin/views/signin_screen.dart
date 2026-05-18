@@ -27,9 +27,6 @@ class SignInScreenState extends StateBase<SignInScreen> {
   @override
   SigninBloc get bloc => BlocProvider.of(context);
 
-  @override
-  bool get willHandleError => false;
-
   late ThemeData _themeData;
 
   TextTheme get textTheme => _themeData.textTheme;
