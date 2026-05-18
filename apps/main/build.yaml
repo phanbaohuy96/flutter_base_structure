@@ -24,7 +24,6 @@ targets:
           - lib/common/constants/image_constants.dart
           - lib/data/data_source/datasource_module.dart
           - lib/data/data_source/local/local_data_manager.dart
-          - lib/data/data_source/local/preferences_helper/preferences_helper.dart
           - lib/data/data_source/local/sqlite/sqlite_database.impl.dart
           - lib/di/di.config.dart
           - lib/di/di.dart
@@ -36,7 +35,6 @@ targets:
           - lib/common/constants/image_constants.dart
           - lib/data/data_source/datasource_module.dart
           - lib/data/data_source/local/local_data_manager.dart
-          - lib/data/data_source/local/preferences_helper/preferences_helper.dart
           - lib/data/data_source/local/sqlite/sqlite_database.impl.dart
           - lib/di/di.config.dart
           - lib/di/di.dart

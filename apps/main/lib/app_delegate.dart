@@ -21,8 +21,6 @@ class AppDelegate {
         // final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
         // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-        await Hive.initFlutter();
-
         await configureDependencies(env: Config.instance.appConfig.envName);
 
         setLocaleMessages(AppLocale.vi.languageCode, ViMessages());
