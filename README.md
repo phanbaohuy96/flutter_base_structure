@@ -241,7 +241,7 @@ Distribution and CI/CD related files live in:
 - `apps/main/ios/QUICK_START.md`
 - `apps/main/ios/PROVISIONING_PROFILE_SETUP.md`
 - `apps/main/ios/CICD_PROVISIONING_GUIDE.md`
-- `apps/main/ios/signing_res/my_flutter_base/`
+- `apps/main/ios/signing_res/`
 
 `apps/main/dist_config.sh` currently defines dev and staging distribution values.
 Extend it before using scripted sandbox or prod distribution targets.
@@ -251,8 +251,8 @@ Extend it before using scripted sandbox or prod distribution targets.
 Use the project creator when starting a real app from this template. It copies the
 skeleton to a separate destination folder, then rewrites the app display name,
 Dart package slug, Android/iOS package IDs, Android namespace/Kotlin package,
-web metadata, localization brand strings, release notes, Fastlane config,
-signing paths, and known docs/helper scripts in the copied project.
+web metadata, localization brand strings, release notes, Fastlane config, and
+known docs/helper scripts in the copied project.
 
 Interactive mode:
 
