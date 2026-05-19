@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:core/core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_skill/flutter_skill.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart'
     if (dart.library.io) 'package:flutter_web_plugins/url_strategy.dart';
 
@@ -18,8 +20,11 @@ class AppDelegate {
     Config.instance.fromConfig(config);
     return runZonedGuarded(
       () async {
-        // final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+        WidgetsFlutterBinding.ensureInitialized();
         // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+        if (kDebugMode) {
+          FlutterSkillBinding.ensureInitialized();
+        }
 
         await configureDependencies(env: Config.instance.appConfig.envName);
 
@@ -48,7 +53,12 @@ class AppDelegate {
         runApp(const MainApplication());
       },
       (Object error, StackTrace stack) {
-        logUtils.e('Error from runZonedGuarded', error, stack);
+        try {
+          logUtils.e('Error from runZonedGuarded', error, stack);
+        } catch (e) {
+          // Print first so a pre-DI fault isn't masked by logUtils throwing.
+          log('runZonedGuarded caught', error: error, stackTrace: stack);
+        }
       },
     );
   }

@@ -50,15 +50,23 @@ make coverage_main                                # coverage on apps/main, via c
 
 Use project make targets when they exist. For direct commands, check `.fvm_cache`; when `USING_FVM=1`, invoke `fvm flutter test`, `fvm flutter analyze`, or `fvm dart analyze` instead of local tools. Do not assume every branch has aggregate analyze/test targets.
 
-## Browser E2E smoke checks
+## E2E smoke checks
 
-Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification of Flutter web changes. Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests.
+### Browser (Playwright)
 
-Build only the affected web package from the repo root, using that package's normal FVM build command.
+Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification of Flutter web changes. Don't add repo-level Node/Playwright infrastructure unless asked.
 
-Serve the affected `build/web` directory with SPA fallback before navigating with Playwright MCP, because path URL strategy routes must resolve to `index.html`.
+Build only the affected web package from the repo root, using that package's normal FVM build command. Serve the resulting `build/web` directory with SPA fallback before navigating, because path URL strategy routes must resolve to `index.html`.
 
 For assertions, verify the behavior the user requested: URL changes, visible/semantic UI state, route state intentionally exposed by the app, and browser console errors. A missing favicon 404 can be noted separately from app failures.
+
+### Native (flutter_skill)
+
+Use the flutter-skill MCP only when the user asks for E2E or spec verification on a native debug build. Prerequisites: MCP loaded since the last Claude Code restart, a booted simulator/emulator, and a debug build of the right flavor running (`fvm flutter run -t lib/main_dev.dart --flavor dev -d <id>`). If any are missing, ask — don't auto-launch.
+
+See [`AGENTS.md`](../../../AGENTS.md) under "E2E testing (flutter_skill)" for the version pin and wrapper script.
+
+Driving flow: `inspect_interactive` for the element tree, then `tap` / `enter_text` / `screenshot` / `wait_for_idle`. The inspector returns refs as `key:<name>` (preferred) or `text:<label>` when no `Key` is set; use `tap_at` for coordinate-driven taps.
 
 ## Bloc tests
 

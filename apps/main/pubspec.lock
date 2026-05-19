@@ -929,6 +929,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
+  flutter_skill:
+    dependency: "direct main"
+    description:
+      name: flutter_skill
+      sha256: "6782aaa5dc9103db559be0e9f6471c2522cff9577eeb1af8156b10e185f16027"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.34"
   flutter_spinkit:
     dependency: transitive
     description:
