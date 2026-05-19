@@ -64,6 +64,8 @@ tools/
 
 App initialization starts from `AppDelegate.run(AppConfig)`.
 
+Inside `runZonedGuarded`, the binding is initialised before anything else: `WidgetsFlutterBinding.ensureInitialized()` first (so `SystemChrome` / `MethodChannel` calls don't fault before DI), then the debug-only `FlutterSkillBinding.ensureInitialized()` (see "E2E testing").
+
 Flavor identity is configured in:
 
 - `apps/main/app_identifier.yaml` - source of truth
@@ -440,6 +442,12 @@ fvm flutter test       # From the relevant package if tests exist
 For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. If you cannot run the UI in this environment, say so explicitly.
 
 Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification. For requested web route E2E, build only the affected Flutter web package with FVM and serve its `build/web` directory with SPA fallback. Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the testing skill for the generic browser workflow.
+
+### E2E testing (flutter_skill)
+
+This project supports E2E testing via `flutter_skill` — the dep is in `apps/main`, the binding is initialised under `kDebugMode` in `AppDelegate.run`, and `.mcp.json` registers the `flutter-skill` MCP server. Use it only when the user asks for E2E or spec verification, same rule as Playwright. If the prerequisites aren't ready (no running debug build, MCP not loaded after a restart, no booted simulator), ask the user to set them up rather than starting the app yourself.
+
+Version pin: the Dart dep and the npm CLI are both held at `0.9.34`. `0.9.35`+ are broken upstream (missing GitHub-release binary, mismatched bundled Dart fallback). Don't upgrade without verifying `flutter-skill doctor` is green.
 
 ## Final Reminders
 

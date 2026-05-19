@@ -58,6 +58,11 @@ dependencies:
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
 
+  # AI-agent driven testing (debug-only; gated by kDebugMode in AppDelegate).
+  # Pinned to 0.9.34 — npm flutter-skill@0.9.35+ have no matching GitHub
+  # release for the native binary, and the bundled Dart fallback is broken.
+  flutter_skill: 0.9.34
+
 dev_dependencies:
   #test
   flutter_test:
