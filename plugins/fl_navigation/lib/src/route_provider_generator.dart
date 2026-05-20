@@ -383,6 +383,7 @@ String _buildFileContent(
 
   final buffer = StringBuffer()
     ..writeln('// GENERATED CODE - DO NOT MODIFY BY HAND')
+    ..writeln('// dart format off')
     ..writeln();
   for (final importDirective in packageImports) {
     buffer.writeln(importDirective);

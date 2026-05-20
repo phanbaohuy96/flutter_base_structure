@@ -196,6 +196,7 @@ class FeatureRoute extends IRoute {}
           ],
         );
 
+        expect(content, contains('// dart format off'));
         expect(content, contains('IRoute get featureRoute =>'));
         expect(content, contains('IRoute get featureRoute2 =>'));
         expect(content, contains('      featureRoute,'));

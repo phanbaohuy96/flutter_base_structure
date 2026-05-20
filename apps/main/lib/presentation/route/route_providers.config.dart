@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 
 import 'package:core/presentation/route/core_route.dart' as route_provider_0;
 import 'package:fl_navigation/fl_navigation.dart';
