@@ -18,6 +18,9 @@ analyzer:
     - "**.g.dart"
     - "**.freezed.dart"
 
+formatter:
+  trailing_commas: preserve
+
 linter:
   rules:
     - unnecessary_const

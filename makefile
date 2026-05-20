@@ -257,9 +257,19 @@ gen:
 # Maintenance
 ################################################################################
 
-# Format all Dart code
+# Format hand-written Dart code
 format:
-	$(DART) format .
+	@find . -name '*.dart' \
+		-not -path '*/.dart_tool/*' \
+		-not -path '*/build/*' \
+		-not -path '*/lib/generated/*' \
+		-not -path '*/lib/l10n/generated/*' \
+		-not -path '*/lib/src/l10n/generated/*' \
+		-not -name '*.config.dart' \
+		-not -name '*.freezed.dart' \
+		-not -name '*.g.dart' \
+		-not -name '*.module.dart' \
+		-print0 | xargs -0 $(DART) format
 
 # Run module generator
 run_module_generator:

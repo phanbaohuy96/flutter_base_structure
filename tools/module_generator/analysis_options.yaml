@@ -21,6 +21,9 @@ analyzer:
     missing_return: error
     dead_code: info
 
+formatter:
+  trailing_commas: preserve
+
 linter:
   rules:
     - always_declare_return_types

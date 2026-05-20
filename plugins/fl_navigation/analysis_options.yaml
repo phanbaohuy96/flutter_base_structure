@@ -15,6 +15,9 @@ analyzer:
     - "lib/src/l10n/generated/**.dart"
     - "**.g.dart"
 
+formatter:
+  trailing_commas: preserve
+
 linter:
   rules:
     - unnecessary_const

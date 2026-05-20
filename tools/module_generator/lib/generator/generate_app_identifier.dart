@@ -95,13 +95,15 @@ class AndroidConfigDocument extends ConfigDocument {
 
   @override
   String get contentFile {
-    return document.entries.map((e) {
-      final key = e.key.toLowerCase();
-      return '''# ${e.key}
+    return document.entries
+        .map((e) {
+          final key = e.key.toLowerCase();
+          return '''# ${e.key}
 app.$key.name=${e.value.name}
 app.$key.package=${e.value.package}
 ''';
-    }).join('\n');
+        })
+        .join('\n');
   }
 }
 
@@ -112,15 +114,17 @@ class IOSConfigDocument extends ConfigDocument {
 
   @override
   String get contentFile {
-    return document.entries.map((e) {
-      final prefix = e.key.toUpperCase();
-      return '''// ${e.key}
+    return document.entries
+        .map((e) {
+          final prefix = e.key.toUpperCase();
+          return '''// ${e.key}
 ${prefix}_APP_DISPLAY_NAME=${e.value.name}
 ${prefix}_PRODUCT_BUNDLE_IDENTIFIER=${e.value.package}
 ${prefix}_PROVISIONING_PROFILE_SPECIFIER=${e.value.provisioningProfileSpecifier ?? ''}
 ${prefix}_DEVELOPMENT_TEAM=${e.value.teamId ?? ''}
 ''';
-    }).join('\n');
+        })
+        .join('\n');
   }
 }
 
