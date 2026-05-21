@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 
 import '../../../generated/assets.dart';
 import '../../extentions/extention.dart';
-import '../auth/authentication_coordinator.dart';
 
 class NotFoundPage extends StatefulWidget {
-  const NotFoundPage({super.key});
+  const NotFoundPage({
+    super.key,
+    required this.onBackToWelcomePage,
+  });
+
+  final VoidCallback onBackToWelcomePage;
 
   @override
   State<NotFoundPage> createState() => _NotFoundPageState();
@@ -41,9 +45,7 @@ class _NotFoundPageState extends State<NotFoundPage> {
   }
 
   void _backToWelcomePage() {
-    context.openSignIn(
-      pushBehavior: PushNamedAndRemoveUntilBehavior.removeAll(),
-    );
+    widget.onBackToWelcomePage();
   }
 
   void _back() {

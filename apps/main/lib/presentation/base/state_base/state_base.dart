@@ -9,7 +9,7 @@ abstract class StateBase<T extends StatefulWidget> extends CoreStateBase<T> {
   @override
   void backToAuth({Function()? onSuccess, Function()? onSkip}) {
     super.backToAuth(onSuccess: onSuccess, onSkip: onSkip);
-    context.openSignIn().then((value) {
+    context.openSignIn(localDataManager: coreLocalDataManager).then((value) {
       if (value is bool && value) {
         onSuccess?.call();
       } else {

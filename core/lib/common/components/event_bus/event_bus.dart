@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 
 abstract class BusEvent {}
 
+@lazySingleton
 class EventBusManager {
   final EventBus eventBus;
 
@@ -19,9 +20,6 @@ class EventBusManager {
 
 @module
 abstract class EventBusModule {
-  @injectable
+  @lazySingleton
   EventBus get eventBus => EventBus();
-
-  @singleton
-  EventBusManager get manager => EventBusManager(eventBus);
 }

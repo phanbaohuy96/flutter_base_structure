@@ -287,9 +287,7 @@ class MediaPicked extends Equatable {
   String? get fileName =>
       mediaFile?.name ?? mediaFile?.path?.let(path.basename);
 
-  String? get url => cloudFile?.url.isNotNullOrEmpty == true
-      ? cloudFile?.url
-      : cloudFile?.filenameDisk;
+  String? get url => cloudFile?.url;
 
   MediaPicked copyWith({
     String? key,
@@ -415,7 +413,7 @@ class MediaPickerController extends ValueNotifier<List<MediaPicked>>
 
   List<MediaPicked> _getUnstagedMedias() {
     return value
-        .where((media) => !media.isLoading && media.url.isNullOrEmpty)
+        .where((media) => !media.isLoading && media.cloudFile == null)
         .toList();
   }
 
@@ -806,9 +804,7 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
       return;
     }
 
-    final uri = media.url.isNotNullOrEmpty
-        ? storageAssetProvider.url(media.url!)
-        : media.mediaFile!.path;
+    final uri = media.url.isNotNullOrEmpty ? media.url : media.mediaFile!.path;
 
     if (uri != null) {
       openImageGallery(context: context, images: [uri]);

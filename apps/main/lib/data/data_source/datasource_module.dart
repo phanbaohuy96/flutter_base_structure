@@ -5,6 +5,10 @@ import 'local/local_data_manager.dart';
 
 @module
 abstract class AppDatasourceModule {
+  @lazySingleton
+  AppPreferenceData appPreferenceData(LocalDataManager localDataManager) =>
+      localDataManager;
+
   /// Substitutes the app-scope [LocalDataManager] (which adds `userInfo` /
   /// `saveUserInfo`) wherever core code asks for [CoreLocalDataManager]. Both
   /// DI keys resolve to the same singleton, so the in-memory token cache and

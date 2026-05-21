@@ -4,12 +4,9 @@ class StorageServiceImpl extends StorageService {
   final StorageRepository _storageRepository;
   final ImageCompressHelper _compressHelper;
 
-  final String assetLayer;
-
   StorageServiceImpl(
     this._compressHelper,
     this._storageRepository,
-    this.assetLayer,
   );
 
   @override
@@ -125,12 +122,6 @@ class StorageServiceImpl extends StorageService {
           );
 
     return res.data;
-  }
-
-  @override
-  String getAssetUrl(String reference) {
-    final uri = Uri.parse(assetLayer);
-    return uri.resolve(reference).toString();
   }
 
   String _convertToWebPExtension(String fileName) {

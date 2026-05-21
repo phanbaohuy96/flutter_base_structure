@@ -1,4 +1,6 @@
 import '../../../common/services/network_log/network_log_service.dart';
+import '../../../data/data_source/local/local_data_manager.dart';
+import '../../../di/core_micro.dart';
 import '../../route/route.dart';
 import 'app_config/app_config_screen.dart';
 import 'dashboard/dev_mode_dashboard_screen.dart';
@@ -10,6 +12,8 @@ import 'log_viewer/network/network_log_viewer_screen.dart';
 class DevModeRoute extends IRoute {
   @override
   List<CustomRouter> routers() {
+    final localDataManager = injector<CoreAppPreferenceData>();
+
     return [
       CustomRouter(
         path: DevModeDashboardScreen.routeName,
@@ -53,7 +57,7 @@ class DevModeRoute extends IRoute {
         path: AppConfigScreen.routeName,
         name: AppConfigScreen.routeName,
         builder: (context, uri, extra) {
-          return const AppConfigScreen();
+          return AppConfigScreen(localDataManager: localDataManager);
         },
       ),
     ];

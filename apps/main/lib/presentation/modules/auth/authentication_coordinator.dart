@@ -1,8 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import '../../../data/data_source/local/local_data_manager.dart';
-import '../../../di/di.dart';
 import 'signin/views/signin_screen.dart';
 
 extension AuthenticationCoordinator on BuildContext {
@@ -14,12 +12,12 @@ extension AuthenticationCoordinator on BuildContext {
   /// always lands somewhere meaningful; downstream apps pass their own
   /// post-signin route.
   Future<bool?> openSignIn({
+    required CoreAppPreferenceData localDataManager,
     String? returnTo,
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
     final destination = returnTo ?? DevModeDashboardScreen.routeName;
-    final existingToken = await injector<LocalDataManager>().token;
-    if (existingToken != null) {
+    if (localDataManager.isAuthenticated) {
       await pushBehavior.push<dynamic>(this, destination);
       return true;
     }

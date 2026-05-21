@@ -22,6 +22,7 @@ import '../common/constants/image_constants.dart' as _i835;
 import '../data/data_source/datasource_module.dart' as _i737;
 import '../data/data_source/local/local_data_manager.dart' as _i655;
 import '../data/data_source/local/sqlite/sqlite_database.impl.dart' as _i833;
+import '../data/data_source/remote/auth/auth_remote_source.dart' as _i820;
 import '../data/data_source/remote/auth/mock_auth_remote_source.dart' as _i118;
 import '../data/repositories/auth_repository.impl.dart' as _i863;
 import '../domain/repositories/auth_repository.dart' as _i800;
@@ -39,7 +40,7 @@ Future<_i174.GetIt> $initGetIt(
   await _i918.CorePackageModule().init(gh);
   await _i541.DataSourcePackageModule().init(gh);
   final appDatasourceModule = _$AppDatasourceModule();
-  gh.factory<_i118.MockAuthRemoteSource>(() => _i118.MockAuthRemoteSource());
+  gh.factory<_i820.AuthRemoteSource>(() => _i118.MockAuthRemoteSource());
   gh.singleton<_i494.SQLiteDatabase>(() => _i833.SQLiteDatabaseImpl());
   gh.lazySingleton<_i655.LocalDataManager>(
     () => _i655.LocalDataManager(
@@ -52,19 +53,22 @@ Future<_i174.GetIt> $initGetIt(
     (context, _) => _i83.AppThemeDialog(context),
   );
   gh.factory<_i800.AuthRepository>(
-    () => _i863.AuthRepositoryImpl(gh<_i118.MockAuthRemoteSource>()),
+    () => _i863.AuthRepositoryImpl(gh<_i820.AuthRemoteSource>()),
   );
-  gh.factory<_i738.AuthUsecase>(
-    () => _i738.AuthInteractorImpl(
-      gh<_i800.AuthRepository>(),
-      gh<_i655.LocalDataManager>(),
-    ),
+  gh.lazySingleton<_i655.AppPreferenceData>(
+    () => appDatasourceModule.appPreferenceData(gh<_i655.LocalDataManager>()),
   );
-  gh.factory<_i893.SigninBloc>(() => _i893.SigninBloc(gh<_i738.AuthUsecase>()));
   gh.lazySingleton<_i494.CoreLocalDataManager>(
     () =>
         appDatasourceModule.coreLocalDataManager(gh<_i655.LocalDataManager>()),
   );
+  gh.factory<_i738.AuthUsecase>(
+    () => _i738.AuthInteractorImpl(
+      gh<_i800.AuthRepository>(),
+      gh<_i655.AppPreferenceData>(),
+    ),
+  );
+  gh.factory<_i893.SigninBloc>(() => _i893.SigninBloc(gh<_i738.AuthUsecase>()));
   return getIt;
 }
 

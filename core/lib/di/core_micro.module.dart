@@ -53,22 +53,21 @@ class CorePackageModule extends _i526.MicroPackageModule {
 // initializes the registration of main-scope dependencies inside of GetIt
   @override
   _i687.FutureOr<void> init(_i526.GetItHelper gh) async {
-    final eventBusModule = _$EventBusModule();
     final datasourceModule = _$DatasourceModule();
+    final eventBusModule = _$EventBusModule();
     final serviceModule = _$ServiceModule();
     final logUtilsModule = _$LogUtilsModule();
-    gh.factory<_i1017.EventBus>(() => eventBusModule.eventBus);
     gh.factory<_i811.ImageCompressHelper>(() => _i811.ImageCompressHelper());
     gh.factory<_i334.AppConfigHeaderProvider>(
         () => _i334.AppConfigHeaderProvider());
     gh.factory<_i481.SystemHeaderProvider>(() => _i481.SystemHeaderProvider());
-    gh.singleton<_i5.EventBusManager>(() => eventBusModule.manager);
     await gh.singletonAsync<_i460.SharedPreferences>(
       () => datasourceModule.sharedPref,
       preResolve: true,
     );
     gh.singleton<_i558.FlutterSecureStorage>(
         () => datasourceModule.secureStorage);
+    gh.lazySingleton<_i1017.EventBus>(() => eventBusModule.eventBus);
     gh.lazySingleton<_i581.LocationService>(
         () => serviceModule.locationService());
     gh.factory<_i417.LogUtils>(
@@ -80,10 +79,11 @@ class CorePackageModule extends _i526.MicroPackageModule {
     );
     gh.factory<_i263.LocationCubit>(
         () => _i263.LocationCubit(gh<_i494.LocationService>()));
-    gh.factory<_i382.CoreLocalDataManager>(() => _i382.CoreLocalDataManager(
-          gh<_i460.SharedPreferences>(),
-          gh<_i558.FlutterSecureStorage>(),
-        ));
+    gh.lazySingleton<_i382.CoreLocalDataManager>(
+        () => _i382.CoreLocalDataManager(
+              gh<_i460.SharedPreferences>(),
+              gh<_i558.FlutterSecureStorage>(),
+            ));
     gh.factoryParam<_i204.AppGlobalBloc, _i204.AppGlobalState, dynamic>((
       appData,
       _,
@@ -92,6 +92,8 @@ class CorePackageModule extends _i526.MicroPackageModule {
           appData: appData,
           ldm: gh<_i494.CoreLocalDataManager>(),
         ));
+    gh.lazySingleton<_i382.CoreAppPreferenceData>(() => datasourceModule
+        .coreAppPreferenceData(gh<_i382.CoreLocalDataManager>()));
     gh.factory<_i857.AuthHeaderProvider>(
         () => _i857.AuthHeaderProvider(gh<_i382.CoreLocalDataManager>()));
     gh.factory<_i67.LanguageHeaderProvider>(
@@ -108,6 +110,8 @@ class CorePackageModule extends _i526.MicroPackageModule {
       _,
     ) =>
         _i288.CoreThemeDialog(context));
+    gh.lazySingleton<_i5.EventBusManager>(
+        () => _i5.EventBusManager(gh<_i1017.EventBus>()));
     gh.lazySingleton<_i524.RequestHeaderService>(
         () => serviceModule.requestHeaderService(
               gh<_i524.AppConfigHeaderProvider>(),
@@ -131,14 +135,12 @@ class CorePackageModule extends _i526.MicroPackageModule {
           gh<_i908.RestApiRepository>(),
           gh<_i382.CoreLocalDataManager>(),
         ));
-    gh.factory<_i934.StorageAssetProvider>(
-        () => serviceModule.storageAssetProvider(gh<_i934.StorageService>()));
   }
 }
 
-class _$EventBusModule extends _i5.EventBusModule {}
-
 class _$DatasourceModule extends _i654.DatasourceModule {}
+
+class _$EventBusModule extends _i5.EventBusModule {}
 
 class _$ServiceModule extends _i308.ServiceModule {}
 

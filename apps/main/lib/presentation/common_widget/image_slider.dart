@@ -35,7 +35,7 @@ class ImageSlider extends StatefulWidget {
   State<ImageSlider> createState() => _ImageSliderState();
 }
 
-class _ImageSliderState extends State<ImageSlider> with StorageServiceMixin {
+class _ImageSliderState extends State<ImageSlider> {
   var _currentImageIndex = 0;
   late final heroTag = '$runtimeType-$hashCode';
   @override
@@ -112,12 +112,7 @@ class _ImageSliderState extends State<ImageSlider> with StorageServiceMixin {
   void onTapImage(String image, int idx) {
     openImageGallery(
       context: context,
-      images: widget.images.map((e) {
-        if (e.isUrl) {
-          return e;
-        }
-        return storageAssetProvider.url(e);
-      }).toList(),
+      images: widget.images,
       heroTag: heroTag,
       focusIndex: idx,
     );

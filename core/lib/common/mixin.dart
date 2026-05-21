@@ -3,6 +3,4 @@ import 'services/storage/storage_service.dart';
 
 mixin StorageServiceMixin {
   StorageService get storageService => injector();
-
-  StorageAssetProvider get storageAssetProvider => injector();
 }

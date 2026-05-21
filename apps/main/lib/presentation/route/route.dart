@@ -2,18 +2,19 @@ import 'package:collection/collection.dart';
 import 'package:core/core.dart';
 
 import '../../di/di.dart';
+import '../modules/auth/authentication_coordinator.dart';
 import '../modules/auth/signin/views/signin_screen.dart';
 import '../modules/page_not_found/page_note_found.dart';
 import 'auth_gate_route_interceptor.dart';
 import 'route_providers.config.dart';
 
 GoRouter buildAppRouter(AppGlobalBloc appBloc) {
+  final localDataManager = injector<CoreLocalDataManager>();
+
   return buildFlGoRouter(
     routeProviders: buildAppRouteProviders(),
     routeProviderInterceptors: [
-      AuthGateRouteInterceptor(
-        localDataManager: injector<CoreLocalDataManager>(),
-      ),
+      AuthGateRouteInterceptor(localDataManager: localDataManager),
     ],
     initialLocation: SignInScreen.routeName,
     navigatorKey: globalNavigatorKey,
@@ -21,7 +22,14 @@ GoRouter buildAppRouter(AppGlobalBloc appBloc) {
     redirect: (_, state) {
       return _resolveLocaleRedirect(appBloc, state.uri);
     },
-    errorBuilder: (_, __) => const NotFoundPage(),
+    errorBuilder: (context, __) => NotFoundPage(
+      onBackToWelcomePage: () {
+        context.openSignIn(
+          localDataManager: localDataManager,
+          pushBehavior: PushNamedAndRemoveUntilBehavior.removeAll(),
+        );
+      },
+    ),
   );
 }
 
