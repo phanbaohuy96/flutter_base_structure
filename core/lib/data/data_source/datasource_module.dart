@@ -26,6 +26,11 @@ abstract class DatasourceModule {
     iOptions: IOSOptions(),
   );
 
+  @lazySingleton
+  CoreAppPreferenceData coreAppPreferenceData(
+    CoreLocalDataManager localDataManager,
+  ) => localDataManager;
+
   ///
   /// REMOTE
   ///

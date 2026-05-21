@@ -22,11 +22,13 @@ abstract class CoreAppPreferenceData {
   Future<UserToken?> get token;
   Future setToken(UserToken? value);
 
+  bool get isAuthenticated;
+
   String? get domainReplacement;
   Future<bool?> setDomainReplacement(String? domain);
 }
 
-@injectable
+@lazySingleton
 class CoreLocalDataManager implements CoreAppPreferenceData {
   final SharedPreferences _prefs;
   final FlutterSecureStorage _secureStorage;
@@ -79,6 +81,7 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
   /// the async [token] getter last loaded plus any subsequent [setToken]
   /// writes. Bootstrap by `await`-ing [token] once during app init so this
   /// is populated before the first navigation.
+  @override
   bool get isAuthenticated => _memCacheToken != null;
 
   @override

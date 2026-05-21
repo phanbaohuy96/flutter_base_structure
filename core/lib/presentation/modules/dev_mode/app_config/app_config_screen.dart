@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core.dart';
-import '../../../../di/core_micro.dart';
 
 class AppConfigScreen extends StatefulWidget {
   static const String routeName = '/app-config';
 
-  const AppConfigScreen({Key? key}) : super(key: key);
+  const AppConfigScreen({
+    super.key,
+    required this.localDataManager,
+  });
+
+  final CoreAppPreferenceData localDataManager;
 
   @override
   State<AppConfigScreen> createState() => _AppConfigScreenState();
@@ -15,7 +19,7 @@ class AppConfigScreen extends StatefulWidget {
 class _AppConfigScreenState extends State<AppConfigScreen> {
   final _baseDomainCtrl = InputContainerController();
 
-  final _localDataManager = injector<CoreLocalDataManager>();
+  CoreAppPreferenceData get _localDataManager => widget.localDataManager;
 
   @override
   void initState() {
@@ -23,6 +27,12 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
         _localDataManager.domainReplacement ??
         Config.instance.appConfig.baseApiLayer;
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _baseDomainCtrl.dispose();
+    super.dispose();
   }
 
   @override

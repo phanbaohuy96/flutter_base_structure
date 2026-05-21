@@ -25,6 +25,7 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
 | [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repository wired through injectable (Hive optional) |
+| [`flutter-dependency-injection`](./skills/flutter-dependency-injection/SKILL.md) | Injectable + GetIt boundaries, lifetimes, contracts, codegen, and DI tests |
 | [`error-handling`](./skills/error-handling/SKILL.md) | Throw → `CoreBlocBase.onError` → `StateBase` `ErrorType` router |
 | [`localization`](./skills/localization/SKILL.md) | CSV → ARB → generated `AppLocalizations` |
 | [`code-generation`](./skills/code-generation/SKILL.md) | `make gen_all` / `make gen_<scope>` / `make lang` |

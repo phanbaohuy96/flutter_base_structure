@@ -11,7 +11,6 @@ import '../../core.dart';
 DART_ENV_NAME=''
 DART_BASE_API_LAYER=''
 DART_STORAGE_API_LAYER=''
-DART_STORAGE_ASSET_LAYER=''
 
 ## FIREBASE
 # ANDROID
@@ -61,7 +60,6 @@ class AppConfig {
   final String envName;
   final String baseApiLayer;
   final String storageApiLayer;
-  final String storageAssetLayer;
   final String baseGraphQLUrl;
   final String graphqlSocketUrl;
   final String graphqlApiKey;
@@ -74,7 +72,6 @@ class AppConfig {
     this.envName = '',
     this.baseApiLayer = '',
     this.storageApiLayer = '',
-    this.storageAssetLayer = '',
     this.baseGraphQLUrl = '',
     this.onesignalAppID = '',
     this.graphqlSocketUrl = '',
@@ -97,7 +94,6 @@ class AppConfig {
     String envName = '',
     String baseApiLayer = '',
     String storageApiLayer = '',
-    String storageAssetLayer = '',
     String baseGraphQLUrl = '',
     String graphqlSocketUrl = '',
     String graphqlApiKey = '',
@@ -109,9 +105,6 @@ class AppConfig {
     const _envName = String.fromEnvironment('DART_EVN_NAME');
     const _baseApiLayer = String.fromEnvironment('DART_BASE_API_LAYER');
     const _storageApiLayer = String.fromEnvironment('DART_STORAGE_API_LAYER');
-    const _storageAssetLayer = String.fromEnvironment(
-      'DART_STORAGE_ASSET_LAYER',
-    );
     const _baseGraphQLUrl = String.fromEnvironment('DART_BASE_GRAPHQL_URL');
     const _graphqlApiKey = String.fromEnvironment('DART_GRAPHQL_API_KEY');
     const _graphqlSocketUrl = String.fromEnvironment('DART_GRAPHQL_SOCKET_URL');
@@ -123,9 +116,6 @@ class AppConfig {
       baseApiLayer: _baseApiLayer.byDefault(defaultValue: baseApiLayer),
       storageApiLayer: _storageApiLayer.byDefault(
         defaultValue: storageApiLayer,
-      ),
-      storageAssetLayer: _storageAssetLayer.byDefault(
-        defaultValue: storageAssetLayer,
       ),
       baseGraphQLUrl: _baseGraphQLUrl.byDefault(defaultValue: baseGraphQLUrl),
       graphqlApiKey: _graphqlApiKey.byDefault(defaultValue: graphqlApiKey),
@@ -151,7 +141,6 @@ class AppConfig {
     String? envName,
     String? baseApiLayer,
     String? storageApiLayer,
-    String? storageAssetLayer,
     String? baseGraphQLUrl,
     String? graphqlSocketUrl,
     String? graphqlApiKey,
@@ -164,7 +153,6 @@ class AppConfig {
       envName: envName ?? this.envName,
       baseApiLayer: baseApiLayer ?? this.baseApiLayer,
       storageApiLayer: storageApiLayer ?? this.storageApiLayer,
-      storageAssetLayer: storageAssetLayer ?? this.storageAssetLayer,
       baseGraphQLUrl: baseGraphQLUrl ?? this.baseGraphQLUrl,
       graphqlSocketUrl: graphqlSocketUrl ?? this.graphqlSocketUrl,
       graphqlApiKey: graphqlApiKey ?? this.graphqlApiKey,

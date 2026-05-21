@@ -5,7 +5,7 @@ class AuthInteractorImpl implements AuthUsecase {
   AuthInteractorImpl(this._authRepository, this._localDataManager);
 
   final AuthRepository _authRepository;
-  final LocalDataManager _localDataManager;
+  final AppPreferenceData _localDataManager;
 
   @override
   Future<UserModel?> loginWithPhoneNumberPassword({

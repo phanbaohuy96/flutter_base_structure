@@ -14,6 +14,7 @@ One-line index of every skill under [`./skills/`](./skills/).
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` + `CustomRouter` + optional coordinator | Wiring navigation |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` | Styling a widget |
 | [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repo (Hive optional) | Talking to an API or local store |
+| [`flutter-dependency-injection`](./skills/flutter-dependency-injection/SKILL.md) | Injectable + GetIt composition boundaries and DI review | Wiring or reviewing dependencies |
 | [`error-handling`](./skills/error-handling/SKILL.md) | `CoreBlocBase.onError` + `ErrorType` router | Deciding what to do with a thrown error |
 | [`localization`](./skills/localization/SKILL.md) | CSV → ARB → `AppLocalizations` | Adding translations |
 | [`code-generation`](./skills/code-generation/SKILL.md) | `make gen_all` and friends | After editing freezed/retrofit/injectable |
@@ -32,7 +33,7 @@ One-line index of every skill under [`./skills/`](./skills/).
 Any non-trivial change?        → behavioral-guardrails
 Starting a feature?            → module-scaffold → bloc-pattern → route-config
 Cleaning up a screen?          → extension-action
-Adding a network endpoint?     → data-layer → bloc-pattern
+Adding a network endpoint?     → data-layer → flutter-dependency-injection → bloc-pattern
 Syncing state across features? → bus-event
 After editing annotated code?  → code-generation
 Adding user-facing strings?    → localization

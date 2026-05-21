@@ -2,13 +2,13 @@ import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../domain/repositories/auth_repository.dart';
-import '../data_source/remote/auth/mock_auth_remote_source.dart';
+import '../data_source/remote/auth/auth_remote_source.dart';
 
 @Injectable(as: AuthRepository)
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._remote);
 
-  final MockAuthRemoteSource _remote;
+  final AuthRemoteSource _remote;
 
   @override
   Future<UserModel?> authenticate({

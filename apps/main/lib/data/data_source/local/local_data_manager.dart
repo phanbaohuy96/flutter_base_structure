@@ -6,7 +6,7 @@ import 'package:injectable/injectable.dart';
 
 import 'preferences_key.dart';
 
-abstract class AppPreferenceData {
+abstract class AppPreferenceData extends CoreAppPreferenceData {
   UserModel? get userInfo;
   Future<bool> saveUserInfo(UserModel? user);
 }

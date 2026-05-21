@@ -1,11 +1,13 @@
 import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
 
+import 'auth_remote_source.dart';
+
 /// Demo credential fixture used by [MockAuthRemoteSource].
 ///
 /// The template demonstrates the integration shape across data → domain →
 /// presentation. Real apps replace this with a network-backed adapter by
-/// rebinding the [MockAuthRemoteSource] DI key.
+/// rebinding the [AuthRemoteSource] DI key.
 class _DemoCredential {
   const _DemoCredential({
     required this.phoneNumber,
@@ -39,14 +41,14 @@ const _demoCredentials = <_DemoCredential>[
   ),
 ];
 
-/// Mock remote source for the auth demo. Matches phone+password against an
-/// in-memory fixture. Replace this with a Retrofit-backed adapter (e.g.
-/// `RetrofitAuthRemoteSource implements MockAuthRemoteSource`) to wire in
-/// a real backend — the DI seam stays the same.
-@injectable
-class MockAuthRemoteSource {
+/// Mock implementation for the auth demo. Matches phone+password against an
+/// in-memory fixture. Replace this binding with a Retrofit-backed
+/// [AuthRemoteSource] implementation to wire in a real backend.
+@Injectable(as: AuthRemoteSource)
+class MockAuthRemoteSource implements AuthRemoteSource {
   /// Simulates a network round-trip and returns the matched [UserModel]
   /// when credentials are valid, or `null` otherwise.
+  @override
   Future<UserModel?> signIn({
     required String phoneNumber,
     required String password,

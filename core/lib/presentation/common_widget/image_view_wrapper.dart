@@ -2,8 +2,6 @@ import 'package:fl_media/fl_media.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../common/constants.dart';
-import '../../common/services/storage/storage_service.dart';
-import '../../di/core_micro.dart';
 
 class ImageViewWrapper extends ImageView {
   ImageViewWrapper.avatar(
@@ -19,7 +17,7 @@ class ImageViewWrapper extends ImageView {
     String? placeHolder,
     super.errorPlaceHolder,
   }) : super(
-         source: injector<StorageAssetProvider>().url(source),
+         source: source,
          placeHolder: placeHolder ?? coreImageConstant.icUserAvatar,
        );
 
@@ -36,7 +34,7 @@ class ImageViewWrapper extends ImageView {
     String? placeHolder,
     super.errorPlaceHolder,
   }) : super(
-         source: injector<StorageAssetProvider>().url(source),
+         source: source,
          placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
        );
 
@@ -53,10 +51,7 @@ class ImageViewWrapper extends ImageView {
     String? placeHolder,
     super.errorPlaceHolder,
   }) : super(
-         source: injector<StorageAssetProvider>().url(source),
+         source: source,
          placeHolder: placeHolder ?? coreImageConstant.icDefaultItem,
        );
-
-  static ImageViewProviderFactory provider(String source) =>
-      ImageViewProviderFactory(injector<StorageAssetProvider>().url(source));
 }

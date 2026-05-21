@@ -445,7 +445,7 @@ Use Playwright MCP browser tools only when the user asks for E2E or Playwright v
 
 ### E2E testing (flutter_skill)
 
-This project supports E2E testing via `flutter_skill` — the dep is in `apps/main`, the binding is initialised under `kDebugMode` in `AppDelegate.run`, and `.mcp.json` registers the `flutter-skill` MCP server. Use it only when the user asks for E2E or spec verification, same rule as Playwright. If the prerequisites aren't ready (no running debug build, MCP not loaded after a restart, no booted simulator), ask the user to set them up rather than starting the app yourself.
+This project supports E2E testing via `flutter_skill` — the dep is in `apps/main`, the binding is initialised under `kDebugMode` in `AppDelegate.run`, and `.mcp.json` registers the `flutter-skill` MCP server. Use it only when the user asks for E2E or spec verification, same rule as Playwright. If no debug session is running, start one yourself when the simulator and local Flutter toolchain are available; ask the user only for prerequisites you cannot perform yourself, such as installing/loading the `flutter-skill` MCP server or booting a missing simulator.
 
 Version pin: the Dart dep and the npm CLI are both held at `0.9.34`. `0.9.35`+ are broken upstream (missing GitHub-release binary, mismatched bundled Dart fallback). Don't upgrade without verifying `flutter-skill doctor` is green.
 

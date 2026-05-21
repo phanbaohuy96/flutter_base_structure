@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 
 import '../data/data_source/remote/repository/storage_repository/storage_repository.dart';
-import '../domain/entity/config.dart';
 import 'components/image_compress/image_compress.dart';
 import 'services/header/providers/auth_header_provider.dart';
 import 'services/header/request_header_service.dart';
@@ -32,12 +31,7 @@ abstract class ServiceModule {
   ) => StorageServiceImpl(
     _imageCompressHelper,
     _storageRepository,
-    Config.instance.appConfig.storageAssetLayer,
   );
-
-  @injectable
-  StorageAssetProvider storageAssetProvider(StorageService _storageService) =>
-      StorageAssetProvider(_storageService);
 
   @lazySingleton
   LocationService locationService() => LocationServiceImpl();
