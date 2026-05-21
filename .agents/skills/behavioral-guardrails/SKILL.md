@@ -79,6 +79,7 @@ Prefer concrete checks:
 - `fvm flutter analyze --no-pub` from affected packages.
 - UI smoke tests for user-facing flow changes when a device/browser is available.
 - Use Playwright MCP for Flutter web route/playground E2E checks only when the user requests E2E or Playwright verification.
+- Use flutter-skill MCP for native E2E/spec verification only when requested; start the debug session yourself when the simulator/emulator and local Flutter toolchain are available.
 
 ## 5. Flutter base source-of-truth rules
 
