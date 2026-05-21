@@ -66,6 +66,7 @@ metadata:
 - [ ] JSON import/export, invalid JSON errors, preset switching, and preview-only toggles are covered by tests or smoke checks.
 - [ ] Preview surfaces cover disabled/error/menu/navigation states when the playground claims to demonstrate component theming.
 - [ ] When the user requested E2E or Playwright verification, a real browser smoke check was run for web playground changes, preferably with Playwright MCP, including console warnings/errors.
+- [ ] When the user requested native E2E/spec verification, a debug build was driven with flutter-skill MCP, starting the session yourself when local prerequisites were available.
 - [ ] When E2E is requested for web route examples, route changes cover direct path URLs and observable route state.
 
 ### Performance

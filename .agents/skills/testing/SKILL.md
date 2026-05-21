@@ -62,7 +62,15 @@ For assertions, verify the behavior the user requested: URL changes, visible/sem
 
 ### Native (flutter_skill)
 
-Use the flutter-skill MCP only when the user asks for E2E or spec verification on a native debug build. Prerequisites: MCP loaded since the last Claude Code restart, a booted simulator/emulator, and a debug build of the right flavor running (`fvm flutter run -t lib/main_dev.dart --flavor dev -d <id>`). If any are missing, ask — don't auto-launch.
+Use the flutter-skill MCP only when the user asks for E2E or spec verification on a native debug build, same rule as Playwright. The project already includes the `flutter_skill` dep in `apps/main`, the debug-only binding in `AppDelegate.run`, and the `flutter-skill` MCP server registration in `.mcp.json`.
+
+If no debug session is running, start one yourself when a simulator/emulator is available and the local Flutter/FVM toolchain is available:
+
+```bash
+fvm flutter run -t lib/main_dev.dart --flavor dev -d <id>
+```
+
+Ask the user only for prerequisites you cannot perform yourself, such as installing/loading the `flutter-skill` MCP server or booting a missing simulator.
 
 See [`AGENTS.md`](../../../AGENTS.md) under "E2E testing (flutter_skill)" for the version pin and wrapper script.
 
