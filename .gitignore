@@ -85,11 +85,21 @@ app.*.map.json
 *.lcov
 *.info
 test/.test_coverage.dart
-# Claude project hooks
+# Claude project automation
 .claude/*
 !.claude/settings.json
+
+# Track only reviewed project hook entrypoints. Add new files here deliberately.
 !.claude/hooks/
-!.claude/hooks/*.py
+.claude/hooks/*
+!.claude/hooks/format_dart_after_edit.py
+!.claude/hooks/guard_generated_sensitive_files.py
+
+# Track only reviewed project agents. Add new files here deliberately.
+!.claude/agents/
+.claude/agents/*
+!.claude/agents/architecture-reviewer.md
+!.claude/agents/codegen-sync-checker.md
 
 # Playwright related
 .playwright-mcp/
