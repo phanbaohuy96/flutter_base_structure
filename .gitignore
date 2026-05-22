@@ -85,7 +85,11 @@ app.*.map.json
 *.lcov
 *.info
 test/.test_coverage.dart
-.claude/
+# Claude project hooks
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+!.claude/hooks/*.py
 
 # Playwright related
 .playwright-mcp/
