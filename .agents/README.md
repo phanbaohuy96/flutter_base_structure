@@ -24,6 +24,7 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 | [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
+| [`flutter-widget-preview`](./skills/flutter-widget-preview/SKILL.md) | Official Flutter Widget Previewer with `@Preview` and `flutter widget-preview start` |
 | [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repository wired through injectable (Hive optional) |
 | [`flutter-dependency-injection`](./skills/flutter-dependency-injection/SKILL.md) | Injectable + GetIt boundaries, lifetimes, contracts, codegen, and DI tests |
 | [`error-handling`](./skills/error-handling/SKILL.md) | Throw → `CoreBlocBase.onError` → `StateBase` `ErrorType` router |

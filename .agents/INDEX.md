@@ -13,6 +13,7 @@ One-line index of every skill under [`./skills/`](./skills/).
 | [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` for screen handlers | Splitting handlers out of a bloated screen |
 | [`route-config`](./skills/route-config/SKILL.md) | `IRoute` + `CustomRouter` + optional coordinator | Wiring navigation |
 | [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` | Styling a widget |
+| [`flutter-widget-preview`](./skills/flutter-widget-preview/SKILL.md) | Official `@Preview` / `flutter widget-preview` workflow | Previewing or showcasing Flutter widgets |
 | [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repo (Hive optional) | Talking to an API or local store |
 | [`flutter-dependency-injection`](./skills/flutter-dependency-injection/SKILL.md) | Injectable + GetIt composition boundaries and DI review | Wiring or reviewing dependencies |
 | [`error-handling`](./skills/error-handling/SKILL.md) | `CoreBlocBase.onError` + `ErrorType` router | Deciding what to do with a thrown error |
@@ -42,6 +43,7 @@ Reviewing data-layer PR?       → data-reviewer
 Reviewing UI PR?               → flutter-reviewer
 Custom error UX?               → error-handling
 Styling questions?             → theme-usage
+Previewing a widget?           → flutter-widget-preview → theme-usage
 ```
 
 ## Related
