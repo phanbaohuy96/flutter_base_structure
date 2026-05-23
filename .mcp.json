@@ -2,6 +2,10 @@
   "mcpServers": {
     "flutter-skill": {
       "command": "./flutter_skill_server.sh"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@2.3.0"]
     }
   }
 }
