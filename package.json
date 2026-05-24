@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "dependencies": {
+    "@upstash/context7-mcp": "2.3.0",
+    "flutter-skill": "0.9.34"
+  }
+}
