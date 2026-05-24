@@ -21,13 +21,12 @@ extension WebviewAction on _WebViewScreenState {
         return 'https://$decodedUrl';
       }
 
-      // Validate URI
       final uri = Uri.parse(decodedUrl);
-      if (!uri.hasAuthority) {
-        throw const FormatException('Invalid URL format');
+      if (!_isAllowedWebUri(uri)) {
+        throw const FormatException('Unsupported WebView URL');
       }
 
-      return decodedUrl;
+      return uri.toString();
     } catch (e) {
       debugPrint('URL processing error: $e');
       return null;
