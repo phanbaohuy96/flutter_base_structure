@@ -23,7 +23,9 @@ abstract class DatasourceModule {
   @singleton
   FlutterSecureStorage get secureStorage => const FlutterSecureStorage(
     aOptions: AndroidOptions(encryptedSharedPreferences: true),
-    iOptions: IOSOptions(),
+    iOptions: IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock_this_device,
+    ),
   );
 
   @lazySingleton
