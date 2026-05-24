@@ -14,7 +14,9 @@ class DomainInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final domain = localDataManager.domainReplacement;
+    final domain = normalizeDomainReplacement(
+      localDataManager.domainReplacement,
+    );
     if (domain != null) {
       options.baseUrl = domain;
     }
