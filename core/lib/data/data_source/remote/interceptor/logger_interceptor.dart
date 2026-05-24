@@ -81,11 +81,16 @@ class LoggerInterceptor extends Interceptor {
 
     options.extra['startTime'] = DateTime.now(); // save time for duration calc
     if (!kIsWeb) {
-      final formattedData = await _formatData(options.data);
+      final formattedData = await _formatData(
+        redactNetworkLogData(options.data),
+      );
+      final redactedUrl = redactNetworkLogUrl(
+        '${options.baseUrl}${options.path}',
+      );
       log(
-        '🌐 ${options.method} ${options.baseUrl}${options.path}\n'
-        'Headers: ${options.headers}\n'
-        'Query: ${options.queryParameters}\n'
+        '🌐 ${options.method} $redactedUrl\n'
+        'Headers: ${redactNetworkLogHeaders(options.headers)}\n'
+        'Query: ${redactNetworkLogData(options.queryParameters)}\n'
         '''Body: $formattedData''',
         time: DateTime.now(),
         name: 'HTTP Request',
@@ -108,9 +113,11 @@ class LoggerInterceptor extends Interceptor {
     final duration = endTime.difference(startTime);
 
     if (!kIsWeb) {
-      final formattedData = await _formatData(response.data);
+      final formattedData = await _formatData(
+        redactNetworkLogData(response.data),
+      );
       log(
-        '''✅ ${response.requestOptions.method} ${response.requestOptions.baseUrl}${response.requestOptions.path}\n'''
+        '''✅ ${response.requestOptions.method} ${redactNetworkLogUrl('${response.requestOptions.baseUrl}${response.requestOptions.path}')}\n'''
         'Status: ${response.statusCode}\n'
         'Duration: ${duration.inMilliseconds}ms\n'
         'Data: $formattedData',
@@ -123,14 +130,13 @@ class LoggerInterceptor extends Interceptor {
     NetworkLoggerService().add(
       NetworkLog(
         method: response.requestOptions.method,
-        url: response.requestOptions.uri.toString(),
-        requestBody: response.requestOptions.data,
+        url: redactNetworkLogUrl(response.requestOptions.uri.toString()),
+        requestBody: redactNetworkLogData(response.requestOptions.data),
         statusCode: response.statusCode,
-        responseBody: response.data,
+        responseBody: redactNetworkLogData(response.data),
         timestamp: DateTime.now(),
-        options: response.requestOptions,
         error: false,
-        requestHeaders: Map<String, dynamic>.from(
+        requestHeaders: redactNetworkLogHeaders(
           response.requestOptions.headers,
         ),
         startTime: startTime,
@@ -152,9 +158,11 @@ class LoggerInterceptor extends Interceptor {
     final duration = endTime.difference(startTime);
 
     if (!kIsWeb) {
-      final formattedData = await _formatData(error.response?.data);
+      final formattedData = await _formatData(
+        redactNetworkLogData(error.response?.data),
+      );
       log(
-        '''❌ ${error.requestOptions.method} ${error.requestOptions.baseUrl}${error.requestOptions.path}\n'''
+        '''❌ ${error.requestOptions.method} ${redactNetworkLogUrl('${error.requestOptions.baseUrl}${error.requestOptions.path}')}\n'''
         'Status: ${error.response?.statusCode ?? 'N/A'}\n'
         'Type: ${error.type.name}\n'
         'Duration: ${duration.inMilliseconds}ms\n'
@@ -170,14 +178,13 @@ class LoggerInterceptor extends Interceptor {
     NetworkLoggerService().add(
       NetworkLog(
         method: error.requestOptions.method,
-        url: error.requestOptions.uri.toString(),
-        requestBody: error.requestOptions.data,
+        url: redactNetworkLogUrl(error.requestOptions.uri.toString()),
+        requestBody: redactNetworkLogData(error.requestOptions.data),
         statusCode: error.response?.statusCode,
-        responseBody: error.response?.data,
+        responseBody: redactNetworkLogData(error.response?.data),
         timestamp: DateTime.now(),
         error: true,
-        options: error.requestOptions,
-        requestHeaders: Map<String, dynamic>.from(error.requestOptions.headers),
+        requestHeaders: redactNetworkLogHeaders(error.requestOptions.headers),
         startTime: startTime,
         duration: endTime.difference(startTime),
       ),
