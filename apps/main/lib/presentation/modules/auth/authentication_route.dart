@@ -2,6 +2,7 @@ import 'package:core/core.dart';
 
 import '../../../di/di.dart';
 import 'signin/bloc/signin_bloc.dart';
+import 'signin/signin_route_args.dart';
 import 'signin/views/signin_screen.dart';
 
 @FlRouteProvider()

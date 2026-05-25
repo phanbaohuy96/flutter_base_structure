@@ -1,6 +1,7 @@
 import 'package:core/core.dart';
 
 import '../modules/auth/authentication_route.dart';
+import '../modules/auth/signin/signin_route_args.dart';
 import '../modules/auth/signin/views/signin_screen.dart';
 
 /// The canonical demonstration of [RouteProviderInterceptor]: gates every

@@ -1,30 +1,34 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import 'signin/views/signin_screen.dart';
+import 'signin/signin_route_args.dart';
 
 extension AuthenticationCoordinator on BuildContext {
-  /// Opens the signin form, threading [returnTo] through as the post-signin
-  /// destination. When the storage seam already holds a token, the form is
-  /// skipped entirely and the caller is sent straight to [returnTo].
-  ///
-  /// Defaults to [DevModeDashboardScreen.routeName] so the template demo
-  /// always lands somewhere meaningful; downstream apps pass their own
-  /// post-signin route.
   Future<bool?> openSignIn({
     required CoreAppPreferenceData localDataManager,
     String? returnTo,
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    final destination = returnTo ?? DevModeDashboardScreen.routeName;
+    final destination = signInDestination(returnTo);
     if (localDataManager.isAuthenticated) {
       await pushBehavior.push<dynamic>(this, destination);
       return true;
     }
     return pushBehavior.push<bool>(
       this,
-      SignInScreen.routeName,
+      signInRouteName,
       arguments: SigninRouteArgs(redirectTo: destination).adaptiveArguments,
     );
   }
+
+  Future<bool?> completeSignIn({
+    String? returnTo,
+    PushBehavior pushBehavior = const PushReplacementNamedBehavior(),
+  }) {
+    return pushBehavior.push<bool>(this, signInDestination(returnTo));
+  }
+}
+
+String signInDestination(String? returnTo) {
+  return returnTo ?? DevModeDashboardScreen.routeName;
 }
