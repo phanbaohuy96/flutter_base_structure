@@ -10,8 +10,8 @@ import '../modules/auth/signin/views/signin_screen.dart';
 /// `?redirect=` query so the original destination is preserved.
 ///
 /// Reads auth state synchronously via [CoreLocalDataManager.isAuthenticated].
-/// Bootstrap the cache by `await`-ing `localDataManager.token` once during
-/// app init.
+/// Bootstrap the cache with [CoreLocalDataManager.loadAuthSession] during app
+/// init.
 ///
 /// Downstream apps can replace [isProtected] to opt particular providers in
 /// or out, or compose this with additional interceptors.

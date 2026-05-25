@@ -51,6 +51,7 @@ abstract class CoreAppPreferenceData {
 
   Future<UserToken?> get token;
   Future setToken(UserToken? value);
+  Future<bool> loadAuthSession();
 
   bool get isAuthenticated;
 
@@ -95,6 +96,7 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
     final locale = getLocalization();
 
     await Future.wait([_prefs.clear(), _secureStorage.deleteAll()]);
+    _memCacheToken = null;
 
     final results = await Future.wait([
       saveLocalization(locale),
@@ -108,27 +110,31 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
 
   /// Synchronous "is a session in memory" check, intended for hot paths that
   /// can't await secure storage (e.g. `GoRoute.redirect`). Reflects whatever
-  /// the async [token] getter last loaded plus any subsequent [setToken]
-  /// writes. Bootstrap by `await`-ing [token] once during app init so this
-  /// is populated before the first navigation.
+  /// [loadAuthSession] last loaded plus any subsequent [setToken] writes.
   @override
   bool get isAuthenticated => _memCacheToken != null;
 
   @override
   Future<UserToken?> get token async {
+    await loadAuthSession();
+    return _memCacheToken;
+  }
+
+  @override
+  Future<bool> loadAuthSession() async {
     if (_memCacheToken != null) {
-      return _memCacheToken;
+      return true;
     }
     final source = await _secureStorage.read(key: CorePreferencesKey.token);
     if (source.isNullOrEmpty == true) {
-      return null;
+      return false;
     }
     final parsed = UserToken.fromJson(jsonDecode(source!));
     if (parsed.isValid) {
       _memCacheToken = parsed;
-      return parsed;
+      return true;
     }
-    return null;
+    return false;
   }
 
   @override
