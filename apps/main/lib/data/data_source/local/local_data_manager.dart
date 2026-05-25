@@ -4,6 +4,9 @@ import 'package:core/core.dart';
 import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../domain/entities/auth_session.dart';
+import '../../../domain/repositories/auth_session_store.dart';
+import '../../models/auth_user_mapping.dart';
 import 'preferences_key.dart';
 
 abstract class AppPreferenceData extends CoreAppPreferenceData {
@@ -13,7 +16,7 @@ abstract class AppPreferenceData extends CoreAppPreferenceData {
 
 @lazySingleton
 class LocalDataManager extends CoreLocalDataManager
-    implements AppPreferenceData {
+    implements AppPreferenceData, AuthSessionStore {
   LocalDataManager(super.prefs, super.secureStorage);
 
   @override
@@ -34,5 +37,18 @@ class LocalDataManager extends CoreLocalDataManager
       PreferencesKey.userInfo,
       jsonEncode(user.toJson()),
     );
+  }
+
+  @override
+  Future clearAuthSession() {
+    return Future.wait([setToken(null), saveUserInfo(null)]);
+  }
+
+  @override
+  Future saveAuthSession(AuthSession session) {
+    return Future.wait([
+      setToken(session.token.toUserToken()),
+      saveUserInfo(session.user.toUserModel()),
+    ]);
   }
 }

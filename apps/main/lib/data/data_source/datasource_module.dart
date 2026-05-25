@@ -1,12 +1,17 @@
 import 'package:core/core.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../domain/repositories/auth_session_store.dart';
 import 'local/local_data_manager.dart';
 
 @module
 abstract class AppDatasourceModule {
   @lazySingleton
   AppPreferenceData appPreferenceData(LocalDataManager localDataManager) =>
+      localDataManager;
+
+  @lazySingleton
+  AuthSessionStore authSessionStore(LocalDataManager localDataManager) =>
       localDataManager;
 
   /// Substitutes the app-scope [LocalDataManager] (which adds `userInfo` /
