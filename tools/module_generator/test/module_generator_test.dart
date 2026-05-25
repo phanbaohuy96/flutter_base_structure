@@ -1,6 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:module_generator/common/common_function.dart';
+import 'package:module_generator/common/definitions.dart';
 import 'package:module_generator/generator/generate_export.dart';
+import 'package:module_generator/res/templates/common_module/module.dart';
+import 'package:module_generator/res/templates/common_module/source.dart';
+import 'package:module_generator/res/templates/detail_module/module.dart';
+import 'package:module_generator/res/templates/detail_module/source.dart';
+import 'package:module_generator/res/templates/listing_module/module.dart';
+import 'package:module_generator/res/templates/listing_module/source.dart';
 
 void main() {
   test('test common function', () async {
@@ -23,6 +30,22 @@ void main() {
     expect(camelCase('Input NAME'), 'inputNAME');
     expect(camelCase('Input NAME '), 'inputNAME');
     expect(camelCase('Input NAME 4'), 'inputNAME4');
+  });
+
+  group('module template coordinator contract', () {
+    test('only detail modules include coordinator templates', () {
+      expect(commonModuleRes, isNot(contains('coordinator')));
+      expect(listingModuleRes, isNot(contains('coordinator')));
+      expect(detailModuleRes, contains('coordinator'));
+    });
+
+    test('barrel exports match coordinator templates', () {
+      final coordinatorExport = "export '${moduleNameKey}_coordinator.dart';";
+
+      expect(commonModule, isNot(contains(coordinatorExport)));
+      expect(listingModule, isNot(contains(coordinatorExport)));
+      expect(detailModule, contains(coordinatorExport));
+    });
   });
 
   group('ExportFile ignore functionality', () {
