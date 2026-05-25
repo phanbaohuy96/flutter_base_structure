@@ -9,4 +9,7 @@ setup_flutter_command >/dev/null
 if [[ "${USING_FVM:-0}" == "1" ]]; then
   export PATH="$PWD/.fvm/flutter_sdk/bin:$PATH"
 fi
-exec npx -y flutter-skill@0.9.34 server "$@"
+if [[ ! -x ./node_modules/.bin/flutter-skill ]]; then
+  npm ci --ignore-scripts --no-audit --no-fund >&2
+fi
+exec ./node_modules/.bin/flutter-skill server "$@"

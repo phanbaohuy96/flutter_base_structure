@@ -75,9 +75,19 @@ class _AppConfigScreenState extends State<AppConfigScreen> {
           const SizedBox(width: 16),
           Expanded(
             child: ThemeButton.primary(
-              onPressed: () {
-                _localDataManager.setDomainReplacement(_baseDomainCtrl.text);
-                Navigator.of(context).pop();
+              onPressed: () async {
+                final saved = await _localDataManager.setDomainReplacement(
+                  _baseDomainCtrl.text,
+                );
+                if (saved == false && context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid base domain')),
+                  );
+                  return;
+                }
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
               },
               title: 'Save',
             ),

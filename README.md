@@ -91,6 +91,29 @@ Useful make targets:
 | `make format` | Run `dart format .` |
 | `make clean` / `make clean_force` | Clean project build outputs |
 
+## Runtime and security notes
+
+- Keep `apps/main/.env` and `apps/main/.env.*` local. Docker builds exclude
+  them and the web image must not serve environment files as static assets.
+- For a web startup/auth smoke test, launch from the app package, not the repo
+  root:
+
+  ```bash
+  cd apps/main
+  flutter run -d web-server --web-hostname 127.0.0.1 --web-port 55123 \
+    -t lib/main_dev.dart --dart-define-from-file=./.env
+  ```
+
+  `make run_web_dev` remains the standard dev web shortcut on port 3000.
+- Android cleartext traffic is disabled by default. The dev and staging flavors
+  only allow HTTP for local hosts through flavor-specific network security
+  configs.
+- Android backup/device-transfer policy is explicit and excludes app files,
+  databases, shared preferences, and external storage.
+- MCP servers are pinned through root `package.json` / `package-lock.json` and
+  started through local wrappers (`flutter_skill_server.sh`,
+  `mcp_context7_server.sh`). Do not replace them with ad-hoc `npx -y` calls.
+
 ## App identity and flavors
 
 App identity is sourced from `apps/main/app_identifier.yaml` and generated into:

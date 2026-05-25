@@ -11,6 +11,10 @@ extension WebViewCoordinator on BuildContext {
     String? html,
     String? title,
     String? assetPath,
+    List<String> trustedHosts = const [],
+    List<String> externalSchemes = const ['mailto', 'tel', 'sms'],
+    bool enableJavaScript = false,
+    bool enableJavaScriptBridge = false,
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
     return pushBehavior.push(
@@ -20,6 +24,10 @@ extension WebViewCoordinator on BuildContext {
         url: url,
         html: html,
         title: title,
+        trustedHosts: trustedHosts,
+        externalSchemes: externalSchemes,
+        enableJavaScript: enableJavaScript,
+        enableJavaScriptBridge: enableJavaScriptBridge,
       ).adaptiveArguments,
     );
   }

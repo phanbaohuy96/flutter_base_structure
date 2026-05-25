@@ -426,6 +426,24 @@ Distribution-related files:
 
 Do not change package IDs, bundle IDs, signing paths, CI secrets, provisioning docs, or Fastlane lanes casually. These changes affect external systems such as Firebase, Apple Developer, Play Console, and CI/CD.
 
+## Security and Runtime Guardrails
+
+- Keep `.env` files local. The Docker build context excludes `**/.env` and
+  `**/.env.*`, and the nginx web image must not copy environment files into the
+  static root.
+- Android cleartext traffic should stay disabled by default. Dev/staging HTTP
+  exceptions belong in the flavor `network_security_config.xml` files and should
+  be limited to local development hosts unless explicitly reviewed.
+- Android backup policy should stay explicit. Do not remove `allowBackup`,
+  `fullBackupContent`, or `dataExtractionRules` settings without reviewing the
+  data that would become backup/device-transfer eligible.
+- MCP servers are supply-chain pinned through the root npm lockfile and local
+  wrappers. Use `./flutter_skill_server.sh` and `./mcp_context7_server.sh` via
+  `.mcp.json`; do not reintroduce direct `npx -y` server commands.
+- Network logging, cURL export, token stringification, WebView navigation,
+  JavaScript bridge enablement, and dev base-domain overrides have security
+  defaults. Reuse their existing helpers instead of bypassing them at call sites.
+
 ## Testing and Verification
 
 For code changes, prefer the narrowest useful verification first, then broader checks:
@@ -441,11 +459,18 @@ fvm flutter test       # From the relevant package if tests exist
 
 For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. If you cannot run the UI in this environment, say so explicitly.
 
-Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification. For requested web route E2E, build only the affected Flutter web package with FVM and serve its `build/web` directory with SPA fallback. Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the testing skill for the generic browser workflow.
+Use Playwright MCP browser tools only when the user asks for E2E or Playwright verification. For requested web route E2E, run only the affected Flutter web package. Prefer `make run_web_dev` for the dev app, or launch directly from `apps/main` when a fixed host/port is needed:
+
+```bash
+flutter run -d web-server --web-hostname 127.0.0.1 --web-port 55123 \
+  -t lib/main_dev.dart --dart-define-from-file=./.env
+```
+
+Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the testing skill for the generic browser workflow.
 
 ### E2E testing (flutter_skill)
 
-This project supports E2E testing via `flutter_skill` — the dep is in `apps/main`, the binding is initialised under `kDebugMode` in `AppDelegate.run`, and `.mcp.json` registers the `flutter-skill` MCP server. Use it only when the user asks for E2E or spec verification, same rule as Playwright. If no debug session is running, start one yourself when the simulator and local Flutter toolchain are available; ask the user only for prerequisites you cannot perform yourself, such as installing/loading the `flutter-skill` MCP server or booting a missing simulator.
+This project supports E2E testing via `flutter_skill` — the Dart dep is in `apps/main`, the npm CLI is pinned in the root lockfile, the binding is initialised under `kDebugMode` in `AppDelegate.run`, and `.mcp.json` registers the local `flutter_skill_server.sh` wrapper. Use it only when the user asks for E2E or spec verification, same rule as Playwright. If no debug session is running, start one yourself when the simulator and local Flutter toolchain are available; ask the user only for prerequisites you cannot perform yourself, such as installing/loading the MCP server or booting a missing simulator.
 
 Version pin: the Dart dep and the npm CLI are both held at `0.9.34`. `0.9.35`+ are broken upstream (missing GitHub-release binary, mismatched bundled Dart fallback). Don't upgrade without verifying `flutter-skill doctor` is green.
 

@@ -12,8 +12,20 @@ class WebViewArgs {
   final String? url;
   final String? html;
   final String? title;
+  final List<String> trustedHosts;
+  final List<String> externalSchemes;
+  final bool enableJavaScript;
+  final bool enableJavaScriptBridge;
 
-  const WebViewArgs({this.url, this.html, this.title});
+  const WebViewArgs({
+    this.url,
+    this.html,
+    this.title,
+    this.trustedHosts = const [],
+    this.externalSchemes = const ['mailto', 'tel', 'sms'],
+    this.enableJavaScript = false,
+    this.enableJavaScriptBridge = false,
+  });
 
   factory WebViewArgs.fromUrlParams(Map<String, dynamic> queryParameters) =>
       WebViewArgs(
@@ -198,7 +210,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
     return InAppWebViewSettings(
       useShouldOverrideUrlLoading: true,
       mediaPlaybackRequiresUserGesture: false,
-      javaScriptEnabled: true,
+      javaScriptEnabled: _canUseJavaScript,
       supportZoom: true,
       builtInZoomControls: true,
       displayZoomControls: false,
@@ -213,7 +225,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
       // Android-specific settings
       useHybridComposition: true,
-      domStorageEnabled: true,
+      domStorageEnabled: _canUseJavaScript,
 
       // iOS-specific settings
       allowsInlineMediaPlayback: true,
@@ -252,7 +264,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
 
   void _handleWebViewCreated(InAppWebViewController controller) {
     _webViewController = controller;
-    _setupJavaScriptHandlers(controller);
+    if (_canUseJavaScriptBridge) {
+      _setupJavaScriptHandlers(controller);
+    }
     _setState(WebViewLoadState.loading);
   }
 
@@ -319,19 +333,21 @@ class _WebViewScreenState extends State<WebViewScreen> {
       return NavigationActionPolicy.ALLOW;
     }
 
-    // Handle external protocols
-    if (_shouldOpenExternally(url)) {
+    final uri = Uri.parse(url.toString());
+    if (_isAllowedWebUri(uri)) {
+      if (_isDownloadableFile(url)) {
+        await _handleFileDownload(url);
+        return NavigationActionPolicy.CANCEL;
+      }
+      return NavigationActionPolicy.ALLOW;
+    }
+
+    if (_isAllowedExternalUri(uri)) {
       await _launchExternalUrl(url);
-      return NavigationActionPolicy.CANCEL;
+    } else if (mounted) {
+      _showToast(context.coreL10n.failedToOpenExternalLink);
     }
-
-    // Handle file downloads
-    if (_isDownloadableFile(url)) {
-      await _handleFileDownload(url);
-      return NavigationActionPolicy.CANCEL;
-    }
-
-    return NavigationActionPolicy.ALLOW;
+    return NavigationActionPolicy.CANCEL;
   }
 
   void _handleReceivedError(
@@ -355,9 +371,48 @@ class _WebViewScreenState extends State<WebViewScreen> {
     _setErrorState(errorMsg);
   }
 
-  bool _shouldOpenExternally(WebUri url) {
-    final scheme = url.scheme.toLowerCase();
-    return !['http', 'https', 'file', 'data'].contains(scheme);
+  bool _isAllowedWebUri(Uri uri) {
+    final scheme = uri.scheme.toLowerCase();
+    if (scheme == 'https') {
+      return uri.hasAuthority &&
+          (_params.trustedHosts.isEmpty || _isTrustedHost(uri.host));
+    }
+    return scheme == 'http' && uri.hasAuthority && _isLocalHost(uri.host);
+  }
+
+  bool _isAllowedExternalUri(Uri uri) {
+    final scheme = uri.scheme.toLowerCase();
+    return _params.externalSchemes.any(
+      (allowed) => allowed.trim().toLowerCase() == scheme,
+    );
+  }
+
+  bool _isLocalHost(String host) {
+    return host == 'localhost' || host == '127.0.0.1' || host == '10.0.2.2';
+  }
+
+  bool _isTrustedHost(String host) {
+    final normalizedHost = host.toLowerCase();
+    return _params.trustedHosts.any((trustedHost) {
+      final normalizedTrustedHost = trustedHost.trim().toLowerCase();
+      return normalizedHost == normalizedTrustedHost ||
+          normalizedHost.endsWith('.$normalizedTrustedHost');
+    });
+  }
+
+  bool get _canUseJavaScript {
+    if (!_params.enableJavaScript || !_params.hasUrl) {
+      return false;
+    }
+    final processedUrl = url;
+    if (processedUrl == null) {
+      return false;
+    }
+    return _isTrustedHost(Uri.parse(processedUrl).host);
+  }
+
+  bool get _canUseJavaScriptBridge {
+    return _canUseJavaScript && _params.enableJavaScriptBridge;
   }
 
   bool _isDownloadableFile(WebUri url) {
@@ -376,6 +431,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Future<void> _launchExternalUrl(WebUri url) async {
     try {
       final uri = Uri.parse(url.toString());
+      if (!_isAllowedExternalUri(uri)) {
+        throw Exception('Unsupported URL scheme: ${uri.scheme}');
+      }
       final canLaunch = await canLaunchUrl(uri);
 
       if (canLaunch) {
@@ -394,6 +452,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
   Future<void> _handleFileDownload(WebUri url) async {
     try {
       final uri = Uri.parse(url.toString());
+      if (!_isAllowedWebUri(uri)) {
+        throw Exception('Unsupported download URL: $url');
+      }
       await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (mounted) {
         _showToast(context.coreL10n.downloadStarted);

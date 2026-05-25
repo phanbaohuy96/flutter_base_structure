@@ -89,10 +89,10 @@ class UserToken {
   @override
   String toString() {
     return '''Token(
-  token: $accessToken, 
-  refreshToken: $refreshToken, 
-  type: $type, 
-  expireIn: $expireIn, 
+  hasAccessToken: ${accessToken.isNotNullOrEmpty},
+  hasRefreshToken: ${refreshToken.isNotNullOrEmpty},
+  type: $type,
+  expireIn: $expireIn,
   scope: $scope,
 )''';
   }

@@ -43,9 +43,6 @@ RUN /bin/bash build_web.sh -a main -e ${ENVIRONMENT}
 # Serve stage
 FROM nginx:alpine
 
-# Copy environment variables
-COPY --from=builder /app/apps/main/.env /usr/share/nginx/html/m/
-
 # Copy built web files from build stage
 COPY --from=builder /app/apps/main/build/web /usr/share/nginx/html/m/
 

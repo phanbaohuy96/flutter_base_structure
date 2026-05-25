@@ -10,6 +10,36 @@ import '../../../common/utils/log_utils.dart';
 import '../../models/token.dart';
 import 'preferences_key.dart';
 
+String? normalizeDomainReplacement(String? domain) {
+  final value = domain?.trim();
+  if (value.isNullOrEmpty) {
+    return null;
+  }
+
+  final candidate = value!.contains('://') ? value : 'https://$value';
+  final uri = Uri.tryParse(candidate);
+  if (uri == null ||
+      !uri.hasAuthority ||
+      uri.userInfo.isNotEmpty ||
+      uri.hasQuery ||
+      uri.hasFragment) {
+    return null;
+  }
+
+  final scheme = uri.scheme.toLowerCase();
+  if (scheme == 'https') {
+    return uri.toString();
+  }
+  if (scheme == 'http' && _isLocalDomainReplacementHost(uri.host)) {
+    return uri.toString();
+  }
+  return null;
+}
+
+bool _isLocalDomainReplacementHost(String host) {
+  return host == 'localhost' || host == '127.0.0.1' || host == '10.0.2.2';
+}
+
 abstract class CoreAppPreferenceData {
   int? getTheme();
   Future<bool?> setTheme(int themeMode);
@@ -125,9 +155,16 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
 
   @override
   Future<bool?> setDomainReplacement(String? domain) {
-    if (domain == null) {
+    if (domain == null || domain.trim().isEmpty) {
       return _prefs.remove(CorePreferencesKey.domainReplacement);
     }
-    return _prefs.setString(CorePreferencesKey.domainReplacement, domain);
+    final normalizedDomain = normalizeDomainReplacement(domain);
+    if (normalizedDomain == null) {
+      return Future.value(false);
+    }
+    return _prefs.setString(
+      CorePreferencesKey.domainReplacement,
+      normalizedDomain,
+    );
   }
 }
