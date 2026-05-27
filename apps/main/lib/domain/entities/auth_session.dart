@@ -10,6 +10,10 @@ class AuthToken {
   final AuthTokenType type;
 }
 
+/// Minimal identity projection carried inside an [AuthSession]. Intentionally
+/// narrower than the data-layer `UserModel`: fields not listed here (e.g.
+/// `avatar`) are dropped when mapping in and out, so add them here too if the
+/// session needs to round-trip them through the session store.
 class AuthUser {
   const AuthUser({
     this.id,
