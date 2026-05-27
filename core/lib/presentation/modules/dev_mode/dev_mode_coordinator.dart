@@ -11,9 +11,14 @@ import 'log_viewer/network/network_log_viewer_screen.dart';
 
 extension DevModeCoordinator on BuildContext {
   Future<T?> openDevMode<T>({
+    String? openFrom,
     PushBehavior pushBehavior = const PushNamedBehavior(),
   }) async {
-    return pushBehavior.push(this, DevModeDashboardScreen.routeName);
+    return pushBehavior.push(
+      this,
+      DevModeDashboardScreen.routeName,
+      arguments: openFrom,
+    );
   }
 
   Future<T?> openLogViewer<T>({
