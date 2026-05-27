@@ -1,47 +1,20 @@
 import 'dart:math';
 
 import 'package:core/core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../generated/assets.dart';
 import '../../../../../l10n/localization_ext.dart';
 import '../../../../base/base.dart';
 import '../../../../extentions/extention.dart';
+import '../../authentication_coordinator.dart';
 import '../bloc/signin_bloc.dart';
+import '../signin_route_args.dart';
 
 part 'signin.action.dart';
 
-class SigninRouteArgs {
-  final String? redirectTo;
-
-  const SigninRouteArgs({this.redirectTo});
-
-  factory SigninRouteArgs.fromUrlParams(Map<String, dynamic> queryParameters) =>
-      SigninRouteArgs(redirectTo: asOrNull(queryParameters['redirect']));
-
-  dynamic get adaptiveArguments {
-    if (kIsWeb) {
-      if (redirectTo == null) {
-        return null;
-      }
-      return <String, dynamic>{'redirect': redirectTo};
-    }
-    return this;
-  }
-
-  /// Builds the absolute route location for this args instance — useful for
-  /// `GoRoute.redirect` callbacks which need a string URL, not a typed object.
-  String toRouteLocation() {
-    return Uri(
-      path: SignInScreen.routeName,
-      queryParameters: redirectTo == null ? null : {'redirect': redirectTo},
-    ).toString();
-  }
-}
-
 class SignInScreen extends StatefulWidget {
-  static const String routeName = '/signin';
+  static const String routeName = signInRouteName;
   static const String usernameKey = 'username_text_input';
   static const String passwordKey = 'password_text_input';
   static const String loginBtnKey = 'login_button';

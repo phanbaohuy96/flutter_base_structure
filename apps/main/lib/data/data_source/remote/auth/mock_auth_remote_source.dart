@@ -1,13 +1,15 @@
 import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
 
-import 'auth_remote_source.dart';
+import '../../../../domain/entities/auth_session.dart';
+import '../../../../domain/repositories/auth_credential_source.dart';
+import '../../../models/auth_user_mapping.dart';
 
 /// Demo credential fixture used by [MockAuthRemoteSource].
 ///
 /// The template demonstrates the integration shape across data → domain →
 /// presentation. Real apps replace this with a network-backed adapter by
-/// rebinding the [AuthRemoteSource] DI key.
+/// binding the [AuthCredentialSource] DI key.
 class _DemoCredential {
   const _DemoCredential({
     required this.phoneNumber,
@@ -42,14 +44,14 @@ const _demoCredentials = <_DemoCredential>[
 ];
 
 /// Mock implementation for the auth demo. Matches phone+password against an
-/// in-memory fixture. Replace this binding with a Retrofit-backed
-/// [AuthRemoteSource] implementation to wire in a real backend.
-@Injectable(as: AuthRemoteSource)
-class MockAuthRemoteSource implements AuthRemoteSource {
-  /// Simulates a network round-trip and returns the matched [UserModel]
-  /// when credentials are valid, or `null` otherwise.
+/// in-memory fixture. Replace this binding with a Retrofit-backed adapter to
+/// wire in a real backend.
+@Injectable(as: AuthCredentialSource)
+class MockAuthRemoteSource implements AuthCredentialSource {
+  /// Simulates a network round-trip and returns an auth session when
+  /// credentials are valid, or `null` otherwise.
   @override
-  Future<UserModel?> signIn({
+  Future<AuthSession?> signIn({
     required String phoneNumber,
     required String password,
   }) async {
@@ -57,7 +59,13 @@ class MockAuthRemoteSource implements AuthRemoteSource {
     for (final candidate in _demoCredentials) {
       if (candidate.phoneNumber == phoneNumber &&
           candidate.password == password) {
-        return candidate.user;
+        return AuthSession(
+          token: const AuthToken(
+            accessToken: 'demo-access-token',
+            type: AuthTokenType.bearer,
+          ),
+          user: candidate.user.toAuthUser(),
+        );
       }
     }
     return null;

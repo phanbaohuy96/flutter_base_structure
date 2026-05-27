@@ -48,14 +48,14 @@ class SigninBloc extends CoreBlocBase<SigninEvent, SigninState> {
 
     showLoading();
     try {
-      final user = await _authUsecase.loginWithPhoneNumberPassword(
+      final signedIn = await _authUsecase.loginWithPhoneNumberPassword(
         phoneNumber: state.phone,
         password: state.password,
       );
-      if (user == null) {
-        emit(state.copyWith<LoginFailed>());
-      } else {
+      if (signedIn) {
         emit(state.copyWith<LoginSuccess>());
+      } else {
+        emit(state.copyWith<LoginFailed>());
       }
     } finally {
       hideLoading();

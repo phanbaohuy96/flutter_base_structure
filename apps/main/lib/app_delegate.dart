@@ -28,9 +28,9 @@ class AppDelegate {
 
         await configureDependencies(env: Config.instance.appConfig.envName);
 
-        // Warm the storage seam's token cache so `AuthGateRouteInterceptor`
+        // Warm the storage seam's auth cache so `AuthGateRouteInterceptor`
         // can read it synchronously inside `GoRoute.redirect`.
-        await injector<CoreLocalDataManager>().token;
+        await injector<CoreLocalDataManager>().loadAuthSession();
 
         setLocaleMessages(AppLocale.vi.languageCode, ViMessages());
         setLocaleMessages(AppLocale.en.languageCode, EnMessages());
