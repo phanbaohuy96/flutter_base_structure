@@ -27,6 +27,8 @@ import '../domain/repositories/auth_credential_source.dart' as _i539;
 import '../domain/repositories/auth_session_store.dart' as _i625;
 import '../domain/usecases/auth/auth_usecase.dart' as _i738;
 import '../presentation/modules/auth/signin/bloc/signin_bloc.dart' as _i893;
+import '../presentation/modules/auth/signin/sign_in_redirect_resolver.dart'
+    as _i844;
 import '../presentation/theme/theme_dialog.dart' as _i83;
 
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -41,6 +43,9 @@ Future<_i174.GetIt> $initGetIt(
   final appDatasourceModule = _$AppDatasourceModule();
   gh.singleton<_i494.SQLiteDatabase>(() => _i833.SQLiteDatabaseImpl());
   gh.factory<_i539.AuthCredentialSource>(() => _i118.MockAuthRemoteSource());
+  gh.lazySingleton<_i844.SignInRedirectResolver>(
+    () => _i844.DefaultSignInRedirectResolver(),
+  );
   gh.lazySingleton<_i655.LocalDataManager>(
     () => _i655.LocalDataManager(
       gh<_i494.SharedPreferences>(),
