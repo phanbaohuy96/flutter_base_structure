@@ -41,14 +41,20 @@ class LocalDataManager extends CoreLocalDataManager
 
   @override
   Future<void> clearAuthSession() {
-    return Future.wait([setToken(null), saveUserInfo(null)]);
+    return Future.wait(
+      [setToken(null), saveUserInfo(null)],
+      eagerError: true,
+    );
   }
 
   @override
   Future<void> saveAuthSession(AuthSession session) {
-    return Future.wait([
-      setToken(session.token.toUserToken()),
-      saveUserInfo(session.user.toUserModel()),
-    ]);
+    return Future.wait(
+      [
+        setToken(session.token.toUserToken()),
+        saveUserInfo(session.user.toUserModel()),
+      ],
+      eagerError: true,
+    );
   }
 }

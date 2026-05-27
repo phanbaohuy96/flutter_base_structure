@@ -95,13 +95,19 @@ class CoreLocalDataManager implements CoreAppPreferenceData {
     final theme = getTheme();
     final locale = getLocalization();
 
-    await Future.wait([_prefs.clear(), _secureStorage.deleteAll()]);
+    await Future.wait(
+      [_prefs.clear(), _secureStorage.deleteAll()],
+      eagerError: true,
+    );
     _memCacheToken = null;
 
-    final results = await Future.wait([
-      saveLocalization(locale),
-      if (theme != null) setTheme(theme),
-    ]);
+    final results = await Future.wait(
+      [
+        saveLocalization(locale),
+        if (theme != null) setTheme(theme),
+      ],
+      eagerError: true,
+    );
 
     return results.any((e) => e == false) == false;
   }
