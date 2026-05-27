@@ -2,35 +2,27 @@ part of 'auth_usecase.dart';
 
 @Injectable(as: AuthUsecase)
 class AuthInteractorImpl implements AuthUsecase {
-  AuthInteractorImpl(this._authRepository, this._localDataManager);
+  AuthInteractorImpl(this._credentialSource, this._sessionStore);
 
-  final AuthRepository _authRepository;
-  final AppPreferenceData _localDataManager;
+  final AuthCredentialSource _credentialSource;
+  final AuthSessionStore _sessionStore;
 
   @override
-  Future<UserModel?> loginWithPhoneNumberPassword({
+  Future<bool> loginWithPhoneNumberPassword({
     required String phoneNumber,
     required String password,
   }) async {
-    await Future.wait([
-      _localDataManager.setToken(null),
-      _localDataManager.saveUserInfo(null),
-    ]);
+    await _sessionStore.clearAuthSession();
 
-    final user = await _authRepository.authenticate(
+    final session = await _credentialSource.signIn(
       phoneNumber: phoneNumber,
       password: password,
     );
-    if (user == null) {
-      return null;
+    if (session == null) {
+      return false;
     }
 
-    await Future.wait([
-      _localDataManager.setToken(
-        UserToken(accessToken: 'demo-access-token', type: TokenType.bearer),
-      ),
-      _localDataManager.saveUserInfo(user),
-    ]);
-    return user;
+    await _sessionStore.saveAuthSession(session);
+    return true;
   }
 }

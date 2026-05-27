@@ -22,10 +22,9 @@ import '../common/constants/image_constants.dart' as _i835;
 import '../data/data_source/datasource_module.dart' as _i737;
 import '../data/data_source/local/local_data_manager.dart' as _i655;
 import '../data/data_source/local/sqlite/sqlite_database.impl.dart' as _i833;
-import '../data/data_source/remote/auth/auth_remote_source.dart' as _i820;
 import '../data/data_source/remote/auth/mock_auth_remote_source.dart' as _i118;
-import '../data/repositories/auth_repository.impl.dart' as _i863;
-import '../domain/repositories/auth_repository.dart' as _i800;
+import '../domain/repositories/auth_credential_source.dart' as _i539;
+import '../domain/repositories/auth_session_store.dart' as _i625;
 import '../domain/usecases/auth/auth_usecase.dart' as _i738;
 import '../presentation/modules/auth/signin/bloc/signin_bloc.dart' as _i893;
 import '../presentation/theme/theme_dialog.dart' as _i83;
@@ -40,8 +39,8 @@ Future<_i174.GetIt> $initGetIt(
   await _i918.CorePackageModule().init(gh);
   await _i541.DataSourcePackageModule().init(gh);
   final appDatasourceModule = _$AppDatasourceModule();
-  gh.factory<_i820.AuthRemoteSource>(() => _i118.MockAuthRemoteSource());
   gh.singleton<_i494.SQLiteDatabase>(() => _i833.SQLiteDatabaseImpl());
+  gh.factory<_i539.AuthCredentialSource>(() => _i118.MockAuthRemoteSource());
   gh.lazySingleton<_i655.LocalDataManager>(
     () => _i655.LocalDataManager(
       gh<_i494.SharedPreferences>(),
@@ -52,11 +51,11 @@ Future<_i174.GetIt> $initGetIt(
   gh.factoryParam<_i494.ThemeDialog, _i409.BuildContext, dynamic>(
     (context, _) => _i83.AppThemeDialog(context),
   );
-  gh.factory<_i800.AuthRepository>(
-    () => _i863.AuthRepositoryImpl(gh<_i820.AuthRemoteSource>()),
-  );
   gh.lazySingleton<_i655.AppPreferenceData>(
     () => appDatasourceModule.appPreferenceData(gh<_i655.LocalDataManager>()),
+  );
+  gh.lazySingleton<_i625.AuthSessionStore>(
+    () => appDatasourceModule.authSessionStore(gh<_i655.LocalDataManager>()),
   );
   gh.lazySingleton<_i494.CoreLocalDataManager>(
     () =>
@@ -64,8 +63,8 @@ Future<_i174.GetIt> $initGetIt(
   );
   gh.factory<_i738.AuthUsecase>(
     () => _i738.AuthInteractorImpl(
-      gh<_i800.AuthRepository>(),
-      gh<_i655.AppPreferenceData>(),
+      gh<_i539.AuthCredentialSource>(),
+      gh<_i625.AuthSessionStore>(),
     ),
   );
   gh.factory<_i893.SigninBloc>(() => _i893.SigninBloc(gh<_i738.AuthUsecase>()));

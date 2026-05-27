@@ -1,7 +1,7 @@
 import '../../../common/definitions.dart';
 
 final detailModuleCoordinator =
-    '''import 'package:core/core.dart';
+    '''import 'package:fl_navigation/fl_navigation.dart';
 import 'package:flutter/material.dart';
 
 import '$moduleNameKey.dart';
