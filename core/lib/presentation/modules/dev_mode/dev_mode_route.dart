@@ -19,7 +19,9 @@ class DevModeRoute extends IRoute {
         path: DevModeDashboardScreen.routeName,
         name: DevModeDashboardScreen.routeName,
         builder: (context, uri, extra) {
-          return const DevModeDashboardScreen();
+          return DevModeDashboardScreen(
+            openFrom: extra is String ? extra : null,
+          );
         },
       ),
       CustomRouter(
