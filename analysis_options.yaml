@@ -1,0 +1,7 @@
+# Workspace-root analyzer config.
+# Each package keeps its own analysis_options.yaml; this only exists to keep
+# the Dart analysis server from reporting errors in stray .dart files shipped
+# inside locked npm dependencies (e.g. node_modules/flutter-skill/dart/bin).
+analyzer:
+  exclude:
+    - node_modules/**
