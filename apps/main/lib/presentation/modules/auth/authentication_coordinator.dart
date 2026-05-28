@@ -1,18 +1,25 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
+import '../../../di/di.dart';
+import 'signin/sign_in_redirect_resolver.dart';
 import 'signin/signin_route_args.dart';
 
 extension AuthenticationCoordinator on BuildContext {
   /// Opens the signin form, threading [returnTo] through as the post-signin
   /// destination. When the storage seam already holds a token the form is
   /// skipped and the caller is sent straight to the destination.
+  ///
+  /// [redirectResolver] resolves and validates the destination; it defaults to
+  /// the bound [SignInRedirectResolver] and is injectable for tests.
   Future<bool?> openSignIn({
     required CoreAppPreferenceData localDataManager,
     String? returnTo,
     PushBehavior pushBehavior = const PushNamedBehavior(),
+    SignInRedirectResolver? redirectResolver,
   }) async {
-    final destination = _signInDestination(returnTo);
+    final resolver = redirectResolver ?? injector<SignInRedirectResolver>();
+    final destination = resolver.resolve(requestedRedirect: returnTo);
     if (localDataManager.isAuthenticated) {
       await pushBehavior.push<dynamic>(this, destination);
       return true;
@@ -30,13 +37,12 @@ extension AuthenticationCoordinator on BuildContext {
   Future<bool?> completeSignIn({
     String? returnTo,
     PushBehavior pushBehavior = const PushReplacementNamedBehavior(),
+    SignInRedirectResolver? redirectResolver,
   }) {
-    return pushBehavior.push<bool>(this, _signInDestination(returnTo));
+    final resolver = redirectResolver ?? injector<SignInRedirectResolver>();
+    return pushBehavior.push<bool>(
+      this,
+      resolver.resolve(requestedRedirect: returnTo),
+    );
   }
-}
-
-/// Resolves where signin sends the user, defaulting to the template demo
-/// dashboard when the caller has no explicit [returnTo].
-String _signInDestination(String? returnTo) {
-  return returnTo ?? DevModeDashboardScreen.routeName;
 }

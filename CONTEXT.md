@@ -36,6 +36,10 @@ _Avoid_: route guard, router middleware.
 The specific `RouteProviderInterceptor` adapter that protects routes by token presence. Wraps each protected router with a `redirect` callback that returns `/signin?redirect=…` when no token is in the storage seam. The canonical demonstration of the interceptor mechanism.
 _Avoid_: auth guard, auth middleware.
 
+**Sign-in redirect resolver** (`SignInRedirectResolver`):
+The app-owned seam that decides where the sign-in flow lands a user once authenticated — the default home route, plus validation of a requested `?redirect=` target (rejecting off-site URLs and loop-backs to sign-in). The router redirect and the **Coordinator** both delegate to it, so the landing policy has one source of truth. The template binds `DefaultSignInRedirectResolver` (lands on the dev-mode dashboard demo); a downstream app rebinds this contract in its `AppModule` to set its own home route.
+_Avoid_: home route constant, post-login navigator, redirect guard.
+
 ### Data layer
 
 **Storage seam**:
@@ -56,7 +60,7 @@ _Avoid_: scaffolding, generator output (when referring to the template itself).
 
 - A **Compound module** owns one **Coordinator**; a **Simple module** does not.
 - A **Route provider** contributes one or more `CustomRouter`s; **Route-provider interceptors** observe each provider's resolution before it becomes a `GoRoute`.
-- The **Auth-gate interceptor** reads token from the **Storage seam** and rewrites resolutions for protected providers.
+- The **Auth-gate interceptor** reads token from the **Storage seam** and rewrites resolutions for protected providers; the **Sign-in redirect resolver** then decides where an authenticated user goes next (and where an already-authenticated user landing on `/signin` is sent).
 - A **Coordinator** may call into the **Storage seam** for pre-nav guards (e.g., skip signin when token already present).
 - A **Mock remote source** is bound at DI composition; the use case it backs treats it identically to a real adapter.
 - **Codegen templates** emit module scaffolding consistent with the **Module shape** vocabulary — Simple modules get no coordinator file; Compound modules do.

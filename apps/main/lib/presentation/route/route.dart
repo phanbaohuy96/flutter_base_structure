@@ -3,6 +3,8 @@ import 'package:core/core.dart';
 
 import '../../di/di.dart';
 import '../modules/auth/authentication_coordinator.dart';
+import '../modules/auth/signin/sign_in_redirect_resolver.dart';
+import '../modules/auth/signin/signin_route_args.dart';
 import '../modules/auth/signin/views/signin_screen.dart';
 import '../modules/page_not_found/page_note_found.dart';
 import 'auth_gate_route_interceptor.dart';
@@ -10,6 +12,7 @@ import 'route_providers.config.dart';
 
 GoRouter buildAppRouter(AppGlobalBloc appBloc) {
   final localDataManager = injector<CoreLocalDataManager>();
+  final redirectResolver = injector<SignInRedirectResolver>();
 
   return buildFlGoRouter(
     routeProviders: buildAppRouteProviders(),
@@ -20,7 +23,12 @@ GoRouter buildAppRouter(AppGlobalBloc appBloc) {
     navigatorKey: globalNavigatorKey,
     observers: [myNavigatorObserver],
     redirect: (_, state) {
-      return _resolveLocaleRedirect(appBloc, state.uri);
+      return _resolveLocaleRedirect(appBloc, state.uri) ??
+          _resolveAuthenticatedSignInRedirect(
+            localDataManager,
+            redirectResolver,
+            state.uri,
+          );
     },
     errorBuilder: (context, __) => NotFoundPage(
       onBackToWelcomePage: () {
@@ -31,6 +39,21 @@ GoRouter buildAppRouter(AppGlobalBloc appBloc) {
       },
     ),
   );
+}
+
+String? _resolveAuthenticatedSignInRedirect(
+  CoreLocalDataManager localDataManager,
+  SignInRedirectResolver redirectResolver,
+  Uri uri,
+) {
+  if (!localDataManager.isAuthenticated || uri.path != SignInScreen.routeName) {
+    return null;
+  }
+
+  final requestedRedirect = SigninRouteArgs.fromUrlParams(
+    uri.queryParameters,
+  ).redirectTo;
+  return redirectResolver.resolve(requestedRedirect: requestedRedirect);
 }
 
 String? _resolveLocaleRedirect(AppGlobalBloc appBloc, Uri uri) {
