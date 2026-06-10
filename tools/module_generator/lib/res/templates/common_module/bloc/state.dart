@@ -17,11 +17,11 @@ abstract class ${classNameKey}State {
   T copyWith<T extends ${classNameKey}State>({
     _StateData? data,
   }) =>
-      resolveState<${classNameKey}State, _StateData>(
+      resolveState<T, ${classNameKey}State, _StateData>(
         _factories,
-        requested: T == ${classNameKey}State ? runtimeType : T,
+        fallbackType: runtimeType,
         data: data ?? this.data,
-      ) as T;
+      );
 }
 
 class ${classNameKey}Initial extends ${classNameKey}State {

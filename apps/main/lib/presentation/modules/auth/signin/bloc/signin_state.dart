@@ -16,12 +16,11 @@ abstract class SigninState {
   SigninState(this.data);
 
   T copyWith<T extends SigninState>({_StateData? data}) =>
-      resolveState<SigninState, _StateData>(
-            _factories,
-            requested: T == SigninState ? runtimeType : T,
-            data: data ?? this.data,
-          )
-          as T;
+      resolveState<T, SigninState, _StateData>(
+        _factories,
+        fallbackType: runtimeType,
+        data: data ?? this.data,
+      );
 
   String get phone => data.phone;
   String get password => data.password;

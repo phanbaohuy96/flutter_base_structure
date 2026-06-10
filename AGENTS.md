@@ -337,11 +337,11 @@ abstract class FeatureState {
   FeatureState(this.data);
 
   T copyWith<T extends FeatureState>({_StateData? data}) =>
-      resolveState<FeatureState, _StateData>(
+      resolveState<T, FeatureState, _StateData>(
         _factories,
-        requested: T == FeatureState ? runtimeType : T,
+        fallbackType: runtimeType,
         data: data ?? this.data,
-      ) as T;
+      );
 
   Item? get detail => data.detail;
   List<Item> get items => data.items;
