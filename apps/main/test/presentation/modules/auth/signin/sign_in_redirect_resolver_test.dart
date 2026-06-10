@@ -8,6 +8,14 @@ import 'package:my_flutter_base/presentation/modules/auth/signin/signin_route_ar
 /// that could escape the app (off-site URLs) or loop the user back to sign-in.
 /// A regression here re-opens an open-redirect hole on web, so the intent —
 /// "why each input is rejected" — is encoded alongside the expectation.
+/// A downstream-style resolver that customises only the landing route. It must
+/// inherit the redirect validation from the base — overriding [home] alone must
+/// not re-open the open-redirect hole.
+class _CustomHomeResolver extends SignInRedirectResolver {
+  @override
+  String get home => '/dashboard';
+}
+
 void main() {
   late DefaultSignInRedirectResolver resolver;
 
@@ -66,6 +74,26 @@ void main() {
       ]) {
         expect(resolver.resolve(requestedRedirect: notRooted), resolver.home);
       }
+    });
+  });
+
+  group('SignInRedirectResolver subclass overriding only home', () {
+    late _CustomHomeResolver custom;
+
+    setUp(() {
+      custom = _CustomHomeResolver();
+    });
+
+    test('routes valid same-origin paths through unchanged', () {
+      expect(custom.resolve(requestedRedirect: '/orders/123'), '/orders/123');
+    });
+
+    test('inherits the validation: off-site targets fall back to its home', () {
+      expect(
+        custom.resolve(requestedRedirect: 'https://evil.com'),
+        '/dashboard',
+      );
+      expect(custom.resolve(), '/dashboard');
     });
   });
 }

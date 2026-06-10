@@ -19,11 +19,12 @@ abstract class ${classNameKey}State {
 
   T copyWith<T extends ${classNameKey}State>({
     _StateData? data,
-  }) {
-    return _factories[T == ${classNameKey}State ? runtimeType : T]!(
-      data ?? this.data,
-    );
-  }
+  }) =>
+      resolveState<T, ${classNameKey}State, _StateData>(
+        _factories,
+        fallbackType: runtimeType,
+        data: data ?? this.data,
+      );
 
   $modelNameKey? get detail => data.detail;
 }
@@ -34,11 +35,7 @@ class ${classNameKey}Initial extends ${classNameKey}State {
   }) : super(data);
 }
 
-final _factories = <
-    Type,
-    Function(
-  _StateData data,
-)>{
+final _factories = <Type, ${classNameKey}State Function(_StateData)>{
   ${classNameKey}Initial: (data) => ${classNameKey}Initial(
         data: data,
       ),

@@ -300,8 +300,8 @@ Rules:
 - Events are hand-written subclasses of one abstract `<Feature>Event`; do not use Freezed unions for events.
 - States are hand-written subclasses of one abstract `<Feature>State`; do not use `FeatureState.loading()` / `.loaded()` Freezed unions.
 - State subclasses share one Freezed `_StateData` class.
-- The abstract state exposes `copyWith<T extends FeatureState>({_StateData? data})` backed by a `_factories` map.
-- Every concrete state class must be registered in `_factories` in the same edit.
+- The abstract state exposes `copyWith<T extends FeatureState>({_StateData? data})` backed by a `_factories` map, resolved through the shared `resolveState` helper from `package:core/core.dart`.
+- Every concrete state class must be registered in `_factories` in the same edit. A missing registration throws a descriptive `StateError` naming the unregistered state (via `resolveState`), not an opaque null-check failure.
 - Use `package:core/core.dart` for BLoC exports instead of importing `flutter_bloc` directly.
 - Run the relevant generator after changing `_StateData`, events, states, or bloc annotations.
 
@@ -336,9 +336,12 @@ abstract class FeatureState {
 
   FeatureState(this.data);
 
-  T copyWith<T extends FeatureState>({_StateData? data}) {
-    return _factories[T == FeatureState ? runtimeType : T]!(data ?? this.data);
-  }
+  T copyWith<T extends FeatureState>({_StateData? data}) =>
+      resolveState<T, FeatureState, _StateData>(
+        _factories,
+        fallbackType: runtimeType,
+        data: data ?? this.data,
+      );
 
   Item? get detail => data.detail;
   List<Item> get items => data.items;
@@ -352,7 +355,7 @@ class FeatureLoaded extends FeatureState {
   FeatureLoaded({required _StateData data}) : super(data);
 }
 
-final _factories = <Type, Function(_StateData data)>{
+final _factories = <Type, FeatureState Function(_StateData)>{
   FeatureInitial: (data) => FeatureInitial(data: data),
   FeatureLoaded: (data) => FeatureLoaded(data: data),
 };

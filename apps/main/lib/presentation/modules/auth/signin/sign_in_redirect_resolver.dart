@@ -12,21 +12,24 @@ import 'signin_route_args.dart';
 /// has a single source of truth.
 ///
 /// The template binds [DefaultSignInRedirectResolver], which lands on the
-/// dev-mode dashboard demo. A downstream app rebinds this contract in its
-/// `AppModule` to point at its own home route — and may override [resolve] to
-/// tighten or relax the redirect policy (e.g. role-based landing).
+/// dev-mode dashboard demo. A downstream app customises the landing route by
+/// extending this base and overriding [home] — the redirect validation in
+/// [resolve] is inherited, so the open-redirect protection cannot be dropped by
+/// accident. Apps that need a different policy (e.g. role-based landing) may
+/// also override [resolve], then rebind the contract in their `AppModule`.
 abstract class SignInRedirectResolver {
-  /// Returns a safe in-app destination: [requestedRedirect] when it is a
-  /// same-origin path, otherwise the app's home route.
-  String resolve({String? requestedRedirect});
-}
-
-@LazySingleton(as: SignInRedirectResolver)
-class DefaultSignInRedirectResolver implements SignInRedirectResolver {
   /// Where authenticated users land when no explicit redirect is requested.
-  String get home => DevModeDashboardScreen.routeName;
+  ///
+  /// This is the one knob most apps override.
+  String get home;
 
-  @override
+  /// Returns a safe in-app destination: [requestedRedirect] when it is a
+  /// same-origin path, otherwise [home].
+  ///
+  /// The validation lives here, shared by every subclass: anything that could
+  /// escape the app (a scheme, an authority, a non-rooted path) or loop the
+  /// user back to sign-in falls back to [home]. This is a security boundary —
+  /// override it only to tighten or specialise the policy.
   String resolve({String? requestedRedirect}) {
     if (requestedRedirect == null) {
       return home;
@@ -42,4 +45,10 @@ class DefaultSignInRedirectResolver implements SignInRedirectResolver {
     }
     return requestedRedirect;
   }
+}
+
+@LazySingleton(as: SignInRedirectResolver)
+class DefaultSignInRedirectResolver extends SignInRedirectResolver {
+  @override
+  String get home => DevModeDashboardScreen.routeName;
 }
