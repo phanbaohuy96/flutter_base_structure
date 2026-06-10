@@ -37,7 +37,7 @@ The specific `RouteProviderInterceptor` adapter that protects routes by token pr
 _Avoid_: auth guard, auth middleware.
 
 **Sign-in redirect resolver** (`SignInRedirectResolver`):
-The app-owned seam that decides where the sign-in flow lands a user once authenticated — the default home route, plus validation of a requested `?redirect=` target (rejecting off-site URLs and loop-backs to sign-in). The router redirect and the **Coordinator** both delegate to it, so the landing policy has one source of truth. The template binds `DefaultSignInRedirectResolver` (lands on the dev-mode dashboard demo); a downstream app rebinds this contract in its `AppModule` to set its own home route.
+The app-owned seam that decides where the sign-in flow lands a user once authenticated. It is a template-method base: it exposes one overridable knob — `home`, the default landing route — and owns the `resolve` validation of a requested `?redirect=` target (rejecting off-site URLs and loop-backs to sign-in) as inherited, shared behaviour. The router redirect and the **Coordinator** both delegate to it, so the landing policy has one source of truth and the open-redirect protection cannot be dropped by accident. The template binds `DefaultSignInRedirectResolver` (lands on the dev-mode dashboard demo); a downstream app extends the base and overrides `home` to set its own landing route (inheriting the validation), and may override `resolve` for a different policy.
 _Avoid_: home route constant, post-login navigator, redirect guard.
 
 ### Data layer
