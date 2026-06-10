@@ -4,8 +4,6 @@ import '../../../../common/definitions.dart';
 const listingUsecase =
     '''import 'dart:async';
 
-import 'package:injectable/injectable.dart';
-
 import 'package:core/domain/use_case/listing_use_case.dart';
 import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
@@ -40,12 +38,12 @@ class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
 
   late final _listingUsecase =
       ListingUseCase<$modelNameKey, ${modelNameKey}Filter>(
-    (offset, limit, page, [filter]) => _repository.getActivities(
-      /// TODO: Integrate with your filter and pagination
-      /// Example:
-      /// 'filters': filter?.filter,
-      /// 'limit': limit,
-      /// 'page': page,
+    (offset, limit, page, [filter]) => _repository.fetch${modelNameKey}s(
+      // TODO: call your repository method, passing filter + pagination.
+      // Example:
+      //   filters: filter?.filter,
+      //   limit: limit,
+      //   page: page,
     ).then(
       (value) => [...?value.data],
     ),
