@@ -15,9 +15,13 @@ abstract class SigninState {
 
   SigninState(this.data);
 
-  T copyWith<T extends SigninState>({_StateData? data}) {
-    return _factories[T == SigninState ? runtimeType : T]!(data ?? this.data);
-  }
+  T copyWith<T extends SigninState>({_StateData? data}) =>
+      resolveState<SigninState, _StateData>(
+            _factories,
+            requested: T == SigninState ? runtimeType : T,
+            data: data ?? this.data,
+          )
+          as T;
 
   String get phone => data.phone;
   String get password => data.password;
@@ -35,7 +39,7 @@ class LoginFailed extends SigninState {
   LoginFailed({_StateData data = const _StateData()}) : super(data);
 }
 
-final _factories = <Type, Function(_StateData data)>{
+final _factories = <Type, SigninState Function(_StateData)>{
   SigninInitial: (data) => SigninInitial(data: data),
   LoginSuccess: (data) => LoginSuccess(data: data),
   LoginFailed: (data) => LoginFailed(data: data),

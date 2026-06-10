@@ -16,11 +16,12 @@ abstract class ${classNameKey}State {
 
   T copyWith<T extends ${classNameKey}State>({
     _StateData? data,
-  }) {
-    return _factories[T == ${classNameKey}State ? runtimeType : T]!(
-      data ?? this.data,
-    );
-  }
+  }) =>
+      resolveState<${classNameKey}State, _StateData>(
+        _factories,
+        requested: T == ${classNameKey}State ? runtimeType : T,
+        data: data ?? this.data,
+      ) as T;
 }
 
 class ${classNameKey}Initial extends ${classNameKey}State {
@@ -29,11 +30,7 @@ class ${classNameKey}Initial extends ${classNameKey}State {
   }) : super(data);
 }
 
-final _factories = <
-    Type,
-    Function(
-  _StateData data,
-)>{
+final _factories = <Type, ${classNameKey}State Function(_StateData)>{
   ${classNameKey}Initial: (data) => ${classNameKey}Initial(
         data: data,
       ),
