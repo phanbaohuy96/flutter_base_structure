@@ -50,7 +50,7 @@ class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
   );
 
   @override
-  bool get canNext => _listingUsecase.pagination.canNext;
+  bool get canNext => _listingUsecase.canNext;
 
   @override
   Future<List<$modelNameKey>> fetchData({
