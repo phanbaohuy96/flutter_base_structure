@@ -31,7 +31,8 @@ class ListingUseCase<T, P> {
   int get fetchLimit => _fetchLimit;
 
   /// Whether the most recent fetch returned a full page, i.e. another page may
-  /// be available. `false` before the first fetch and after a short page.
+  /// be available. `false` before the first fetch, after a short page, and when
+  /// [fetchLimit] is non-positive (which would otherwise page forever).
   bool get canNext => _canNext;
 
   /// Resets the cursor and loads the first page.
@@ -48,7 +49,7 @@ class ListingUseCase<T, P> {
     final items = await _fetchPage(_loadedCount, _fetchLimit, page, param);
     _loadedCount += items.length;
     _page = page;
-    _canNext = items.length >= _fetchLimit;
+    _canNext = _fetchLimit > 0 && items.length >= _fetchLimit;
     return items;
   }
 }

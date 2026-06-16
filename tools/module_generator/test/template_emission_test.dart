@@ -6,20 +6,28 @@ import 'package:module_generator/res/templates/detail_module/source.dart';
 import 'package:module_generator/res/templates/listing_module/source.dart';
 
 /// Walks a template source map and yields every leaf template string keyed by
-/// its dotted path (e.g. `bloc.state`).
-Map<String, String> _flatten(
-  Map<dynamic, dynamic> source, [
-  String prefix = '',
-]) {
+/// its dotted path (e.g. `bloc.state`). Recurses into nested maps and lists so
+/// no template fragment is silently skipped; any other leaf type fails loudly
+/// rather than dropping out of coverage unnoticed.
+Map<String, String> _flatten(dynamic node, [String prefix = '']) {
   final result = <String, String>{};
-  source.forEach((key, value) {
-    final path = prefix.isEmpty ? '$key' : '$prefix.$key';
-    if (value is Map) {
-      result.addAll(_flatten(value, path));
-    } else if (value is String) {
+  void visit(String path, dynamic value) {
+    if (value is String) {
       result[path] = value;
+    } else if (value is Map) {
+      value.forEach((key, child) {
+        visit(path.isEmpty ? '$key' : '$path.$key', child);
+      });
+    } else if (value is List) {
+      for (var i = 0; i < value.length; i++) {
+        visit('$path[$i]', value[i]);
+      }
+    } else {
+      fail('unexpected template leaf type at "$path": ${value.runtimeType}');
     }
-  });
+  }
+
+  visit(prefix, node);
   return result;
 }
 
@@ -42,6 +50,10 @@ void main() {
       _flatten(source).forEach((path, template) {
         final emitted = _emit(template);
 
+        // Module generation only substitutes the keys `replaceContent` knows
+        // (class/module/model/import-part/route names), so ANY `%%...%%` token
+        // left in an emitted module template is a real defect, not just a key
+        // this test forgot to feed.
         test('$moduleName/$path leaves no unresolved placeholder', () {
           expect(
             RegExp(r'%%[A-Z_]+%%').firstMatch(emitted),
