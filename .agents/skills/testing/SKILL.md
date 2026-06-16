@@ -2,7 +2,6 @@
 name: testing
 description: Writes unit and widget tests for blocs, repositories, and screens using bloc_test + mocktail
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

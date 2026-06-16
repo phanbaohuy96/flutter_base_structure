@@ -2,7 +2,6 @@
 name: data-reviewer
 description: Reviews data-layer changes — Freezed DTOs, Retrofit clients, the storage seam, optional hive_ce stores, and repositories — against the template's conventions
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

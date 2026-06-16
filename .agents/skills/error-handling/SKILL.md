@@ -2,7 +2,6 @@
 name: error-handling
 description: Routes thrown errors through CoreBlocBase + CoreDelegate to StateBase's ErrorType-driven dialog/snackbar/login UI rather than a custom Failure type
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

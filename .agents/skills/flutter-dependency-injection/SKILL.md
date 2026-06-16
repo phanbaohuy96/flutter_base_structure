@@ -2,7 +2,6 @@
 name: flutter-dependency-injection
 description: Teaches and applies Flutter/Dart dependency injection with Injectable + GetIt, grounded in this repo's Clean Architecture and code generation conventions. Use when changing DI wiring, adding BLoCs/use cases/repositories/modules, using @Named/@preResolve/@factoryParam/env registrations, reviewing DI best practices, or setting up DI tests.
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

@@ -2,7 +2,6 @@
 name: extension-action
 description: Extracts screen handlers and bloc listeners into a part-of "*.action.dart" extension file
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

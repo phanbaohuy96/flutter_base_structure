@@ -2,7 +2,6 @@
 name: flutter-reviewer
 description: Reviews UI-layer changes — screens, blocs, widgets, routes — against the template's StateBase + CoreBlocBase + fl_theme conventions
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

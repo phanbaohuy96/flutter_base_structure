@@ -2,7 +2,6 @@
 name: data-layer
 description: Builds the data layer with Freezed DTOs, Retrofit clients, the storage-seam local data manager, and repositories wired through injectable
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

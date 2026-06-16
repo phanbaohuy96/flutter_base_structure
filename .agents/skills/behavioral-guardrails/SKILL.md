@@ -1,8 +1,7 @@
 ---
 name: behavioral-guardrails
-description: Behavioral guidelines for Flutter base tasks: clarify ambiguity, keep changes simple and surgical, and define verifiable success criteria before coding.
+description: "Behavioral guidelines for Flutter base tasks: clarify ambiguity, keep changes simple and surgical, and define verifiable success criteria before coding."
 license: MIT
-compatibility: all
 metadata:
   audience: ai-coding-agents
   framework: flutter

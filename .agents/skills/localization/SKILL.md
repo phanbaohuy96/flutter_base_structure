@@ -2,7 +2,6 @@
 name: localization
 description: Adds and updates app strings through the CSV → ARB → generated localizations workflow
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

@@ -2,7 +2,6 @@
 name: bloc-pattern
 description: Implements BLoC state management using CoreBlocBase, an abstract State hierarchy, and a freezed _StateData
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

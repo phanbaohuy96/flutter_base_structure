@@ -2,7 +2,6 @@
 name: theme-usage
 description: Applies the fl_theme design system via context.themeColor and context.textTheme without hard-coded colors or Material text-style names
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

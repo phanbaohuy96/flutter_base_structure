@@ -2,7 +2,6 @@
 name: module-scaffold
 description: Scaffolds a new feature module under apps/main/lib/presentation/modules using the bundled module generator
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

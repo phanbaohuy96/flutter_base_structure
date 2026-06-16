@@ -2,7 +2,6 @@
 name: route-config
 description: Configures routes with the IRoute / CustomRouter abstractions in core and exposes navigation via a BuildContext coordinator
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

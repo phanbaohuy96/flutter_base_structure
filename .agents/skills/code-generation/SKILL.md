@@ -2,7 +2,6 @@
 name: code-generation
 description: Runs build_runner across core, data_source, and apps/main via the makefile after edits to freezed/injectable/retrofit sources (and the optional Hive type adapters)
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

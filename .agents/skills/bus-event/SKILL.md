@@ -2,7 +2,6 @@
 name: bus-event
 description: Handles cross-feature BusEvent communication with EventBusManager in the Flutter base template
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter

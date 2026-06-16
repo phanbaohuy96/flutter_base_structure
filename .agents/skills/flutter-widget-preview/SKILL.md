@@ -2,7 +2,6 @@
 name: flutter-widget-preview
 description: Creates and runs previews with Flutter's official Widget Previewer using `@Preview` from `package:flutter/widget_previews.dart`. Use when the user asks to preview, showcase, inspect, or smoke-test a Flutter widget in the Widget Previewer.
 license: MIT
-compatibility: all
 metadata:
   audience: flutter-developers
   framework: flutter
