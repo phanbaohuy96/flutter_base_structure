@@ -23,6 +23,12 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
   /// Override this to disable automatic error handling
   bool get willHandleError => true;
 
+  /// The delegate this state registered its handlers with, captured at
+  /// [initState]. Held so [dispose] removes exactly the handlers it added,
+  /// even if the [delegate] getter would resolve differently (or throw)
+  /// once the element is defunct.
+  CoreDelegate? _activeDelegate;
+
   @override
   @mustCallSuper
   void initState() {
@@ -34,6 +40,7 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
   @override
   @mustCallSuper
   void dispose() {
+    _teardownDelegate();
     _logLifecycle('dispose');
     super.dispose();
   }
@@ -45,10 +52,23 @@ abstract class CoreStateBase<T extends StatefulWidget> extends State<T>
 
   /// Sets up delegate handlers for error and loading management
   void _setupDelegate() {
-    if (willHandleError) {
-      delegate?.addErrorHandler(onError);
-      delegate?.addLoadingHandler(invokeLoading);
+    if (!willHandleError) {
+      return;
     }
+    final activeDelegate = delegate;
+    _activeDelegate = activeDelegate;
+    activeDelegate?.addErrorHandler(onError);
+    activeDelegate?.addLoadingHandler(invokeLoading);
+  }
+
+  /// Removes the handlers registered in [_setupDelegate] so a delegate that
+  /// outlives this screen (e.g. a shared bloc) does not retain dead callbacks
+  /// or notify a disposed screen.
+  void _teardownDelegate() {
+    _activeDelegate
+      ?..removeErrorHandler(onError)
+      ..removeLoadingHandler(invokeLoading);
+    _activeDelegate = null;
   }
 
   /// Shows loading indicator with customizable options
