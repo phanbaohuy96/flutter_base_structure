@@ -24,6 +24,7 @@ class ThemePreviewPanel extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(context.decorationTheme.spaceLg),
             child: DeviceFrame(
+              key: const ValueKey('theme_device_frame'),
               device: options.selectedDevice.device,
               orientation: options.orientation,
               screen: Theme(data: Theme.of(context), child: preview),
