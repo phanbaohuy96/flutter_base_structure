@@ -72,6 +72,7 @@ void main() {
     addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(const ThemePlaygroundApp());
 
+    expect(find.byKey(const ValueKey('theme_device_frame')), findsOneWidget);
     await tester.dragUntilVisible(
       find.text('Show device frame'),
       find.byKey(const ValueKey('theme_controls_list')),
@@ -80,7 +81,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(SwitchListTile, 'Show device frame'));
     await tester.pumpAndSettle();
-    expect(find.byKey(const Key('frame')), findsOneWidget);
+    expect(find.byKey(const ValueKey('theme_device_frame')), findsNothing);
 
     await tester.tap(find.text('JSON'));
     await tester.pumpAndSettle();

@@ -5,9 +5,25 @@
 # FVM-aware command wrappers: use FVM if available, else fall back to system SDK
 FLUTTER := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo "flutter")
 DART    := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "dart")
+PACKAGE_DIRS := apps/main core modules/data_source \
+	plugins/fl_ui plugins/fl_ui/example \
+	plugins/fl_utils plugins/fl_utils/example \
+	plugins/fl_theme plugins/fl_theme/example \
+	plugins/fl_media plugins/fl_media/example \
+	plugins/fl_navigation plugins/fl_navigation/example \
+	tools/module_generator
+TEST_PACKAGE_DIRS := apps/main core \
+	plugins/fl_ui plugins/fl_ui/example \
+	plugins/fl_utils \
+	plugins/fl_theme plugins/fl_theme/example \
+	plugins/fl_media/example \
+	plugins/fl_navigation \
+	tools/module_generator
+ANALYZE_DIRS := $(if $(PACKAGES),$(PACKAGES),$(PACKAGE_DIRS))
+TEST_DIRS := $(if $(PACKAGES),$(PACKAGES),$(TEST_PACKAGE_DIRS))
 
 # Main targets
-.PHONY: setup build run test clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
+.PHONY: setup build run test analyze clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
 	app_identifier create_project reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
 
@@ -59,6 +75,8 @@ help:
 	@echo "  make build_web          - Build web app"
 	@echo ""
 	@echo "Testing and Coverage:"
+	@echo "  make analyze           - Run flutter analyze for all packages, or PACKAGES=\"apps/main core\""
+	@echo "  make test              - Run tests for packages with test files, or PACKAGES=\"apps/main core\""
 	@echo "  make coverage_main      - Generate test coverage report for main app"
 	@echo ""
 	@echo "Maintenance:"
@@ -377,6 +395,46 @@ build_web:
 ################################################################################
 # Testing and Coverage
 ################################################################################
+
+# Analyze all packages
+analyze:
+	@status=0; \
+	for package in $(ANALYZE_DIRS); do \
+		printf "Analyzing %s... " "$$package"; \
+		log_file=$$(mktemp); \
+		if (cd "$$package" && $(FLUTTER) analyze > "$$log_file" 2>&1); then \
+			echo "ok"; \
+			rm -f "$$log_file"; \
+		else \
+			package_status=$$?; \
+			echo "failed"; \
+			cat "$$log_file"; \
+			rm -f "$$log_file"; \
+			status=$$package_status; \
+		fi; \
+	done; \
+	exit $$status
+
+# Run tests for packages that currently define test suites
+test:
+	@status=0; \
+	for package in $(TEST_DIRS); do \
+		if find "$$package/test" -name '*_test.dart' -print -quit | grep -q .; then \
+			printf "Testing %s... " "$$package"; \
+			log_file=$$(mktemp); \
+			if (cd "$$package" && $(FLUTTER) test > "$$log_file" 2>&1); then \
+				echo "ok"; \
+				rm -f "$$log_file"; \
+			else \
+				package_status=$$?; \
+				echo "failed"; \
+				cat "$$log_file"; \
+				rm -f "$$log_file"; \
+				status=$$package_status; \
+			fi; \
+		fi; \
+	done; \
+	exit $$status
 
 # Generate test coverage report for main app
 coverage_main:

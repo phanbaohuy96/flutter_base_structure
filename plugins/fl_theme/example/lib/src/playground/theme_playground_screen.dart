@@ -54,8 +54,9 @@ class _ThemePlaygroundScreenState extends State<ThemePlaygroundScreen> {
             return LayoutBuilder(
               builder: (context, constraints) {
                 final wide = constraints.maxWidth >= 1000;
-                final panelHeight = constraints.maxHeight
-                    .clamp(560.0, constraints.maxHeight)
+                final panelHeight = (wide
+                        ? constraints.maxHeight
+                        : constraints.maxHeight.clamp(560.0, double.infinity))
                     .toDouble();
                 final editor = _buildEditorCard(decoration, panelHeight);
                 final preview = _buildPreviewCard(theme.theme, decoration);

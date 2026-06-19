@@ -87,6 +87,8 @@ Useful make targets:
 | `make build` | Interactive Android/iOS distribution wrapper |
 | `make run_web_dev` / `make run_web_staging` | Run web server on port 3000 for dev/staging |
 | `make build_web` | Interactive web build wrapper |
+| `make analyze` | Run analyzer across all packages; scope with `PACKAGES="apps/main core"` |
+| `make test` | Run tests for packages with test files; scope with `PACKAGES="apps/main core"` |
 | `make coverage_main` | Generate coverage for `apps/main` |
 | `make format` | Run `dart format .` |
 | `make clean` / `make clean_force` | Clean project build outputs |
