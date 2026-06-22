@@ -78,7 +78,7 @@ When changing app identity, edit `app_identifier.yaml`, update Android namespace
 
 ## Operating Principles
 
-These generic agent rules come before implementation details. For the full checklist, use `.agents/skills/behavioral-guardrails/SKILL.md`.
+These generic agent rules come before implementation details. For the full checklist, use `.agents/skills/fl-behavioral-guardrails/SKILL.md`.
 
 1. **Think before coding**: do not silently choose an interpretation when the request is ambiguous. State assumptions, surface tradeoffs, and ask before changing identifiers, signing, CI/CD, generated workflows, or broad formatting.
 2. **Simplicity first**: write the minimum code that solves the current request. Reuse existing repo patterns, widgets, helpers, and skills before adding new abstractions.
@@ -292,7 +292,7 @@ extension SettingsScreenAction on _SettingsScreenState {
 
 ## BLoC Standards
 
-Follow the repository `bloc-pattern` skill. This template does **not** use the typical Freezed union shape for BLoC events/states.
+Follow the repository `fl-bloc-pattern` skill. This template does **not** use the typical Freezed union shape for BLoC events/states.
 
 Rules:
 
@@ -469,7 +469,7 @@ flutter run -d web-server --web-hostname 127.0.0.1 --web-port 55123 \
   -t lib/main_dev.dart --dart-define-from-file=./.env
 ```
 
-Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the testing skill for the generic browser workflow.
+Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the fl-testing skill for the generic browser workflow.
 
 ### E2E testing (flutter_skill)
 

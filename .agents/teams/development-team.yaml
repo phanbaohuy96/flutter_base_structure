@@ -43,13 +43,13 @@ team:
         - strategic_planning
       triggers: ["should I", architecture, design, review]
       skills:
-        - bloc-pattern
-        - bus-event
-        - route-config
-        - error-handling
-        - data-layer
-        - flutter-reviewer
-        - data-reviewer
+        - fl-bloc-pattern
+        - fl-bus-event
+        - fl-route-config
+        - fl-error-handling
+        - fl-data-layer
+        - fl-reviewer
+        - fl-data-reviewer
 
     - role: security_auditor
       agent: security-auditor
@@ -60,8 +60,8 @@ team:
         - remediation_guidance
       triggers: [security, vulnerability, audit, scan]
       skills:
-        - data-layer            # auth, token storage, network surface
-        - error-handling        # how unauthorized + 4xx flow
+        - fl-data-layer            # auth, token storage, network surface
+        - fl-error-handling        # how unauthorized + 4xx flow
 
     - role: researcher
       agent: researcher
@@ -81,9 +81,9 @@ team:
         - visual_design
       triggers: [design, UI, UX, style, visual]
       skills:
-        - theme-usage
-        - extension-action
-        - localization
+        - fl-theme-usage
+        - fl-extension-action
+        - fl-localization
 
     - role: fixer
       agent: fixer
@@ -94,17 +94,17 @@ team:
         - refactoring
       triggers: [fix, implement, create, build, write]
       skills:
-        - module-scaffold
-        - bloc-pattern
-        - bus-event
-        - extension-action
-        - route-config
-        - theme-usage
-        - data-layer
-        - localization
-        - error-handling
-        - code-generation
-        - testing
+        - fl-module-scaffold
+        - fl-bloc-pattern
+        - fl-bus-event
+        - fl-extension-action
+        - fl-route-config
+        - fl-theme-usage
+        - fl-data-layer
+        - fl-localization
+        - fl-error-handling
+        - fl-code-generation
+        - fl-testing
 
     - role: git_master
       agent: git-master
@@ -115,7 +115,7 @@ team:
         - atomic_commits
       triggers: [commit, git, rebase, history]
       skills:
-        - code-generation       # ensure generated files are staged before commit
+        - fl-code-generation       # ensure generated files are staged before commit
 
 # Handoff Protocol
 handoff:
@@ -139,11 +139,11 @@ handoff:
     - condition: ui_review_needed
       target: oracle
       context_transfer: full
-      hint: load flutter-reviewer
+      hint: load fl-reviewer
     - condition: data_layer_review_needed
       target: oracle
       context_transfer: full
-      hint: load data-reviewer
+      hint: load fl-data-reviewer
   termination_conditions:
     - type: max_messages
       value: 50
@@ -160,9 +160,9 @@ collaboration:
     1. orchestrator receives task
     2. orchestrator decomposes and delegates
     3. specialists complete their tasks
-    4. fixer implements changes (loads module-scaffold / bloc-pattern / etc.)
-    5. oracle reviews via flutter-reviewer or data-reviewer
-    6. git_master runs code-generation, then creates atomic commits
+    4. fixer implements changes (loads fl-module-scaffold / fl-bloc-pattern / etc.)
+    5. oracle reviews via fl-reviewer or fl-data-reviewer
+    6. git_master runs fl-code-generation, then creates atomic commits
     7. orchestrator verifies completion
 
 # Common workflows expressed as agent + skill chains
@@ -170,24 +170,24 @@ workflows:
   new_feature:
     description: Add a new screen with bloc, route, and tests
     chain:
-      - { agent: fixer, skills: [module-scaffold] }
-      - { agent: fixer, skills: [bloc-pattern, extension-action] }
-      - { agent: fixer, skills: [route-config] }
-      - { agent: designer, skills: [theme-usage, localization] }
-      - { agent: fixer, skills: [code-generation] }
-      - { agent: fixer, skills: [testing] }
-      - { agent: oracle, skills: [flutter-reviewer] }
+      - { agent: fixer, skills: [fl-module-scaffold] }
+      - { agent: fixer, skills: [fl-bloc-pattern, fl-extension-action] }
+      - { agent: fixer, skills: [fl-route-config] }
+      - { agent: designer, skills: [fl-theme-usage, fl-localization] }
+      - { agent: fixer, skills: [fl-code-generation] }
+      - { agent: fixer, skills: [fl-testing] }
+      - { agent: oracle, skills: [fl-reviewer] }
       - { agent: git_master }
 
   api_integration:
     description: Wrap a new endpoint into repo + bloc
     chain:
-      - { agent: fixer, skills: [data-layer] }
-      - { agent: fixer, skills: [code-generation] }
-      - { agent: fixer, skills: [bloc-pattern] }
-      - { agent: fixer, skills: [error-handling] }
-      - { agent: fixer, skills: [testing] }
-      - { agent: oracle, skills: [data-reviewer] }
+      - { agent: fixer, skills: [fl-data-layer] }
+      - { agent: fixer, skills: [fl-code-generation] }
+      - { agent: fixer, skills: [fl-bloc-pattern] }
+      - { agent: fixer, skills: [fl-error-handling] }
+      - { agent: fixer, skills: [fl-testing] }
+      - { agent: oracle, skills: [fl-data-reviewer] }
       - { agent: git_master }
 
   bug_fix:
@@ -196,14 +196,14 @@ workflows:
       - { agent: explorer }
       - { agent: oracle }
       - { agent: fixer }
-      - { agent: fixer, skills: [testing] }
+      - { agent: fixer, skills: [fl-testing] }
       - { agent: git_master }
 
   pr_review:
     description: Review by area
     chain:
-      - { agent: oracle, skills: [flutter-reviewer] }   # presentation/
-      - { agent: oracle, skills: [data-reviewer] }      # data/
+      - { agent: oracle, skills: [fl-reviewer] }   # presentation/
+      - { agent: oracle, skills: [fl-data-reviewer] }      # data/
 
 # Project conventions referenced by skills
 project_config:

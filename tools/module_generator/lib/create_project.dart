@@ -242,7 +242,7 @@ Essential customisation:
 7.  Review and update AGENTS.md to match your project name, package ID,
     and locale setup (update stack versions too if needed)
 8.  Review .agents/skills/ — update skill references to match your
-    project (e.g. localization skill: update language pair, locale codes)
+    project (e.g. fl-localization skill: update language pair, locale codes)
 
 Platform & distribution:
 9.  Update signing certs, Firebase configs, and keystore values:

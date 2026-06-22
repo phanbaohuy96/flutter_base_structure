@@ -24,7 +24,7 @@
 ## ⚠️ Caution items
 
 - [ ] Distribution/signing changes reviewed (`app_identifier.yaml`, bundle IDs, keystores, Fastfile)
-- [ ] `.agents/skills/` checked for relevant pattern guidance (e.g., bloc-pattern, data-layer, localization)
+- [ ] `.agents/skills/` checked for relevant pattern guidance (e.g., fl-bloc-pattern, fl-data-layer, fl-localization)
 
 ## Screenshots (if UI change)
 

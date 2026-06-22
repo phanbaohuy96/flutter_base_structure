@@ -48,53 +48,53 @@ the available roles:
 ## Letting skills auto-load
 
 Just describe what you want. The agent picks the right skill from
-[`INDEX.md`](./INDEX.md). For non-trivial work, start with `behavioral-guardrails` to clarify assumptions, keep the diff small, and define verification:
+[`INDEX.md`](./INDEX.md). For non-trivial work, start with `fl-behavioral-guardrails` to clarify assumptions, keep the diff small, and define verification:
 
 ```
 "Add a farm-registration feature with a list and detail screen."
-→ agent loads module-scaffold, then bloc-pattern, then route-config
+→ agent loads fl-module-scaffold, then fl-bloc-pattern, then fl-route-config
 ```
 
 You can also call a skill explicitly:
 
 ```
-"Use bloc-pattern to wire up the form submission flow."
-"Use bus-event to sync the list after updates from another feature."
+"Use fl-bloc-pattern to wire up the form submission flow."
+"Use fl-bus-event to sync the list after updates from another feature."
 ```
 
 ## Common workflows
 
 ### New feature
 
-1. `behavioral-guardrails` — clarify scope, success criteria, and verification
-2. `module-scaffold` — generate the module via `make run_module_generator`
-3. `bloc-pattern` — author events, `_StateData`, state classes
-4. `route-config` — register the route, expose a coordinator
-5. `theme-usage` — style with `context.themeColor` / `context.textTheme`
-6. `localization` — add strings to `apps/main/lib/l10n/localizations.csv`
-7. `code-generation` — `make gen_all` (and `make lang` if strings changed)
-8. `testing` — bloc + widget tests
+1. `fl-behavioral-guardrails` — clarify scope, success criteria, and verification
+2. `fl-module-scaffold` — generate the module via `make run_module_generator`
+3. `fl-bloc-pattern` — author events, `_StateData`, state classes
+4. `fl-route-config` — register the route, expose a coordinator
+5. `fl-theme-usage` — style with `context.themeColor` / `context.textTheme`
+6. `fl-localization` — add strings to `apps/main/lib/l10n/localizations.csv`
+7. `fl-code-generation` — `make gen_all` (and `make lang` if strings changed)
+8. `fl-testing` — bloc + widget tests
 
 ### API integration
 
-1. `data-layer` — Freezed DTO + Retrofit client + repository
-2. `code-generation` — `make gen_all`
-3. `bloc-pattern` — wire the repo through a usecase into a bloc
-4. `error-handling` — only if you need behavior beyond the default UI router
-5. `testing` — repository + bloc tests with mocktail
+1. `fl-data-layer` — Freezed DTO + Retrofit client + repository
+2. `fl-code-generation` — `make gen_all`
+3. `fl-bloc-pattern` — wire the repo through a usecase into a bloc
+4. `fl-error-handling` — only if you need behavior beyond the default UI router
+5. `fl-testing` — repository + bloc tests with mocktail
 
 ### Bug fix
 
 1. `@explorer` — locate the failing path
 2. `@oracle` — agree on the root cause
 3. `@fixer` — implement the fix
-4. `testing` — pin it with a regression test
+4. `fl-testing` — pin it with a regression test
 5. `@git-master` — atomic commit
 
 ### PR review
 
-- `data-reviewer` for changes under `data/`
-- `flutter-reviewer` for changes under `presentation/`
+- `fl-data-reviewer` for changes under `data/`
+- `fl-reviewer` for changes under `presentation/`
 
 ## Conventions in one screen
 
