@@ -64,7 +64,7 @@ make setup
 
 # 3. Run the dev app on a device, simulator or emulator.
 cd apps/main
-flutter run --flavor dev -t lib/main_dev.dart --dart-define-from-file=./.env
+flutter run --flavor dev -t lib/main.dart --dart-define-from-file=./.env
 ```
 
 Useful make targets:
@@ -103,7 +103,7 @@ Useful make targets:
   ```bash
   cd apps/main
   flutter run -d web-server --web-hostname 127.0.0.1 --web-port 55123 \
-    -t lib/main_dev.dart --dart-define-from-file=./.env
+    -t lib/main.dart --dart-define-from-file=./.env
   ```
 
   `make run_web_dev` remains the standard dev web shortcut on port 3000.
@@ -132,18 +132,9 @@ The native Android/iOS flavor identifiers currently include:
 | `sandbox` | `com.pbh.myflutterbase.sandbox` | My Flutter Base SANDBOX |
 | `prod` | `com.pbh.myflutterbase` | My Flutter Base |
 
-Dart entry points currently present in `apps/main/lib/`:
-
-| Entry point | App config |
-| --- | --- |
-| `main_dev.dart` | `AppEnv.devEnv` |
-| `main_staging.dart` | `AppEnv.stagingEnv` |
-| `main.dart` | `AppEnv.prodEnv` |
-
-The Android product flavors and iOS identifiers include `sandbox`, but this
-codebase does not currently include `apps/main/lib/main_sandbox.dart`. Add the
-missing entry point and update `apps/main/dist_config.sh` before relying on a
-scripted sandbox distribution flow.
+The Dart app uses a single entry point: `apps/main/lib/main.dart`. Runtime
+environment selection comes from `DART_ENV_NAME` in `apps/main/.env` through
+`--dart-define-from-file`; blank or missing values default to `DEV`.
 
 When changing app identity, update `apps/main/app_identifier.yaml`, regenerate
 identifiers, and keep the Android namespace/package path aligned at:

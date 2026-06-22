@@ -258,7 +258,7 @@ Verification:
 12. Run make setup (pub_get + lang + asset + gen_all)
 13. Run make analyze or fvm flutter analyze to check for issues
 14. Update README.md with your project description and badges
-15. Run the app on each flavor to verify: flutter run -t lib/main_dev.dart
+15. Run the app on each flavor to verify: flutter run -t lib/main.dart
 ''');
   }
 }
