@@ -232,8 +232,33 @@ Next steps:
 1. cd ${result.destination}
 2. cp apps/main/.env.example apps/main/.env
 3. cp apps/main/android/keystores/keystore.properties.example apps/main/android/keystores/keystore.properties
-4. Update signing, Firebase, App Store, and environment values.
-5. Run make pub_get, then make setup if needed.
+4. Run make pub_get
+
+Essential customisation:
+5.  Update apps/main/lib/l10n/localizations.csv — replace Vietnamese (vi)
+    column with your target languages, then run make lang
+6.  Replace app icon assets in apps/main/{android,ios}/ — see
+    apps/main/README.md or the scripts/ directory for icon generation
+7.  Review and update AGENTS.md to match your project name, package ID,
+    and locale setup (update stack versions too if needed)
+8.  Review .agents/skills/ — update skill references to match your
+    project (e.g. localization skill: update language pair, locale codes)
+
+Platform & distribution:
+9.  Update signing certs, Firebase configs, and keystore values:
+    - apps/main/android/keystores/keystore.properties
+    - apps/main/android/app/google-services.json (one per flavor)
+    - apps/main/ios/Flutter/AppSpecific.xcconfig
+    - apps/main/ios/signing_res/ (provisioning profiles per flavor)
+    - apps/main/fastlane/Fastfile
+10. Read apps/main/CICD_SECRETS_SETUP.md and configure CI secrets
+11. Read apps/main/ios/QUICK_START.md and apps/main/ios/PROVISIONING_PROFILE_SETUP.md
+
+Verification:
+12. Run make setup (pub_get + lang + asset + gen_all)
+13. Run make analyze or fvm flutter analyze to check for issues
+14. Update README.md with your project description and badges
+15. Run the app on each flavor to verify: flutter run -t lib/main_dev.dart
 ''');
   }
 }
