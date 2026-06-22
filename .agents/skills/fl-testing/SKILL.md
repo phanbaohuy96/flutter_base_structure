@@ -66,7 +66,7 @@ Use the flutter-skill MCP only when the user asks for E2E or spec verification o
 If no debug session is running, start one yourself when a simulator/emulator is available and the local Flutter/FVM toolchain is available:
 
 ```bash
-fvm flutter run -t lib/main_dev.dart --flavor dev -d <id>
+fvm flutter run -t lib/main.dart --flavor dev -d <id>
 ```
 
 Ask the user only for prerequisites you cannot perform yourself, such as installing/loading the `flutter-skill` MCP server or booting a missing simulator.

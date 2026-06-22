@@ -24,7 +24,7 @@ Then run the app:
 
 ```bash
 cd apps/main
-flutter run --flavor dev -t lib/main_dev.dart \
+flutter run --flavor dev -t lib/main.dart \
   --dart-define-from-file=./.env
 ```
 

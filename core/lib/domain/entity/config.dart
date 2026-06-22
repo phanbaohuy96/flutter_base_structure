@@ -85,13 +85,13 @@ class AppConfig {
 
   bool get isStagBuild => envName == Env.stagingEnvName;
 
-  bool get isSanboxBuild => envName == Env.stagingEnvName;
+  bool get isSanboxBuild => envName == Env.sanboxEnvName;
 
   bool get isProdBuild => envName == Env.prodEnvName;
 
   factory AppConfig.fromDart({
     String app = '',
-    String envName = '',
+    String envName = Env.devEnvName,
     String baseApiLayer = '',
     String storageApiLayer = '',
     String baseGraphQLUrl = '',
@@ -102,7 +102,7 @@ class AppConfig {
     FirebaseEnv firebase = const FirebaseEnv(),
   }) {
     const _app = String.fromEnvironment('DART_APP');
-    const _envName = String.fromEnvironment('DART_EVN_NAME');
+    const _envName = String.fromEnvironment('DART_ENV_NAME');
     const _baseApiLayer = String.fromEnvironment('DART_BASE_API_LAYER');
     const _storageApiLayer = String.fromEnvironment('DART_STORAGE_API_LAYER');
     const _baseGraphQLUrl = String.fromEnvironment('DART_BASE_GRAPHQL_URL');

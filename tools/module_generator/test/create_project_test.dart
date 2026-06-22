@@ -376,7 +376,7 @@ key,en,vi
 poweredByApp,Powered by $_oldDisplayName,Được cung cấp bởi $_oldDisplayName
 ''');
   await _write(root, 'apps/main/dist_config.sh', '''
-dev_development_exportOptionsPlist="ios/signing_res/development/ExportOptions.plist"
+DEV_DEVELOPMENT_EXPORT_OPTIONS_PLIST="ios/signing_res/development/ExportOptions.plist"
 ''');
   await _write(root, 'apps/main/fastlane/Fastfile', '''
 upload_to_play_store(
