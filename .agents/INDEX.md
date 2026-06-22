@@ -6,44 +6,44 @@ One-line index of every skill under [`./skills/`](./skills/).
 
 | Skill | Purpose | When to use |
 |---|---|---|
-| [`behavioral-guardrails`](./skills/behavioral-guardrails/SKILL.md) | Clarify, simplify, make surgical changes, verify | Planning, implementing, reviewing, or refactoring |
-| [`module-scaffold`](./skills/module-scaffold/SKILL.md) | Scaffold a feature module | Starting a new screen / feature |
-| [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `CoreBlocBase` + `_StateData` + `_factories` | Adding or modifying state management |
-| [`bus-event`](./skills/bus-event/SKILL.md) | Cross-feature event synchronization | Publishing or listening to `BusEvent` updates |
-| [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` for screen handlers | Splitting handlers out of a bloated screen |
-| [`route-config`](./skills/route-config/SKILL.md) | `IRoute` + `CustomRouter` + optional coordinator | Wiring navigation |
-| [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` | Styling a widget |
-| [`flutter-widget-preview`](./skills/flutter-widget-preview/SKILL.md) | Official `@Preview` / `flutter widget-preview` workflow | Previewing or showcasing Flutter widgets |
-| [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repo (Hive optional) | Talking to an API or local store |
-| [`flutter-dependency-injection`](./skills/flutter-dependency-injection/SKILL.md) | Injectable + GetIt composition boundaries and DI review | Wiring or reviewing dependencies |
-| [`error-handling`](./skills/error-handling/SKILL.md) | `CoreBlocBase.onError` + `ErrorType` router | Deciding what to do with a thrown error |
-| [`localization`](./skills/localization/SKILL.md) | CSV → ARB → `AppLocalizations` | Adding translations |
-| [`code-generation`](./skills/code-generation/SKILL.md) | `make gen_all` and friends | After editing freezed/retrofit/injectable |
-| [`testing`](./skills/testing/SKILL.md) | bloc_test + mocktail + widget tests | Writing or running tests |
+| [`fl-behavioral-guardrails`](./skills/fl-behavioral-guardrails/SKILL.md) | Clarify, simplify, make surgical changes, verify | Planning, implementing, reviewing, or refactoring |
+| [`fl-module-scaffold`](./skills/fl-module-scaffold/SKILL.md) | Scaffold a feature module | Starting a new screen / feature |
+| [`fl-bloc-pattern`](./skills/fl-bloc-pattern/SKILL.md) | `CoreBlocBase` + `_StateData` + `_factories` | Adding or modifying state management |
+| [`fl-bus-event`](./skills/fl-bus-event/SKILL.md) | Cross-feature event synchronization | Publishing or listening to `BusEvent` updates |
+| [`fl-extension-action`](./skills/fl-extension-action/SKILL.md) | `*.action.dart` for screen handlers | Splitting handlers out of a bloated screen |
+| [`fl-route-config`](./skills/fl-route-config/SKILL.md) | `IRoute` + `CustomRouter` + optional coordinator | Wiring navigation |
+| [`fl-theme-usage`](./skills/fl-theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` | Styling a widget |
+| [`fl-widget-preview`](./skills/fl-widget-preview/SKILL.md) | Official `@Preview` / `flutter widget-preview` workflow | Previewing or showcasing Flutter widgets |
+| [`fl-data-layer`](./skills/fl-data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repo (Hive optional) | Talking to an API or local store |
+| [`fl-dependency-injection`](./skills/fl-dependency-injection/SKILL.md) | Injectable + GetIt composition boundaries and DI review | Wiring or reviewing dependencies |
+| [`fl-error-handling`](./skills/fl-error-handling/SKILL.md) | `CoreBlocBase.onError` + `ErrorType` router | Deciding what to do with a thrown error |
+| [`fl-localization`](./skills/fl-localization/SKILL.md) | CSV → ARB → `AppLocalizations` | Adding translations |
+| [`fl-code-generation`](./skills/fl-code-generation/SKILL.md) | `make gen_all` and friends | After editing freezed/retrofit/injectable |
+| [`fl-testing`](./skills/fl-testing/SKILL.md) | bloc_test + mocktail + widget tests | Writing or running tests |
 
 ## Review
 
 | Skill | Purpose | When to use |
 |---|---|---|
-| [`data-reviewer`](./skills/data-reviewer/SKILL.md) | Data-layer review checklist | Reviewing a diff under `data/` |
-| [`flutter-reviewer`](./skills/flutter-reviewer/SKILL.md) | UI-layer review checklist | Reviewing a diff under `presentation/` |
+| [`fl-data-reviewer`](./skills/fl-data-reviewer/SKILL.md) | Data-layer review checklist | Reviewing a diff under `data/` |
+| [`fl-reviewer`](./skills/fl-reviewer/SKILL.md) | UI-layer review checklist | Reviewing a diff under `presentation/` |
 
 ## Decision shortcuts
 
 ```
-Any non-trivial change?        → behavioral-guardrails
-Starting a feature?            → module-scaffold → bloc-pattern → route-config
-Cleaning up a screen?          → extension-action
-Adding a network endpoint?     → data-layer → flutter-dependency-injection → bloc-pattern
-Syncing state across features? → bus-event
-After editing annotated code?  → code-generation
-Adding user-facing strings?    → localization
-Writing tests?                 → testing
-Reviewing data-layer PR?       → data-reviewer
-Reviewing UI PR?               → flutter-reviewer
-Custom error UX?               → error-handling
-Styling questions?             → theme-usage
-Previewing a widget?           → flutter-widget-preview → theme-usage
+Any non-trivial change?        → fl-behavioral-guardrails
+Starting a feature?            → fl-module-scaffold → fl-bloc-pattern → fl-route-config
+Cleaning up a screen?          → fl-extension-action
+Adding a network endpoint?     → fl-data-layer → fl-dependency-injection → fl-bloc-pattern
+Syncing state across features? → fl-bus-event
+After editing annotated code?  → fl-code-generation
+Adding user-facing strings?    → fl-localization
+Writing tests?                 → fl-testing
+Reviewing data-layer PR?       → fl-data-reviewer
+Reviewing UI PR?               → fl-reviewer
+Custom error UX?               → fl-error-handling
+Styling questions?             → fl-theme-usage
+Previewing a widget?           → fl-widget-preview → fl-theme-usage
 ```
 
 ## Related

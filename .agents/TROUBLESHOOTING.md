@@ -87,7 +87,7 @@ won't show a dialog. Either:
 2. Catch only the specific exception you can recover from and rethrow
    the rest.
 
-See [`error-handling`](./skills/error-handling/SKILL.md).
+See [`fl-error-handling`](./skills/fl-error-handling/SKILL.md).
 
 ---
 
@@ -126,7 +126,7 @@ hook is provided.
 ### Reference to `BrandColor.*` won't compile
 
 `BrandColor` does not exist in this template. Use `context.themeColor.*`
-instead — see [`theme-usage`](./skills/theme-usage/SKILL.md) for the
+instead — see [`fl-theme-usage`](./skills/fl-theme-usage/SKILL.md) for the
 mapping.
 
 ### `context.textTheme.titleMd` undefined

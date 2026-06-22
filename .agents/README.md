@@ -17,28 +17,28 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 
 | Skill | What it covers |
 |---|---|
-| [`behavioral-guardrails`](./skills/behavioral-guardrails/SKILL.md) | Clarify ambiguity, avoid overengineering, keep diffs surgical, verify outcomes |
-| [`module-scaffold`](./skills/module-scaffold/SKILL.md) | Scaffold a feature module via `make run_module_generator` or by hand |
-| [`bloc-pattern`](./skills/bloc-pattern/SKILL.md) | `CoreBlocBase` + abstract state hierarchy + freezed `_StateData` |
-| [`bus-event`](./skills/bus-event/SKILL.md) | Cross-feature synchronization with `EventBusManager` |
-| [`extension-action`](./skills/extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
-| [`route-config`](./skills/route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
-| [`theme-usage`](./skills/theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
-| [`flutter-widget-preview`](./skills/flutter-widget-preview/SKILL.md) | Official Flutter Widget Previewer with `@Preview` and `flutter widget-preview start` |
-| [`data-layer`](./skills/data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repository wired through injectable (Hive optional) |
-| [`flutter-dependency-injection`](./skills/flutter-dependency-injection/SKILL.md) | Injectable + GetIt boundaries, lifetimes, contracts, codegen, and DI tests |
-| [`error-handling`](./skills/error-handling/SKILL.md) | Throw → `CoreBlocBase.onError` → `StateBase` `ErrorType` router |
-| [`localization`](./skills/localization/SKILL.md) | CSV → ARB → generated `AppLocalizations` |
-| [`code-generation`](./skills/code-generation/SKILL.md) | `make gen_all` / `make gen_<scope>` / `make lang` |
-| [`testing`](./skills/testing/SKILL.md) | bloc_test + mocktail patterns; `flutter test` / `make coverage_main` |
-| [`data-reviewer`](./skills/data-reviewer/SKILL.md) | Review checklist for data-layer diffs |
-| [`flutter-reviewer`](./skills/flutter-reviewer/SKILL.md) | Review checklist for UI-layer diffs |
+| [`fl-behavioral-guardrails`](./skills/fl-behavioral-guardrails/SKILL.md) | Clarify ambiguity, avoid overengineering, keep diffs surgical, verify outcomes |
+| [`fl-module-scaffold`](./skills/fl-module-scaffold/SKILL.md) | Scaffold a feature module via `make run_module_generator` or by hand |
+| [`fl-bloc-pattern`](./skills/fl-bloc-pattern/SKILL.md) | `CoreBlocBase` + abstract state hierarchy + freezed `_StateData` |
+| [`fl-bus-event`](./skills/fl-bus-event/SKILL.md) | Cross-feature synchronization with `EventBusManager` |
+| [`fl-extension-action`](./skills/fl-extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
+| [`fl-route-config`](./skills/fl-route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
+| [`fl-theme-usage`](./skills/fl-theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
+| [`fl-widget-preview`](./skills/fl-widget-preview/SKILL.md) | Official Flutter Widget Previewer with `@Preview` and `flutter widget-preview start` |
+| [`fl-data-layer`](./skills/fl-data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repository wired through injectable (Hive optional) |
+| [`fl-dependency-injection`](./skills/fl-dependency-injection/SKILL.md) | Injectable + GetIt boundaries, lifetimes, contracts, codegen, and DI tests |
+| [`fl-error-handling`](./skills/fl-error-handling/SKILL.md) | Throw → `CoreBlocBase.onError` → `StateBase` `ErrorType` router |
+| [`fl-localization`](./skills/fl-localization/SKILL.md) | CSV → ARB → generated `AppLocalizations` |
+| [`fl-code-generation`](./skills/fl-code-generation/SKILL.md) | `make gen_all` / `make gen_<scope>` / `make lang` |
+| [`fl-testing`](./skills/fl-testing/SKILL.md) | bloc_test + mocktail patterns; `flutter test` / `make coverage_main` |
+| [`fl-data-reviewer`](./skills/fl-data-reviewer/SKILL.md) | Review checklist for data-layer diffs |
+| [`fl-reviewer`](./skills/fl-reviewer/SKILL.md) | Review checklist for UI-layer diffs |
 
 ## Conventions enforced
 
 These skills assume the structure shipped by the template:
 
-- Behavioral guardrails from `behavioral-guardrails`: clarify ambiguity, keep changes simple, avoid unrelated churn, and verify outcomes.
+- Behavioral guardrails from `fl-behavioral-guardrails`: clarify ambiguity, keep changes simple, avoid unrelated churn, and verify outcomes.
 - Clean architecture: `presentation/` → `domain/` → `data/`.
 - BLoC via `flutter_bloc` + `bloc_concurrency`, with the `_StateData`
   pattern + `_factories` map (not freezed sealed unions).
