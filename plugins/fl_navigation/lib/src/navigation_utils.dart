@@ -6,6 +6,38 @@ import 'package:go_router/go_router.dart';
 /// Controls how GoRouter interprets destination strings.
 enum GoRouterNavigationTarget { location, name }
 
+/// Rebuilds [uri] with [mutate] applied to its query parameters.
+///
+/// `Uri.replace(queryParameters: {})` keeps `hasQuery == true` for an
+/// explicit-but-empty map, which leaves a dangling `?` in `toString()`
+/// (e.g. `/orders?` instead of `/orders`) — only omitting `queryParameters`
+/// entirely drops the `?`. Route redirects that strip query params (locale,
+/// tracking params, etc.) should go through this helper instead of calling
+/// `Uri.replace` directly, so that mistake can't be reintroduced per call site.
+Uri withQueryParameters(
+  Uri uri,
+  Map<String, String> Function(Map<String, String> query) mutate,
+) {
+  final nextQueryParameters = mutate(
+    Map<String, String>.from(uri.queryParameters),
+  );
+  if (nextQueryParameters.isNotEmpty) {
+    return uri.replace(queryParameters: nextQueryParameters);
+  }
+  // Uri.replace can't clear a query outright (a `null` query/queryParameters
+  // means "keep the existing one"), so the empty case has to be rebuilt from
+  // scratch — but every other component must be copied across explicitly,
+  // or an absolute uri would silently lose its scheme/authority here.
+  return Uri(
+    scheme: uri.hasScheme ? uri.scheme : null,
+    userInfo: uri.hasAuthority && uri.userInfo.isNotEmpty ? uri.userInfo : null,
+    host: uri.hasAuthority ? uri.host : null,
+    port: uri.hasAuthority ? uri.port : null,
+    path: uri.path,
+    fragment: uri.hasFragment ? uri.fragment : null,
+  );
+}
+
 abstract class PushBehavior {
   const PushBehavior({
     this.rootNavigator = false,
@@ -24,14 +56,26 @@ abstract class PushBehavior {
   });
 
   Uri buildUri(String routeName, Object? arguments) {
-    return Uri(
-      path: routeName,
-      queryParameters: arguments?.let((it) {
-        if (it is Map<String, dynamic> && kIsWeb) {
-          return Map.from(it);
-        }
-        return null;
-      }),
+    // routeName may already be a full "path?query" location (e.g. a resolved
+    // sign-in redirect target), so parse it instead of forcing it into
+    // `path:`, which would percent-encode any embedded "?" into "%3F". Only
+    // do this for absolute (leading "/") route names: a bare name containing
+    // a colon before any slash (e.g. "settings:advanced") would otherwise be
+    // misparsed by Uri.tryParse as having a URI scheme.
+    final base = routeName.startsWith('/')
+        ? (Uri.tryParse(routeName) ?? Uri(path: routeName))
+        : Uri(path: routeName);
+    final extraQueryParameters = arguments?.let((it) {
+      if (it is Map<String, dynamic> && kIsWeb) {
+        return Map<String, dynamic>.from(it);
+      }
+      return null;
+    });
+    if (extraQueryParameters == null || extraQueryParameters.isEmpty) {
+      return base;
+    }
+    return base.replace(
+      queryParameters: {...base.queryParameters, ...extraQueryParameters},
     );
   }
 

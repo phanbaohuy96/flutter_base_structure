@@ -4,6 +4,51 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pedantic/pedantic.dart';
 
 void main() {
+  group('withQueryParameters', () {
+    test('drops the query entirely instead of leaving a dangling "?"', () {
+      final uri = withQueryParameters(
+        Uri.parse('/dev-mode-dashboard?hl=vi'),
+        (query) => query..remove('hl'),
+      );
+
+      expect(uri.toString(), '/dev-mode-dashboard');
+      expect(uri.hasQuery, isFalse);
+    });
+
+    test('keeps remaining query parameters when some are left', () {
+      final uri = withQueryParameters(
+        Uri.parse('/orders?hl=vi&status=open'),
+        (query) => query..remove('hl'),
+      );
+
+      expect(uri.toString(), '/orders?status=open');
+    });
+
+    test('preserves the fragment when the query becomes empty', () {
+      final uri = withQueryParameters(
+        Uri.parse('/orders?hl=vi#section'),
+        (query) => query..remove('hl'),
+      );
+
+      expect(uri.toString(), '/orders#section');
+    });
+
+    test(
+      'preserves scheme and authority of an absolute uri when the query '
+      'becomes empty',
+      () {
+        final uri = withQueryParameters(
+          Uri.parse('https://example.com/path?hl=vi'),
+          (query) => query..remove('hl'),
+        );
+
+        expect(uri.toString(), 'https://example.com/path');
+        expect(uri.scheme, 'https');
+        expect(uri.host, 'example.com');
+      },
+    );
+  });
+
   group('buildFlGoRouter', () {
     test('enables URL reflection for imperative APIs by default', () {
       final previous = GoRouter.optionURLReflectsImperativeAPIs;
@@ -309,6 +354,36 @@ void main() {
       expect(uri.toString(), '/signin');
     });
 
+    test(
+      'preserves an embedded query string instead of percent-encoding it',
+      () {
+        final uri = const PushNamedBehavior().buildUri(
+          '/dev-mode-dashboard?hl=vi',
+          null,
+        );
+
+        expect(uri.path, '/dev-mode-dashboard');
+        expect(uri.queryParameters, {'hl': 'vi'});
+        expect(uri.toString(), '/dev-mode-dashboard?hl=vi');
+      },
+    );
+
+    test(
+      'treats a bare route name as literal path content, not a URI scheme',
+      () {
+        final uri = const PushNamedBehavior().buildUri(
+          'settings:advanced',
+          null,
+        );
+
+        // A leading "/" is what makes routeName eligible for Uri.tryParse;
+        // without one, "settings:advanced" must not be misread as scheme
+        // "settings" with path "advanced".
+        expect(uri.hasScheme, isFalse);
+        expect(uri.toString(), contains('settings'));
+      },
+    );
+
     testWidgets('named push uses GoRouter named routes when requested', (
       tester,
     ) async {
@@ -355,6 +430,30 @@ void main() {
 
       expect(find.text('Target'), findsOneWidget);
     });
+
+    testWidgets(
+      'pushReplacement resolves a route name that already carries a query '
+      'string, instead of 404-ing on a percent-encoded "?"',
+      (tester) async {
+        late BuildContext currentContext;
+        final router = _buildTextRouter(
+          routes: const {'/start': 'Start', '/target': 'Target'},
+          onBuild: (context) => currentContext = context,
+        );
+
+        await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+
+        unawaited(
+          const PushReplacementNamedBehavior().push<Object?>(
+            currentContext,
+            '/target?hl=vi',
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.text('Target'), findsOneWidget);
+      },
+    );
 
     testWidgets('removeAll uses go semantics with GoRouter', (tester) async {
       late BuildContext currentContext;
