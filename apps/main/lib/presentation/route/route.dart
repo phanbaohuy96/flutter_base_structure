@@ -71,10 +71,12 @@ String? _resolveLocaleRedirect(AppGlobalBloc appBloc, Uri uri) {
     appBloc.changeLocale(locale);
   }
 
-  final nextQueryParameters = Map<String, String>.from(queryParameters)
-    ..remove('hl')
-    ..remove('lang');
-  final nextUri = uri.replace(queryParameters: nextQueryParameters);
+  final nextUri = withQueryParameters(
+    uri,
+    (query) => query
+      ..remove('hl')
+      ..remove('lang'),
+  );
   final nextLocation = nextUri.toString();
 
   if (nextLocation == uri.toString()) {
