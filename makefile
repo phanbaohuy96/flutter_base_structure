@@ -348,12 +348,12 @@ build:
 # Run the app in development mode
 run_web_dev:
 	cd apps/main/ && \
-	$(FLUTTER) run -d web-server --web-port 3000 -t lib/main_dev.dart --dart-define-from-file="./.env"
+	$(FLUTTER) run -d web-server --web-port 3000 -t lib/main.dart --dart-define-from-file="./.env"
 
 # Run the app in staging mode
 run_web_staging:
 	cd apps/main/ && \
-	$(FLUTTER) run -d web-server --web-port 3000 -t lib/main_staging.dart --dart-define-from-file="./.env"
+	$(FLUTTER) run -d web-server --web-port 3000 -t lib/main.dart --dart-define-from-file="./.env"
 
 # Build web app
 build_web:

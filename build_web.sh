@@ -80,7 +80,7 @@ fi
 
 # Check that ENV is valid
 if [ "$ENV" != "dev" ] && [ "$ENV" != "staging" ] && [ "$ENV" != "sandbox" ] && [ "$ENV" != "prod" ]; then
-    echoColor $RED "Invalid ENV: $ENV. Valid values are dev, [dev, staging, sandbox, prod]."
+    echoColor $RED "Invalid ENV: $ENV. Valid values are [dev, staging, sandbox, prod]."
     exit 1
 fi
 
@@ -148,7 +148,7 @@ distribution() {
     if [[ "dev" == *"$ENV"* ]]; then
         MAIN=$DEV_MAIN
         VERSION=$version
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             DART_DEFINE_FROM_FILE=$DEV_DART_DEFINE_FROM_FILE
         fi
     fi
@@ -156,7 +156,7 @@ distribution() {
     if [[ "staging" == *"$ENV"* ]]; then
         MAIN=$STAGING_MAIN
         VERSION=$version_staging
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             DART_DEFINE_FROM_FILE=$STAGING_DART_DEFINE_FROM_FILE
         fi
     fi
@@ -164,7 +164,7 @@ distribution() {
     if [[ "sandbox" == *"$ENV"* ]]; then
         MAIN=$SANDBOX_MAIN
         VERSION=$version_prod
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             DART_DEFINE_FROM_FILE=$SANDBOX_DART_DEFINE_FROM_FILE
         fi
     fi
@@ -172,7 +172,7 @@ distribution() {
     if [[ "prod" == *"$ENV"* ]]; then
         MAIN=$PROD_MAIN
         VERSION=$version_prod
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             DART_DEFINE_FROM_FILE=$PROD_DART_DEFINE_FROM_FILE
         fi
     fi

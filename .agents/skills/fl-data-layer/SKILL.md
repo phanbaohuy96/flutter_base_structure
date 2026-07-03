@@ -106,7 +106,7 @@ abstract class UserApiClient {
 }
 ```
 
-Base URL flows from app config (`apps/main/lib/envs.dart` + `--dart-define-from-file`), not from the client.
+Base URL flows from app config (`apps/main/lib/main.dart` + `--dart-define-from-file`), not from the client.
 
 Multipart uploads:
 

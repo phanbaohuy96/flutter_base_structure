@@ -57,12 +57,11 @@ tools/
 
 ## Entry Points and Flavors
 
-- `apps/main/lib/main.dart` - Production
-- `apps/main/lib/main_dev.dart` - Development
-- `apps/main/lib/main_staging.dart` - Staging
-- `apps/main/lib/main_sandbox.dart` - Sandbox
+- `apps/main/lib/main.dart` - Single Dart entry point for every flavor
 
-App initialization starts from `AppDelegate.run(AppConfig)`.
+App initialization starts from `AppDelegate.run(AppConfig)`. The runtime
+environment is selected by `DART_ENV_NAME` in `apps/main/.env` through
+`--dart-define-from-file`; blank or missing values default to `DEV`.
 
 Inside `runZonedGuarded`, the binding is initialised before anything else: `WidgetsFlutterBinding.ensureInitialized()` first (so `SystemChrome` / `MethodChannel` calls don't fault before DI), then the debug-only `FlutterSkillBinding.ensureInitialized()` (see "E2E testing").
 
@@ -466,7 +465,7 @@ Use Playwright MCP browser tools only when the user asks for E2E or Playwright v
 
 ```bash
 flutter run -d web-server --web-hostname 127.0.0.1 --web-port 55123 \
-  -t lib/main_dev.dart --dart-define-from-file=./.env
+  -t lib/main.dart --dart-define-from-file=./.env
 ```
 
 Do not add repo-level Node/Playwright infrastructure unless the user explicitly asks for persistent Playwright tests; use the fl-testing skill for the generic browser workflow.

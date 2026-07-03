@@ -31,9 +31,6 @@ ALLOWED_FILES = {
     "app.dart",
     "app_delegate.dart",
     "main.dart",
-    "main_dev.dart",
-    "main_sandbox.dart",
-    "main_staging.dart",
 }
 
 ALLOWED_SUFFIXES = (

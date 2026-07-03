@@ -1,6 +1,7 @@
+import 'package:core/core.dart';
+
 import 'app_delegate.dart';
-import 'envs.dart';
 
 void main() {
-  AppDelegate.run(AppEnv.prodEnv);
+  AppDelegate.run(AppConfig.fromDart(app: 'main'));
 }

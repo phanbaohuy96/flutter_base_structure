@@ -19,10 +19,13 @@ The module must be contain dist_config.sh file.
 Example for dist_config.sh file:
 -----------------------------------------------------------------
 # Dev
-DEV_MAIN="lib/main_dev.dart" #required
+DEV_MAIN="lib/main.dart" #required
 
 # Staging
-STAGING_MAIN="lib/main_staging.dart" #required
+STAGING_MAIN="lib/main.dart" #required
+
+# Sandbox
+SANDBOX_MAIN="lib/main.dart" #required
 
 # Prod
 PROD_MAIN="lib/main.dart" #required
@@ -94,7 +97,7 @@ fi
 
 # Check that ENV is valid
 if [ "$ENV" != "dev" ] && [ "$ENV" != "staging" ] && [ "$ENV" != "sandbox" ] && [ "$ENV" != "prod" ]; then
-    echoColor $RED "Invalid ENV: $ENV. Valid values are dev, [dev, demo, staging, prod]."
+    echoColor $RED "Invalid ENV: $ENV. Valid values are [dev, staging, sandbox, prod]."
     exit 1
 fi
 
@@ -153,6 +156,12 @@ function build_aab {
             VERSION=$version_staging
             MAIN=$STAGING_MAIN
             DART_DEFINE_FROM_FILE=$STAGING_DART_DEFINE_FROM_FILE
+            ;;
+
+        "sandbox")
+            VERSION=$version_prod
+            MAIN=$SANDBOX_MAIN
+            DART_DEFINE_FROM_FILE=$SANDBOX_DART_DEFINE_FROM_FILE
             ;;
 
         "prod")

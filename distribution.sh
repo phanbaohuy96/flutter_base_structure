@@ -21,19 +21,19 @@ The module must be contain dist_config.sh file.
 Example for dist_config.sh file:
 -----------------------------------------------------------------
 # Dev
-DEV_MAIN="lib/main_dev.dart" #required
+DEV_MAIN="lib/main.dart" #required
 DEV_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
 DEV_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
 DEV_DART_DEFINE_FROM_FILE="./.env" #required
 
 # Staging
-STAGING_MAIN="lib/main_staging.dart" #required
+STAGING_MAIN="lib/main.dart" #required
 STAGING_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
 STAGING_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
 STAGING_DART_DEFINE_FROM_FILE="./.env" #required
 
 # Sandbox
-SANDBOX_MAIN="lib/main_sandbox.dart" #required
+SANDBOX_MAIN="lib/main.dart" #required
 SANDBOX_DEVELOPMENT_EXPORT_OPTIONS_PLIST="none" #optional
 SANDBOX_APPSTORE_EXPORT_OPTIONS_PLIST="none" #optional
 SANDBOX_DART_DEFINE_FROM_FILE="./.env" #required
@@ -144,7 +144,7 @@ fi
 
 # Check that ENV is valid
 if [ "$ENV" != "dev" ] && [ "$ENV" != "staging" ] && [ "$ENV" != "sandbox" ] && [ "$ENV" != "prod" ]; then
-    echoColor $RED "Invalid ENV: $ENV. Valid values are dev, [dev, staging, sandbox, prod]."
+    echoColor $RED "Invalid ENV: $ENV. Valid values are [dev, staging, sandbox, prod]."
     exit 1
 fi
 
@@ -653,7 +653,7 @@ distribution() {
         ios_external_tester_group=$DEV_IOS_EXTERNAL_TESTER_GROUP
         android_internal_tester_group=$DEV_ANDROID_INTERNAL_TESTER_GROUP
         android_external_tester_group=$DEV_ANDROID_EXTERNAL_TESTER_GROUP
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             dart_define_from_file=$DEV_DART_DEFINE_FROM_FILE
         fi
     fi
@@ -667,7 +667,7 @@ distribution() {
         ios_external_tester_group=$STAGING_IOS_EXTERNAL_TESTER_GROUP
         android_internal_tester_group=$STAGING_ANDROID_INTERNAL_TESTER_GROUP
         android_external_tester_group=$STAGING_ANDROID_EXTERNAL_TESTER_GROUP
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             dart_define_from_file=$STAGING_DART_DEFINE_FROM_FILE
         fi
     fi
@@ -681,21 +681,21 @@ distribution() {
         ios_external_tester_group=$SANDBOX_IOS_EXTERNAL_TESTER_GROUP
         android_internal_tester_group=$SANDBOX_ANDROID_INTERNAL_TESTER_GROUP
         android_external_tester_group=$SANDBOX_ANDROID_EXTERNAL_TESTER_GROUP
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             dart_define_from_file=$SANDBOX_DART_DEFINE_FROM_FILE
         fi
     fi
 
     if [[ "prod" == *"$ENV"* ]]; then
         main=$PROD_MAIN
-        export_options=$STAGING_DEVELOPMENT_EXPORT_OPTIONS_PLIST
-        appstore_export_options=$STAGING_APPSTORE_EXPORT_OPTIONS_PLIST
+        export_options=$PROD_DEVELOPMENT_EXPORT_OPTIONS_PLIST
+        appstore_export_options=$PROD_APPSTORE_EXPORT_OPTIONS_PLIST
         version=$version_prod
         ios_internal_tester_group=$PROD_IOS_INTERNAL_TESTER_GROUP
         ios_external_tester_group=$PROD_IOS_EXTERNAL_TESTER_GROUP
         android_internal_tester_group=$PROD_ANDROID_INTERNAL_TESTER_GROUP
         android_external_tester_group=$PROD_ANDROID_EXTERNAL_TESTER_GROUP
-        if [$dart_define_from_file == ""]; then
+        if [ -z "$dart_define_from_file" ]; then
             dart_define_from_file=$PROD_DART_DEFINE_FROM_FILE
         fi
     fi
