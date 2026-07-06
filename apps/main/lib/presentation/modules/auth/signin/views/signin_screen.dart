@@ -61,10 +61,17 @@ class SignInScreenState extends StateBase<SignInScreen> {
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
             body: SafeArea(
-              child: Center(
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: _buildBody(state),
+              child: AnimatedPadding(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeOut,
+                padding: EdgeInsets.only(
+                  bottom: MediaQuery.viewInsetsOf(context).bottom,
+                ),
+                child: Center(
+                  child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: _buildBody(state),
+                  ),
                 ),
               ),
             ),

@@ -35,6 +35,7 @@ metadata:
 - [ ] Translates via `trans = translate(context)` or `context.l10n`; no hardcoded user-facing strings or cached localization state.
 - [ ] Action file (`<feature>.action.dart`) is a `part of` the screen and holds `_blocListener`, `onRefresh`, etc.
 - [ ] Row/list trailing content aligns consistently and supports widgets when the design needs controls or rich values.
+- [ ] Text-input screens keep focused fields and primary actions visible when the keyboard appears. If a raw `Scaffold` has a footer or bottom nav, keep it fixed and pad the scrollable body with `MediaQuery.viewInsets.bottom`; otherwise match `ScreenForm`'s platform-aware `resizeToAvoidBottomInset` behavior unless there is a documented reason not to.
 
 ### Routing
 
