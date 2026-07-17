@@ -86,7 +86,7 @@ dependencies:
   collection: ^1.19.1
   dio: ^5.4.0
   dots_indicator: ^2.1.2
-  flutter_svg: ^2.2.1
+  flutter_svg: ^2.2.0
   fwfh_chewie: ^0.16.1
   html: ^0.15.6
   logger: ^2.6.1

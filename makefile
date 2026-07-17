@@ -12,15 +12,8 @@ PACKAGE_DIRS := apps/main core modules/data_source \
 	plugins/fl_media plugins/fl_media/example \
 	plugins/fl_navigation plugins/fl_navigation/example \
 	tools/module_generator
-TEST_PACKAGE_DIRS := apps/main core \
-	plugins/fl_ui plugins/fl_ui/example \
-	plugins/fl_utils \
-	plugins/fl_theme plugins/fl_theme/example \
-	plugins/fl_media/example \
-	plugins/fl_navigation \
-	tools/module_generator
 ANALYZE_DIRS := $(if $(PACKAGES),$(PACKAGES),$(PACKAGE_DIRS))
-TEST_DIRS := $(if $(PACKAGES),$(PACKAGES),$(TEST_PACKAGE_DIRS))
+TEST_DIRS := $(if $(PACKAGES),$(PACKAGES),$(PACKAGE_DIRS))
 
 # Main targets
 .PHONY: setup build run test analyze check format_check clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
@@ -444,7 +437,7 @@ analyze:
 test:
 	@status=0; \
 	for package in $(TEST_DIRS); do \
-		if find "$$package/test" -name '*_test.dart' -print -quit | grep -q .; then \
+		if [ -d "$$package/test" ] && find "$$package/test" -name '*_test.dart' -print -quit | grep -q .; then \
 			printf "Testing %s... " "$$package"; \
 			log_file=$$(mktemp); \
 			if (cd "$$package" && $(FLUTTER) test > "$$log_file" 2>&1); then \
