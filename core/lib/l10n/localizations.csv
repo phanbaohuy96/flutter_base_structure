@@ -46,31 +46,9 @@ firebaseAuthExceptionTypeInvalidVerificationId,Invalid verification ID.,ID xác 
 firebaseAuthExceptionTypeWrongPassword,Wrong password. Please check your credentials and try again.,Mật khẩu không đúng. Vui lòng kiểm tra thông tin đăng nhập và thử lại.
 firebaseAuthExceptionTypeUnknown,An error occurred while signing in.,Đã xảy ra lỗi khi đăng nhập.
 firebaseAuthExceptionSessionExpired,The OTP has expired. Please re-send the new OTP to try again.,Mã OTP đã hết hạn. Vui lòng gửi lại mã mới để thử lại.
-today,Today,Hôm nay
-yesterday,Yesterday,Hôm qua
-thisWeek,This week,Tuần này
-weekAgo,Week ago,Tuần trước
-thisMonth,This month,Tháng này
-monthAgo,Month ago,Tháng trước
-selectDate,Select date,Chọn ngày
-fromDate,From date,Từ ngày
-toDate,To date,Đến ngày
-month,Month,Tháng
-threeDaysAgo,3 days ago,3 ngày trước
-sevenDaysAgo,7 days ago,7 ngày trước
-thirtyDaysAgo,30 days ago,30 ngày trước
-thisQuarter,This quarter,Quý này
-quarterAgo,Quarter ago,Quý trước
-thisYear,This year,Năm nay
-yearAgo,Year ago,Năm trước
 selectTimePeriod,Select time period,Chọn khoảng thời gian
-reset,Reset,Đặt lại
-apply,Apply,Áp dụng
-manual,Manual,Tùy chỉnh
-day,Day,Ngày
 viewMore,See more,Xem thêm
 seeLess,See less,Thu gọn
-fullTime,Full time,Toàn thời gian
 camera,Camera,Máy ảnh
 gallery,Gallery,Thư viện
 choosePhoto,Select photo,Chọn ảnh

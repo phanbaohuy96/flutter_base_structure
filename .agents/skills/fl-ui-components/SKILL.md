@@ -32,13 +32,13 @@ Large, non-trivial, or vendored — reimplementing any of these from scratch is 
 
 | Widget | LOC | Why it's expensive |
 |---|---|---|
-| `date_picker/` cluster | ~4.6k | Vendored fork (`flutter_datetime_picker` + Cupertino + calendar variants). Only `showMyCustomDatePicker`/`CupertinoDatePickerCustom` is wired into the storybook demo — check the directory directly before assuming another entry point is exercised. |
+| `date_picker/` cluster | ~4.6k | Vendored fork (`flutter_datetime_picker` + Cupertino + calendar variants). Only `showMyCustomDatePicker` is wired into the storybook demo — check the directory directly before assuming another entry point is exercised. |
 | `MediaPickerWidget` | 1072 | Full picker UI — selection, preview, multi-select management — built on top of `PickFileHelper`. |
 | `MediaViewerWidget` | 541 | Full-screen photo/video viewer with gallery paging, zoom, and hero transitions (`fl_media`). |
 | `SliverGroupBuilder` (`group_sliver/`) | ~430 | Custom `RenderSliver` for grouped/sticky-header sliver lists — reimplementing sliver protocol internals from scratch is not worth it. |
 | `InputContainer` | 516 | Every themed text field in the app — label, border states, validation, tagging (+237 in `TextTaggingController`). |
 | `VideoControllerManager` | 476 | Video controller lifecycle (init/dispose/buffering) — don't hand-roll `VideoPlayerController` management. |
-| `ScreenForm` | 355 | Standard screen chrome — app bar, safe area, keyboard avoidance. See `fl-theme-usage`. |
+| `ScreenForm` | 355 | Standard screen chrome — app bar, scaffold content, keyboard avoidance. See `fl-theme-usage`. |
 | `MultipleChoiceDropdownWidget` | 369 | Multi-select dropdown with chips. |
 | `ImageView` | 347 | Themed image display with loading/error states and provider selection (`fl_media`). |
 | `DropdownWidget` | 265 | Single-select dropdown, themed. |
@@ -47,7 +47,7 @@ Large, non-trivial, or vendored — reimplementing any of these from scratch is 
 
 | Widget | Use it for |
 |---|---|
-| `ScreenForm` | Standard screen wrapper (app bar + safe area + keyboard avoidance). |
+| `ScreenForm` | Standard screen wrapper (app bar + scaffold content + keyboard avoidance). |
 | `MainPageForm` | Wrapper for main-tab pages. |
 | `BottomBorderDecoration` | App bar bottom border (`forms/appbar_decoration.dart`). |
 | `LayoutSwitching` | Animated switch between two layouts. |
@@ -122,7 +122,7 @@ All from `core/lib/presentation/extentions/dialog_extention.dart` — call direc
 |---|---|
 | `SmartRefresherWrapper` + `RefreshController` | Pull-to-refresh / load-more list — scaffolded into every generated listing/detail module. |
 | `SliverGroupBuilder` (`group_sliver/`) | Grouped sliver list with sticky section headers — see "Expensive" above. |
-| `MobileLikeScrollBehavior` | Mobile-style overscroll glow on all platforms (incl. web/desktop). |
+| `MobileLikeScrollBehavior` | Allow scroll views to be dragged with touch or a mouse. |
 | `StoryWidgetBox<T>` | Labeled preview/story container (storybook infra). |
 
 ## Media
@@ -132,12 +132,14 @@ All from `core/lib/presentation/extentions/dialog_extention.dart` — call direc
 | `MediaViewerWidget` + `MediaViewerController` / `MediaViewerItem` | Full-screen photo/video viewer with paging and zoom. |
 | `ImageView` / `ImageViewWrapper` | Themed image display with loading/error states. |
 | `ExtendedNetworkImage` / `ImageViewProviderFactory` | Lower-level image-provider building blocks behind `ImageView`. |
-| `ImageGalleryWidget` | Swipeable image gallery grid. |
+| `ImageGalleryWidget` | Full-screen swipeable image pager. |
 | `ImageZoom` | Pinch-to-zoom wrapper. |
 | `HeroWidget` | Hero-animated media transition. |
 | `VideoControllerManager` | Video controller lifecycle — see "Expensive" above. |
 | `VideoControllerWrapper` / `LocalVideoSource` / `NetworkVideoSource` | Video source/config plumbing for the controller manager. |
+| `VideoViewerWidget` | Embeddable video viewer with playback controls and swipe-to-dismiss support. |
 | `VideoViewerScreen` / `VideoViewerArgs` | Full video-viewer screen (route-ready). |
+| `ImageCropperScreen` / `context.cropImage(...)` | Platform-adaptive image-cropping flow exposed through the `ImageCropperCoordinator`. |
 | `MediaPickerWidget` + `MediaPickerController` / `MediaPickerConfig` / `MediaPickerStyle` | Full picker UI — selection, preview, multi-select — see "Expensive" above. |
 | `PickFileHelper` (`FileType`) | Native file/media picker with no bundled UI — what `MediaPickerWidget` is built on; use directly for a headless pick. |
 | `HorizontalImages` | Horizontal-scrolling row of images. |
@@ -147,8 +149,8 @@ All from `core/lib/presentation/extentions/dialog_extention.dart` — call direc
 
 | Widget | Use it for |
 |---|---|
-| `InfoItem` | Label/value row with optional divider (`ItemDivider`) and border (`ItemBorder`). |
-| `MenuItemWidget` | Icon + title + description tappable row. |
+| `InfoItem` | Label/value row with an optional divider (`ItemDivider`). |
+| `MenuItemWidget` | Icon + title + description tappable row with optional `ItemBorder`. |
 | `BoxColor` / `HighlightBoxColor` | Colored container / bordered highlight box. |
 | `BannerWidget<T>` / `BannerItem<T>` | Rotating banner/carousel (`BannerWidgetUIStyle`). |
 | `ReceiptShapeBorder` | Zigzag receipt-style shape border. |

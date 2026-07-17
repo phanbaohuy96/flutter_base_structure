@@ -1,7 +1,7 @@
 # data_source
 
-Retrofit/Dio, Hive, and JSON data-layer plumbing shared across app flavors — API clients, storage models, and DI wiring (`data_source_micro.dart`).
+Retrofit/Dio and JSON data-layer plumbing shared across app flavors — API contracts, generated REST clients, DTOs/models, parsing, and DI wiring (`data_source_micro.dart`). Local persistence stays behind the storage seam in `core`.
 
-Sits between `core` and `plugins` in the dependency chain: `apps/main -> core -> modules/data_source -> plugins`.
+Dependency path: `apps/main -> modules/data_source -> core -> plugins`; the app also depends directly on `core`.
 
 See [`AGENTS.md`](../../AGENTS.md) and [`.agents/skills/fl-data-layer/SKILL.md`](../../.agents/skills/fl-data-layer/SKILL.md) for conventions.

@@ -157,14 +157,15 @@ Primary libraries and patterns:
 - **State management**: BLoC + Freezed `_StateData` classes
 - **Dependency injection**: Injectable + GetIt
 - **Networking**: Retrofit + Dio through `modules/data_source`
-- **Local storage**: Hive CE, SharedPreferences, secure storage
+- **Local storage**: storage seam over SharedPreferences + secure storage; Hive CE is optional
 - **Routing**: `IRoute` / `CustomRouter` abstractions from `core`
 - **Localization**: CSV source files -> ARB -> generated localizations
 
 Dependency flow:
 
 ```text
-apps/main -> core -> modules/data_source -> plugins
+apps/main -> modules/data_source -> core -> plugins
+apps/main -> core
 ```
 
 ## Presentation modules

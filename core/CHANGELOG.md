@@ -11,8 +11,8 @@
   was unused after the `ListingUseCase` change and has been deleted. Track
   listing state through `ListingUseCase`/the bloc instead.
 * **Breaking — pruned cold `common_widget` classes:** removed after confirming
-  zero references in production, the in-app storybook, `fl_ui_previews.dart`,
-  and tests: the `date_range_picker.dart`
+  zero production consumers. Storybook/preview/test-only call sites were
+  removed with their widgets. The removed surface includes the `date_range_picker.dart`
   cluster (`DateRangeUtils`, `DateRangePickerWidget`, `DateRangePickerBuilder`,
   `DateRangePickerLabel`), `CustomBottomNavigationBar`,
   `LoadingButton`/`LoadingButtonController` (`loadding_button/`),

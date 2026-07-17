@@ -141,79 +141,13 @@ class CoreLocalizationsEn extends CoreLocalizations {
       'The OTP has expired. Please re-send the new OTP to try again.';
 
   @override
-  String get today => 'Today';
-
-  @override
-  String get yesterday => 'Yesterday';
-
-  @override
-  String get thisWeek => 'This week';
-
-  @override
-  String get weekAgo => 'Week ago';
-
-  @override
-  String get thisMonth => 'This month';
-
-  @override
-  String get monthAgo => 'Month ago';
-
-  @override
-  String get selectDate => 'Select date';
-
-  @override
-  String get fromDate => 'From date';
-
-  @override
-  String get toDate => 'To date';
-
-  @override
-  String get month => 'Month';
-
-  @override
-  String get threeDaysAgo => '3 days ago';
-
-  @override
-  String get sevenDaysAgo => '7 days ago';
-
-  @override
-  String get thirtyDaysAgo => '30 days ago';
-
-  @override
-  String get thisQuarter => 'This quarter';
-
-  @override
-  String get quarterAgo => 'Quarter ago';
-
-  @override
-  String get thisYear => 'This year';
-
-  @override
-  String get yearAgo => 'Year ago';
-
-  @override
   String get selectTimePeriod => 'Select time period';
-
-  @override
-  String get reset => 'Reset';
-
-  @override
-  String get apply => 'Apply';
-
-  @override
-  String get manual => 'Manual';
-
-  @override
-  String get day => 'Day';
 
   @override
   String get viewMore => 'See more';
 
   @override
   String get seeLess => 'See less';
-
-  @override
-  String get fullTime => 'Full time';
 
   @override
   String get camera => 'Camera';

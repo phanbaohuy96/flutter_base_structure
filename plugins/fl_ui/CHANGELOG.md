@@ -7,6 +7,10 @@
 * **Breaking — removed `CheckboxWithTitle`/`CheckBoxGroup`/`RadioButtonWithTitle`/`FlRadioGroup`:**
   storybook/preview/test-only, zero production consumers. Forks depending on
   these should vendor them from git history before upgrading.
+* **Breaking — `Separator.color` is now nullable:** omitting it resolves the
+  rendered separator color from `context.themeColor.dividerColor` instead of
+  hardcoding black. Downstream code that reads the public property must handle
+  `null`.
 
 ## 0.0.1
 

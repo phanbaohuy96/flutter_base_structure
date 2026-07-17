@@ -33,7 +33,8 @@ Primary libraries and patterns:
 Dependency flow:
 
 ```text
-apps/main -> core -> modules/data_source -> plugins
+apps/main -> modules/data_source -> core -> plugins
+apps/main -> core
 ```
 
 ## Project Structure
@@ -42,7 +43,7 @@ apps/main -> core -> modules/data_source -> plugins
 apps/main/           # Main Flutter app entry point and flavors
 core/                # Shared package: utilities, services, base widgets, app locale/theme helpers
 modules/
-  data_source/       # Retrofit, Hive, JSON, and repository plumbing
+  data_source/       # Retrofit, JSON, API-model, and repository plumbing
 plugins/
   fl_ui/             # Reusable UI widgets
   fl_theme/          # ThemeColor, ScreenTheme, app theme extensions
