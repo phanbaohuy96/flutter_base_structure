@@ -4,13 +4,12 @@ part of '../group_sliver.dart';
 
 @immutable
 class _SliverGroup extends RenderObjectWidget {
-  _SliverGroup({
-    Key? key,
+  const _SliverGroup({
     this.margin,
     this.borderRadius,
     this.decorationWidget,
     this.sliver,
-  }) : super(key: key);
+  });
 
   final EdgeInsets? margin;
   final BorderRadius? borderRadius;
@@ -37,7 +36,7 @@ class _SliverGroup extends RenderObjectWidget {
 }
 
 class _SliverGroupElement extends RenderObjectElement {
-  _SliverGroupElement(_SliverGroup widget) : super(widget);
+  _SliverGroupElement(super.widget);
 
   Element? _decoration;
   Element? _sliver;

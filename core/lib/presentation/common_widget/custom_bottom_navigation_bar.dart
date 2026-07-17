@@ -29,12 +29,12 @@ class BottomBarItemData {
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({
-    Key? key,
+    super.key,
     this.onItemSelection,
     this.selectedIdx = 0,
     this.items,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   final Future<bool> Function(int)? onItemSelection;
   final int? selectedIdx;
@@ -159,12 +159,12 @@ class BottomItem extends StatelessWidget {
   final double iconSize;
 
   const BottomItem({
-    Key? key,
+    super.key,
     required this.item,
     this.onPressed,
     this.selected = false,
     this.iconSize = 24.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

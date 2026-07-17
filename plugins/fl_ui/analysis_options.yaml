@@ -1,4 +1,4 @@
-include: package:pedantic/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 
 analyzer:
   language:
@@ -6,10 +6,15 @@ analyzer:
   errors:
     # allow having TODOs in the code
     todo: ignore
+    # Widget State subclasses intentionally expose private types via builder APIs.
+    library_private_types_in_public_api: ignore
+    # Intentional `_x = x ?? default` locals shadow-guard constructor fields of the same name.
+    no_leading_underscores_for_local_identifiers: ignore
   exclude:
     # exclude files
     - .dart_tool/**
     - build/**
+    - lib/generated
     - lib/src/generated_plugin_registrant.dart
     - lib/src/di/di.config.dart
     - "**.g.dart"

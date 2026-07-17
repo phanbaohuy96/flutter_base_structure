@@ -11,14 +11,14 @@ class BadgeBox extends StatelessWidget {
   final int maxCount;
 
   const BadgeBox({
-    Key? key,
+    super.key,
     required this.count,
     required this.child,
     this.countTextColor,
     this.backgroundColor,
     this.badgePosition,
     this.maxCount = 99,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

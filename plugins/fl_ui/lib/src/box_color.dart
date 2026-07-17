@@ -14,7 +14,7 @@ class BoxColor extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
 
   const BoxColor({
-    Key? key,
+    super.key,
     this.color,
     this.borderRadius,
     this.child,
@@ -25,7 +25,7 @@ class BoxColor extends StatelessWidget {
     this.alignment,
     this.boxShape = BoxShape.rectangle,
     this.boxShadow,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +62,7 @@ class HighlightBoxColor extends StatelessWidget {
   final List<BoxShadow>? boxShadow;
 
   const HighlightBoxColor({
-    Key? key,
+    super.key,
     this.child,
     this.margin,
     this.padding = const EdgeInsets.all(8),
@@ -74,7 +74,7 @@ class HighlightBoxColor extends StatelessWidget {
     this.borderRadius,
     this.borderWidth,
     this.boxShadow,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +114,7 @@ class ChipItem extends StatelessWidget {
   final Color? selectedColor;
 
   const ChipItem({
-    Key? key,
+    super.key,
     required this.selected,
     required this.text,
     required this.textTheme,
@@ -124,7 +124,7 @@ class ChipItem extends StatelessWidget {
     this.selectedBGColor,
     this.color,
     this.selectedColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

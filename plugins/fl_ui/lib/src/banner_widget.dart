@@ -20,7 +20,7 @@ class BannerWidget<T> extends StatefulWidget {
   final BoxFit fit;
 
   const BannerWidget({
-    Key? key,
+    super.key,
     this.banners,
     this.onTap,
     required this.getImageUrl,
@@ -33,7 +33,7 @@ class BannerWidget<T> extends StatefulWidget {
     this.placeHolder,
     this.autoPlayInterval = const Duration(seconds: 5),
     this.fit = BoxFit.cover,
-  }) : super(key: key);
+  });
 
   @override
   _BannerWidgetState createState() => _BannerWidgetState<T>();
@@ -141,14 +141,14 @@ class BannerItem<T> extends StatelessWidget {
   final BoxFit fit;
 
   const BannerItem({
-    Key? key,
+    super.key,
     this.item,
     this.onTap,
     this.url,
     this.placeHolder,
     this.borderRadius = BorderRadius.zero,
     this.fit = BoxFit.cover,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

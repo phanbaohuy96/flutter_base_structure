@@ -61,7 +61,7 @@ class StepData {
 class VerticalStepper extends StatelessWidget {
   final List<StepData> steps;
 
-  const VerticalStepper({Key? key, required this.steps}) : super(key: key);
+  const VerticalStepper({super.key, required this.steps});
 
   @override
   Widget build(BuildContext context) {
@@ -88,12 +88,12 @@ class AnimatedSlideBox extends StatefulWidget {
   final Duration duration;
 
   const AnimatedSlideBox({
-    Key? key,
+    super.key,
     this.child,
     this.begin = const Offset(0.0, -0.5),
     this.end = Offset.zero,
     this.duration = const Duration(seconds: 1),
-  }) : super(key: key);
+  });
 
   @override
   State<AnimatedSlideBox> createState() => _AnimatedSlideBoxState();

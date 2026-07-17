@@ -12,14 +12,14 @@ class HtmlWidgetWithViewMore extends StatelessWidget {
   final TextStyle? style;
 
   const HtmlWidgetWithViewMore({
-    Key? key,
+    super.key,
     required this.htmlContent,
     this.expand = false,
     required this.viewMore,
     required this.seeLess,
     this.minHeight = 200,
     this.style,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

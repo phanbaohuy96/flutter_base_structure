@@ -46,7 +46,7 @@ class ChipSelection<T> extends StatelessWidget {
     int? minimumItemsPerRow,
   }) => ChipSelection._(
     items: items,
-    selected: [if (selected != null) selected],
+    selected: [?selected],
     onSelectionChange: (items) => onSelectionChange?.call(items.firstOrNull),
     getChipLabel: getChipLabel,
     decoration: decoration,

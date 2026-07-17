@@ -147,6 +147,7 @@ class LoggerInterceptor extends Interceptor {
 
   @override
   Future<void> onError(
+    // ignore: avoid_renaming_method_parameters
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {

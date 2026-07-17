@@ -87,10 +87,12 @@ Useful make targets:
 | `make build` | Interactive Android/iOS distribution wrapper |
 | `make run_web_dev` / `make run_web_staging` | Run web server on port 3000 for dev/staging |
 | `make build_web` | Interactive web build wrapper |
+| `make check` | Run the full definition-of-done gate: analyze + format check + tests |
 | `make analyze` | Run analyzer across all packages; scope with `PACKAGES="apps/main core"` |
 | `make test` | Run tests for packages with test files; scope with `PACKAGES="apps/main core"` |
 | `make coverage_main` | Generate coverage for `apps/main` |
-| `make format` | Run `dart format .` |
+| `make format` | Format hand-written Dart files, excluding generated outputs |
+| `make format_check` | Verify hand-written Dart formatting without rewriting files |
 | `make clean` / `make clean_force` | Clean project build outputs |
 
 ## Runtime and security notes

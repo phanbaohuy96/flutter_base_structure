@@ -49,12 +49,12 @@ class DemoRoute extends IRoute {
       CustomRouter(
         path: DemoHomeScreen.routeName,
         name: DemoHomeScreen.routeName,
-        builder: (_, __, ___) => const DemoHomeScreen(),
+        builder: (_, _, _) => const DemoHomeScreen(),
       ),
       CustomRouter<DemoArgs>(
         path: DemoDetailsScreen.routeName,
         name: DemoDetailsScreen.routeName,
-        builder: (_, __, extra) {
+        builder: (_, _, extra) {
           return DemoDetailsScreen(
             args: extra as DemoArgs? ?? DemoArgs.empty(),
           );
@@ -64,7 +64,7 @@ class DemoRoute extends IRoute {
       CustomRouter<DemoArgs>(
         path: DemoReplacementScreen.routeName,
         name: DemoReplacementScreen.routeName,
-        builder: (_, __, extra) {
+        builder: (_, _, extra) {
           return DemoReplacementScreen(
             args: extra as DemoArgs? ?? DemoArgs.empty(),
           );
@@ -74,7 +74,7 @@ class DemoRoute extends IRoute {
       CustomRouter<DemoArgs>(
         path: DemoResetScreen.routeName,
         name: DemoResetScreen.routeName,
-        builder: (_, __, extra) {
+        builder: (_, _, extra) {
           return DemoResetScreen(args: extra as DemoArgs? ?? DemoArgs.empty());
         },
         extraFromUrlQueries: DemoArgs.fromQuery,
@@ -90,17 +90,17 @@ class InterceptorDemoRoute extends IRoute {
       CustomRouter(
         path: InterceptorDemoScreen.routeName,
         name: InterceptorDemoScreen.routeName,
-        builder: (_, __, ___) => const InterceptorDemoScreen(),
+        builder: (_, _, _) => const InterceptorDemoScreen(),
       ),
       CustomRouter(
         path: InterceptorAllowedScreen.routeName,
         name: InterceptorAllowedScreen.routeName,
-        builder: (_, __, ___) => const InterceptorAllowedScreen(),
+        builder: (_, _, _) => const InterceptorAllowedScreen(),
       ),
       CustomRouter(
         path: InterceptorFilteredScreen.routeName,
         name: InterceptorFilteredScreen.routeName,
-        builder: (_, __, ___) => const InterceptorFilteredScreen(),
+        builder: (_, _, _) => const InterceptorFilteredScreen(),
       ),
     ];
   }
@@ -113,7 +113,7 @@ class SkippedDemoRoute extends IRoute {
       CustomRouter(
         path: SkippedProviderScreen.routeName,
         name: SkippedProviderScreen.routeName,
-        builder: (_, __, ___) => const SkippedProviderScreen(),
+        builder: (_, _, _) => const SkippedProviderScreen(),
       ),
     ];
   }

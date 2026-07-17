@@ -29,7 +29,7 @@ class HidableBottomScrollListener extends ChangeNotifier {
   void addController(ScrollController controller) {
     if (!_controllers.contains(controller)) {
       _controllers.add(controller);
-      final ls = () => listenOnCtrl(controller);
+      void ls() => listenOnCtrl(controller);
       controller.addListener(ls);
       _listeners.add(ls);
     }

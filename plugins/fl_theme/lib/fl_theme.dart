@@ -1,4 +1,4 @@
-library fl_theme;
+library;
 
 export 'src/app_component_theme.dart';
 export 'src/app_decoration_theme.dart';

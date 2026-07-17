@@ -19,7 +19,7 @@ typedef ImageViewErrorBuilder =
 
 class ImageView extends StatelessWidget {
   const ImageView({
-    Key? key,
+    super.key,
     required this.source,
     this.width,
     this.height,

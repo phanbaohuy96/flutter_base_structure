@@ -16,15 +16,16 @@ dependencies:
   date_format: ^2.0.2
   timeago: ^3.1.0
   encrypt: ^5.0.1
-  pedantic: ^1.11.1
   jwt_decode: ^0.3.1
   phone_numbers_parser: ^9.0.3
   number_text_input_formatter: ^1.0.0+8
 
+  intl:
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

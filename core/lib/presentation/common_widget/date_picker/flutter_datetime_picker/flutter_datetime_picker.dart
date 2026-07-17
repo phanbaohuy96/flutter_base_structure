@@ -198,11 +198,10 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
     CustomDatePickerTheme? datePickerTheme,
     this.barrierLabel,
     this.locale,
-    RouteSettings? settings,
+    super.settings,
     BasePickerModel? pickerModel,
   }) : pickerModel = pickerModel ?? DatePickerModel(),
-       datePickerTheme = datePickerTheme ?? CustomDatePickerTheme(),
-       super(settings: settings);
+       datePickerTheme = datePickerTheme ?? CustomDatePickerTheme();
 
   final bool? showTitleActions;
   final DateChangedCallback? onChanged;
@@ -257,12 +256,11 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
 
 class _DatePickerComponent extends StatefulWidget {
   const _DatePickerComponent({
-    Key? key,
     required this.route,
     required this.pickerModel,
     this.onChanged,
     this.locale,
-  }) : super(key: key);
+  });
 
   final DateChangedCallback? onChanged;
 

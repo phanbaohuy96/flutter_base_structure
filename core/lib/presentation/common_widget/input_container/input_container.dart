@@ -55,7 +55,7 @@ class InputContainer extends StatefulWidget {
   final Widget? iconClear;
 
   const InputContainer({
-    Key? key,
+    super.key,
     this.controller,
     this.hint,
     this.isPassword = false,
@@ -103,7 +103,7 @@ class InputContainer extends StatefulWidget {
     this.onFocusChanged,
     this.iconClear,
     this.selectAllWhenFocus = false,
-  }) : super(key: key);
+  });
 
   @override
   State<InputContainer> createState() => _InputContainerState();

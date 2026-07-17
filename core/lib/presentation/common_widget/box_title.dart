@@ -12,7 +12,7 @@ class BoxTitle extends StatelessWidget {
   final bool isRequired;
 
   const BoxTitle({
-    Key? key,
+    super.key,
     this.titleWidget,
     required this.child,
     this.title,
@@ -23,8 +23,7 @@ class BoxTitle extends StatelessWidget {
   }) : assert(
          title != null || titleWidget != null,
          'Please provide BoxTitle.title || BoxTitle.titleWidget',
-       ),
-       super(key: key);
+       );
 
   @override
   Widget build(BuildContext context) {

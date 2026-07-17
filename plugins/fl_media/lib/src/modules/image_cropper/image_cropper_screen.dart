@@ -19,9 +19,9 @@ class ImageCropperScreen extends StatefulWidget {
   static const String routeName = '/image-cropper';
 
   const ImageCropperScreen({
-    Key? key,
+    super.key,
     required this.imagefile,
-  }) : super(key: key);
+  });
 
   final File imagefile;
 

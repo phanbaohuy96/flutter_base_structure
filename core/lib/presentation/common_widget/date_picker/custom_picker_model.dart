@@ -12,8 +12,8 @@ class DateDDMMYYYModel extends CommonPickerModel {
     DateTime? currentTime,
     DateTime? maxTime,
     DateTime? minTime,
-    LocaleType? locale,
-  }) : super(locale: locale) {
+    super.locale,
+  }) {
     this.maxTime =
         maxTime ?? DateTime.now().add(const Duration(days: 365 * 100));
     this.minTime =
@@ -73,7 +73,7 @@ class DateDDMMYYYModel extends CommonPickerModel {
     final maxMonth = _maxMonthOfCurrentYear();
 
     middleList = List.generate(maxMonth - minMonth + 1, (int index) {
-      return '${_localeMonth(minMonth + index)}';
+      return _localeMonth(minMonth + index);
     });
   }
 
@@ -256,8 +256,8 @@ class DateMMYYYModel extends CommonPickerModel {
     DateTime? currentTime,
     DateTime? maxTime,
     DateTime? minTime,
-    LocaleType? locale,
-  }) : super(locale: locale) {
+    super.locale,
+  }) {
     this.maxTime = maxTime ?? DateTime(2099, 12, 31);
     this.minTime = minTime ?? DateTime(1900, 1, 1);
 
@@ -315,7 +315,7 @@ class DateMMYYYModel extends CommonPickerModel {
     final maxMonth = _maxMonthOfCurrentYear();
 
     middleList = List.generate(maxMonth - minMonth + 1, (int index) {
-      return '${_localeMonth(minMonth + index)}';
+      return _localeMonth(minMonth + index);
     });
   }
 
@@ -505,11 +505,11 @@ class MyTimePickerModel extends CommonPickerModel {
 
   MyTimePickerModel({
     DateTime? currentTime,
-    LocaleType? locale,
+    super.locale,
     this.showSecondsColumn = true,
     this.minTime,
     this.maxTime,
-  }) : super(locale: locale) {
+  }) {
     this.currentTime = currentTime ?? DateTime.now();
 
     final initialInSec = Duration(

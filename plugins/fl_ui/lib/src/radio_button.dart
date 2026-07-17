@@ -15,7 +15,7 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
   final EdgeInsets padding;
 
   const RadioButtonWithTitle({
-    Key? key,
+    super.key,
     required this.title,
     required this.value,
     required this.groupValue,
@@ -27,8 +27,7 @@ class RadioButtonWithTitle<T> extends StatelessWidget {
   }) : assert(
          title is String || title is Widget,
          '$title [String, Widget] is supported',
-       ),
-       super(key: key);
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -86,13 +85,13 @@ class FlRadioGroup<T> extends StatefulWidget {
   final Axis axis;
 
   const FlRadioGroup({
-    Key? key,
+    super.key,
     required this.items,
     required this.onSelected,
     required this.getLabel,
     this.selectedItem,
     this.axis = Axis.vertical,
-  }) : super(key: key);
+  });
 
   @override
   _FlRadioGroupState createState() => _FlRadioGroupState<T>();
@@ -124,8 +123,8 @@ class _FlRadioGroupState<T> extends State<FlRadioGroup<T>> {
             onChanged: (T? value) {
               setState(() {
                 seleted = value;
-                if (seleted != null) {
-                  widget.onSelected(seleted!);
+                if (value != null) {
+                  widget.onSelected(value);
                 }
               });
             },

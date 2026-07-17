@@ -1,5 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:pedantic/pedantic.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../l10n/localization_ext.dart';
@@ -23,7 +24,9 @@ class PermissionService {
       status = await ps.request();
 
       if (status.isPermanentlyDenied && required) {
-        unawaited(_showPermissionWarningDialog(context));
+        if (context.mounted) {
+          unawaited(_showPermissionWarningDialog(context));
+        }
 
         return false;
       }
@@ -52,6 +55,9 @@ class PermissionService {
     var isGranted = await checkPermission(ps, context);
 
     if (!isGranted) {
+      if (!context.mounted) {
+        return isGranted;
+      }
       isGranted = await _requestPermission(ps, context, required: required);
     }
     return isGranted;

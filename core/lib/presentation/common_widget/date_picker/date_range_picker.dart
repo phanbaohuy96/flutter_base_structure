@@ -401,7 +401,7 @@ class DateRangePickerBuilder extends StatelessWidget {
       locale: context.appDateLocale,
     );
     return [
-      '${selected.key}',
+      selected.key,
       if (timeStr.isNotNullOrEmpty)
         [
           if (dateRange.from == null && dateRange.to != null)

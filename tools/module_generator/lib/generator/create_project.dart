@@ -508,9 +508,7 @@ class CreateProjectGenerator {
     final rows = await file
         .openRead()
         .transform(utf8.decoder)
-        .transform(
-          CsvToListConverter(eol: Platform.isMacOS ? '\n' : defaultEol),
-        )
+        .transform(const CsvToListConverter(eol: '\n'))
         .toList();
 
     for (final row in rows) {

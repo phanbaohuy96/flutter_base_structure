@@ -16,10 +16,8 @@
 - [ ] Barrel exports regenerated if module/plugin files added or removed
 - [ ] Route provider registered or interceptor updated if new route added
 - [ ] `make pub_get` run if `pubspec.yaml` changed
-- [ ] `make format` applied
-- [ ] Analyzer passes for affected package(s), for example `make analyze PACKAGES="apps/main core"` or full `make analyze`
+- [ ] `make check` passes (analyzer + formatting + tests across all packages)
 - [ ] Tests added/updated for new behavior
-- [ ] Existing tests pass for affected package(s), for example `make test PACKAGES="apps/main core"` or full `make test`
 
 ## ⚠️ Caution items
 

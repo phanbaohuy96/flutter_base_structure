@@ -120,16 +120,18 @@ When a direct Flutter/Dart command is needed, check `.fvm_cache` first. If it co
 Useful make targets:
 
 ```bash
+make check       # Definition of done: analyze + format_check + test (see Testing and Verification)
 make setup       # Clean + pub_get + lang + asset + gen_all
 make pub_get     # Dependencies across plugins, core, and main app
 make gen_all     # Code generation for core, data_source, and main app
 make gen_core    # Code generation for core only
 make gen_main    # Code generation for apps/main only
 make lang        # Regenerate all localization outputs
-make format      # dart format .
+make format      # Format hand-written Dart code
+make format_check # Verify formatting without rewriting files
 make test        # Run tests when available
 make coverage_main
-make analyze     # If present in this branch; otherwise use fvm flutter analyze directly
+make analyze     # Analyze every package, or scope with PACKAGES="apps/main core"
 make help        # Show available commands
 ```
 
@@ -448,7 +450,22 @@ Do not change package IDs, bundle IDs, signing paths, CI secrets, provisioning d
 
 ## Testing and Verification
 
-For code changes, prefer the narrowest useful verification first, then broader checks:
+### Definition of done
+
+**A code change is not complete until `make check` passes.** It runs `analyze` + `format_check` + `test` across every package and exits non-zero on any failure:
+
+```bash
+make check
+```
+
+This is a hard gate, not a suggestion. Do not report work as finished, and do not open a PR, while `make check` is red — either fix the findings or tell the user explicitly what is still failing and why.
+
+Two things worth knowing:
+
+- **Analyzer infos fail the gate.** `flutter analyze` exits non-zero on `info`-level lints, not just errors. Infos are the ones that quietly pile up, so they count.
+- **Never run `dart fix --apply` to clear them.** It ignores `formatter: trailing_commas: preserve` and collapses hand-written multiline layouts across every file it touches, which is not automatically recoverable. Fix lints by hand, or with a targeted script that edits only the flagged tokens.
+
+While iterating, run the narrowest useful check first and save `make check` for the end:
 
 ```bash
 make format
@@ -457,7 +474,10 @@ make gen_core      # If core generated inputs changed
 make gen_main      # If app generated inputs changed
 fvm flutter analyze    # From the relevant package if no make target is available
 fvm flutter test       # From the relevant package if tests exist
+make check             # Definition of done — must be green before you call it complete
 ```
+
+Scope it to a package while working: `make analyze PACKAGES="apps/main core"`.
 
 For UI changes, run the app and smoke-test the affected flow before reporting completion whenever possible. If you cannot run the UI in this environment, say so explicitly.
 
@@ -486,3 +506,4 @@ Version pin: the Dart dep and the npm CLI are both held at `0.9.34`. `0.9.35`+ a
 6. Use make targets for generation and localization.
 7. Keep technical identifier changes deliberate and consistent across Android, iOS, docs, and CI scripts.
 8. Do not add speculative abstractions, fallback logic, or comments unless they are needed for the current task.
+9. Run `make check` before reporting any code change as complete; never use `dart fix --apply` to get it green.

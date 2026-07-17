@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 /// make hero better when slide out
 class HeroWidget extends StatefulWidget {
   const HeroWidget({
-    Key? key,
+    super.key,
     required this.child,
     required this.tag,
     required this.slidePagekey,
     this.slideType = SlideType.onlyImage,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final SlideType slideType;

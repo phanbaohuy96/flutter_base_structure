@@ -6,7 +6,10 @@ class ReceiptShapeBorder extends ShapeBorder {
   final Color borderColor;
   final double borderWidth;
 
-  ReceiptShapeBorder({required this.borderColor, required this.borderWidth});
+  const ReceiptShapeBorder({
+    required this.borderColor,
+    required this.borderWidth,
+  });
 
   Path _getClip(Size size) {
     var pattern = 9.0;

@@ -17,7 +17,7 @@ class NoticeDialogWithOptions extends StatelessWidget {
   final BuildContext parentContext;
 
   const NoticeDialogWithOptions({
-    Key? key,
+    super.key,
     required this.title,
     required this.options,
     required this.parentContext,
@@ -28,15 +28,15 @@ class NoticeDialogWithOptions extends StatelessWidget {
     this.onConfirmed,
     this.onCanceled,
     this.initialValue,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final dismissFunc = () {
+    void dismissFunc() {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop();
       }
-    };
+    }
 
     final selectedOptionNotifier = ValueNotifier<int?>(initialValue);
     final localization = parentContext.coreL10n;

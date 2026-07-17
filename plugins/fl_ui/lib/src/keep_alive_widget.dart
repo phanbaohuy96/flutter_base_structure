@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 
 class KeepAliveWidget extends StatefulWidget {
   const KeepAliveWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.wantKeepAlive = true,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final bool wantKeepAlive;

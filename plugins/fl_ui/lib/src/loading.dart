@@ -5,8 +5,7 @@ class Loading extends StatelessWidget {
   final Brightness? brightness;
   final double radius;
 
-  const Loading({Key? key, this.brightness, this.radius = 15})
-    : super(key: key);
+  const Loading({super.key, this.brightness, this.radius = 15});
 
   @override
   Widget build(BuildContext context) {

@@ -13,7 +13,7 @@ class LoadingButton extends StatelessWidget {
   final EdgeInsetsGeometry padding;
 
   const LoadingButton({
-    Key? key,
+    super.key,
     required this.controller,
     this.normalIcon = const SizedBox(),
     this.bgColor = const Color(0xFF03a1e4),
@@ -26,7 +26,7 @@ class LoadingButton extends StatelessWidget {
     ),
     this.onPressed,
     this.padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

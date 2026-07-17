@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:fl_navigation/fl_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:pedantic/pedantic.dart';
 
 void main() {
   group('withQueryParameters', () {
@@ -204,7 +205,7 @@ void main() {
               ),
             );
           }),
-          _TestRouteProviderInterceptor((_, __) {
+          _TestRouteProviderInterceptor((_, _) {
             fail('Resolved route providers must stop the chain.');
           }),
         ],
@@ -255,7 +256,7 @@ void main() {
     test('builds extra from direct value, map extra, and query params', () {
       final router = CustomRouter<_RouteArgs>(
         path: '/sample',
-        builder: (_, __, ___) => const SizedBox(),
+        builder: (_, _, _) => const SizedBox(),
         extraFromUrlQueries: (queryParameters) {
           return _RouteArgs(queryParameters['value'] as String?);
         },
@@ -282,15 +283,15 @@ void main() {
         path: '/parent',
         name: 'parent',
         parentNavigatorKey: navigatorKey,
-        builder: (_, __, ___) => const SizedBox(),
-        pageBuilder: (_, __, ___) {
+        builder: (_, _, _) => const SizedBox(),
+        pageBuilder: (_, _, _) {
           return const MaterialPage<void>(child: Text('Parent'));
         },
-        redirect: (_, __) => null,
+        redirect: (_, _) => null,
         routes: [
           CustomRouter(
             path: 'child',
-            builder: (_, __, ___) => const SizedBox(),
+            builder: (_, _, _) => const SizedBox(),
           ),
         ],
       );
@@ -312,15 +313,15 @@ void main() {
         path: '/parent',
         name: 'parent',
         parentNavigatorKey: navigatorKey,
-        builder: (_, __, ___) => const SizedBox(),
+        builder: (_, _, _) => const SizedBox(),
         routes: [
           CustomRouter(
             path: 'first',
-            builder: (_, __, ___) => const SizedBox(),
+            builder: (_, _, _) => const SizedBox(),
           ),
           CustomRouter(
             path: 'second',
-            builder: (_, __, ___) => const SizedBox(),
+            builder: (_, _, _) => const SizedBox(),
           ),
         ],
       );
@@ -517,7 +518,7 @@ GoRoute _textRoute(String path, String text, {String? name}) {
 CustomRouter _customTextRouter(String path, String text) {
   return CustomRouter(
     path: path,
-    builder: (_, __, ___) => Material(child: Text(text)),
+    builder: (_, _, _) => Material(child: Text(text)),
   );
 }
 

@@ -114,7 +114,7 @@ Future<void> generateExport({required List<YamlMap> config}) async {
     ]..sort();
 
     contents
-      ..removeWhere((e) => e.contains('''\'${c.fileName}\''''))
+      ..removeWhere((e) => e.contains(''''${c.fileName}\''''))
       ..add('');
 
     await FilesHelper.writeFile(

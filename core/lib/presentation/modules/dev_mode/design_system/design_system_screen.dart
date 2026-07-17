@@ -12,7 +12,7 @@ import 'pages/typography_page.dart';
 class DesignSystemScreen extends StatefulWidget {
   static const String routeName = '/dev-mode-design-system';
 
-  const DesignSystemScreen({Key? key}) : super(key: key);
+  const DesignSystemScreen({super.key});
 
   @override
   State<DesignSystemScreen> createState() => _DesignSystemScreenState();

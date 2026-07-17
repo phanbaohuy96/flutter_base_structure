@@ -4,7 +4,7 @@ import '../fl_ui.dart';
 
 class MenuItemWidget extends StatelessWidget {
   const MenuItemWidget({
-    Key? key,
+    super.key,
     required this.title,
     this.icon,
     this.onTap,
@@ -19,8 +19,7 @@ class MenuItemWidget extends StatelessWidget {
   }) : assert(
          title is String || title is Widget,
          '$title [String, Widget] is supported',
-       ),
-       super(key: key);
+       );
 
   /// [String, Widget] is supported
   final dynamic title;
@@ -105,7 +104,7 @@ class MenuItemWidget extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8),
                       child: description!,
                     ),
-                  if (tailIcon != null) tailIcon!,
+                  ?tailIcon,
                   if (onTap != null && tailIcon == null)
                     const Icon(
                       Icons.chevron_right_rounded,

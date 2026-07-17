@@ -1,4 +1,6 @@
-library core;
+library;
+
+export 'dart:async' show unawaited;
 
 export 'package:auto_size_text/auto_size_text.dart';
 export 'package:badges/badges.dart';
@@ -23,7 +25,6 @@ export 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
 export 'package:fluttertoast/fluttertoast.dart';
 export 'package:logger/logger.dart';
 export 'package:mime/mime.dart';
-export 'package:pedantic/pedantic.dart';
 export 'package:rxdart/rxdart.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:sqflite/sqflite.dart';

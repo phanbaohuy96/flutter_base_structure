@@ -136,8 +136,8 @@ class DatePickerModel extends CommonPickerModel {
     DateTime? currentTime,
     DateTime? maxTime,
     DateTime? minTime,
-    LocaleType? locale,
-  }) : super(locale: locale) {
+    super.locale,
+  }) {
     this.maxTime = maxTime ?? DateTime(2049, 12, 31);
     this.minTime = minTime ?? DateTime(1970, 1, 1);
 
@@ -197,7 +197,7 @@ class DatePickerModel extends CommonPickerModel {
     final maxMonth = _maxMonthOfCurrentYear();
 
     middleList = List.generate(maxMonth - minMonth + 1, (int index) {
-      return '${_localeMonth(minMonth + index)}';
+      return _localeMonth(minMonth + index);
     });
   }
 
@@ -369,9 +369,9 @@ class TimePickerModel extends CommonPickerModel {
 
   TimePickerModel({
     DateTime? currentTime,
-    LocaleType? locale,
+    super.locale,
     this.showSecondsColumn = true,
-  }) : super(locale: locale) {
+  }) {
     this.currentTime = currentTime ?? DateTime.now();
 
     _currentLeftIndex = this.currentTime.hour;
@@ -453,8 +453,7 @@ class TimePickerModel extends CommonPickerModel {
 
 //a time picker model
 class Time12hPickerModel extends CommonPickerModel {
-  Time12hPickerModel({DateTime? currentTime, LocaleType? locale})
-    : super(locale: locale) {
+  Time12hPickerModel({DateTime? currentTime, super.locale}) {
     this.currentTime = currentTime ?? DateTime.now();
 
     _currentLeftIndex = this.currentTime.hour % 12;
@@ -542,8 +541,8 @@ class DateTimePickerModel extends CommonPickerModel {
     DateTime? currentTime,
     DateTime? maxTime,
     DateTime? minTime,
-    LocaleType? locale,
-  }) : super(locale: locale) {
+    super.locale,
+  }) {
     if (currentTime != null) {
       this.currentTime = currentTime;
       if (maxTime != null &&

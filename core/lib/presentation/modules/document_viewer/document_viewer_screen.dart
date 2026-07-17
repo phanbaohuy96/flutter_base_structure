@@ -25,7 +25,7 @@ class DocumentViewerArgs {
 
 class DocumentViewerScreen extends StatefulWidget {
   static const String routeName = '/document-viewer';
-  const DocumentViewerScreen({Key? key, required this.args}) : super(key: key);
+  const DocumentViewerScreen({super.key, required this.args});
 
   final DocumentViewerArgs args;
 
@@ -46,10 +46,10 @@ class _DocumentViewerScreenState extends State<DocumentViewerScreen> {
             iconSize: 20,
             padding: EdgeInsets.zero,
             splashRadius: 20,
-            icon: Container(
+            icon: const SizedBox(
               width: 40,
               height: 40,
-              child: const Icon(
+              child: Icon(
                 Icons.download,
                 size: 20,
                 color: Color(0xFF767676),

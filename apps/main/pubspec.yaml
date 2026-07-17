@@ -28,6 +28,10 @@ dependencies:
   fl_navigation:
     path: ../../plugins/fl_navigation
 
+  # DI (imported directly; previously resolved via core)
+  get_it: ^7.2.0
+  injectable: ^2.4.4
+
   mobile_scanner: ^7.0.0
   image: ^4.0.17
   path_provider: ^2.1.2
@@ -73,6 +77,7 @@ dev_dependencies:
     sdk: flutter
   test: ^1.24.3
   mockito: ^5.4.0
+  flutter_lints: ^6.0.0
 
   build_runner: ^2.0.4
   retrofit_generator: 10.2.3

@@ -5,7 +5,7 @@ import 'number_format_utils.dart';
 import 'phone_number_utils.dart';
 
 extension ExtendedIterable<E> on Iterable<E> {
-  /// Like Iterable<T>.map but callback have index as second argument
+  /// Like `Iterable<T>.map` but callback have index as second argument
   Iterable<T> mapIndex<T>(T Function(E e, int i) f) {
     var i = 0;
     return map((e) => f(e, i++));
@@ -523,7 +523,7 @@ extension WeightExt on int {
   String formatNumber({String prefix = ''}) {
     const pattern = r'(\d{1,3})(?=(\d{3})+(?!\d))';
     final regExp = RegExp(pattern);
-    final mathFunc = (Match match) => '${match[1]},';
+    String mathFunc(Match match) => '${match[1]},';
     return '${toString().replaceAllMapped(regExp, mathFunc)}$prefix';
   }
 }

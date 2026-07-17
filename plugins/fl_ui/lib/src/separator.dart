@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Separator extends StatelessWidget {
   const Separator({
-    Key? key,
+    super.key,
     this.dashHeight = 1,
     this.dashWidth = 3,
     this.color = Colors.black,
-  }) : super(key: key);
+  });
   final double dashHeight;
   final double dashWidth;
   final Color color;

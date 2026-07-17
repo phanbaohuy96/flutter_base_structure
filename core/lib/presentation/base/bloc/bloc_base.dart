@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../../../core.dart';
 
 abstract class CoreBlocBase<E, S> extends Bloc<E, S> with CoreDelegate {
-  CoreBlocBase(S s) : super(s);
+  CoreBlocBase(super.s);
 
   @override
   void onError(Object error, StackTrace stackTrace) {

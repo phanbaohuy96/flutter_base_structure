@@ -91,7 +91,7 @@ class YamlWriter {
       lines.add(
         yaml.contains(' ')
             ? "\"${yaml.replaceAll("\"", "\\\"")}\""
-            : "${yaml.replaceAll("\"", "\\\"")}",
+            : yaml.replaceAll('"', '\\"'),
       );
     } else {
       lines.add(yaml.toString());
@@ -126,7 +126,7 @@ class YamlWriter {
       } else {
         lines.addAll([
           '${_indent(indent)}${key.toString()}:',
-          '${_writeInternal(value, indent: indent + 1)}',
+          _writeInternal(value, indent: indent + 1),
         ]);
       }
     }

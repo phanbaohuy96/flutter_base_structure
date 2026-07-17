@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 
 class CustomTabbar extends StatefulWidget {
   const CustomTabbar({
-    Key? key,
+    super.key,
     required this.titles,
     required this.onTap,
     this.selectedIdx = 0,
     this.borderRadius,
     this.bgColor,
-  }) : super(key: key);
+  });
 
   final List<String> titles;
   final int selectedIdx;
@@ -86,12 +86,12 @@ class TabItem extends StatelessWidget {
   final double? borderRadius;
 
   const TabItem({
-    Key? key,
+    super.key,
     required this.title,
     required this.selected,
     required this.onTap,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

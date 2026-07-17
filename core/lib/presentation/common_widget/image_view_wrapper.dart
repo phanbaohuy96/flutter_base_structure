@@ -6,6 +6,7 @@ import '../../common/constants.dart';
 class ImageViewWrapper extends ImageView {
   ImageViewWrapper.avatar(
     String source, {
+    super.key,
     super.width,
     super.height,
     super.fit,
@@ -23,6 +24,7 @@ class ImageViewWrapper extends ImageView {
 
   ImageViewWrapper.item(
     String source, {
+    super.key,
     super.width,
     super.height,
     super.fit,
@@ -40,6 +42,7 @@ class ImageViewWrapper extends ImageView {
 
   ImageViewWrapper.banner(
     String source, {
+    super.key,
     super.width,
     super.height,
     super.fit,

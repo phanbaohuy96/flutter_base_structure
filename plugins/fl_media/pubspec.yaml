@@ -29,7 +29,7 @@ dependencies:
   chewie: ^1.8.5
   visibility_detector: ^0.4.0+2
 
-  pedantic: ^1.11.1
+  path_provider: ^2.1.5
 
   fl_utils:
     path: ../fl_utils

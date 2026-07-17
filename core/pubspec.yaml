@@ -77,12 +77,32 @@ dependencies:
     path: ../plugins/fl_ui
   fl_theme:
     path: ../plugins/fl_theme
+
+  # Direct deps previously resolved only transitively — declared for
+  # depend_on_referenced_packages (several are re-exported from core.dart).
+  badges: ^3.1.2
+  built_collection: ^5.1.1
+  carousel_slider: ^5.1.1
+  collection: ^1.19.1
+  dio: ^5.4.0
+  dots_indicator: ^2.1.2
+  flutter_svg: ^2.2.0
+  fwfh_chewie: ^0.16.1
+  html: ^0.15.6
+  logger: ^2.6.1
+  path: ^1.9.1
+  retrofit: ^4.9.2
+  rxdart: ^0.28.0
+  sqflite: ^2.4.2
+  url_launcher: ^6.3.2
+  web: ^1.1.1
   fl_media:
     path: ../plugins/fl_media
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^6.0.0
   build_runner: ^2.0.4
   retrofit_generator: 10.2.3
   hive_ce_generator: ^1.9.3

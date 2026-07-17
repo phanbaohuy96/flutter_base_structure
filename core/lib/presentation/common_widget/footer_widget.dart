@@ -6,13 +6,13 @@ import '../extentions/context_extention.dart';
 
 class FooterWidget extends StatelessWidget {
   const FooterWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.alignment,
     this.paddingBottom,
     this.backgroundColor,
     this.shadowVisibility = true,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final AlignmentGeometry? alignment;

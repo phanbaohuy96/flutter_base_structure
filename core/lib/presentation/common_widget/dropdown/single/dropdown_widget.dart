@@ -33,7 +33,8 @@ class DropdownWidget<T> extends StatefulWidget {
   final BorderRadius? borderRadius;
   final VoidCallback? onTap;
 
-  DropdownWidget({
+  const DropdownWidget({
+    super.key,
     this.title,
     this.titleStyle,
     this.titleMode = TitleMode.above,

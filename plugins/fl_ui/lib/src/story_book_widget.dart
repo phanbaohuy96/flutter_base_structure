@@ -4,6 +4,7 @@ import 'box_color.dart';
 
 class StoryWidgetBox<T> extends StatefulWidget {
   const StoryWidgetBox({
+    super.key,
     required this.builder,
     this.title = '',
     this.description = '',

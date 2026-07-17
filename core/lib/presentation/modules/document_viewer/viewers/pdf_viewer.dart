@@ -8,8 +8,7 @@ class PDFViewer extends StatefulWidget {
   final String url;
   final Future<Uint8List?> Function({required String url}) getDataFrom;
 
-  const PDFViewer({Key? key, required this.url, required this.getDataFrom})
-    : super(key: key);
+  const PDFViewer({super.key, required this.url, required this.getDataFrom});
 
   @override
   _PDFViewerState createState() => _PDFViewerState();
