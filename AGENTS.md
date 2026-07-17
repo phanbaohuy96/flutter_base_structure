@@ -377,13 +377,32 @@ Loading/error handling:
 
 ## UI and Theme Rules
 
-Before creating a new widget, check existing reusable widgets in this order:
+Before creating a new widget, check for an existing one. Everything reusable
+ships through a single import: `import 'package:core/core.dart';` (re-exports
+`fl_ui`, `fl_theme`, `fl_media`, and `core`'s own `common_widget`). Full
+awareness index, grouped by need: `.agents/skills/fl-ui-components/SKILL.md`.
 
-1. `plugins/fl_ui/`
-2. `core/lib/presentation/common_widget/`
-3. `apps/main/lib/presentation/common_widget/`
-4. Current module `views/widgets/`
-5. Exports from `package:core/core.dart`
+Quick need → widget map (not exhaustive — check the skill before building):
+
+| Need | Reach for |
+|---|---|
+| Screen scaffold | `ScreenForm` / `MainPageForm` |
+| Text field | `InputContainer` |
+| Dropdown (single/multi) | `DropdownWidget` / `MultipleChoiceDropdownWidget` |
+| Date/time picker | `date_picker/` (vendored cluster; several entry points, see skill) |
+| Loading spinner | `Loading` |
+| Empty state | `EmptyData` |
+| Confirm/notice dialog | `showNoticeDialog` / `showActionDialog` (`dialog_extention.dart`) |
+| Pull-to-refresh / load-more list | `SmartRefresherWrapper` |
+| Image | `ImageView` |
+| Video | `VideoControllerManager` / `VideoViewerScreen` |
+| Media picker UI | `MediaPickerWidget` (selection/preview/multi-select; built on `PickFileHelper`) |
+| Grouped sliver list with sticky headers | `SliverGroupBuilder` (`group_sliver/`) |
+| Label/value row | `InfoItem` |
+| Tabs | `CustomTabbar` / `TabPageWidget` |
+
+Only fall back to `apps/main/lib/presentation/common_widget/` or a module's own
+`views/widgets/` when the skill confirms nothing fits.
 
 Theme rules:
 

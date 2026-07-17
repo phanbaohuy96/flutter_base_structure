@@ -10,6 +10,25 @@
 * **Breaking — removed `Pagination` entity:** `domain/entity/pagination.dart`
   was unused after the `ListingUseCase` change and has been deleted. Track
   listing state through `ListingUseCase`/the bloc instead.
+* **Breaking — pruned cold `common_widget` classes:** removed after confirming
+  zero references in production, the in-app storybook, `fl_ui_previews.dart`,
+  and tests: the `date_range_picker.dart`
+  cluster (`DateRangeUtils`, `DateRangePickerWidget`, `DateRangePickerBuilder`,
+  `DateRangePickerLabel`), `CustomBottomNavigationBar`,
+  `LoadingButton`/`LoadingButtonController` (`loadding_button/`),
+  `AutoCompleteField`, `BoxTitle`, `InformationPopup`, `LoadFailed`,
+  `SelectionDialog`, `MultipleSelectionDialog`, `NoticeDialogWithOptions`,
+  `SubmitSucceedDailog`, `HtmlWidgetWithViewMore`, and `GenderSelection`.
+  Also removed the `fl_ui` widgets these depended on or that were
+  independently unused: `HidableBottomNav`, `ShimmerWrapper`,
+  `KeepAliveWidget`, `ViewMoreWidget`. `MediaPickerWidget` and
+  `SliverGroupBuilder` (`group_sliver/`) were evaluated for the same cut but
+  kept — no built-in replacement exists for either. Forks depending on any of
+  the removed classes should vendor them from git history before upgrading.
+* **Breaking — removed `MobileSizeLayoutConstraints`:** deleted
+  `layout_constraints.dart` and its usage in `apps/main/lib/presentation/app.dart`.
+  The app no longer clamps layout width on tablet/desktop web browsers; forks
+  that relied on this behavior should vendor the widget back from git history.
 
 ## 0.0.1
 

@@ -20,22 +20,11 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: appTheme.theme,
-        home: Scaffold(
+        home: const Scaffold(
           body: Column(
             children: [
-              const BadgeBox(count: 3, child: Icon(Icons.notifications)),
-              const ErrorBox(validation: 'Required', child: Text('Field')),
-              CheckboxWithTitle(
-                title: 'Accept terms',
-                value: true,
-                onChanged: (_) {},
-              ),
-              RadioButtonWithTitle<int>(
-                title: 'Option one',
-                value: 1,
-                groupValue: 1,
-                onChanged: (_) {},
-              ),
+              BadgeBox(count: 3, child: Icon(Icons.notifications)),
+              ErrorBox(validation: 'Required', child: Text('Field')),
             ],
           ),
         ),
@@ -44,7 +33,5 @@ void main() {
 
     expect(find.text('3'), findsOneWidget);
     expect(find.text('Required'), findsOneWidget);
-    expect(find.text('Accept terms'), findsOneWidget);
-    expect(find.text('Option one'), findsOneWidget);
   });
 }

@@ -138,10 +138,8 @@ class _MyAppState extends State<MainApplication>
       routerConfig: _router ??= buildAppRouter(appBloc),
       builder: EasyLoading.init(
         builder: (_, child) {
-          return MobileSizeLayoutConstraints(
-            child: FlashyFlushbarProvider(
-              child: TextScaleFixed(child: child ?? const SizedBox()),
-            ),
+          return FlashyFlushbarProvider(
+            child: TextScaleFixed(child: child ?? const SizedBox()),
           );
         },
       ),

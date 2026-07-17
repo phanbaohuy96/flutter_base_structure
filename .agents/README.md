@@ -24,6 +24,7 @@ OpenCode, Claude Code, Cursor, GitHub Copilot, Windsurf, and others.
 | [`fl-extension-action`](./skills/fl-extension-action/SKILL.md) | `*.action.dart` part-of screen for handlers + bloc listeners |
 | [`fl-route-config`](./skills/fl-route-config/SKILL.md) | `IRoute` / `CustomRouter` (from core) + `BuildContext` coordinator |
 | [`fl-theme-usage`](./skills/fl-theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` from fl_theme |
+| [`fl-ui-components`](./skills/fl-ui-components/SKILL.md) | Awareness index of reusable widgets across `fl_ui`, `fl_theme`, `fl_media`, and `common_widget` |
 | [`fl-widget-preview`](./skills/fl-widget-preview/SKILL.md) | Official Flutter Widget Previewer with `@Preview` and `flutter widget-preview start` |
 | [`fl-data-layer`](./skills/fl-data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repository wired through injectable (Hive optional) |
 | [`fl-dependency-injection`](./skills/fl-dependency-injection/SKILL.md) | Injectable + GetIt boundaries, lifetimes, contracts, codegen, and DI tests |

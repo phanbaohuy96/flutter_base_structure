@@ -82,6 +82,7 @@ team:
       triggers: [design, UI, UX, style, visual]
       skills:
         - fl-theme-usage
+        - fl-ui-components
         - fl-extension-action
         - fl-localization
 
@@ -173,7 +174,7 @@ workflows:
       - { agent: fixer, skills: [fl-module-scaffold] }
       - { agent: fixer, skills: [fl-bloc-pattern, fl-extension-action] }
       - { agent: fixer, skills: [fl-route-config] }
-      - { agent: designer, skills: [fl-theme-usage, fl-localization] }
+      - { agent: designer, skills: [fl-ui-components, fl-theme-usage, fl-localization] }
       - { agent: fixer, skills: [fl-code-generation] }
       - { agent: fixer, skills: [fl-testing] }
       - { agent: oracle, skills: [fl-reviewer] }

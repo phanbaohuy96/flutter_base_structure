@@ -55,7 +55,7 @@ metadata:
 - [ ] No raw `Colors.white`/`Colors.black` for surfaces or text — use `context.themeColor.*`.
 - [ ] Typography uses Material 3 slot names (`titleMedium`, `bodySmall`, …) plus the `AppTextTheme` extras (`titleTiny`, `inputTitle`, `buttonText`, …) — not invented tokens like `titleMd`/`bodyXs`.
 - [ ] Buttons reuse `ThemeButton.*` defaults; per-call `style:` overrides are scoped, not redundant.
-- [ ] Existing project controls are reused before custom UI is introduced.
+- [ ] Existing project controls are reused before custom UI is introduced — check `fl-ui-components` for what already exists.
 - [ ] Shared spacing, radii, padding, and elevations use `context.decorationTheme` where reusable theme tokens apply.
 - [ ] Theme JSON/configuration UI keeps preview-only state separate from serialized theme config.
 
@@ -98,7 +98,7 @@ Reply with:
 - A screen whose `_blocListener` doesn't call `hideLoading()` on every state — the loading indicator can stick.
 - A coordinator method built with literal route paths instead of `<Screen>.routeName`.
 - A named project architecture bypassed with an ad-hoc UI structure.
-- A custom control recreated when an existing project widget already fits.
+- A custom control recreated when an existing project widget already fits (see `fl-ui-components`).
 - A `Text(...)` with a literal English string anywhere in production code.
 - `setState` inside a `BlocBuilder.builder` (rebuild loop).
 - A playground editor using stale `initialValue` fields after imported/preset state changes.
@@ -110,4 +110,5 @@ Reply with:
 - [`fl-extension-action`](../fl-extension-action/SKILL.md)
 - [`fl-route-config`](../fl-route-config/SKILL.md)
 - [`fl-theme-usage`](../fl-theme-usage/SKILL.md)
+- [`fl-ui-components`](../fl-ui-components/SKILL.md)
 - [`fl-data-reviewer`](../fl-data-reviewer/SKILL.md)

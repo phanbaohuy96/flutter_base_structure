@@ -13,6 +13,7 @@ One-line index of every skill under [`./skills/`](./skills/).
 | [`fl-extension-action`](./skills/fl-extension-action/SKILL.md) | `*.action.dart` for screen handlers | Splitting handlers out of a bloated screen |
 | [`fl-route-config`](./skills/fl-route-config/SKILL.md) | `IRoute` + `CustomRouter` + optional coordinator | Wiring navigation |
 | [`fl-theme-usage`](./skills/fl-theme-usage/SKILL.md) | `context.themeColor` + `context.textTheme` | Styling a widget |
+| [`fl-ui-components`](./skills/fl-ui-components/SKILL.md) | Awareness index of reusable widgets in `fl_ui`/`fl_theme`/`fl_media`/`common_widget` | Before writing any new widget |
 | [`fl-widget-preview`](./skills/fl-widget-preview/SKILL.md) | Official `@Preview` / `flutter widget-preview` workflow | Previewing or showcasing Flutter widgets |
 | [`fl-data-layer`](./skills/fl-data-layer/SKILL.md) | Freezed DTO + Retrofit + storage seam + repo (Hive optional) | Talking to an API or local store |
 | [`fl-dependency-injection`](./skills/fl-dependency-injection/SKILL.md) | Injectable + GetIt composition boundaries and DI review | Wiring or reviewing dependencies |
@@ -44,6 +45,7 @@ Reviewing UI PR?               → fl-reviewer
 Custom error UX?               → fl-error-handling
 Styling questions?             → fl-theme-usage
 Previewing a widget?           → fl-widget-preview → fl-theme-usage
+Building UI?                   → fl-ui-components → fl-theme-usage
 ```
 
 ## Related

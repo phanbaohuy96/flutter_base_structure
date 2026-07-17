@@ -70,10 +70,11 @@ You can also call a skill explicitly:
 2. `fl-module-scaffold` — generate the module via `make run_module_generator`
 3. `fl-bloc-pattern` — author events, `_StateData`, state classes
 4. `fl-route-config` — register the route, expose a coordinator
-5. `fl-theme-usage` — style with `context.themeColor` / `context.textTheme`
-6. `fl-localization` — add strings to `apps/main/lib/l10n/localizations.csv`
-7. `fl-code-generation` — `make gen_all` (and `make lang` if strings changed)
-8. `fl-testing` — bloc + widget tests
+5. `fl-ui-components` — check for an existing widget before writing a new one
+6. `fl-theme-usage` — style with `context.themeColor` / `context.textTheme`
+7. `fl-localization` — add strings to `apps/main/lib/l10n/localizations.csv`
+8. `fl-code-generation` — `make gen_all` (and `make lang` if strings changed)
+9. `fl-testing` — bloc + widget tests
 
 ### API integration
 

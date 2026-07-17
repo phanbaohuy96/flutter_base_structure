@@ -37,7 +37,7 @@ Flutter base examples:
 Write the minimum code that solves the current request.
 
 - No speculative features, flags, adapters, or abstractions.
-- No new widget when an existing `fl_ui`, `core`, or module widget fits.
+- No new widget when an existing `fl_ui`, `core`, or module widget fits — check `fl-ui-components` for the catalog.
 - No custom BLoC/state shape; use the repo `fl-bloc-pattern`.
 - No custom localization flow; update CSV and run `make lang`.
 - No direct generated-file edits when a generator exists.
@@ -110,3 +110,4 @@ Use these before editing derived files:
 - [`fl-localization`](../fl-localization/SKILL.md)
 - [`fl-code-generation`](../fl-code-generation/SKILL.md)
 - [`fl-reviewer`](../fl-reviewer/SKILL.md)
+- [`fl-ui-components`](../fl-ui-components/SKILL.md)

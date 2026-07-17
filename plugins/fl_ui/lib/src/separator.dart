@@ -1,3 +1,4 @@
+import 'package:fl_theme/fl_theme.dart';
 import 'package:flutter/material.dart';
 
 class Separator extends StatelessWidget {
@@ -5,14 +6,15 @@ class Separator extends StatelessWidget {
     super.key,
     this.dashHeight = 1,
     this.dashWidth = 3,
-    this.color = Colors.black,
+    this.color,
   });
   final double dashHeight;
   final double dashWidth;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
+    final resolvedColor = color ?? context.themeColor.dividerColor;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         final boxWidth = constraints.constrainWidth();
@@ -25,7 +27,9 @@ class Separator extends StatelessWidget {
             return SizedBox(
               width: dashWidth,
               height: dashHeight,
-              child: DecoratedBox(decoration: BoxDecoration(color: color)),
+              child: DecoratedBox(
+                decoration: BoxDecoration(color: resolvedColor),
+              ),
             );
           }),
         );

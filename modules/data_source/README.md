@@ -1,18 +1,7 @@
-# fl_ui
+# data_source
 
-A new Flutter plugin project.
+Retrofit/Dio, Hive, and JSON data-layer plumbing shared across app flavors — API clients, storage models, and DI wiring (`data_source_micro.dart`).
 
-## Getting Started
+Sits between `core` and `plugins` in the dependency chain: `apps/main -> core -> modules/data_source -> plugins`.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-The plugin project was generated without specifying the `--platforms` flag, no platforms are currently supported.
-To add platforms, run `flutter create -t plugin --platforms <platforms> .` in this directory.
-You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
+See [`AGENTS.md`](../../AGENTS.md) and [`.agents/skills/fl-data-layer/SKILL.md`](../../.agents/skills/fl-data-layer/SKILL.md) for conventions.
