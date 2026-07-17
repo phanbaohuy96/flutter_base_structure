@@ -23,7 +23,7 @@ ANALYZE_DIRS := $(if $(PACKAGES),$(PACKAGES),$(PACKAGE_DIRS))
 TEST_DIRS := $(if $(PACKAGES),$(PACKAGES),$(TEST_PACKAGE_DIRS))
 
 # Main targets
-.PHONY: setup build run test analyze clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
+.PHONY: setup build run test analyze check format_check clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
 	app_identifier create_project reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
 
@@ -75,12 +75,14 @@ help:
 	@echo "  make build_web          - Build web app"
 	@echo ""
 	@echo "Testing and Coverage:"
+	@echo "  make check              - Definition of done: analyze + format check + tests (run before calling work complete)"
 	@echo "  make analyze           - Run flutter analyze for all packages, or PACKAGES=\"apps/main core\""
 	@echo "  make test              - Run tests for packages with test files, or PACKAGES=\"apps/main core\""
 	@echo "  make coverage_main      - Generate test coverage report for main app"
 	@echo ""
 	@echo "Maintenance:"
 	@echo "  make format             - Format all Dart code"
+	@echo "  make format_check       - Verify formatting without rewriting files"
 	@echo "  make clean              - Clean the project"
 	@echo "  make clean_force        - Clean with force option"
 	@echo "  make run_module_generator - Run module generator (interactive)"
@@ -275,19 +277,37 @@ gen:
 # Maintenance
 ################################################################################
 
+# Hand-written Dart sources: everything `format` and `format_check` operate on.
+# Generated output and vendored deps are excluded — they are not ours to reformat.
+FIND_HAND_WRITTEN_DART := find . -name '*.dart' \
+	-not -path '*/.dart_tool/*' \
+	-not -path '*/build/*' \
+	-not -path '*/node_modules/*' \
+	-not -path '*/lib/generated/*' \
+	-not -path '*/lib/l10n/generated/*' \
+	-not -path '*/lib/src/l10n/generated/*' \
+	-not -name '*.config.dart' \
+	-not -name '*.freezed.dart' \
+	-not -name '*.g.dart' \
+	-not -name '*.module.dart'
+
 # Format hand-written Dart code
 format:
-	@find . -name '*.dart' \
-		-not -path '*/.dart_tool/*' \
-		-not -path '*/build/*' \
-		-not -path '*/lib/generated/*' \
-		-not -path '*/lib/l10n/generated/*' \
-		-not -path '*/lib/src/l10n/generated/*' \
-		-not -name '*.config.dart' \
-		-not -name '*.freezed.dart' \
-		-not -name '*.g.dart' \
-		-not -name '*.module.dart' \
-		-print0 | xargs -0 $(DART) format
+	@$(FIND_HAND_WRITTEN_DART) -print0 | xargs -0 $(DART) format
+
+# Verify formatting without rewriting files (same scope as `format`)
+format_check:
+	@log_file=$$(mktemp); \
+	if $(FIND_HAND_WRITTEN_DART) -print0 \
+		| xargs -0 $(DART) format --output=none --set-exit-if-changed > "$$log_file" 2>&1; then \
+		echo "Formatting ok"; \
+		rm -f "$$log_file"; \
+	else \
+		echo "Formatting failed - these files need 'make format':"; \
+		grep -oE 'Changed [^ ]+\.dart' "$$log_file" || cat "$$log_file"; \
+		rm -f "$$log_file"; \
+		exit 1; \
+	fi
 
 # Run module generator
 run_module_generator:
@@ -395,6 +415,11 @@ build_web:
 ################################################################################
 # Testing and Coverage
 ################################################################################
+
+# Definition of done: a change is not complete until this passes.
+# Fails on analyzer infos too, which is how lint debt accumulates unnoticed.
+check: analyze format_check test
+	@echo "check: analyze + format + tests all clean"
 
 # Analyze all packages
 analyze:

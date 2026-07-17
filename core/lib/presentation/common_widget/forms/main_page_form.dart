@@ -14,7 +14,7 @@ class MainPageForm extends StatelessWidget {
   /// The [floatingActionButtonLocation]
   /// defaults to [FloatingActionButtonLocation.miniEndDocked].
   const MainPageForm({
-    Key? key,
+    super.key,
     // Content
     this.body,
     this.title,
@@ -38,7 +38,7 @@ class MainPageForm extends StatelessWidget {
     this.hasBottomBorderRadius,
     this.titleMaxLines,
     this.titleStyle,
-  }) : super(key: key);
+  });
 
   /// Main content of the page.
   final Widget? body;

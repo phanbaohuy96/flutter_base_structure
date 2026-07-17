@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 class TabBox extends StatelessWidget {
   const TabBox({
-    Key? key,
+    super.key,
     this.child,
     this.tabBarHeight,
     this.tabBarDecoration,
     this.tabBarMargin,
-  }) : super(key: key);
+  });
 
   final Widget? child;
   final double? tabBarHeight;
@@ -69,7 +69,7 @@ class TabPageWidget extends StatefulWidget {
   final bool? useMaterial3;
 
   const TabPageWidget({
-    Key? key,
+    super.key,
     required this.tabBuilder,
     required this.pageBuilder,
     required this.length,
@@ -91,7 +91,7 @@ class TabPageWidget extends StatefulWidget {
     this.tabBarPadding,
     this.allowAnimateToPage = true,
     this.useMaterial3,
-  }) : super(key: key);
+  });
 
   @override
   State<TabPageWidget> createState() => _TabPageWidgetState();

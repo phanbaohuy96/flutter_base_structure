@@ -23,7 +23,7 @@ class PageIndicatorWidget extends StatefulWidget {
   final int initialPage;
 
   const PageIndicatorWidget({
-    Key? key,
+    super.key,
     required this.countItem,
     this.controller,
     this.isShowButtonAction = true,
@@ -39,7 +39,7 @@ class PageIndicatorWidget extends StatefulWidget {
     this.size = const Size(8, 8),
     this.spacing = const EdgeInsets.all(6),
     this.initialPage = 0,
-  }) : super(key: key);
+  });
 
   @override
   State<PageIndicatorWidget> createState() => _PageIndicatorWidgetState();

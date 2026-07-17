@@ -31,7 +31,7 @@ class InfoItem extends StatelessWidget {
   final bool? required;
 
   const InfoItem({
-    Key? key,
+    super.key,
     required this.title,
     this.value,
     this.color,
@@ -54,8 +54,7 @@ class InfoItem extends StatelessWidget {
        assert(
          value == null || value is String || value is Widget,
          '$value [String, Widget] is supported',
-       ),
-       super(key: key);
+       );
 
   @override
   Widget build(BuildContext context) {

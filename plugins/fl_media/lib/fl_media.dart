@@ -1,4 +1,4 @@
-library fl_media;
+library;
 
 export 'package:extended_image/extended_image.dart' hide Request;
 

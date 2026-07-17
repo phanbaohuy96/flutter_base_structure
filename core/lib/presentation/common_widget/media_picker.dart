@@ -516,7 +516,7 @@ class MediaPickerStyle {
 
 class MediaPickerWidget extends StatefulWidget {
   const MediaPickerWidget({
-    Key? key,
+    super.key,
     required this.controller,
     this.config = const MediaPickerConfig(),
     this.style = const MediaPickerStyle(),
@@ -524,7 +524,7 @@ class MediaPickerWidget extends StatefulWidget {
     this.onTap,
     this.canBeDeleteWhen,
     this.errorController,
-  }) : super(key: key);
+  });
 
   final MediaPickerController controller;
   final MediaPickerConfig config;
@@ -816,14 +816,13 @@ class _MediaPickerWidgetState extends CoreStateBase<MediaPickerWidget>
 
 class _MediaEmptyStateWidget extends StatelessWidget {
   const _MediaEmptyStateWidget({
-    Key? key,
     required this.medias,
     required this.config,
     required this.style,
     required this.onTap,
     required this.l10n,
     this.errorController,
-  }) : super(key: key);
+  });
 
   final List<MediaPicked> medias;
   final MediaPickerConfig config;
@@ -844,7 +843,7 @@ class _MediaEmptyStateWidget extends StatelessWidget {
           borderRadius: style.borderRadius?.let(BorderRadius.all),
           child: AnimatedBuilder(
             animation: Listenable.merge([
-              if (errorController != null) errorController!,
+              ?errorController,
             ]),
             builder: (context, child) {
               final hasError = errorController?.value != null;
@@ -903,7 +902,6 @@ class _MediaEmptyStateWidget extends StatelessWidget {
 
 class _MediaItemWidget extends StatelessWidget {
   const _MediaItemWidget({
-    Key? key,
     required this.media,
     required this.canDelete,
     required this.onRemove,
@@ -912,7 +910,7 @@ class _MediaItemWidget extends StatelessWidget {
     required this.onViewMedia,
     this.onTap,
     this.borderRadius,
-  }) : super(key: key);
+  });
 
   final MediaPicked media;
   final bool canDelete;

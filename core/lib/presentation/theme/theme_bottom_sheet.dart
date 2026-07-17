@@ -92,35 +92,33 @@ class ThemeBottomSheet {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                ...action.entries
-                    .map<Widget>(
-                      (e) => InkWell(
-                        onTap: e.value.call(),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              top: BorderSide(
-                                width: 1,
-                                color: Colors.grey[400]!,
-                              ),
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 18,
-                          ),
-                          child: Text(
-                            e.key,
-                            style: theme.textTheme.headlineSmall?.copyWith(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            textAlign: TextAlign.center,
+                ...action.entries.map<Widget>(
+                  (e) => InkWell(
+                    onTap: e.value.call(),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(
+                            width: 1,
+                            color: Colors.grey[400]!,
                           ),
                         ),
                       ),
-                    )
-                    .toList(),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 18,
+                      ),
+                      child: Text(
+                        e.key,
+                        style: theme.textTheme.headlineSmall?.copyWith(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.normal,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

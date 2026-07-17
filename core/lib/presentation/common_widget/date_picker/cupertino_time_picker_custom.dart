@@ -24,12 +24,12 @@ Future<dynamic> showCupertinoCustomTimePicker(
 
 class CupertinoTimePickerCustom extends StatefulWidget {
   const CupertinoTimePickerCustom({
-    Key? key,
+    super.key,
     required this.initialTimerDuration,
     this.onCancelled,
     this.onComfirmed,
     required this.theme,
-  }) : super(key: key);
+  });
 
   final Duration? initialTimerDuration;
   final void Function()? onCancelled;

@@ -14,7 +14,7 @@ class CheckboxWithTitle extends StatefulWidget {
   final double? space;
 
   const CheckboxWithTitle({
-    Key? key,
+    super.key,
     required this.title,
     this.size = 24,
     this.style,
@@ -23,7 +23,7 @@ class CheckboxWithTitle extends StatefulWidget {
     this.enable = true,
     this.borderColor,
     this.space,
-  }) : super(key: key);
+  });
 
   @override
   State<CheckboxWithTitle> createState() => _CheckboxWithTitleState();
@@ -117,7 +117,7 @@ class CheckBoxGroup<T> extends StatefulWidget {
   final TextStyle? labelStyle;
 
   const CheckBoxGroup({
-    Key? key,
+    super.key,
     required this.items,
     required this.getLabel,
     required this.onSelectedChanged,
@@ -127,7 +127,7 @@ class CheckBoxGroup<T> extends StatefulWidget {
     this.compare,
     this.labelStyle,
     this.disableItems = const [],
-  }) : super(key: key);
+  });
 
   @override
   _CheckBoxGroupState createState() => _CheckBoxGroupState<T>();
@@ -183,12 +183,12 @@ class _CheckBoxGroupState<T> extends State<CheckBoxGroup<T>> {
   }
 
   void selectItem(bool? selected, T e) {
-    final equal = (T a, T b) {
+    bool equal(T a, T b) {
       if (widget.compare != null) {
         return widget.compare!.call(a, b);
       }
       return a == b;
-    };
+    }
 
     if (selected != true) {
       // case deselected
@@ -199,8 +199,9 @@ class _CheckBoxGroupState<T> extends State<CheckBoxGroup<T>> {
       }
     } else {
       if (!seleted.any((s) => equal(e, s))) {
-        if (widget.onlyItem != null) {
-          if (equal(e, widget.onlyItem!)) {
+        final onlyItem = widget.onlyItem;
+        if (onlyItem != null) {
+          if (equal(e, onlyItem)) {
             setState(() {
               seleted
                 ..clear()
@@ -208,7 +209,7 @@ class _CheckBoxGroupState<T> extends State<CheckBoxGroup<T>> {
             });
           } else {
             final items = [
-              ...seleted.where((e) => !equal(e, widget.onlyItem!)),
+              ...seleted.where((e) => !equal(e, onlyItem)),
             ];
             setState(() {
               seleted

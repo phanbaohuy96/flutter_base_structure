@@ -17,6 +17,9 @@ extension StateBaseExtention on CoreStateBase {
       Permission.location,
       context,
     );
+    if (!mounted) {
+      return granted;
+    }
 
     if (!granted) {
       final status = await PermissionService().requestPermission(
@@ -24,18 +27,26 @@ extension StateBaseExtention on CoreStateBase {
         context,
         required: required,
       );
+      if (!mounted) {
+        return status;
+      }
 
       if (status) {
         if (await Geolocator.isLocationServiceEnabled()) {
+          if (!mounted) {
+            return status;
+          }
           await context.read<LocationCubit>().refreshLocation().first;
           return true;
         } else if (required) {
-          unawaited(
-            showNoticeDialog(
-              context: context,
-              message: context.coreL10n.pleaseEnableGPS,
-            ),
-          );
+          if (mounted) {
+            unawaited(
+              showNoticeDialog(
+                context: context,
+                message: context.coreL10n.pleaseEnableGPS,
+              ),
+            );
+          }
           return false;
         }
       }

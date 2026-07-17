@@ -8,7 +8,7 @@ import 'forms/screen_form.dart';
 class UnsupportedPage extends StatelessWidget {
   final String? title;
   final String? msg;
-  const UnsupportedPage({Key? key, this.title, this.msg}) : super(key: key);
+  const UnsupportedPage({super.key, this.title, this.msg});
 
   @override
   Widget build(BuildContext context) {

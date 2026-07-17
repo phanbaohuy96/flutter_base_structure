@@ -6,7 +6,7 @@ import '../../../../../core.dart';
 class NetworkLogViewerScreen extends StatefulWidget {
   static const String routeName = '/network-log-viewer';
 
-  const NetworkLogViewerScreen({Key? key}) : super(key: key);
+  const NetworkLogViewerScreen({super.key});
 
   @override
   State<NetworkLogViewerScreen> createState() => _NetworkLogViewerScreenState();
@@ -39,7 +39,7 @@ class _NetworkLogViewerScreenState extends State<NetworkLogViewerScreen> {
             child: NetworkLogItem(log: log),
           );
         },
-        separatorBuilder: (_, __) => const SizedBox(height: 16),
+        separatorBuilder: (_, _) => const SizedBox(height: 16),
         itemCount: logs.length,
       ),
     );

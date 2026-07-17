@@ -16,13 +16,13 @@ class LayoutSwitching extends StatefulWidget {
   final SwitchingAnimation direction;
 
   const LayoutSwitching({
-    Key? key,
+    super.key,
     required this.first,
     required this.second,
     this.isFirstLayout = true,
     this.duration = const Duration(milliseconds: 250),
     this.direction = SwitchingAnimation.swipeRTL,
-  }) : super(key: key);
+  });
 
   @override
   State<LayoutSwitching> createState() => _LayoutSwitchingState();

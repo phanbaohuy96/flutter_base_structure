@@ -16,7 +16,7 @@ final riveAssetsArtboardRes =
     '''class ${classNameKey}Artboard {
   ${classNameKey}Artboard();
 
-  final String name = \'$artboardKey\';
+  final String name = '$artboardKey';
 
   final ${classNameKey}Inputs inputs = ${classNameKey}Inputs();
 

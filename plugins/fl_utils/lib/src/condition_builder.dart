@@ -1,6 +1,5 @@
 // ignore_for_file: lines_longer_than_80_chars
 /// Represents a condition and its associated value.
-
 class Conditional<T> {
   /// The function that determines if the condition is met.
   final bool Function() condition;

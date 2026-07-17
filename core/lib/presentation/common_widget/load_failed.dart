@@ -5,7 +5,7 @@ import '../extentions/extention.dart';
 class LoadFailed extends StatelessWidget {
   final void Function()? onTap;
 
-  const LoadFailed({Key? key, this.onTap}) : super(key: key);
+  const LoadFailed({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,4 @@
-library fl_ui;
+library;
 
 export 'src/after_layout.dart';
 export 'src/animated_dropdown_icon.dart';

@@ -12,14 +12,14 @@ class SubmitSucceedDailog extends StatelessWidget {
   final void Function() onConfirm;
 
   const SubmitSucceedDailog({
-    Key? key,
+    super.key,
     required this.title,
     this.titleColor,
     required this.message,
     required this.btnTitle,
     required this.onConfirm,
     required this.icon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

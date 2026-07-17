@@ -31,6 +31,9 @@ class DialogAndPickerPage extends StatelessWidget {
               title: 'title',
             );
 
+            if (!context.mounted) {
+              return;
+            }
             showToast(context, 'Reason: $res');
           },
         ),

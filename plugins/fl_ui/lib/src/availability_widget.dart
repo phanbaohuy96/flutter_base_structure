@@ -32,14 +32,14 @@ class AvailabilityWidget extends StatefulWidget {
   final Curve animationCurve;
 
   const AvailabilityWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.enable = true,
     this.absorbingWhenDisabled = true,
     this.greyOpacity = 0.85,
     this.animationDuration,
     this.animationCurve = Curves.easeInOut,
-  }) : super(key: key);
+  });
 
   /// Factory constructor for animated availability widget.
   /// Provides smooth transitions between enabled/disabled states.

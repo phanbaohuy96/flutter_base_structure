@@ -11,9 +11,9 @@ class ImageZoom extends StatefulWidget {
   final String url;
 
   const ImageZoom({
-    Key? key,
+    super.key,
     required this.url,
-  }) : super(key: key);
+  });
 
   @override
   State<ImageZoom> createState() => _ImageZoomState();

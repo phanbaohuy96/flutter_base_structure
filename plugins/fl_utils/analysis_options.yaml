@@ -1,4 +1,4 @@
-include: package:pedantic/analysis_options.yaml
+include: package:flutter_lints/flutter.yaml
 
 analyzer:
   language:
@@ -6,6 +6,8 @@ analyzer:
   errors:
     # allow having TODOs in the code
     todo: ignore
+    # `_x = x ?? default` shadow-guard locals are an intentional convention.
+    no_leading_underscores_for_local_identifiers: ignore
   exclude:
     # exclude files
     - .dart_tool/**

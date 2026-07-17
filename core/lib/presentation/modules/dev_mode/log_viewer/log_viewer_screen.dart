@@ -10,7 +10,7 @@ import '../../../extentions/context_extention.dart';
 class LogViewerScreen extends StatefulWidget {
   static const String routeName = '/log-viewer';
 
-  const LogViewerScreen({Key? key}) : super(key: key);
+  const LogViewerScreen({super.key});
 
   @override
   State<LogViewerScreen> createState() => _LogViewerScreenState();
@@ -49,7 +49,7 @@ class _LogViewerScreenState extends State<LogViewerScreen> {
             ),
           );
         },
-        separatorBuilder: (_, __) => const Divider(height: 16, thickness: 1),
+        separatorBuilder: (_, _) => const Divider(height: 16, thickness: 1),
         itemCount: logs.length,
       ),
     );

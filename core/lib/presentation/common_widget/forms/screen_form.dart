@@ -10,7 +10,7 @@ import '../../../core.dart';
 
 class ScreenForm extends StatefulWidget {
   const ScreenForm({
-    Key? key,
+    super.key,
     // Appearance
     this.bgColor,
     this.appbarColor,
@@ -51,7 +51,7 @@ class ScreenForm extends StatefulWidget {
     this.bottomNavigationBar,
     this.endDrawer,
     this.drawer,
-  }) : super(key: key);
+  });
 
   /// Text to display as the screen title
   final String? title;

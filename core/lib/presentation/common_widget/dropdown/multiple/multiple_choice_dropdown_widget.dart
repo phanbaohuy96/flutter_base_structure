@@ -36,7 +36,8 @@ class MultipleChoiceDropdownWidget<T> extends StatefulWidget {
   final TextStyle? errorStyle;
   final BorderRadius? borderRadius;
 
-  MultipleChoiceDropdownWidget({
+  const MultipleChoiceDropdownWidget({
+    super.key,
     this.titleStyle,
     this.title,
     this.titleMode = TitleMode.above,

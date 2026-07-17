@@ -10,12 +10,12 @@ class EmptyData extends StatelessWidget {
   final double? iconHeight;
 
   const EmptyData({
-    Key? key,
+    super.key,
     required this.message,
     this.icon,
     this.iconWidth = 200,
     this.iconHeight = 200,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

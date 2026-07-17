@@ -12,7 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  pedantic: ^1.11.1
   uuid: 
 
   carousel_slider: ^5.0.0
@@ -32,7 +31,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
   module_generator:
     path: ../../tools/module_generator
 

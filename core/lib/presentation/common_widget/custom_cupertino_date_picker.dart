@@ -31,15 +31,15 @@ Future<dynamic> showCupertinoCustomDatePicker(
 }
 
 class CupertinoDatePickerCustom extends StatefulWidget {
-  CupertinoDatePickerCustom({
-    Key? key,
+  const CupertinoDatePickerCustom({
+    super.key,
     required this.initialDateTime,
     this.maxDate,
     this.minDate,
     this.mode = CupertinoDatePickerMode.date,
     this.onCancelled,
     this.onConfirmed,
-  }) : super(key: key);
+  });
 
   final DateTime? initialDateTime;
   final DateTime? maxDate;
@@ -79,12 +79,12 @@ class _CupertinoDatePickerCustomState extends State<CupertinoDatePickerCustom> {
           onTap: () {},
           child: SafeArea(
             top: false,
-            child: Container(
+            child: SizedBox(
               height: pickerSheetHeight + pickerButtonHeight,
               child: Column(
                 children: <Widget>[
                   _buildFunction(),
-                  Container(
+                  SizedBox(
                     height: pickerSheetHeight - 30,
                     child: CupertinoDatePicker(
                       backgroundColor: CupertinoColors.systemBackground

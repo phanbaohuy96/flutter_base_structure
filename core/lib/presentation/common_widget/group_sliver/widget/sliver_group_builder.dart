@@ -2,6 +2,7 @@ part of '../group_sliver.dart';
 
 class SliverGroupBuilder extends StatelessWidget {
   const SliverGroupBuilder({
+    super.key,
     this.margin = EdgeInsets.zero,
     this.padding = EdgeInsets.zero,
     this.decoration,

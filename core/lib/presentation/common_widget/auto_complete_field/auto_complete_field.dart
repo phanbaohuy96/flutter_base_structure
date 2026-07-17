@@ -41,7 +41,7 @@ class AutoCompleteField<T extends Object> extends StatefulWidget {
   final String? helperText;
 
   const AutoCompleteField({
-    Key? key,
+    super.key,
     required this.displayStringForOption,
     required this.onSelected,
     required this.fetch,
@@ -69,7 +69,7 @@ class AutoCompleteField<T extends Object> extends StatefulWidget {
     this.validation,
     this.warning,
     this.helperText,
-  }) : super(key: key);
+  });
 
   @override
   State<AutoCompleteField<T>> createState() => _AutoCompleteFieldState<T>();

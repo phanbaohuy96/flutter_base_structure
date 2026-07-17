@@ -38,14 +38,15 @@ abstract class ThemeDialog {
     void Function()? onCanceled,
     Widget? icon,
   }) {
-    final dismissFunc = (bool result) {
+    void dismissFunc(bool result) {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop(result);
       }
-    };
+    }
+
     final theme = context.theme;
 
-    final showAndroidDialog = () => AlertDialog(
+    AlertDialog showAndroidDialog() => AlertDialog(
       icon: icon,
       title: Text(
         title ?? inform,
@@ -179,24 +180,25 @@ abstract class ThemeDialog {
   }) {
     final _icReason = controller;
     Widget body;
-    final dismissFunc = () {
+    void dismissFunc() {
       if (dismissWhenAction) {
         Navigator.of(
           context,
           rootNavigator: useRootNavigator,
         ).pop(_icReason.text);
       }
-    };
+    }
+
     final theme = context.theme;
 
-    final showAndroidDialog = () => AlertDialog(
+    AlertDialog showAndroidDialog() => AlertDialog(
       title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           icon ?? const SizedBox.shrink(),
           InputTitleWidget(title: message, required: false),
-          if (additionalWidget != null) additionalWidget,
+          ?additionalWidget,
           InputContainer(controller: _icReason, maxLines: 6, hint: hint),
         ],
       ),
@@ -272,7 +274,7 @@ abstract class ThemeDialog {
             children: [
               icon ?? const SizedBox.shrink(),
               InputTitleWidget(title: message, required: false),
-              if (additionalWidget != null) additionalWidget,
+              ?additionalWidget,
               InputContainer(controller: _icReason, maxLines: 4, hint: hint),
             ],
           ),
@@ -321,13 +323,14 @@ abstract class ThemeDialog {
     bool barrierDismissible = true,
     Widget? icon,
   }) {
-    final dismissFunc = () {
+    void dismissFunc() {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop();
       }
-    };
+    }
+
     final theme = context.theme;
-    final showAndroidDialog = () => PopScope(
+    PopScope showAndroidDialog() => PopScope(
       canPop: barrierDismissible,
       child: AlertDialog(
         title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
@@ -429,26 +432,24 @@ abstract class ThemeDialog {
           ),
         ),
         actions: [
-          ...actions.entries
-              .map<TextButton>(
-                (e) => TextButton(
-                  key: ValueKey('ActionDialog_${e.key}'),
-                  onPressed: () {
-                    if (dimissWhenSelect) {
-                      Navigator.of(
-                        context,
-                        rootNavigator: useRootNavigator,
-                      ).pop();
-                    }
-                    e.value.call();
-                  },
-                  child: Text(
-                    e.key,
-                    style: TextStyle(color: context.themeColor.primary),
-                  ),
-                ),
-              )
-              .toList(),
+          ...actions.entries.map<TextButton>(
+            (e) => TextButton(
+              key: ValueKey('ActionDialog_${e.key}'),
+              onPressed: () {
+                if (dimissWhenSelect) {
+                  Navigator.of(
+                    context,
+                    rootNavigator: useRootNavigator,
+                  ).pop();
+                }
+                e.value.call();
+              },
+              child: Text(
+                e.key,
+                style: TextStyle(color: context.themeColor.primary),
+              ),
+            ),
+          ),
           TextButton(
             key: const ValueKey('ActionDialog_close_btn'),
             onPressed: () {
@@ -631,14 +632,15 @@ abstract class ThemeDialog {
     void Function()? onCanceled,
   }) {
     final _icValidate = controller;
-    final dismissFunc = () {
+    void dismissFunc() {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop();
       }
-    };
+    }
+
     final theme = context.theme;
 
-    final showAndroidDialog = () => AlertDialog(
+    AlertDialog showAndroidDialog() => AlertDialog(
       title: Text(title ?? inform, style: theme.textTheme.headlineSmall),
       content: Column(
         mainAxisSize: MainAxisSize.min,

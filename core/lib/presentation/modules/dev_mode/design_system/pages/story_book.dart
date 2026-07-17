@@ -29,13 +29,13 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
     return <Widget>[
       StoryWidgetBox(
         title: 'fl_ui/AnimatedDropdownIcon',
-        builder: (context, _, __) =>
+        builder: (context, _, _) =>
             AnimatedDropdownIcon(isExpanded: tick % 2 != 0, size: 56),
       ),
       StoryWidgetBox(
         title: 'fl_ui/AvailabilityWidget',
-        description: '${tick % 2 == 0 ? 'Enabled' : 'Disabled'}',
-        builder: (context, _, __) => AvailabilityWidget(
+        description: tick % 2 == 0 ? 'Enabled' : 'Disabled',
+        builder: (context, _, _) => AvailabilityWidget(
           enable: tick % 2 == 0,
           child: Text(
             'data',
@@ -47,7 +47,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/BadgeBox',
-        builder: (context, _, __) => Align(
+        builder: (context, _, _) => Align(
           child: BadgeBox(
             count: tick,
             child: const Icon(Icons.notifications, size: 32),
@@ -56,7 +56,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/BannerWidget',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           final banners = <String>[
             'https://storage.googleapis.com/cms-storage-bucket/images/image001.width-1440.format-webp-lossless.webp',
             'https://storage.googleapis.com/cms-storage-bucket/images/image001.width-1440.format-webp-lossless.webp',
@@ -68,7 +68,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                   (e) => Expanded(
                     child: StoryWidgetBox(
                       description: e.toString(),
-                      builder: (context, _, __) => BannerWidget<String>(
+                      builder: (context, _, _) => BannerWidget<String>(
                         banners: banners,
                         ratio: 3 / 1,
                         getImageUrl: (e) => e,
@@ -92,7 +92,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/BoxColor',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return Wrap(
             children: [
               BoxColor(
@@ -118,7 +118,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/CheckBox',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return Column(
             children: [
               CheckboxWithTitle(
@@ -131,7 +131,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/CheckBoxGroup',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           final items = List.generate(3, (index) => index);
           return Column(
             children: [
@@ -151,7 +151,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/Radio',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return Column(
             children: [
               RadioButtonWithTitle(
@@ -166,7 +166,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
               ),
               StoryWidgetBox(
                 title: 'fl_ui/FlRadioGroup',
-                builder: (context, _, __) {
+                builder: (context, _, _) {
                   final items = List.generate(3, (index) => index);
                   return Column(
                     children: [
@@ -188,7 +188,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/EnViSwitch',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return Center(
             child: EnViSwitch(
               isVILanguage:
@@ -205,7 +205,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/VerticalStepper',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return VerticalStepper(
             steps: List.generate(
               3,
@@ -267,7 +267,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/InfoItem',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return const Column(
             children: [
               InfoItem(
@@ -293,7 +293,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/MenuItemWidget',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return Column(
             children: [
               MenuItemWidget(
@@ -376,7 +376,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       StoryWidgetBox(
         title: 'fl_ui/ReceiptShapeBorder',
         description: 'Demo ReceiptShapeBorder with Separator widget',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return Material(
             color: themeColor.surface,
             shape: ReceiptShapeBorder(
@@ -401,7 +401,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'fl_ui/LayoutSwitching',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return GridView.count(
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -414,7 +414,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
               ...SwitchingAnimation.values.map(
                 (e) => StoryWidgetBox(
                   description: e.toString(),
-                  builder: (context, _, __) {
+                  builder: (context, _, _) {
                     return ClipRRect(
                       child: LayoutSwitching(
                         duration: const Duration(seconds: 1),
@@ -441,7 +441,7 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
       ),
       StoryWidgetBox(
         title: 'core/GenderSelection',
-        builder: (context, _, __) {
+        builder: (context, _, _) {
           return GenderSelection(
             required: true,
             title: 'Gender',

@@ -2,7 +2,7 @@ import 'package:fl_theme/fl_theme.dart';
 import 'package:flutter/material.dart';
 
 class TypographyPage extends StatelessWidget {
-  const TypographyPage({Key? key}) : super(key: key);
+  const TypographyPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +32,11 @@ size: ${style.fontSize}''',
 
 class TextStyleItem extends StatelessWidget {
   const TextStyleItem({
-    Key? key,
+    super.key,
     required this.name,
     required this.style,
     required this.text,
-  }) : super(key: key);
+  });
 
   final String name;
   final TextStyle style;

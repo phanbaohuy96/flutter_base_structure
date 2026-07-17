@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 /// Usage
 ///
 /// =========> INIT Controller
-/// final _textTaggingController = TextTaggingController<User>(
+/// final _textTaggingController = `TextTaggingController<User>`(
 ///   tagBuilder: (context, style, withComposing, user) {
 ///     return Container(
 ///       decoration: BoxDecoration(

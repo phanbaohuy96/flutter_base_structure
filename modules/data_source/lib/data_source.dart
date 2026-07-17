@@ -1,3 +1,3 @@
-library data_source;
+library;
 
 export 'src/sources.dart';

@@ -16,7 +16,7 @@ class ErrorBox extends StatefulWidget {
   final String? validation;
 
   const ErrorBox({
-    Key? key,
+    super.key,
     required this.child,
     this.controller,
     this.errorStyle,
@@ -25,7 +25,7 @@ class ErrorBox extends StatefulWidget {
     this.errorBoxPadding,
     this.errorTextPadding = const EdgeInsets.only(top: 8),
     this.validation,
-  }) : super(key: key);
+  });
 
   @override
   State<ErrorBox> createState() => _ErrorBoxState();

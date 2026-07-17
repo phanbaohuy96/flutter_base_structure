@@ -15,6 +15,9 @@ extension on _ImageCropperScreenState {
     }
     final imageFile = await _saveTempFile(fileData);
     hideLoading();
+    if (!mounted) {
+      return;
+    }
     Navigator.of(context).pop(imageFile);
   }
 

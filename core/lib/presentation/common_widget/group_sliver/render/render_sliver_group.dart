@@ -225,9 +225,10 @@ class _RenderSliverGroup extends RenderSliver with RenderSliverHelpers {
       // paint child
       if (child != null && child!.geometry!.visible) {
         final childParentData = child!.parentData as SliverPhysicalParentData?;
-        final painter = (PaintingContext context, Offset offset) {
+        void painter(PaintingContext context, Offset offset) {
           context.paintChild(child!, offset);
-        };
+        }
+
         if (_clipRRect != null && _clipRRect != RRect.zero) {
           context.pushClipRRect(
             needsCompositing,

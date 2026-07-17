@@ -13,13 +13,13 @@ class SelectionDialog<T> extends StatefulWidget {
   final Widget? widgetAll;
 
   const SelectionDialog({
-    Key? key,
+    super.key,
     required this.items,
     required this.onSelected,
     required this.itemBuilder,
     required this.filterFn,
     this.widgetAll,
-  }) : super(key: key);
+  });
 
   @override
   _SelectionDialogState<T> createState() => _SelectionDialogState<T>();

@@ -12,7 +12,7 @@ class QRPaymentUtil {
     String? note,
   }) {
     final consumerAccountInformation = [
-      '${guid.formatTLV('00')}',
+      guid.formatTLV('00'),
       [
         bankBin.formatTLV('00'),
         bankAcount.formatTLV('01'),

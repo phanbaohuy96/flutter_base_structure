@@ -11,12 +11,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-  pedantic: ^1.11.1
   uuid: any
   freezed_annotation: 3.1.0
 
   core:
     path: ../../core
+
+  dio: ^5.4.0
+  injectable: ^2.5.1
+  retrofit: ^4.9.2
 
 dev_dependencies:
   flutter_test:

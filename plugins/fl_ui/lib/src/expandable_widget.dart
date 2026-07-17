@@ -13,7 +13,7 @@ class ExpandableWidget extends StatefulWidget {
   final bool toggleCtrWhenTapHeader;
 
   const ExpandableWidget({
-    Key? key,
+    super.key,
     this.controller,
     required this.header,
     required this.body,
@@ -21,7 +21,7 @@ class ExpandableWidget extends StatefulWidget {
     this.divider,
     this.toggleCtrWhenTapHeader = true,
     this.isExpanded,
-  }) : super(key: key);
+  });
 
   @override
   _ExpandableWidgetState createState() => _ExpandableWidgetState();

@@ -11,13 +11,13 @@ class ViewMoreWidget extends StatefulWidget {
   final double minHeight;
 
   const ViewMoreWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.expand = false,
     required this.viewMore,
     required this.seeLess,
     this.minHeight = 200,
-  }) : super(key: key);
+  });
 
   @override
   State<ViewMoreWidget> createState() => _ViewMoreWidgetState();

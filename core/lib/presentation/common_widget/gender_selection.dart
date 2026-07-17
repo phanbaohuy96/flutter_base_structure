@@ -14,13 +14,13 @@ class GenderSelection extends StatefulWidget {
   final TextStyle? titleStyle;
 
   const GenderSelection({
-    Key? key,
+    super.key,
     required this.title,
     this.titleStyle,
     this.onChange,
     this.defaultGender,
     this.required = false,
-  }) : super(key: key);
+  });
 
   @override
   State<GenderSelection> createState() => _MyWidgetState();

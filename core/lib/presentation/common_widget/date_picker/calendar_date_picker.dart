@@ -16,7 +16,7 @@ class DateInputCalendarPicker extends StatefulWidget {
   final bool required;
 
   const DateInputCalendarPicker({
-    Key? key,
+    super.key,
     this.onTapInputField,
     required this.onDateSelected,
     this.initial,
@@ -28,7 +28,7 @@ class DateInputCalendarPicker extends StatefulWidget {
     this.maxDate,
     this.iconColor,
     this.required = false,
-  }) : super(key: key);
+  });
 
   @override
   State<DateInputCalendarPicker> createState() =>
@@ -70,6 +70,9 @@ class _DateInputCalendarPickerState extends State<DateInputCalendarPicker> {
       onTapHeader: () {
         widget.onTapInputField?.call();
         Future.delayed(const Duration(milliseconds: 500), () {
+          if (!context.mounted) {
+            return;
+          }
           Scrollable.ensureVisible(
             context,
             duration: const Duration(milliseconds: 250),
@@ -166,7 +169,7 @@ class WeekInputCalendarPicker extends StatefulWidget {
   final bool required;
 
   const WeekInputCalendarPicker({
-    Key? key,
+    super.key,
     this.onTapInputField,
     required this.onDateSelected,
     this.initial,
@@ -178,7 +181,7 @@ class WeekInputCalendarPicker extends StatefulWidget {
     this.maxDate,
     this.iconColor,
     this.required = false,
-  }) : super(key: key);
+  });
 
   @override
   State<WeekInputCalendarPicker> createState() =>
@@ -301,7 +304,7 @@ class _WeekInputCalendarPickerState extends State<WeekInputCalendarPicker> {
 
 class TableCalendarDatePicker extends StatelessWidget {
   const TableCalendarDatePicker({
-    Key? key,
+    super.key,
     required this.monthStr,
     required this.value,
     required this.onSelected,
@@ -310,7 +313,7 @@ class TableCalendarDatePicker extends StatelessWidget {
     this.rangeStart,
     this.rangeEnd,
     this.availableGestures = AvailableGestures.all,
-  }) : super(key: key);
+  });
 
   final String monthStr;
   final DateTime? value;

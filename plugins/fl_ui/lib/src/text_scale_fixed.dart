@@ -4,7 +4,11 @@ class TextScaleFixed extends StatelessWidget {
   final double scaleFixedFactor;
   final Widget child;
 
-  TextScaleFixed({this.scaleFixedFactor = 1, required this.child});
+  const TextScaleFixed({
+    super.key,
+    this.scaleFixedFactor = 1,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {

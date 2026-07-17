@@ -15,7 +15,7 @@ class MultipleSelectionDialog<T> extends StatefulWidget {
   final bool Function(T, T)? compareFunction;
 
   const MultipleSelectionDialog({
-    Key? key,
+    super.key,
     required this.items,
     this.initialItems,
     this.compareFunction,
@@ -23,7 +23,7 @@ class MultipleSelectionDialog<T> extends StatefulWidget {
     required this.onCancel,
     required this.itemBuilder,
     required this.filterFn,
-  }) : super(key: key);
+  });
 
   @override
   _MultipleSelectionDialog<T> createState() => _MultipleSelectionDialog<T>();

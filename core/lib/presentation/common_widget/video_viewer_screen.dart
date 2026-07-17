@@ -20,7 +20,7 @@ class VideoViewerArgs {
 class VideoViewerScreen extends StatefulWidget {
   final VideoViewerArgs? args;
 
-  const VideoViewerScreen({Key? key, this.args}) : super(key: key);
+  const VideoViewerScreen({super.key, this.args});
 
   @override
   State<VideoViewerScreen> createState() => _VideoViewerScreenState();

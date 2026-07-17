@@ -8,7 +8,7 @@ import 'route/route.dart';
 import 'theme/theme.dart';
 
 class MainApplication extends StatefulWidget {
-  const MainApplication({Key? key}) : super(key: key);
+  const MainApplication({super.key});
 
   @override
   _MyAppState createState() => _MyAppState();

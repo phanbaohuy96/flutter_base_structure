@@ -91,11 +91,11 @@ class AppThemeDialog extends ThemeDialog {
     Widget? icon,
     TextStyle? titleStyle,
   }) {
-    final dismissFunc = (bool result) {
+    void dismissFunc(bool result) {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop(result);
       }
-    };
+    }
 
     final theme = context.theme;
     return _buildDialogBox(
@@ -174,11 +174,11 @@ class AppThemeDialog extends ThemeDialog {
     bool? isRequiredReason,
     Widget? icon,
   }) {
-    final dismissFunc = () {
+    void dismissFunc() {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop();
       }
-    };
+    }
 
     final theme = context.theme;
     final _icReason = controller;
@@ -197,7 +197,7 @@ class AppThemeDialog extends ThemeDialog {
                 icon ?? const SizedBox.shrink(),
                 InputTitleWidget(title: message, required: false),
                 const SizedBox(height: 8),
-                if (additionalWidget != null) additionalWidget,
+                ?additionalWidget,
                 InputContainer(
                   controller: _icReason,
                   maxLines: 4,
@@ -257,11 +257,12 @@ class AppThemeDialog extends ThemeDialog {
     bool barrierDismissible = true,
     Widget? icon,
   }) {
-    final dismissFunc = () {
+    void dismissFunc() {
       if (dismissWhenAction) {
         Navigator.of(context, rootNavigator: useRootNavigator).pop();
       }
-    };
+    }
+
     final theme = context.theme;
     return PopScope(
       canPop: barrierDismissible,

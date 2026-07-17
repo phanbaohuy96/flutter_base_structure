@@ -30,7 +30,7 @@ GoRouter buildAppRouter(AppGlobalBloc appBloc) {
             state.uri,
           );
     },
-    errorBuilder: (context, __) => NotFoundPage(
+    errorBuilder: (context, _) => NotFoundPage(
       onBackToWelcomePage: () {
         context.openSignIn(
           localDataManager: localDataManager,

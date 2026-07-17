@@ -10,12 +10,12 @@ class ShakeWidget extends StatefulWidget {
   final bool automaticallyStart;
 
   const ShakeWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.duration = const Duration(milliseconds: 250),
     this.vibration = true,
     this.automaticallyStart = false,
-  }) : super(key: key);
+  });
 
   @override
   ShakeWidgetState createState() => ShakeWidgetState();

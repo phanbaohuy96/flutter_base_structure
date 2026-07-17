@@ -1,4 +1,4 @@
-library fl_utils;
+library;
 
 export 'src/common_function.dart';
 export 'src/condition_builder.dart';

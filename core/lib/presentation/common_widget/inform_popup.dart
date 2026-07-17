@@ -7,8 +7,11 @@ class InformationPopup extends StatelessWidget {
   final String content;
   final String title;
 
-  const InformationPopup({Key? key, required this.content, required this.title})
-    : super(key: key);
+  const InformationPopup({
+    super.key,
+    required this.content,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
