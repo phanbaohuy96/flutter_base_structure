@@ -117,76 +117,6 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
         },
       ),
       StoryWidgetBox(
-        title: 'fl_ui/CheckBox',
-        builder: (context, _, _) {
-          return Column(
-            children: [
-              CheckboxWithTitle(
-                value: tick % 2 == 0,
-                title: 'CheckboxWithTitle',
-              ),
-            ],
-          );
-        },
-      ),
-      StoryWidgetBox(
-        title: 'fl_ui/CheckBoxGroup',
-        builder: (context, _, _) {
-          final items = List.generate(3, (index) => index);
-          return Column(
-            children: [
-              CheckBoxGroup<int>(
-                items: items,
-                getLabel: (p0) {
-                  return 'CheckBox-$p0';
-                },
-                selectedItems: [...items.where((e) => e <= tick % 3)],
-                onSelectedChanged: (p0) {
-                  debugPrint(p0.toString());
-                },
-              ),
-            ],
-          );
-        },
-      ),
-      StoryWidgetBox(
-        title: 'fl_ui/Radio',
-        builder: (context, _, _) {
-          return Column(
-            children: [
-              RadioButtonWithTitle(
-                value: 0,
-                groupValue: tick % 2,
-                title: 'RadioButtonWithTitle 0',
-              ),
-              RadioButtonWithTitle(
-                value: 1,
-                groupValue: tick % 2,
-                title: 'RadioButtonWithTitle 1',
-              ),
-              StoryWidgetBox(
-                title: 'fl_ui/FlRadioGroup',
-                builder: (context, _, _) {
-                  final items = List.generate(3, (index) => index);
-                  return Column(
-                    children: [
-                      FlRadioGroup<int>(
-                        items: items,
-                        selectedItem: tick % items.length,
-                        getLabel: (p0) {
-                          return 'RadioItem-$p0';
-                        },
-                        onSelected: (p0) {},
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ],
-          );
-        },
-      ),
-      StoryWidgetBox(
         title: 'fl_ui/EnViSwitch',
         builder: (context, _, _) {
           return Center(
@@ -436,19 +366,6 @@ class _WidgetStoryBookState extends State<WidgetStoryBook> {
                 ),
               ),
             ],
-          );
-        },
-      ),
-      StoryWidgetBox(
-        title: 'core/GenderSelection',
-        builder: (context, _, _) {
-          return GenderSelection(
-            required: true,
-            title: 'Gender',
-            defaultGender: tick % 2 == 0
-                ? ServerGender.male
-                : ServerGender.female,
-            onChange: (p0) {},
           );
         },
       ),

@@ -141,79 +141,13 @@ class CoreLocalizationsVi extends CoreLocalizations {
       'Mã OTP đã hết hạn. Vui lòng gửi lại mã mới để thử lại.';
 
   @override
-  String get today => 'Hôm nay';
-
-  @override
-  String get yesterday => 'Hôm qua';
-
-  @override
-  String get thisWeek => 'Tuần này';
-
-  @override
-  String get weekAgo => 'Tuần trước';
-
-  @override
-  String get thisMonth => 'Tháng này';
-
-  @override
-  String get monthAgo => 'Tháng trước';
-
-  @override
-  String get selectDate => 'Chọn ngày';
-
-  @override
-  String get fromDate => 'Từ ngày';
-
-  @override
-  String get toDate => 'Đến ngày';
-
-  @override
-  String get month => 'Tháng';
-
-  @override
-  String get threeDaysAgo => '3 ngày trước';
-
-  @override
-  String get sevenDaysAgo => '7 ngày trước';
-
-  @override
-  String get thirtyDaysAgo => '30 ngày trước';
-
-  @override
-  String get thisQuarter => 'Quý này';
-
-  @override
-  String get quarterAgo => 'Quý trước';
-
-  @override
-  String get thisYear => 'Năm nay';
-
-  @override
-  String get yearAgo => 'Năm trước';
-
-  @override
   String get selectTimePeriod => 'Chọn khoảng thời gian';
-
-  @override
-  String get reset => 'Đặt lại';
-
-  @override
-  String get apply => 'Áp dụng';
-
-  @override
-  String get manual => 'Tùy chỉnh';
-
-  @override
-  String get day => 'Ngày';
 
   @override
   String get viewMore => 'Xem thêm';
 
   @override
   String get seeLess => 'Thu gọn';
-
-  @override
-  String get fullTime => 'Toàn thời gian';
 
   @override
   String get camera => 'Máy ảnh';

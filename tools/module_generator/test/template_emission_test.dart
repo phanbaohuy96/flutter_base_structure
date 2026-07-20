@@ -80,6 +80,19 @@ void main() {
     });
   });
 
+  group('module screen templates use the standard screen shell', () {
+    modules.forEach((moduleName, source) {
+      final views = source['views'] as Map<String, String>;
+      final emitted = _emit(views['screen']!);
+
+      test('$moduleName emits ScreenForm without a cached ThemeData', () {
+        expect(emitted, contains('return ScreenForm('));
+        expect(emitted, isNot(contains('late ThemeData')));
+        expect(emitted, isNot(contains('_themeData = context.theme')));
+      });
+    });
+  });
+
   group('coordinator presence follows the Simple/Compound rule', () {
     // A Simple module (one screen) gets no coordinator; a Compound module does.
     test('common_module (Simple) emits no coordinator', () {

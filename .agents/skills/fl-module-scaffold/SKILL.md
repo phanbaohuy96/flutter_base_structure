@@ -65,7 +65,7 @@ apps/main/lib/domain/usecases/<feature>/<feature>_usecase.dart
 apps/main/lib/data/data_source/<feature>_repository.dart  (and *_impl.dart)
 ```
 
-For shared widgets/services, add to `core/` instead of `apps/main/`.
+Before adding a screen-local widget under `views/widgets/`, check `fl-ui-components` — it catalogs every reusable widget already in `fl_ui`, `fl_theme`, `fl_media`, and `common_widget`. For shared widgets/services, add to `core/` instead of `apps/main/`.
 
 ## Compound features
 
@@ -115,3 +115,4 @@ Stick to the names below — `_factories`, `Args`, `routeName`, the part wiring 
 - [`fl-route-config`](../fl-route-config/SKILL.md)
 - [`fl-extension-action`](../fl-extension-action/SKILL.md)
 - [`fl-data-layer`](../fl-data-layer/SKILL.md)
+- [`fl-ui-components`](../fl-ui-components/SKILL.md)

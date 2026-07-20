@@ -332,137 +332,11 @@ abstract class CoreLocalizations {
   /// **'The OTP has expired. Please re-send the new OTP to try again.'**
   String get firebaseAuthExceptionSessionExpired;
 
-  /// No description provided for @today.
-  ///
-  /// In en, this message translates to:
-  /// **'Today'**
-  String get today;
-
-  /// No description provided for @yesterday.
-  ///
-  /// In en, this message translates to:
-  /// **'Yesterday'**
-  String get yesterday;
-
-  /// No description provided for @thisWeek.
-  ///
-  /// In en, this message translates to:
-  /// **'This week'**
-  String get thisWeek;
-
-  /// No description provided for @weekAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'Week ago'**
-  String get weekAgo;
-
-  /// No description provided for @thisMonth.
-  ///
-  /// In en, this message translates to:
-  /// **'This month'**
-  String get thisMonth;
-
-  /// No description provided for @monthAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'Month ago'**
-  String get monthAgo;
-
-  /// No description provided for @selectDate.
-  ///
-  /// In en, this message translates to:
-  /// **'Select date'**
-  String get selectDate;
-
-  /// No description provided for @fromDate.
-  ///
-  /// In en, this message translates to:
-  /// **'From date'**
-  String get fromDate;
-
-  /// No description provided for @toDate.
-  ///
-  /// In en, this message translates to:
-  /// **'To date'**
-  String get toDate;
-
-  /// No description provided for @month.
-  ///
-  /// In en, this message translates to:
-  /// **'Month'**
-  String get month;
-
-  /// No description provided for @threeDaysAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'3 days ago'**
-  String get threeDaysAgo;
-
-  /// No description provided for @sevenDaysAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'7 days ago'**
-  String get sevenDaysAgo;
-
-  /// No description provided for @thirtyDaysAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'30 days ago'**
-  String get thirtyDaysAgo;
-
-  /// No description provided for @thisQuarter.
-  ///
-  /// In en, this message translates to:
-  /// **'This quarter'**
-  String get thisQuarter;
-
-  /// No description provided for @quarterAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'Quarter ago'**
-  String get quarterAgo;
-
-  /// No description provided for @thisYear.
-  ///
-  /// In en, this message translates to:
-  /// **'This year'**
-  String get thisYear;
-
-  /// No description provided for @yearAgo.
-  ///
-  /// In en, this message translates to:
-  /// **'Year ago'**
-  String get yearAgo;
-
   /// No description provided for @selectTimePeriod.
   ///
   /// In en, this message translates to:
   /// **'Select time period'**
   String get selectTimePeriod;
-
-  /// No description provided for @reset.
-  ///
-  /// In en, this message translates to:
-  /// **'Reset'**
-  String get reset;
-
-  /// No description provided for @apply.
-  ///
-  /// In en, this message translates to:
-  /// **'Apply'**
-  String get apply;
-
-  /// No description provided for @manual.
-  ///
-  /// In en, this message translates to:
-  /// **'Manual'**
-  String get manual;
-
-  /// No description provided for @day.
-  ///
-  /// In en, this message translates to:
-  /// **'Day'**
-  String get day;
 
   /// No description provided for @viewMore.
   ///
@@ -475,12 +349,6 @@ abstract class CoreLocalizations {
   /// In en, this message translates to:
   /// **'See less'**
   String get seeLess;
-
-  /// No description provided for @fullTime.
-  ///
-  /// In en, this message translates to:
-  /// **'Full time'**
-  String get fullTime;
 
   /// No description provided for @camera.
   ///

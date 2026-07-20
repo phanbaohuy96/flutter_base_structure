@@ -88,15 +88,7 @@ ThemeData _buildPreviewTheme(Brightness brightness) {
 }
 
 void _ignoreTap() {}
-void _ignoreBool(bool? _) {}
-void _ignoreString(String _) {}
-void _ignoreNullableString(String? _) {}
-void _ignoreStringList(List<String> _) {}
 void _ignoreChipSelection(bool _) {}
-String _stringLabel(String item) => item;
-
-@FlUiPreview(group: 'fl_ui / selection', size: Size(393, 720))
-Widget flUiSelectionPreview() => const _SelectionPreview();
 
 @FlUiPreview(group: 'fl_ui / feedback', size: Size(393, 620))
 Widget flUiFeedbackPreview() => const _FeedbackPreview();
@@ -106,83 +98,6 @@ Widget flUiInformationPreview() => const _InformationPreview();
 
 @FlUiPreview(group: 'fl_ui / containers', size: Size(393, 560))
 Widget flUiContainersPreview() => const _ContainersPreview();
-
-class _SelectionPreview extends StatelessWidget {
-  const _SelectionPreview();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _PreviewSection(
-          title: 'Checkboxes',
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              CheckboxWithTitle(
-                title: 'Selected option',
-                value: true,
-                onChanged: _ignoreBool,
-              ),
-              CheckboxWithTitle(
-                title: 'Unselected option',
-                value: false,
-                onChanged: _ignoreBool,
-              ),
-              CheckboxWithTitle(
-                title: 'Disabled option',
-                value: true,
-                enable: false,
-                onChanged: _ignoreBool,
-              ),
-              CheckBoxGroup<String>(
-                items: ['Email', 'Push', 'SMS'],
-                selectedItems: ['Email'],
-                disableItems: ['SMS'],
-                getLabel: _stringLabel,
-                onSelectedChanged: _ignoreStringList,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 16),
-        _PreviewSection(
-          title: 'Radio buttons',
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              RadioButtonWithTitle<String>(
-                title: 'Monthly billing',
-                value: 'monthly',
-                groupValue: 'monthly',
-                onChanged: _ignoreNullableString,
-              ),
-              RadioButtonWithTitle<String>(
-                title: 'Annual billing',
-                value: 'annual',
-                groupValue: 'monthly',
-                onChanged: _ignoreNullableString,
-              ),
-              RadioButtonWithTitle<String>(
-                title: 'Unavailable plan',
-                value: 'legacy',
-                groupValue: 'monthly',
-                enable: false,
-              ),
-              FlRadioGroup<String>(
-                items: ['Small', 'Medium', 'Large'],
-                selectedItem: 'Medium',
-                getLabel: _stringLabel,
-                onSelected: _ignoreString,
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class _FeedbackPreview extends StatelessWidget {
   const _FeedbackPreview();

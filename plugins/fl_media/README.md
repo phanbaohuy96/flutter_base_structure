@@ -1,18 +1,7 @@
 # fl_media
 
-A new Flutter plugin project.
+Media handling plugin for this Flutter base template — image/video viewing (`ImageView`, `MediaViewerWidget`), video playback control (`VideoControllerManager`), image cropping, and native file picking (`PickFileHelper`), plus their localization.
 
-## Getting Started
+Import via `package:core/core.dart` (re-exported) or directly via `package:fl_media/fl_media.dart`.
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.dev/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
-
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
-The plugin project was generated without specifying the `--platforms` flag, no platforms are currently supported.
-To add platforms, run `flutter create -t plugin --platforms <platforms> .` in this directory.
-You can also find a detailed instruction on how to add platforms in the `pubspec.yaml` at https://flutter.dev/docs/development/packages-and-plugins/developing-packages#plugin-platforms.
+See [`.agents/skills/fl-ui-components/SKILL.md`](../../.agents/skills/fl-ui-components/SKILL.md) for a catalog of what's here, and [`example/`](example/) for a runnable demo.

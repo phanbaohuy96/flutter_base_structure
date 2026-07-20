@@ -14,7 +14,7 @@ part '$moduleNameKey.action.dart';
 class ${classNameKey}Screen extends StatefulWidget {
   static String routeName = '/$routeNameKey';
 
-  const ${classNameKey}Screen({Key? key}) : super(key: key);
+  const ${classNameKey}Screen({super.key});
 
   @override
   State<${classNameKey}Screen> createState() => _${classNameKey}ScreenState();
@@ -24,21 +24,18 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
   @override
   ${classNameKey}Bloc get bloc => BlocProvider.of(context);
 
-  late ThemeData _themeData;
-
-  TextTheme get textTheme => _themeData.textTheme;
-
   late AppLocalizations trans;
 
   @override
   Widget build(BuildContext context) {
-    _themeData = context.theme;
     trans = translate(context);
-    return BlocConsumer<${classNameKey}Bloc, ${classNameKey}State>(
-      listener: _blocListener,
-      builder: (context, state) {
-        return Container();
-      },
+    return ScreenForm(
+      child: BlocConsumer<${classNameKey}Bloc, ${classNameKey}State>(
+        listener: _blocListener,
+        builder: (context, state) {
+          return Container();
+        },
+      ),
     );
   }
 }

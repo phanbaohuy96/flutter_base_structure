@@ -38,8 +38,8 @@ class ${classNameKey}Args {
 class ${classNameKey}Screen extends StatefulWidget {
   static String routeName = '/$routeNameKey';
 
-  const ${classNameKey}Screen({Key? key, this.args}) : super(key: key);
-  
+  const ${classNameKey}Screen({super.key, this.args});
+
   final ${classNameKey}Args? args;
 
   @override
@@ -51,10 +51,6 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
 
   @override
   ${classNameKey}Bloc get bloc => BlocProvider.of(context);
-
-  late ThemeData _themeData;
-
-  TextTheme get textTheme => _themeData.textTheme;
 
   late AppLocalizations trans;
 
@@ -73,7 +69,6 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
 
   @override
   Widget build(BuildContext context) {
-    _themeData = context.theme;
     trans = translate(context);
     return ScreenForm(
       child: BlocConsumer<${classNameKey}Bloc, ${classNameKey}State>(

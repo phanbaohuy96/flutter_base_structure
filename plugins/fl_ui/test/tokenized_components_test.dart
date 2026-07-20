@@ -12,6 +12,7 @@ void main() {
             primary: Colors.blue,
             secondary: Colors.lightBlue,
             brightness: Brightness.light,
+            dividerColor: const Color(0xFF123456),
           ),
         ),
       ),
@@ -20,21 +21,21 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: appTheme.theme,
-        home: Scaffold(
+        home: const Scaffold(
           body: Column(
             children: [
-              const BadgeBox(count: 3, child: Icon(Icons.notifications)),
-              const ErrorBox(validation: 'Required', child: Text('Field')),
-              CheckboxWithTitle(
-                title: 'Accept terms',
-                value: true,
-                onChanged: (_) {},
+              BadgeBox(count: 3, child: Icon(Icons.notifications)),
+              ErrorBox(validation: 'Required', child: Text('Field')),
+              SizedBox(
+                width: 12,
+                child: Separator(key: ValueKey('default-separator')),
               ),
-              RadioButtonWithTitle<int>(
-                title: 'Option one',
-                value: 1,
-                groupValue: 1,
-                onChanged: (_) {},
+              SizedBox(
+                width: 12,
+                child: Separator(
+                  key: ValueKey('override-separator'),
+                  color: Color(0xFF654321),
+                ),
               ),
             ],
           ),
@@ -44,7 +45,26 @@ void main() {
 
     expect(find.text('3'), findsOneWidget);
     expect(find.text('Required'), findsOneWidget);
-    expect(find.text('Accept terms'), findsOneWidget);
-    expect(find.text('Option one'), findsOneWidget);
+
+    BoxDecoration separatorDecoration(String key) {
+      final decoratedBox = tester.widget<DecoratedBox>(
+        find
+            .descendant(
+              of: find.byKey(ValueKey(key)),
+              matching: find.byType(DecoratedBox),
+            )
+            .first,
+      );
+      return decoratedBox.decoration as BoxDecoration;
+    }
+
+    expect(
+      separatorDecoration('default-separator').color,
+      const Color(0xFF123456),
+    );
+    expect(
+      separatorDecoration('override-separator').color,
+      const Color(0xFF654321),
+    );
   });
 }
