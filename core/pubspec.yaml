@@ -24,7 +24,7 @@ dependencies:
   flutter_secure_storage: ^9.2.4
   get_it: ^7.2.0
   injectable: ^2.4.4
-  intl: 0.20.2
+  intl: ^0.20.2
 
   #utils
   date_format: ^2.0.2

@@ -39,12 +39,12 @@ The template is currently aligned to:
 
 | Area | Version / setting |
 | --- | --- |
-| Flutter SDK | `3.41.9` from `fvm_pubspec.yaml` |
-| Dart SDK | `3.11.5` with Flutter 3.41.9 |
+| Flutter SDK | `3.47.0` from `fvm_pubspec.yaml` |
+| Dart SDK | `3.13.0` with Flutter 3.47.0 |
 | Package constraints | Dart `>=3.8.0 <4.0.0`; Flutter mostly `>=3.32.0` |
 | Android | AGP `8.9.1`, Kotlin `2.1.0`, Gradle `8.12`, Java `17` |
 | Android SDK | `minSdkVersion 26`, `targetSdkVersion 35`, NDK `27.0.12077973` |
-| iOS | Minimum platform `13.0` |
+| iOS | Minimum platform `15.0` |
 | Codegen | `freezed 3.2.3`, `retrofit_generator 10.2.3`, `json_serializable ^6.11.1`, `hive_ce_generator ^1.9.3`, `injectable_generator ^2.6.2` |
 
 The makefile auto-detects `fvm` and runs `fvm flutter` / `fvm dart` when

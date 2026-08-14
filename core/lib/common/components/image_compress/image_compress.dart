@@ -165,7 +165,7 @@ class ImageCompressHelper {
     final mimeStr = mimeType ?? lookupMimeType(filePath ?? '');
     if (mimeStr?.startsWith('image/') == true) {
       try {
-        return compressWithList(image: bytes, option: option);
+        return await compressWithList(image: bytes, option: option);
       } catch (_) {
         return (image: bytes, mimeType: mimeStr);
       }
