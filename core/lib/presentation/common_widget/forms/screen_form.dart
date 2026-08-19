@@ -226,6 +226,9 @@ class _ScreenFormState extends State<ScreenForm> {
         screenTheme.appbarForegroundColor ??
         context.themeColor.appbarForegroundColor;
 
+    final showBackButton =
+        screenTheme.showBackButton == true && Navigator.of(context).canPop();
+
     return Container(
       decoration: BoxDecoration(
         color: appbarColor,
@@ -247,9 +250,9 @@ class _ScreenFormState extends State<ScreenForm> {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         centerTitle: isCenterTitle,
-        automaticallyImplyLeading: screenTheme.showBackButton == true,
+        automaticallyImplyLeading: showBackButton,
         titleSpacing: screenTheme.titleSpacing,
-        leading: screenTheme.showBackButton == true
+        leading: showBackButton
             ? IconButton(
                 key: const ValueKey('screen_form_back_btn'),
                 onPressed: widget.onBack ?? () => Navigator.pop(context),
