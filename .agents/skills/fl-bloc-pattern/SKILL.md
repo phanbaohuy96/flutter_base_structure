@@ -23,7 +23,7 @@ This template uses a specific bloc shape that is **not** the typical "freezed se
 2. Bloc is annotated `@Injectable()`. Use `@factoryParam` for runtime args.
 3. Event classes inherit from a single abstract `<X>Event` — no freezed union.
 4. State classes inherit from a single abstract `<X>State` and share a freezed `_StateData`. The base provides `copyWith<T extends <X>State>({_StateData? data})` backed by a `_factories` map.
-5. `_StateData` is `@freezed sealed class _StateData with _$StateData` — generator declares it that way; do not change.
+5. `_StateData` is `@freezed abstract class _StateData with _$StateData` — one factory constructor means `abstract`, not `sealed`. The generator declares it that way; do not change.
 6. Imports: `package:core/core.dart` (re-exports flutter_bloc, `CoreBlocBase`, helpers), `package:freezed_annotation/freezed_annotation.dart`, `package:injectable/injectable.dart`.
 7. Run `make gen_all` after editing — `<feature>_bloc.freezed.dart` is generated.
 
@@ -69,7 +69,7 @@ class FeatureBloc extends CoreBlocBase<FeatureEvent, FeatureState> {
 part of '<feature>_bloc.dart';
 
 @freezed
-sealed class _StateData with _$StateData {
+abstract class _StateData with _$StateData {
   const factory _StateData({
     Item? detail,
     @Default([]) List<Item> items,
@@ -174,7 +174,7 @@ Action files (see `fl-extension-action`) typically use `_blocListener(BuildConte
 
 - [ ] Bloc extends `CoreBlocBase<E, S>` and is `@Injectable()`.
 - [ ] `<feature>_bloc.dart` declares the three `part` directives (freezed, event, state).
-- [ ] `_StateData` is `@freezed sealed class` and uses `@Default(...)` for non-nullable defaults.
+- [ ] `_StateData` is `@freezed abstract class` and uses `@Default(...)` for non-nullable defaults.
 - [ ] Every concrete state subclass has a matching entry in `_factories`.
 - [ ] Events extend the abstract `<X>Event`; no freezed unions for events or states.
 - [ ] Long-running handlers call `showLoading()` and pair it with `hideLoading()` in a `finally` block (CoreDelegate fan-out).

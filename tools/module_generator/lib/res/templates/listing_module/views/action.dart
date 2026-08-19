@@ -3,7 +3,7 @@ import '../../../../common/definitions.dart';
 const listingModuleAction =
     '''part of '${moduleNameKey}_screen.dart';
 
-extension on _${classNameKey}ScreenState {
+extension ${classNameKey}Action on _${classNameKey}ScreenState {
   void _blocListener(BuildContext context, ${classNameKey}State state) {
     hideLoading();
   }
@@ -14,6 +14,11 @@ extension on _${classNameKey}ScreenState {
 
   void loadMore() {
     bloc.add(LoadMore${modelNameKey}sEvent());
+  }
+
+  /// Re-runs the listing under [filter] and keeps it as the active filter.
+  void applyFilter(${modelNameKey}Filter filter) {
+    bloc.add(Get${modelNameKey}sEvent(filter: filter));
   }
 }
 ''';

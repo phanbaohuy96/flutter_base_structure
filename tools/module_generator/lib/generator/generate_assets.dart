@@ -433,14 +433,14 @@ Future<AssetGenerationResult> generateAsset({
     final assetFiles = structure == AssetStructure.tree
         ? {
             'assets.dart': assetsRes
-                .replaceFirst(importPartKey, '')
+                .replaceFirst(partDirectivesKey, '')
                 .replaceFirst('\n\nclass Assets', '\nclass Assets')
                 .replaceFirst(contentKey, treeContent.fields)
                 .replaceFirst(nestedContentKey, treeContent.nestedClasses),
           }
         : {
             'assets.dart': assetsRes
-                .replaceFirst(importPartKey, _typedAssetPartDirectives)
+                .replaceFirst(partDirectivesKey, _typedAssetPartDirectives)
                 .replaceFirst(contentKey, treeContent.fields)
                 .replaceFirst(nestedContentKey, treeContent.nestedClasses),
             'image_assets.dart': imageAssetsRes

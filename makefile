@@ -18,7 +18,7 @@ TEST_DIRS := $(if $(PACKAGES),$(PACKAGES),$(PACKAGE_DIRS))
 # Main targets
 .PHONY: setup build run test analyze check format_check clean asset asset_main asset_fl_ui asset_all lang format help coverage_main gen gen_all gen_core gen_data_source gen_main \
 	pub_get pub_get_plugins pub_get_core pub_get_main pub_get_fl_ui pub_get_fl_utils pub_get_fl_theme pub_get_fl_media pub_get_fl_navigation \
-	app_identifier create_project reset run_web_dev run_web_staging build_web clean_force run_module_generator gen_translation apply_translation
+	app_identifier create_project reset run_web_dev run_web_staging build_web clean_force run_module_generator verify_module_generator gen_translation apply_translation
 
 # Default target
 all: setup build
@@ -79,6 +79,7 @@ help:
 	@echo "  make clean              - Clean the project"
 	@echo "  make clean_force        - Clean with force option"
 	@echo "  make run_module_generator - Run module generator (interactive)"
+	@echo "  make verify_module_generator - Smoke-test the module generator end to end"
 
 ################################################################################
 # Project Setup
@@ -307,6 +308,15 @@ run_module_generator:
 	@echo "Which module? ex: apps/main"
 	@read name; \
 	sh run_module_generator.sh $$name
+
+# End-to-end smoke test for the module generator.
+#
+# Generates one module of each type into apps/main, runs the generation
+# pipeline, checks analyze + format, then removes everything it created.
+# Deliberately not part of `make check`: it needs the Flutter toolchain and it
+# mutates the working tree.
+verify_module_generator:
+	sh verify_module_generator.sh
 
 ################################################################################
 # Build Process

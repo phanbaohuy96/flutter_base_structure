@@ -2,6 +2,104 @@
 
 Utilities for generating projects, feature modules, exports, localization helpers, and asset accessors in this Flutter template.
 
+## Feature modules
+
+Run the generator from inside the package you are scaffolding into:
+
+```bash
+make run_module_generator      # prompts for the package, then shows the menu
+# or
+sh run_module_generator.sh apps/main
+```
+
+The menu covers `common` / `listing` / `detail` modules, plus standalone
+repository, usecase, and model templates.
+
+### What a module run emits
+
+For `--type listing --name product_list --entity Product`:
+
+```text
+lib/domain/entities/product/product.entity.dart          # freezed, if absent
+lib/domain/entities/product/product_filter.entity.dart   # listing only
+lib/presentation/modules/product_list/
+  bloc/product_list_bloc.dart | _event.dart | _state.dart
+  views/product_list_screen.dart | product_list.action.dart
+  product_list_route.dart
+  product_list_coordinator.dart
+  product_list.dart                                      # barrel
+lib/domain/usecases/product_list/
+  product_list_usecase.dart | product_list_usecase.impl.dart
+```
+
+Emitted files are run through `dart format`, so they land inside the repo's
+80-column and trailing-comma lints regardless of how long the names are.
+
+### Coordinators
+
+Every module template emits a `<module>_coordinator.dart` — a `BuildContext`
+extension that is the module's single entry point, so callers never spell out a
+route path. What it owns depends on the template:
+
+| Template | Coordinator |
+|---|---|
+| `common` | `goTo<Feature>()` — pre-nav guard seam, marked `TODO(template)` |
+| `listing` | `goTo<Feature>({filter})` — turns an `<Entity>Filter` into `<Feature>Args`, so `/product-list?keyword=shoes` and an in-app push land on the same filtered view |
+| `detail` | `goTo<Feature>({object})` / `goTo<Feature>ById({id})` — in-app vs deep-link entry |
+
+The `common` one starts as a bare forwarder. If the module never grows entry
+logic, delete the file and its barrel export and push `Screen.routeName`
+directly — a forwarding-only coordinator is indirection without leverage.
+
+Two rules worth knowing:
+
+- **The entity is a first-class input.** The state declares `List<Product>` /
+  `Product?`, so the module cannot compile without it. The generator scaffolds
+  the entity when it is missing and leaves an existing one untouched. Skip it
+  with `--no-entity-scaffold`.
+- **`detail` suffixes both the module and its usecase.** Input `product`
+  produces `product_detail` and `ProductDetailUsecase.getProductDetailById`.
+  Nothing here is renamed independently — the bloc imports the usecase by that
+  exact path.
+
+The generated usecase impl deliberately has no repository dependency: it
+returns an empty result behind a `TODO(template)` so the module compiles and
+registers in DI immediately. Generate a repository (menu option 4) and wire it
+in when you have an endpoint.
+
+### Non-interactive use
+
+```bash
+cd apps/main
+dart run module_generator \
+  --type listing \
+  --name product_list \
+  --entity Product \
+  --non-interactive
+```
+
+| Flag | Effect |
+|---|---|
+| `--type` | `common` \| `listing` \| `detail` \| `usecase` \| `repository` \| `model` |
+| `--name` | Module / usecase / repository name |
+| `--dir` | Output directory (package-relative) |
+| `--entity` | Domain entity the module is typed against |
+| `--no-entity-scaffold` | Do not write the entity file |
+| `--force` | Overwrite an existing module |
+| `--non-interactive` | Never prompt; fail on a missing required value |
+
+With no flags the interactive menu runs exactly as before.
+
+### After generating
+
+```bash
+make gen_main   # freezed + injectable + route provider registry
+make check      # analyze + format_check + test
+```
+
+The route needs no manual registration: `@FlRouteProvider()` is picked up by
+the `fl_navigation` builder into `lib/presentation/route/route_providers.config.dart`.
+
 ## Project creation
 
 Create a new project folder from this template and rewrite the copied app identity:
@@ -170,6 +268,7 @@ Useful checks while editing the generator:
 ```bash
 fvm dart analyze tools/module_generator
 fvm flutter test tools/module_generator
+make verify_module_generator
 make asset_all
 
 dart run module_generator:create_project \
@@ -179,6 +278,20 @@ dart run module_generator:create_project \
   --base-package com.acme.mobile \
   --non-interactive
 ```
+
+### Module generator smoke gate
+
+`make verify_module_generator` is the end-to-end gate: it generates one module
+of each type into `apps/main`, runs `generate_build_runner_config` +
+`build_runner`, checks `flutter analyze` and `dart format`, asserts the routes
+were registered, then deletes what it created and restores the three files
+build_runner rewrites. It refuses to start unless `apps/main/build.yaml`,
+`lib/di/di.config.dart`, and `lib/presentation/route/route_providers.config.dart`
+are clean in git.
+
+It is deliberately outside `make check`: it needs the Flutter toolchain and it
+mutates the working tree. The template tests in `test/` cover the same ground
+statically and do run under `make check`.
 
 For package-level smoke testing:
 

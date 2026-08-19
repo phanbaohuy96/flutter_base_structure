@@ -1,18 +1,18 @@
 import '../../../../common/definitions.dart';
 
-final commonModuleScreen =
+const commonModuleScreen =
     '''import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 
-import '$importPartKey../l10n/generated/app_localizations.dart';
-import '${importPartKey}base/base.dart';
-import '${importPartKey}extentions/extention.dart';
+import '${libImportKey}l10n/localization_ext.dart';
+import '${presentationImportKey}base/base.dart';
+import '${presentationImportKey}extentions/extention.dart';
 import '../bloc/${moduleNameKey}_bloc.dart';
 
 part '$moduleNameKey.action.dart';
 
 class ${classNameKey}Screen extends StatefulWidget {
-  static String routeName = '/$routeNameKey';
+  static const String routeName = '/$routeNameKey';
 
   const ${classNameKey}Screen({super.key});
 
@@ -27,13 +27,20 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
   late AppLocalizations trans;
 
   @override
+  void initState() {
+    super.initState();
+    bloc.add(Get${classNameKey}Event());
+  }
+
+  @override
   Widget build(BuildContext context) {
     trans = translate(context);
     return ScreenForm(
       child: BlocConsumer<${classNameKey}Bloc, ${classNameKey}State>(
         listener: _blocListener,
         builder: (context, state) {
-          return Container();
+          // TODO(template): render `state.detail` using `trans` for copy.
+          return const SizedBox.shrink();
         },
       ),
     );

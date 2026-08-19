@@ -20,7 +20,7 @@ metadata:
 
 - [ ] Bloc extends `CoreBlocBase<E, S>` (not `Bloc`/`Cubit` directly) and is `@Injectable()`.
 - [ ] `<feature>_bloc.dart` has the three `part` directives (freezed/event/state) in the right order.
-- [ ] `_StateData` is `@freezed sealed class` with `@Default(...)` on collections.
+- [ ] `_StateData` is `@freezed abstract class` with `@Default(...)` on collections.
 - [ ] Concrete state classes are `extends FeatureState` (abstract base), **not** a freezed union — and every concrete class is registered in `_factories`.
 - [ ] Events extend the abstract `<X>Event` — no freezed unions for events either.
 - [ ] Long handlers call `showLoading()` / `hideLoading()` (the CoreDelegate fan-out) inside `try/finally`; no ad-hoc spinners.
@@ -46,7 +46,7 @@ metadata:
 - [ ] Required typed extras use `buildRequiredRouteExtra<T>` or equivalent shared guard instead of repeated unsafe casts.
 - [ ] App-level route aggregation uses `buildFlGoRouter` with the relevant `IRoute` providers.
 - [ ] Coordinator extension is present **only** when the module is compound or has non-trivial entry logic; simple one-screen modules push the route name directly.
-- [ ] When a coordinator exists, it exposes typed `goToX` on `BuildContext`, all taking a `PushBehavior`, and uses `Args(...).adaptiveArguments` rather than the retired `adaptive`.
+- [ ] The module's coordinator exposes typed `goToX` on `BuildContext`, all taking a `PushBehavior`, and uses `Args(...).adaptiveArguments` rather than the retired `adaptive`. A coordinator that only forwards should be deleted, not kept.
 - [ ] No direct `package:go_router/go_router.dart` imports in feature code.
 
 ### Theming

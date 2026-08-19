@@ -5,6 +5,12 @@ const listingModuleEvent =
 
 abstract class ${classNameKey}Event {}
 
-class Get${modelNameKey}sEvent extends ${classNameKey}Event {}
+class Get${modelNameKey}sEvent extends ${classNameKey}Event {
+  Get${modelNameKey}sEvent({this.filter});
 
-class LoadMore${modelNameKey}sEvent extends ${classNameKey}Event {}''';
+  /// The filter to switch to, or `null` to reuse the one already in state.
+  final ${modelNameKey}Filter? filter;
+}
+
+class LoadMore${modelNameKey}sEvent extends ${classNameKey}Event {}
+''';

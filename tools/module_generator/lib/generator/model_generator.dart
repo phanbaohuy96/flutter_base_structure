@@ -32,7 +32,6 @@ Future<bool> generateModel() async {
 
   final className = formatClassName(name);
   final moduleName = formatModuleName(name);
-  final modelName = moduleName.split('_').first.capitalize();
 
   final fileName = '$moduleName.dart';
   await FilesHelper.createFolder(dir);
@@ -41,7 +40,6 @@ Future<bool> generateModel() async {
     content: source.replaceContent(
       className: className,
       moduleName: moduleName,
-      modelName: modelName,
     ),
     overrideFile: false,
   );
@@ -50,19 +48,13 @@ Future<bool> generateModel() async {
 }
 
 Future<int> _inputType() async {
-  var type = await InputHelper.enterName(
-    message: '''Model type
+  return InputHelper.enterChoice(
+    '''Model type
 1. Freezed
 2. Json Serializable
 0. Back
 
 Please Select: ''',
+    allowed: {0, 1, 2},
   );
-
-  final selection = int.parse(type);
-  if ([0, 1, 2, 3].contains(selection)) {
-    return selection;
-  }
-  print('Invalid options!');
-  return _inputType();
 }

@@ -5,7 +5,7 @@ const assetsRes =
 ///DO NOT EDIT, all your changes would be lost.
 ///dart run module_generator:generate_asset <path-to-root-preview-image>
 
-$importPartKey
+$partDirectivesKey
 class Assets {
   const Assets._();$contentKey
 }
