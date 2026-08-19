@@ -6,7 +6,8 @@ const detailModuleEvent =
 abstract class ${classNameKey}Event {}
 
 class Get${classNameKey}Event extends ${classNameKey}Event {
-  final String id;
   Get${classNameKey}Event(this.id);
+
+  final String id;
 }
 ''';

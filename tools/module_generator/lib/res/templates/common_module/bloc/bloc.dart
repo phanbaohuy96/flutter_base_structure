@@ -3,28 +3,37 @@ import '../../../../common/definitions.dart';
 const commonModuleBloc =
     '''import 'dart:async';
 
-import 'package:bloc/bloc.dart';
+import 'package:core/core.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:injectable/injectable.dart' hide Order;
+import 'package:injectable/injectable.dart';
 
-import '$importPartKey../domain/usecases/$moduleNameKey/${moduleNameKey}_usecase.dart';
-import '${importPartKey}base/base.dart';
+import '$modelImportKey';
+import '${libImportKey}domain/usecases/$moduleNameKey/${moduleNameKey}_usecase.dart';
 
 part '${moduleNameKey}_bloc.freezed.dart';
 part '${moduleNameKey}_event.dart';
 part '${moduleNameKey}_state.dart';
 
 @Injectable()
-class ${classNameKey}Bloc extends CoreBlocBase<${classNameKey}Event, ${classNameKey}State> {
-  final ${classNameKey}Usecase _usecase;
-
-  ${classNameKey}Bloc(this._usecase) : 
-    super(${classNameKey}Initial(data: const _StateData())) {
-    on<${classNameKey}Event>(_on${classNameKey}Event);
+class ${classNameKey}Bloc
+    extends CoreBlocBase<${classNameKey}Event, ${classNameKey}State> {
+  ${classNameKey}Bloc(this._usecase)
+    : super(${classNameKey}Initial(data: const _StateData())) {
+    on<Get${classNameKey}Event>(_onGet$classNameKey);
   }
 
-  Future<void> _on${classNameKey}Event(
-    ${classNameKey}Event event,
+  final ${classNameKey}Usecase _usecase;
+
+  Future<void> _onGet$classNameKey(
+    Get${classNameKey}Event event,
     Emitter<${classNameKey}State> emit,
-  ) async {}
-}''';
+  ) async {
+    final detail = await _usecase.load();
+    emit(
+      state.copyWith<${classNameKey}Loaded>(
+        data: state.data.copyWith(detail: detail),
+      ),
+    );
+  }
+}
+''';

@@ -63,7 +63,7 @@ class FeatureRoute extends IRoute {
 }
 ```
 
-The `routeName` lives on the screen as `static String routeName = '/feature';`. `injector.get(param1: ...)` flows the `@factoryParam` from the bloc constructor.
+The `routeName` lives on the screen as `static const String routeName = '/feature';` — `const`, matching real screens and the module generator's output. `injector.get(param1: ...)` flows the `@factoryParam` from the bloc constructor.
 
 For routes that cannot render without a typed extra, use the shared helper instead of repeating casts:
 
@@ -179,9 +179,11 @@ class FeatureArgs {
 
 ## Coordinator (navigation extension)
 
-Coordinators are not free. Add one only for **compound modules** or modules with non-trivial entry logic (parameter translation, pre-nav guards, post-nav handling). A one-line `pushBehavior.push(context, FeatureScreen.routeName)` wrapper is shallow — call the screen route directly from feature code instead. See `CONTEXT.md`.
+Every module gets a coordinator, so a module has exactly one entry point and route paths never leak into feature code. The generator scaffolds one for all three module templates.
 
-When a coordinator exists, it owns:
+What varies is how much it owns. A coordinator has to own *something*: parameter translation, a pre-nav guard, or post-nav handling. One that stays a bare `pushBehavior.push(context, FeatureScreen.routeName)` forward is indirection without leverage — delete it and call the screen route directly. See `CONTEXT.md`.
+
+A coordinator owns:
 
 1. `*Args` construction (`adaptiveArguments` for the platform-correct payload).
 2. Pre-nav guards — e.g. signin's coordinator reads the storage seam and short-circuits to the post-login destination when a valid token is already present.
@@ -239,12 +241,13 @@ Token presence is read via the **synchronous** `isAuthenticated` getter on the s
 
 ## Checklist
 
-- [ ] Screen has `static String routeName` starting with `/`.
+- [ ] Screen has `static const String routeName` starting with `/`.
 - [ ] Route extends `IRoute` and uses `CustomRouter<Args>` (typed) when extras are non-null.
 - [ ] Builder wraps the screen in `BlocProvider` and creates the bloc via `injector.get(...)`.
 - [ ] `extraFromUrlQueries` provided when the screen should be deep-linkable.
 - [ ] Coordinator added only for compound modules or modules with non-trivial entry logic — simple modules call `pushBehavior.push(context, routeName)` directly.
-- [ ] When a coordinator exists, it exposes typed `goToX` methods, all taking `PushBehavior`, and passes `Args(...).adaptiveArguments` (not the older `adaptive`).
+- [ ] The coordinator exposes typed `goToX` methods, all taking `PushBehavior`, and passes `Args(...).adaptiveArguments` (not the older `adaptive`).
+- [ ] The coordinator owns something beyond forwarding — Args translation, a guard, or post-nav handling — or it is deleted.
 - [ ] Route/coordinator methods have concise Dartdoc when they are newly introduced public APIs.
 - [ ] New top-level `IRoute` has `@FlRouteProvider()` and `make gen_main` was run to refresh the generated provider registry.
 - [ ] Route restrictions use runtime `routeProviderInterceptors`, not manual generated-provider lists.

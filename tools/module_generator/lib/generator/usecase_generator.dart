@@ -1,51 +1,55 @@
+import '../common/formatter.dart';
+import '../common/generator_options.dart';
 import '../common/input_helper.dart';
 import '../res/templates/usecase/source.dart';
+import 'entity_generator.dart';
 import 'module_generator_ext.dart';
 
-Future<bool> generateUsecase() async {
-  final selection = await _inputUsecaseType();
+const _usecaseKinds = {1: 'common', 2: 'detail', 3: 'listing'};
 
+Future<bool> generateUsecase({
+  GeneratorOptions options = const GeneratorOptions(),
+}) async {
+  final selection = await _inputUsecaseType();
   if (selection == 0) {
-    return Future.value(false);
+    return false;
   }
 
-  final inputModuleName = await InputHelper.enterName();
-  var inputModuleDir = await InputHelper.enterDir(
+  final request = await resolveModuleRequest(
+    options,
     defaultDir: 'lib/domain/usecases',
-    message: 'Usecase directory',
-  );
-  await generateUsecaseWithTemplateSource(
-    source:
-        usecaseRes[switch (selection) {
-          1 => 'common',
-          2 => 'detail',
-          3 => 'listing',
-          _ => throw UnsupportedError(
-            'Usecase with $selection currently not supported',
-          ),
-        }]!,
-    inputModuleName: inputModuleName,
-    inputModuleDir: inputModuleDir,
   );
 
-  return Future.value(true);
+  final modelPath = entityPathFor(request.entity);
+  final emitted = <String>[
+    if (request.scaffoldEntity)
+      ...await generateEntity(
+        modelName: request.entity,
+        includeFilter: _usecaseKinds[selection] == 'listing',
+      ),
+    ...await generateUsecaseWithTemplateSource(
+      source: usecaseRes[_usecaseKinds[selection]]!,
+      inputModuleName: request.name,
+      inputModuleDir: request.dir,
+      modelName: request.entity,
+      modelPath: modelPath,
+    ),
+  ];
+
+  await formatGeneratedFiles(emitted);
+  printNextSteps(emitted);
+  return true;
 }
 
 Future<int> _inputUsecaseType() async {
-  var type = await InputHelper.enterName(
-    message: '''Usecase type
+  return InputHelper.enterChoice(
+    '''Usecase type
 1. Common
 2. Detailing
 3. Listing
 0. Back
 
 Please Select: ''',
+    allowed: {0, 1, 2, 3},
   );
-
-  final selection = int.parse(type);
-  if ([0, 1, 2, 3].contains(selection)) {
-    return selection;
-  }
-  print('Invalid options!');
-  return _inputUsecaseType();
 }

@@ -33,17 +33,17 @@ void main() {
   });
 
   group('module template coordinator contract', () {
-    test('only detail modules include coordinator templates', () {
-      expect(commonModuleRes, isNot(contains('coordinator')));
-      expect(listingModuleRes, isNot(contains('coordinator')));
+    test('every module template includes a coordinator', () {
+      expect(commonModuleRes, contains('coordinator'));
+      expect(listingModuleRes, contains('coordinator'));
       expect(detailModuleRes, contains('coordinator'));
     });
 
     test('barrel exports match coordinator templates', () {
       final coordinatorExport = "export '${moduleNameKey}_coordinator.dart';";
 
-      expect(commonModule, isNot(contains(coordinatorExport)));
-      expect(listingModule, isNot(contains(coordinatorExport)));
+      expect(commonModule, contains(coordinatorExport));
+      expect(listingModule, contains(coordinatorExport));
       expect(detailModule, contains(coordinatorExport));
     });
   });

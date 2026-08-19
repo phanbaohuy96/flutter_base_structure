@@ -3,13 +3,14 @@ import '../../../../common/definitions.dart';
 const detailUsecase =
     '''import 'dart:async';
 
-import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
+
+import '$modelImportKey';
 
 part '${moduleNameKey}_usecase.impl.dart';
 
 abstract class ${classNameKey}Usecase {
-  Future<$modelNameKey?> getDetailById(String id);
+  Future<$modelNameKey?> get${classNameKey}ById(String id);
 }
 ''';
 
@@ -18,14 +19,11 @@ const detailUsecaseImpl =
 
 @Injectable(as: ${classNameKey}Usecase)
 class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
-  ${classNameKey}UsecaseImpl(
-    this._repository,
-  );
-
-  final ${classNameKey}Repository _repository;
-
   @override
-  Future<$modelNameKey?> getDetailById(String id) async {
-    return _repository.get$modelNameKey(id);
+  Future<$modelNameKey?> get${classNameKey}ById(String id) async {
+    // TODO(template): inject your repository (see `make run_module_generator`
+    // option 4) and map its DTO onto `$modelNameKey` here.
+    return null;
   }
-}''';
+}
+''';

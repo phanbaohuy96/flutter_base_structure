@@ -1,18 +1,19 @@
 import '../../../../common/definitions.dart';
 
-/// Temlate for common usecase
+/// Template for the paginated listing usecase.
 const listingUsecase =
     '''import 'dart:async';
 
 import 'package:core/domain/use_case/listing_use_case.dart';
-import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../entities/filter/${moduleNameKey}_filter.entity.dart';
+import '$modelImportKey';
+import '$modelFilterImportKey';
 
 part '${moduleNameKey}_usecase.impl.dart';
 
 abstract class ${classNameKey}Usecase {
+  /// Whether the last fetch returned a full page, i.e. another page may exist.
   bool get canNext;
 
   Future<List<$modelNameKey>> fetchData({
@@ -30,24 +31,8 @@ const listingUsecaseImpl =
 
 @Injectable(as: ${classNameKey}Usecase)
 class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
-  ${classNameKey}UsecaseImpl(
-    this._repository,
-  );
-
-  final ${classNameKey}Repository _repository;
-
   late final _listingUsecase =
-      ListingUseCase<$modelNameKey, ${modelNameKey}Filter>(
-    (offset, limit, page, [filter]) => _repository.fetch${modelNameKey}s(
-      // TODO: call your repository method, passing filter + pagination.
-      // Example:
-      //   filters: filter?.filter,
-      //   limit: limit,
-      //   page: page,
-    ).then(
-      (value) => [...?value.data],
-    ),
-  );
+      ListingUseCase<$modelNameKey, ${modelNameKey}Filter>(_fetchPage);
 
   @override
   bool get canNext => _listingUsecase.canNext;
@@ -65,4 +50,17 @@ class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
   }) {
     return _listingUsecase.loadMoreData(filter);
   }
-}''';
+
+  Future<List<$modelNameKey>> _fetchPage(
+    int offset,
+    int limit,
+    int page, [
+    ${modelNameKey}Filter? filter,
+  ]) async {
+    // TODO(template): inject your repository (see `make run_module_generator`
+    // option 4) and call it here, forwarding `filter.query`, `limit` and
+    // `page`, then map the DTOs onto `$modelNameKey`.
+    return const [];
+  }
+}
+''';

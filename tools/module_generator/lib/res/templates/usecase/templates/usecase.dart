@@ -3,13 +3,19 @@ import '../../../../common/definitions.dart';
 const usecase =
     '''import 'dart:async';
 
-import 'package:data_source/data_source.dart';
 import 'package:injectable/injectable.dart';
+
+import '$modelImportKey';
 
 part '${moduleNameKey}_usecase.impl.dart';
 
+/// Domain entry point for the $classNameKey screen.
+///
+/// Keep this narrowly scoped to what $classNameKey needs — a use case that
+/// collects unrelated workflows behind one facade is harder to test and
+/// forces every caller to depend on everything.
 abstract class ${classNameKey}Usecase {
-  Future<dynamic> sampleFunc();
+  Future<$modelNameKey?> load();
 }
 ''';
 
@@ -18,15 +24,12 @@ const usecaseImpl =
 
 @Injectable(as: ${classNameKey}Usecase)
 class ${classNameKey}UsecaseImpl extends ${classNameKey}Usecase {
-  ${classNameKey}UsecaseImpl(this._repository);
-
-  final ${classNameKey}Repository _repository;
-
   @override
-  Future<dynamic> sampleFunc() async {
-    // TODO: translate the repository result into a typed domain outcome
-    // (e.g. a sealed Result class) so callers can switch on intent rather
-    // than null-check or catch.
-    return _repository.sampleFunc();
+  Future<$modelNameKey?> load() async {
+    // TODO(template): inject your repository (see `make run_module_generator`
+    // option 4) and translate its result into a domain outcome here, so
+    // callers switch on intent rather than null-checking transport types.
+    return null;
   }
-}''';
+}
+''';

@@ -133,6 +133,8 @@ make format_check # Verify formatting without rewriting files
 make test        # Run tests when available
 make coverage_main
 make analyze     # Analyze every package, or scope with PACKAGES="apps/main core"
+make run_module_generator     # Scaffold a feature module (interactive)
+make verify_module_generator  # Smoke-test the module generator end to end
 make help        # Show available commands
 ```
 
@@ -219,6 +221,7 @@ module_name/
     module_screen.dart
     module.action.dart      # Optional screen logic extension
   module_route.dart
+  module_coordinator.dart   # Entry point: Args translation / pre-nav guards
   module.dart               # Barrel export
 ```
 
@@ -246,7 +249,7 @@ Rules:
 
 - Every non-trivial sub-module gets its own BLoC.
 - Parent route files aggregate child routes.
-- Navigation extensions belong in `*_coordinator.dart`.
+- Navigation extensions belong in `*_coordinator.dart` — every module has one, and it must own real entry logic rather than forwarding (see `CONTEXT.md`).
 - Barrel exports should chain from parent to child modules.
 
 ## Screen and Action Pattern
@@ -301,7 +304,7 @@ Rules:
 - Bloc extends `CoreBlocBase<E, S>` and is annotated `@Injectable()`. Apps that need cross-cutting bloc behavior (analytics, common error mapping, feature-flag plumbing) may introduce an `AppBlocBase<E, S> extends CoreBlocBase<E, S>` under `apps/main/lib/presentation/base/` and have feature blocs extend that instead. Don't add the indirection while it would stay empty.
 - Events are hand-written subclasses of one abstract `<Feature>Event`; do not use Freezed unions for events.
 - States are hand-written subclasses of one abstract `<Feature>State`; do not use `FeatureState.loading()` / `.loaded()` Freezed unions.
-- State subclasses share one Freezed `_StateData` class.
+- State subclasses share one Freezed `_StateData` class, declared `@freezed abstract class` (one factory constructor, so `abstract` rather than `sealed`). Its file starts with `// ignore_for_file: unused_element, unused_element_parameter`, which freezed 3's generated private-class factory requires.
 - The abstract state exposes `copyWith<T extends FeatureState>({_StateData? data})` backed by a `_factories` map, resolved through the shared `resolveState` helper from `package:core/core.dart`.
 - Every concrete state class must be registered in `_factories` in the same edit. A missing registration throws a descriptive `StateError` naming the unregistered state (via `resolveState`), not an opaque null-check failure.
 - Use `package:core/core.dart` for BLoC exports instead of importing `flutter_bloc` directly.
@@ -326,7 +329,7 @@ class FeatureBloc extends CoreBlocBase<FeatureEvent, FeatureState> {
 }
 
 @freezed
-sealed class _StateData with _$StateData {
+abstract class _StateData with _$StateData {
   const factory _StateData({
     Item? detail,
     @Default([]) List<Item> items,

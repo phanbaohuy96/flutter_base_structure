@@ -9,17 +9,19 @@ class ${classNameKey}RepositoryImpl with DataRepository
   @override
   Future<dynamic> sampleFunc() async {
     try {
-      // TODO: call the real endpoint, e.g. `final dto = await restApi.…`.
+      // TODO(template): call the real endpoint, e.g.
+      // `final dto = await restApi.…`.
       final dto = await Future<dynamic>.value();
 
-      // TODO: translate the DTO into a domain entity before returning so
-      // callers in `domain/` never see transport-layer types.
+      // TODO(template): translate the DTO into a domain entity before
+      // returning, so callers in `domain/` never see transport-layer types.
       return dto;
     } on Exception catch (error, stackTrace) {
-      // TODO: normalise transport errors into domain errors here (e.g. wrap
-      // as AuthError / NotFoundError / NetworkError) so usecases can switch
+      // TODO(template): normalise transport errors into domain errors here
+      // (e.g. AuthError / NotFoundError / NetworkError) so usecases can switch
       // on intent instead of catching raw DioException.
       Error.throwWithStackTrace(error, stackTrace);
     }
   }
-}''';
+}
+''';

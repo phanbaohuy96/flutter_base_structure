@@ -1,20 +1,51 @@
 import '../../../../common/definitions.dart';
 
-final listingModuleScreen =
+const listingModuleScreen =
     '''import 'package:core/core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '$importPartKey../l10n/generated/app_localizations.dart';
-import '${importPartKey}base/base.dart';
-import '${importPartKey}extentions/extention.dart';
+import '$modelFilterImportKey';
+import '${libImportKey}l10n/localization_ext.dart';
+import '${presentationImportKey}base/base.dart';
+import '${presentationImportKey}extentions/extention.dart';
 import '../bloc/${moduleNameKey}_bloc.dart';
 
 part '$moduleNameKey.action.dart';
 
-class ${classNameKey}Screen extends StatefulWidget {
-  static String routeName = '/$routeNameKey';
+/// Route arguments for [${classNameKey}Screen].
+///
+/// Carries the [${modelNameKey}Filter] the listing should open with, so an
+/// in-app caller and a deep link land on the same filtered view instead of
+/// the caller having to re-apply the filter after the first frame.
+class ${classNameKey}Args {
+  const ${classNameKey}Args({this.filter});
 
-  const ${classNameKey}Screen({super.key});
+  factory ${classNameKey}Args.fromUrlParams(
+    Map<String, dynamic> queryParameters,
+  ) => ${classNameKey}Args(
+    filter: ${modelNameKey}Filter.fromQuery(queryParameters),
+  );
+
+  final ${modelNameKey}Filter? filter;
+
+  /// Platform-correct payload for `pushBehavior.push(arguments: ...)`: a query
+  /// map on web (where `extra` does not survive a reload) and the object
+  /// itself elsewhere.
+  dynamic get adaptiveArguments {
+    if (kIsWeb) {
+      return <String, dynamic>{...?filter?.query};
+    }
+    return this;
+  }
+}
+
+class ${classNameKey}Screen extends StatefulWidget {
+  static const String routeName = '/$routeNameKey';
+
+  const ${classNameKey}Screen({super.key, this.args});
+
+  final ${classNameKey}Args? args;
 
   @override
   State<${classNameKey}Screen> createState() => _${classNameKey}ScreenState();
@@ -36,6 +67,7 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
     super.hideLoading();
   }
 
+  @override
   void dispose() {
     _refreshController.dispose();
     super.dispose();
@@ -55,6 +87,8 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
   }
 
   Widget _buildListing(${classNameKey}State state) {
+    // TODO(template): show `EmptyData(message: ...)` when `state.items` is
+    // empty, using a key from your localization CSV.
     return SmartRefresherWrapper(
       enablePullDown: true,
       enablePullUp: state.canLoadMore,
@@ -63,7 +97,8 @@ class _${classNameKey}ScreenState extends StateBase<${classNameKey}Screen> {
       controller: _refreshController,
       child: ListView.separated(
         itemBuilder: (context, index) {
-          return const SizedBox();
+          // TODO(template): render `state.items[index]`.
+          return const SizedBox.shrink();
         },
         separatorBuilder: (context, index) {
           return const SizedBox(height: 16);

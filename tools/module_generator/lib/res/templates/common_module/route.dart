@@ -2,9 +2,8 @@ import '../../../common/definitions.dart';
 
 const commonModuleRoute =
     '''import 'package:core/core.dart';
-import 'package:flutter/material.dart';
 
-import '../../../di/di.dart';
+import '${libImportKey}di/di.dart';
 import 'bloc/${moduleNameKey}_bloc.dart';
 import 'views/${moduleNameKey}_screen.dart';
 
@@ -18,7 +17,7 @@ class ${classNameKey}Route extends IRoute {
         name: ${classNameKey}Screen.routeName,
         builder: (context, uri, extra) {
           return BlocProvider<${classNameKey}Bloc>(
-            create: (context) => injector(),
+            create: (context) => injector.get(),
             child: const ${classNameKey}Screen(),
           );
         },

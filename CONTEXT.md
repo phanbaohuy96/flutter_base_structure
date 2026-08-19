@@ -11,7 +11,7 @@ A unit with an interface and an implementation — typically a feature directory
 _Avoid_: feature, component, service.
 
 **Simple module**:
-A module with one screen. Flat structure (`bloc/`, `views/`, `<module>_route.dart`, `<module>.dart` barrel). Does **not** get a coordinator file.
+A module with one screen. Flat structure (`bloc/`, `views/`, `<module>_route.dart`, `<module>_coordinator.dart`, `<module>.dart` barrel).
 _Avoid_: single-page module.
 
 **Compound module**:
@@ -19,7 +19,7 @@ A module with multiple screens. Each non-trivial screen is its own sub-module wi
 _Avoid_: parent module, container module.
 
 **Coordinator**:
-A `BuildContext` extension that owns entry into a module's navigation: parameter translation (`*Args` construction), pre-nav guards (e.g., short-circuit when state allows), and post-nav handling. Compound modules and modules with non-trivial entry logic get one; bare one-line `pushBehavior.push` extensions do not.
+A `BuildContext` extension that owns entry into a module's navigation: parameter translation (`*Args` construction), pre-nav guards (e.g., short-circuit when state allows), and post-nav handling. Every module gets one, so there is exactly one place a caller enters a module from and route paths never leak into feature code. What a coordinator owns varies: modules with route arguments translate them; argument-free modules hold the entry-guard seam. A coordinator that never grows past a bare `pushBehavior.push` forward is dead weight — delete it and call the screen's `routeName` directly.
 _Avoid_: navigator, router extension.
 
 ### Route plumbing
@@ -58,12 +58,12 @@ _Avoid_: scaffolding, generator output (when referring to the template itself).
 
 ## Relationships
 
-- A **Compound module** owns one **Coordinator**; a **Simple module** does not.
+- Every module owns one **Coordinator**; a **Compound module**'s lives on the parent, alongside the parent barrel and route aggregator.
 - A **Route provider** contributes one or more `CustomRouter`s; **Route-provider interceptors** observe each provider's resolution before it becomes a `GoRoute`.
 - The **Auth-gate interceptor** reads token from the **Storage seam** and rewrites resolutions for protected providers; the **Sign-in redirect resolver** then decides where an authenticated user goes next (and where an already-authenticated user landing on `/signin` is sent).
 - A **Coordinator** may call into the **Storage seam** for pre-nav guards (e.g., skip signin when token already present).
 - A **Mock remote source** is bound at DI composition; the use case it backs treats it identically to a real adapter.
-- **Codegen templates** emit module scaffolding consistent with the **Module shape** vocabulary — Simple modules get no coordinator file; Compound modules do.
+- **Codegen templates** emit module scaffolding consistent with the **Module shape** vocabulary — every generated module ships a **Coordinator**, and the ones with route arguments wire `*Args` translation into it.
 
 ## Example dialogue
 
@@ -71,7 +71,7 @@ _Avoid_: scaffolding, generator output (when referring to the template itself).
 > **Architect:** "Neither, directly. Put it in the **Auth-gate interceptor**. The interceptor inspects each **Route provider** and wraps the protected ones with a redirect. The home coordinator stays focused on home-specific entry logic, and the **Storage seam** is the only thing that knows where the token lives."
 
 > **Dev:** "Should every new module the generator emits include a coordinator file?"
-> **Architect:** "Only **Compound modules**. A **Simple module** with one screen and no entry-time logic just calls `pushBehavior.push(context, routeName)` directly. A one-line coordinator is shallow — it adds an indirection without leverage."
+> **Architect:** "Yes — the generator can't know which modules will grow entry logic, and retrofitting a **Coordinator** later means chasing every `pushBehavior.push` call site that already hard-coded a route path. Scaffolding one up front costs a file and buys a single entry point. The rule that still holds is the *shape*: a coordinator has to own something. Where the module takes route arguments the generator wires `*Args` translation in, so it earns its place immediately. Where it doesn't, the generated method is a guard seam with a `TODO(template)` telling you to delete the file if entry logic never arrives — a permanent bare forwarder is still indirection without leverage."
 
 ## Flagged ambiguities
 
