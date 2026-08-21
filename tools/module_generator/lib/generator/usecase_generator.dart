@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import '../common/console.dart';
 import '../common/formatter.dart';
 import '../common/generator_options.dart';
 import '../common/input_helper.dart';
@@ -20,6 +23,14 @@ Future<bool> generateUsecase({
     defaultDir: 'lib/domain/usecases',
   );
 
+  await assertTargetWritable(
+    usecaseFilePaths(
+      inputModuleName: request.name,
+      inputModuleDir: request.dir,
+    ),
+    force: request.force,
+  );
+
   final modelPath = entityPathFor(request.entity);
   final emitted = <String>[
     if (request.scaffoldEntity)
@@ -33,6 +44,7 @@ Future<bool> generateUsecase({
       inputModuleDir: request.dir,
       modelName: request.entity,
       modelPath: modelPath,
+      overrideFile: request.force,
     ),
   ];
 
@@ -42,14 +54,47 @@ Future<bool> generateUsecase({
 }
 
 Future<int> _inputUsecaseType() async {
+  stdout.writeln();
+  stdout.writeln(
+    Console.menu(
+      title: 'Usecase shape',
+      subtitle: 'Picks the methods and the repository calls to scaffold',
+      sections: const [
+        MenuSection(
+          title: 'shape',
+          entries: [
+            MenuEntry(
+              value: 1,
+              label: 'common',
+              description: 'One load() over a single entity',
+            ),
+            MenuEntry(
+              value: 2,
+              label: 'detail',
+              description: 'Reads one entity by id',
+            ),
+            MenuEntry(
+              value: 3,
+              label: 'listing',
+              description: 'Paged fetch, load-more and a filter type',
+            ),
+          ],
+        ),
+        MenuSection(
+          title: 'other',
+          entries: [
+            MenuEntry(
+              value: 0,
+              label: 'back',
+              description: 'Return to the menu',
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
   return InputHelper.enterChoice(
-    '''Usecase type
-1. Common
-2. Detailing
-3. Listing
-0. Back
-
-Please Select: ''',
+    'Select [0-3]: ',
     allowed: {0, 1, 2, 3},
   );
 }

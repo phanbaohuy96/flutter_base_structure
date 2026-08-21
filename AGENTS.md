@@ -17,8 +17,11 @@ This repository is an opinionated Flutter project template for building multi-fl
 
 The app follows clean architecture:
 
-- `data/` - data sources, DTOs, repositories, local storage
-- `domain/` - entities, use cases, repository contracts
+- `data/` - data sources, DTOs, repositories (retrofit clients), local storage
+- `domain/` - entities, use cases, and the ports a use case is written against
+  (`domain/repositories/`). A retrofit client gets no port: retrofit already
+  generated its implementation, so the use case above it is the seam that
+  keeps transport out of `domain/`
 - `presentation/` - UI, BLoCs, routes, widgets
 
 Primary libraries and patterns:

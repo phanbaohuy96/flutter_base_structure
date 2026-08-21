@@ -211,11 +211,15 @@ extension FeatureCoordinator on BuildContext {
 }
 ```
 
-The authentication coordinator is the canonical pre-nav-guard example — it consults `injector<LocalDataManager>().token` before deciding whether to push signin or jump straight to the post-login destination.
+A pre-nav guard reads the storage seam through `injector<LocalDataManager>()` and decides where to push before any route is resolved — that keeps the "already signed in, skip this screen" decision out of the screen's `build`.
+
+> **Template demo.** The sign-in flow's coordinator (`apps/main/lib/presentation/modules/auth/authentication_coordinator.dart`) is the worked example. It goes when the demo does; the rule above does not.
 
 ## Auth-gate interceptor
 
-See `CONTEXT.md` §Auth-gate interceptor for the definition. The shipped example lives at `apps/main/lib/presentation/route/auth_gate_route_interceptor.dart` and wraps each protected `CustomRouter`'s `redirect` so token enforcement stays at the plumbing level — feature screens never check auth state in `build`.
+See `CONTEXT.md` §Auth-gate interceptor for the definition. An interceptor wraps each protected `CustomRouter`'s `redirect` so token enforcement stays at the plumbing level — feature screens never check auth state in `build`.
+
+> **Template demo.** `apps/main/lib/presentation/route/auth_gate_route_interceptor.dart` is the shipped implementation, and the snippet below is taken from it. Keep it if your app has auth; delete it with the rest of the demo if it does not.
 
 ```dart
 class AuthGateRouteInterceptor extends RouteProviderInterceptor {

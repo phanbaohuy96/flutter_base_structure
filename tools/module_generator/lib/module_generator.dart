@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'common/console.dart';
 import 'common/definitions.dart';
 import 'common/generator_options.dart';
 import 'common/input_helper.dart';
@@ -8,12 +9,31 @@ import 'generator/base_module_generator.dart';
 import 'generator/detail_module_generator.dart';
 import 'generator/listing_module_generator.dart';
 import 'generator/model_generator.dart';
+import 'generator/package_picker.dart';
 import 'generator/repository_generator.dart';
 import 'generator/usecase_generator.dart';
 
 /// Runs the generator either straight from [options] or, when no `--type` was
 /// given, through the interactive menu.
+///
+/// The target package is resolved first: everything after it — the default
+/// output directory, whether a repository can be generated at all — is read
+/// off the package the files will land in.
 Future<void> runModuleGenerator(GeneratorOptions options) async {
+  final package = await selectTargetPackage(options);
+  if (package == null) {
+    return;
+  }
+
+  // Scripted runs stay quiet: the caller chose the package, so echoing it back
+  // is noise in a build log.
+  if (!options.nonInteractive) {
+    stdout.writeln();
+    stdout.writeln(
+      Console.step('Generating into ${Console.cyan(package.relativePath)}'),
+    );
+  }
+
   final type = options.type;
   if (type != null) {
     await _run(type, options);
@@ -24,6 +44,7 @@ Future<void> runModuleGenerator(GeneratorOptions options) async {
       '--type is required in non-interactive mode.',
     );
   }
+
   await showModuleGeneratorMenu(options: options);
 }
 
@@ -52,26 +73,88 @@ Future<void> _run(GeneratorType type, GeneratorOptions options) async {
   }
 }
 
+/// Grouped menu shown when the generator runs without flags.
+///
+/// Sectioned by layer rather than listed flat: the first question an operator
+/// actually has is "presentation or data?", and the descriptions answer
+/// "which one?" without a trip to the README.
+final _menuSections = <MenuSection>[
+  const MenuSection(
+    title: 'presentation',
+    entries: [
+      MenuEntry(
+        value: 1,
+        label: 'common module',
+        description: 'Bloc + screen + route, no list or detail bias',
+      ),
+      MenuEntry(
+        value: 2,
+        label: 'listing module',
+        description: 'Items, filtering, refresh and load-more',
+      ),
+      MenuEntry(
+        value: 3,
+        label: 'detail module',
+        description: 'One entity, opened by object or by id',
+      ),
+    ],
+  ),
+  const MenuSection(
+    title: 'data & domain',
+    entries: [
+      MenuEntry(
+        value: 4,
+        label: 'repository',
+        description: 'Retrofit client over REST or GraphQL',
+      ),
+      MenuEntry(
+        value: 5,
+        label: 'usecase',
+        description: 'Domain seam over one or more repositories',
+      ),
+      MenuEntry(
+        value: 6,
+        label: 'model',
+        description: 'Freezed or json_serializable DTO',
+      ),
+    ],
+  ),
+  const MenuSection(
+    title: 'other',
+    entries: [
+      MenuEntry(value: 0, label: 'exit', description: 'Leave without writing'),
+    ],
+  ),
+];
+
 Future<void> showModuleGeneratorMenu({
   GeneratorOptions options = const GeneratorOptions(),
 }) async {
-  final menu = {
-    MenuItem.commonModuleGenerator.index: 'Generate common module',
-    MenuItem.listingModuleGenerator.index: 'Generate listing module',
-    MenuItem.detailModuleGenerator.index: 'Generate detail module',
-    MenuItem.repositoryGenerator.index: 'Generate repository',
-    MenuItem.usecase.index: 'Generate Usecase',
-    MenuItem.model.index: 'Generate model template',
-    MenuItem.exit.index: 'Exit',
-  };
+  // The menu is keyed by MenuItem.index so the numbers stay in step with the
+  // enum the switch below reads.
+  assert(
+    _menuSections
+        .expand((section) => section.entries)
+        .every((entry) => entry.value < MenuItem.values.length),
+    'a menu entry has no matching MenuItem',
+  );
 
   while (true) {
-    for (final e in menu.entries) {
-      print('${e.key}. ${e.value}');
-    }
+    stdout.writeln();
+    stdout.writeln(
+      Console.menu(
+        title: 'Flutter module generator',
+        subtitle: 'Scaffolds code that compiles and passes `make check`',
+        sections: _menuSections,
+      ),
+    );
+
     final selection = await InputHelper.enterChoice(
-      'Please Select: ',
-      allowed: menu.keys.toSet(),
+      'Select [0-${MenuItem.values.length - 1}]: ',
+      allowed: _menuSections
+          .expand((section) => section.entries)
+          .map((entry) => entry.value)
+          .toSet(),
     );
 
     if (selection == MenuItem.exit.index) {
@@ -106,7 +189,7 @@ Future<void> showModuleGeneratorMenu({
     } on GeneratorInputException catch (error) {
       // Keep the menu alive on a bad name or an existing target: the operator
       // is already at a prompt, so re-asking beats exiting the process.
-      stderr.writeln('Error: ${error.message}\n');
+      stderr.writeln('\n${Console.failure(error.message)}');
     }
   }
 }

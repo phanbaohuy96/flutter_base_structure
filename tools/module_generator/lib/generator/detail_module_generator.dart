@@ -18,9 +18,13 @@ Future<void> generateDetailModule({
   // `<Module>Usecase.get<Module>ById`, so a bare-named usecase left the
   // generated module referencing a file and a class that were never written.
   final moduleName = detailModuleNameFor(request.name);
-  await assertModuleTargetWritable(
-    request,
-    moduleDirName: formatModuleName(moduleName),
+  await assertTargetWritable(
+    moduleFilePaths(
+      source: detailModuleRes,
+      inputModuleName: moduleName,
+      inputModuleDir: request.dir,
+    ),
+    force: request.force,
   );
 
   final modelPath = entityPathFor(request.entity);

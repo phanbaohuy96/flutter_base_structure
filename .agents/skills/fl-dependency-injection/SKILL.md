@@ -41,25 +41,27 @@ metadata:
 3. Annotate implementations and inject through constructors:
 
 ```dart
-abstract class AuthUsecase {
-  Future<User> signIn(String phone, String password);
+abstract class ProfileUsecase {
+  Future<Profile> load(String id);
 }
 
-@Injectable(as: AuthUsecase)
-class AuthUsecaseImpl implements AuthUsecase {
-  AuthUsecaseImpl(this._repository);
-  final AuthRepository _repository;
+@Injectable(as: ProfileUsecase)
+class ProfileUsecaseImpl implements ProfileUsecase {
+  ProfileUsecaseImpl(this._repository);
+  // The retrofit client; the use case is the seam that keeps transport out
+  // of `domain/`.
+  final ProfileRepository _repository;
 }
 
 @Injectable()
-class SignInBloc extends AppBlocBase<SignInEvent, SignInState> {
-  SignInBloc(this._authUsecase)
-      : super(SignInState.initial(data: _StateData.initial()));
-  final AuthUsecase _authUsecase;
+class ProfileBloc extends AppBlocBase<ProfileEvent, ProfileState> {
+  ProfileBloc(this._profileUsecase)
+      : super(ProfileState.initial(data: _StateData.initial()));
+  final ProfileUsecase _profileUsecase;
 }
 ```
 
-4. Resolve only at the route/composition boundary, e.g. `BlocProvider<SignInBloc>(create: (_) => injector(), child: const SignInScreen())`.
+4. Resolve only at the route/composition boundary, e.g. `BlocProvider<ProfileBloc>(create: (_) => injector(), child: const ProfileScreen())`.
 5. Use `@module` for external/factory values, e.g. named URLs, `Dio`, `SharedPreferences`, or aliases between app/core contracts.
 6. Run generation only if generated inputs changed, then analyze/tests as appropriate.
 

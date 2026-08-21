@@ -34,10 +34,7 @@ class FilesHelper {
       await runBash.parent.create(recursive: true);
       await runBash.writeAsString(content);
     } else {
-      print('''[Warning] $pathFile already exists but do not allow to override
-[Warning] Consider to add the missing content below manually:
-
-$content''');
+      stdout.writeln('[skip] $pathFile already exists, left untouched');
     }
 
     return runBash.path.isNotEmpty;

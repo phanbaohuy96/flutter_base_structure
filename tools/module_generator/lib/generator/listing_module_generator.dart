@@ -1,4 +1,3 @@
-import '../common/common_function.dart';
 import '../common/formatter.dart';
 import '../common/generator_options.dart';
 import '../res/templates/listing_module/source.dart';
@@ -11,9 +10,13 @@ Future<void> generateListingModule({
   bool usecaseIncluded = true,
 }) async {
   final request = await resolveModuleRequest(options);
-  await assertModuleTargetWritable(
-    request,
-    moduleDirName: formatModuleName(request.name),
+  await assertTargetWritable(
+    moduleFilePaths(
+      source: listingModuleRes,
+      inputModuleName: request.name,
+      inputModuleDir: request.dir,
+    ),
+    force: request.force,
   );
 
   final modelPath = entityPathFor(request.entity);

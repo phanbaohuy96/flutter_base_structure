@@ -46,9 +46,17 @@ _Avoid_: home route constant, post-login navigator, redirect guard.
 The single module per scope that owns local persistence. `CoreLocalDataManager` is the core scope (theme, locale, token, cookie consent, launch state); `LocalDataManager` is the app scope (user info). They are deep modules — SharedPreferences and FlutterSecureStorage are private state, not public layers.
 _Avoid_: preferences helper, data manager (when the helper/manager split is meant); local storage.
 
-**Mock remote source**:
-A data-layer adapter that satisfies a remote-source contract with in-memory fixtures, intended to be swapped for a real network adapter at the DI binding boundary. The template ships `MockAuthRemoteSource` as a worked example so downstream apps can replace just one binding to wire in a backend.
-_Avoid_: fake api, stub repository.
+**Repository**:
+A retrofit client — a `@RestApi()` abstract class whose annotated methods are the endpoints, with the implementation generated into its `.g.dart` part and bound through an injectable `@module` provider. There is no separate contract-plus-impl pair: retrofit writes the implementation, so an interface beside it would hold nothing. The abstraction that keeps transport out of `domain/` is the **Use case** above it.
+_Avoid_: api client, data source, service (for the same thing); repository interface.
+
+**Repository transport**:
+Which wire protocol a repository speaks — REST, where one annotated method is one endpoint, or GraphQL, where every operation posts to one endpoint and a hand-written class above the client composes the document and reads the `errors` array. The module generator asks which one to scaffold (`--transport rest|graphql`), emits one worked endpoint rather than a CRUD set, scaffolds the payload model the endpoint returns, and only writes into a package that declares `retrofit`, `dio` and `core` as runtime dependencies.
+_Avoid_: api layer, client (when the transport choice is meant).
+
+**Remote-source port**:
+A contract declared in `domain/` for data the app fetches from somewhere it does not own, with the adapter that satisfies it bound at DI composition. The adapter may be a network client or in-memory fixtures; swapping one for the other is a change to the binding and to nothing above it. The template ships a fixture adapter for the sign-in flow as a worked example — demo content a real app deletes.
+_Avoid_: fake api, stub repository, mock remote source (for the contract itself — the mock is one adapter, not the seam).
 
 ### Generation surface
 
@@ -62,7 +70,8 @@ _Avoid_: scaffolding, generator output (when referring to the template itself).
 - A **Route provider** contributes one or more `CustomRouter`s; **Route-provider interceptors** observe each provider's resolution before it becomes a `GoRoute`.
 - The **Auth-gate interceptor** reads token from the **Storage seam** and rewrites resolutions for protected providers; the **Sign-in redirect resolver** then decides where an authenticated user goes next (and where an already-authenticated user landing on `/signin` is sent).
 - A **Coordinator** may call into the **Storage seam** for pre-nav guards (e.g., skip signin when token already present).
-- A **Mock remote source** is bound at DI composition; the use case it backs treats it identically to a real adapter.
+- A **Remote-source port** is satisfied by exactly one adapter per environment, bound at DI composition; the use case it backs treats a fixture adapter and a network adapter identically.
+- A **Repository** is named by the use case above it, never by a bloc directly; swapping its **Repository transport**, or standing a **Remote-source port** in for it, is a change to that use case's constructor and nothing else.
 - **Codegen templates** emit module scaffolding consistent with the **Module shape** vocabulary — every generated module ships a **Coordinator**, and the ones with route arguments wire `*Args` translation into it.
 
 ## Example dialogue
@@ -77,3 +86,4 @@ _Avoid_: scaffolding, generator output (when referring to the template itself).
 
 - "data manager" and "preferences helper" were both used to mean the local-persistence layer. Resolved: the layer is the **Storage seam** (`CoreLocalDataManager` / `LocalDataManager`); raw SharedPreferences/SecureStorage access is private state inside it. The standalone `PreferencesHelper` class no longer exists as a public type.
 - "auth guard" was used informally for both the **Auth-gate interceptor** and the **Coordinator**'s pre-nav check. Resolved: the interceptor protects routes at the plumbing level; the coordinator does feature-local checks (e.g., short-circuit signin when already authenticated). Both can coexist.
+- "mock remote source" named the seam after the one adapter the template happens to ship, so guidance written against it read as advice about a fixture and went stale when the fixture did. Resolved: the seam is the **Remote-source port**; a mock is one adapter satisfying it, and adapters implement the port rather than each other.

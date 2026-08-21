@@ -33,6 +33,15 @@ metadata:
 - [ ] Path/query/body params use `@Path`, `@Query`, `@Body` — not interpolated strings.
 - [ ] No hard-coded base URLs or auth headers — those flow from the `Dio` instance configured in DI.
 - [ ] `Multipart` endpoints declared with `@Multipart` and `@PartFile()`.
+- [ ] `factory X(Dio dio) = _X;` present, and a `@module` provider registers the client — `@Injectable` cannot bind a private implementation, so a client without a provider silently never reaches `di.config.dart`.
+- [ ] No hand-written contract + impl pair wrapping the client: retrofit already generated the implementation.
+
+### GraphQL repositories
+
+- [ ] The `errors` array is checked before `data` is read — a failed operation still answers HTTP 200.
+- [ ] Request bodies are built through the fragment class's `request` helper, so the fragment travels with the operation it is spread into.
+- [ ] Documents are raw strings (`r'''…'''`); a plain Dart string interpolates GraphQL's `$variable` syntax away.
+- [ ] The use case above the repository is transport-neutral — swapping REST for GraphQL should not reach `domain/`.
 - [ ] No `try/catch` in the client; let `DioException` propagate.
 
 ### Storage seam (local persistence)
