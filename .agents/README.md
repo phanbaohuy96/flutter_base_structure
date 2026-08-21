@@ -54,6 +54,34 @@ These skills assume the structure shipped by the template:
   generated with `make lang`.
 - Code generation orchestrated through the makefile (`make gen_all`).
 
+## Template demo content
+
+Some of what ships here exists only to demonstrate a pattern end to end, and
+a real app deletes it in the first week. A skill written *around* that content
+goes out with it — and rots even before then, because nobody re-reads a
+paragraph about a fixture when they change the fixture.
+
+So: **state the rule so it stands on its own, then point at the demo
+separately**, inside a blockquote that says it is a demo:
+
+```markdown
+> **Template demo.** `apps/main` ships `MockAuthRemoteSource` bound as
+> `AuthCredentialSource`. Delete it once you have a real backend — nothing in
+> this skill depends on it.
+```
+
+An agent that finds the file gets a worked example; one that does not knows
+immediately that the guidance still applies. What counts as demo content:
+
+- The sign-in flow — `apps/main/lib/presentation/modules/auth/`,
+  `MockAuthRemoteSource`, `AuthCredentialSource`, `AuthSessionStore`,
+  `AuthSession`, and their use case.
+- `UserModel` in `modules/data_source/` and the sample `news` module.
+
+Durable structure — the storage seam, `IRoute`/`CustomRouter`, `StateBase`,
+the DI composition root, the theme and localization plumbing — is not demo
+content and can be referenced by path directly.
+
 ## Skill structure
 
 ```

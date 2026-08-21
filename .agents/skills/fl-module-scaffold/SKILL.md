@@ -22,9 +22,16 @@ The template ships an interactive generator that emits files matching the projec
 
 ```bash
 make run_module_generator
-# Choose: 1) common module  2) listing module  3) detail module
-#         4) repository    5) usecase          6) model
+# 1. pick the target package  (marked "retrofit" / "no retrofit")
+# 2. pick what to generate:
+#    PRESENTATION    1) common module  2) listing module  3) detail module
+#    DATA & DOMAIN   4) repository     5) usecase        6) model
 ```
+
+The package menu comes first because it decides what is available: a
+repository is a retrofit client and only lands in a package that declares
+`retrofit`, `dio` and `core` as runtime dependencies. Pass one to skip the
+menu — `make run_module_generator ARGS="modules/data_source"`.
 
 Source: `tools/module_generator/`, templates in `tools/module_generator/lib/res/templates/`.
 
@@ -33,7 +40,7 @@ Source: `tools/module_generator/`, templates in `tools/module_generator/lib/res/
 | `common module` | Bloc + screen + route with no list/detail bias | Forms, single-action screens |
 | `listing module` | List bloc with `items`, `canLoadMore`, refresh+load-more events | Browse/search screens |
 | `detail module` | Detail bloc parameterised by `Args(initial, id)`, `Get<X>Event`, plus a coordinator | Item detail screens |
-| `repository` | Repo + impl under the package's data-source tree | Wrap a Retrofit client |
+| `repository` | A retrofit client with one worked endpoint, plus the model it returns | Reach an endpoint group; needs a package with `retrofit` (eg. `modules/data_source`) |
 | `usecase` | Usecase class in `apps/main/lib/domain/usecases/` | Wrap a repository |
 | `model` | Freezed model template under `core/` or app | DTO between API and UI |
 
@@ -129,8 +136,13 @@ Domain + data live alongside, not under `presentation/`:
 ```
 apps/main/lib/domain/entities/<entity>/<entity>.entity.dart
 apps/main/lib/domain/usecases/<feature>/<feature>_usecase.dart  (and *.impl.dart)
-apps/main/lib/data/data_source/remote/repository/<feature>/    (menu option 4)
+modules/data_source/lib/src/data/data_source/repository/<feature>/  (menu option 4)
+modules/data_source/lib/src/data/models/<feature>.dart            (same run)
 ```
+
+The repository run also asks which payload model to scaffold — Freezed by
+default, `0` for none — and types its endpoint against it. The suffix goes on
+the class, not the file: `<Feature>Model` in `<feature>.dart`.
 
 The generated usecase impl has **no repository dependency** — it returns an
 empty result behind a `TODO(template)`. That is deliberate: it compiles and

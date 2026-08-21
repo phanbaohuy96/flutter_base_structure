@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'console.dart';
 import 'file_helper.dart';
+import 'package_scanner.dart';
 
 /// Runs `dart format` over freshly generated files.
 ///
@@ -26,12 +28,16 @@ Future<void> formatGeneratedFiles(List<String> paths) async {
       ...existing,
     ]);
     if (result.exitCode != 0) {
-      print('[Warning] dart format exited ${result.exitCode}:');
-      print(result.stderr);
+      stdout.writeln(
+        Console.warning('dart format exited ${result.exitCode}:'),
+      );
+      stdout.writeln(result.stderr);
     }
   } on ProcessException catch (error) {
-    print('[Warning] could not run dart format: ${error.message}');
-    print('[Warning] run `make format` before committing.');
+    stdout.writeln(
+      Console.warning('could not run dart format: ${error.message}'),
+    );
+    stdout.writeln(Console.warning('run `make format` before committing.'));
   }
 }
 
@@ -57,13 +63,38 @@ void printNextSteps(List<String> emitted) {
   if (emitted.isEmpty) {
     return;
   }
-  print('\nGenerated ${emitted.length} file(s):');
+  stdout.writeln();
+  stdout.writeln(
+    Console.success(Console.bold('Generated ${emitted.length} file(s)')),
+  );
   for (final path in emitted) {
-    print('  $path');
+    stdout.writeln('  ${Console.dim('+')} $path');
   }
-  print('''
-Next steps:
-  1. make gen_main   # freezed + injectable + route provider registry
-  2. make check      # analyze + format_check + test
-''');
+  // The codegen target follows the package the files landed in: telling
+  // someone who just generated into `modules/data_source` to run `make
+  // gen_main` sends them to build_runner in the wrong package, where their new
+  // file is not an input at all.
+  final target = _codegenTarget();
+  // Sized from the longest command so the comments line up whichever package
+  // the run landed in.
+  final width = target.length > 10 ? target.length + 2 : 12;
+  stdout.writeln('\n${Console.bold('Next steps')}');
+  stdout.writeln(
+    '  ${Console.green('1.')} ${target.padRight(width)}'
+    '${Console.dim('# freezed + injectable + route provider registry')}',
+  );
+  stdout.writeln(
+    '  ${Console.green('2.')} ${'make check'.padRight(width)}'
+    '${Console.dim('# analyze + format_check + test')}\n',
+  );
+}
+
+/// The `make` target that runs build_runner for the current package.
+String _codegenTarget() {
+  final package = currentPackage();
+  return switch (package?.name) {
+    'core' => 'make gen_core',
+    'data_source' => 'make gen_data_source',
+    _ => 'make gen_main',
+  };
 }

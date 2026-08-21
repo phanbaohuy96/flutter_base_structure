@@ -1,10 +1,13 @@
 import 'package:analyzer/dart/analysis/utilities.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:module_generator/common/common_function.dart';
+import 'package:module_generator/common/generator_options.dart';
+import 'package:module_generator/generator/repository_generator.dart';
 import 'package:module_generator/res/templates/common_module/source.dart';
 import 'package:module_generator/res/templates/detail_module/source.dart';
 import 'package:module_generator/res/templates/entity/source.dart';
 import 'package:module_generator/res/templates/listing_module/source.dart';
+import 'package:module_generator/res/templates/repository/source.dart';
 import 'package:module_generator/res/templates/usecase/source.dart';
 
 /// Walks a template source map and yields every leaf template string keyed by
@@ -33,17 +36,41 @@ Map<String, String> _flatten(dynamic node, [String prefix = '']) {
   return result;
 }
 
-String _emit(String template, {String fileDir = _blocDir}) =>
-    template.replaceContent(
-      className: 'SampleFeature',
-      moduleName: 'sample_feature',
-      modelName: 'SampleModel',
-      modelPath: 'lib/domain/entities/sample_model/sample_model.entity.dart',
-      fileDir: fileDir,
-    );
+/// The payload model a generated repository is typed against.
+///
+/// Data models live beside the client, not in `domain/entities` — those are
+/// what the *module* templates are written against, which is why the two
+/// paths below differ.
+const _sampleModel = RepositoryModel(
+  className: 'SampleModel',
+  path: 'lib/src/data/models/sample_model.dart',
+  kind: ModelKind.freezed,
+);
+
+String _emit(
+  String template, {
+  String fileDir = _blocDir,
+  RepositoryModel? model = _sampleModel,
+}) => template.replaceContent(
+  className: 'SampleFeature',
+  moduleName: 'sample_feature',
+  modelName: model == null ? repositoryModelType(null) : 'SampleModel',
+  modelPath: 'lib/domain/entities/sample_model/sample_model.entity.dart',
+  fileDir: fileDir,
+  extra: repositoryModelTokens(targetDir: _repositoryDir, model: model),
+);
+
+/// Where `_sampleModel` lands relative to a repository in [_repositoryDir].
+const _sampleModelImport = '../../../models/sample_model.dart';
 
 const _blocDir = 'lib/presentation/modules/sample_feature/bloc';
 const _moduleDir = 'lib/presentation/modules/sample_feature';
+
+/// Collapses runs of whitespace so an assertion about a declaration is not a
+/// hostage to where the formatter chose to wrap it.
+String _collapsed(String source) => source.replaceAll(RegExp(r'\s+'), ' ');
+
+const _repositoryDir = 'lib/src/data/data_source/repository/sample_feature';
 
 void main() {
   final modules = {
@@ -51,8 +78,13 @@ void main() {
     'listing_module': listingModuleRes,
     'detail_module': detailModuleRes,
   };
+  final transports = {
+    'rest_repository': restRepositoryRes,
+    'graphql_repository': graphqlRepositoryRes,
+  };
   final allTemplates = {
     ...modules,
+    ...transports,
     'usecase': usecaseRes,
     'entity': entityRes,
   };
@@ -234,6 +266,206 @@ void main() {
       test('$moduleName never registers a handler on the base event', () {
         expect(emitted, isNot(contains('on<SampleFeatureEvent>')));
       });
+    });
+  });
+
+  group('repository templates emit real retrofit clients', () {
+    // The complaint the new templates answer: the old ones told you to go add
+    // an endpoint to `RestApiRepository` — a class in `core`, a package a
+    // feature cannot edit — and emitted a `Future.value()` stub in the
+    // meantime. A repository here is the retrofit client, the shape every real
+    // one in this repo already has.
+    transports.forEach((label, source) {
+      final repository = _emit(
+        source['repository']!,
+        fileDir: _repositoryDir,
+      );
+
+      test('$label declares a @RestApi client with a factory redirect', () {
+        expect(repository, contains('@RestApi()'));
+        // `_X` is what retrofit_generator writes into the part; without the
+        // redirect there is no way to construct the client at all. Matched on
+        // whitespace-collapsed source because the formatter is free to wrap a
+        // long redirect onto the next line.
+        expect(_collapsed(repository), contains('= _SampleFeature'));
+        expect(
+          repository,
+          contains("import 'package:retrofit/retrofit.dart';"),
+        );
+        expect(repository, contains("import 'package:dio/dio.dart';"));
+      });
+
+      test('$label parts in the retrofit output', () {
+        expect(
+          repository,
+          contains("part 'sample_feature_repository.g.dart';"),
+        );
+      });
+
+      // The old templates split every repository into an abstract contract
+      // and a `part` impl that did nothing but forward. Retrofit already
+      // generates the implementation, so that layer had nothing in it.
+      test('$label emits no hand-written impl', () {
+        expect(source.keys, isNot(contains('repository.impl')));
+        expect(repository, isNot(contains('RepositoryImpl')));
+        expect(repository, isNot(contains('with DataRepository')));
+      });
+
+      // `dart:core` re-exports `Future`, so importing `dart:async` for it is
+      // an `unnecessary_import` info — which fails `make check`.
+      test('$label does not import dart:async for Future', () {
+        expect(repository, isNot(contains("import 'dart:async';")));
+      });
+
+      // Every file the library imports or parts in has to be one the
+      // generator actually writes for this transport, or build_runner output.
+      test('$label references only files it emits', () {
+        final emitted = source.keys
+            .map((key) => 'sample_feature${repositoryFileSuffixes[key]!}')
+            .toSet();
+        final referenced = RegExp(
+          r"""^\s*(?:import|part)\s+'([^':]+)'\s*;""",
+          multiLine: true,
+        ).allMatches(repository).map((match) => match.group(1)!);
+        expect(referenced, isNotEmpty);
+        for (final target in referenced) {
+          if (target.endsWith('.g.dart')) {
+            continue;
+          }
+          // The payload model is written by the same run, just into the
+          // package's model folder rather than beside the client.
+          if (target == _sampleModelImport) {
+            continue;
+          }
+          expect(
+            emitted,
+            contains(target),
+            reason: '$label imports $target but never writes it',
+          );
+        }
+      });
+    });
+
+    // The template used to emit a five-verb CRUD set against paths no real
+    // API has, so the first thing anyone did was delete four methods. One
+    // worked endpoint teaches the same shape with nothing to clean up.
+    test('rest emits exactly one endpoint', () {
+      final repository = _emit(
+        restRepositoryRes['repository']!,
+        fileDir: _repositoryDir,
+      );
+      expect(
+        RegExp(r'@(GET|POST|PUT|DELETE|PATCH)\(').allMatches(repository),
+        hasLength(1),
+      );
+      // `@GET` with a path template is the case people get wrong, so it is
+      // the one worth demonstrating.
+      expect(repository, contains("@GET('/sample-feature/{id}')"));
+      expect(repository, contains("@Path('id')"));
+      // Paths are relative to the Dio base URL; a host here would pin every
+      // environment to whichever one the template was written against.
+      expect(repository, isNot(contains('http')));
+      // The envelope every endpoint in this template answers with.
+      expect(repository, contains('ApiResponse<'));
+      expect(repository, contains("import 'package:core/core.dart';"));
+    });
+
+    // A repository with nothing to return is not much of a repository, so the
+    // generator scaffolds the model in the same run and types the endpoint
+    // against it.
+    test('rest returns the scaffolded model', () {
+      final repository = _emit(
+        restRepositoryRes['repository']!,
+        fileDir: _repositoryDir,
+      );
+      expect(repository, contains('Future<ApiResponse<SampleModel>>'));
+      expect(repository, contains("import '$_sampleModelImport';"));
+    });
+
+    test('graphql decodes the scaffolded model', () {
+      final repository = _emit(
+        graphqlRepositoryRes['repository']!,
+        fileDir: _repositoryDir,
+      );
+      expect(repository, contains('Future<SampleModel?> getDetail'));
+      expect(repository, contains('SampleModel.fromJson(node)'));
+      expect(repository, contains("import '$_sampleModelImport';"));
+    });
+
+    // `--model none` still has to produce something that compiles: an empty
+    // import line would not parse, and `Map<String, dynamic>.fromJson` does
+    // not exist.
+    test('both transports fall back to a map when no model is scaffolded', () {
+      for (final source in transports.values) {
+        final repository = _emit(
+          source['repository']!,
+          fileDir: _repositoryDir,
+          model: null,
+        );
+        expect(repository, contains('Map<String, dynamic>'));
+        expect(repository, isNot(contains('SampleModel')));
+        expect(repository, isNot(contains(_sampleModelImport)));
+        expect(repository, isNot(contains('.fromJson(node)')));
+        expect(parseString(content: repository).errors, isEmpty);
+      }
+    });
+
+    test('rest emits no fragment file', () {
+      expect(restRepositoryRes.keys, isNot(contains('fragment')));
+    });
+
+    test('graphql routes every operation through one endpoint', () {
+      final repository = _emit(
+        graphqlRepositoryRes['repository']!,
+        fileDir: _repositoryDir,
+      );
+      // GraphQL routes by document, not by path, so there is exactly one
+      // annotated method and the repository above it does the composing.
+      expect(
+        RegExp(r'@(GET|POST|PUT|DELETE)\(').allMatches(repository),
+        hasLength(1),
+      );
+      expect(repository, contains("@POST('')"));
+      expect(repository, contains('@injectable'));
+      expect(repository, contains('class SampleFeatureRepository'));
+      expect(repository, contains('SampleFeatureGraphqlApi'));
+    });
+
+    test('graphql keeps the fragment beside the operations that spread it', () {
+      final fragment = _emit(
+        graphqlRepositoryRes['fragment']!,
+        fileDir: _repositoryDir,
+      );
+      // A document only resolves `...XFields` when the fragment is appended,
+      // which is the whole reason `request` exists.
+      expect(fragment, contains('...SampleFeatureFields'));
+      expect(fragment, contains(r"'$operation\n$fields'"));
+      // Raw strings keep GraphQL's own `$variable` syntax literal; a plain
+      // Dart string would interpolate it away at compile time.
+      expect(fragment, contains("static const String query = r'''"));
+      expect(fragment, contains(r'query GetSampleFeature($id: ID!)'));
+      // One document, to match the one method on the repository.
+      expect(fragment, isNot(contains('mutation ')));
+    });
+
+    test('graphql checks errors before reading data', () {
+      final repository = _emit(
+        graphqlRepositoryRes['repository']!,
+        fileDir: _repositoryDir,
+      );
+      expect(
+        repository.indexOf("response['errors']"),
+        lessThan(repository.indexOf("response['data']")),
+        reason: 'a 200 with an errors array would read as a success',
+      );
+    });
+
+    test('every template key has a file-name suffix', () {
+      for (final source in transports.values) {
+        for (final key in source.keys) {
+          expect(repositoryFileSuffixes, contains(key));
+        }
+      }
     });
   });
 

@@ -304,10 +304,12 @@ format_check:
 	fi
 
 # Run module generator
+#
+# The target package is chosen inside the generator, which scans the workspace
+# and shows what each package can host. Pass one to skip the menu:
+#   make run_module_generator ARGS="modules/data_source"
 run_module_generator:
-	@echo "Which module? ex: apps/main"
-	@read name; \
-	sh run_module_generator.sh $$name
+	sh run_module_generator.sh $(ARGS)
 
 # End-to-end smoke test for the module generator.
 #

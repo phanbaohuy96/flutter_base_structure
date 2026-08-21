@@ -1,23 +1,30 @@
 #!/bin/bash
 #
-# Runs the module generator inside a package directory.
+# Launches the module generator.
 #
-# Usage: sh run_module_generator.sh apps/main [generator flags...]
+# Usage: sh run_module_generator.sh [package-dir] [generator flags...]
+#   sh run_module_generator.sh                      # pick the package from a menu
+#   sh run_module_generator.sh modules/data_source  # skip the menu
 set -e
 
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-if [ $# -lt 1 ]; then
-  echo "Usage: sh run_module_generator.sh <package-dir>   # eg. apps/main"
-  exit 64
+# The package is chosen inside the generator now: it scans the workspace and
+# offers a menu that also says which packages can host a retrofit client. This
+# script only needs a package to launch from — any one that depends on
+# module_generator will do, and the generator moves itself from there.
+TARGET_DIR="$ROOT_DIR/apps/main"
+# A leading non-flag argument names the package, which then skips the menu.
+if [ $# -ge 1 ] && [ "${1#-}" = "$1" ]; then
+  if [ ! -d "$ROOT_DIR/$1" ]; then
+    echo "No such package directory: $1"
+    exit 66
+  fi
+  PACKAGE="$1"
+  TARGET_DIR="$ROOT_DIR/$1"
+  shift
+  set -- --package "$PACKAGE" "$@"
 fi
-
-TARGET_DIR="$ROOT_DIR/$1"
-if [ ! -d "$TARGET_DIR" ]; then
-  echo "No such package directory: $1"
-  exit 66
-fi
-shift
 
 # Mirror the makefile's FVM-aware DART wrapper.
 DART_CMD="dart"

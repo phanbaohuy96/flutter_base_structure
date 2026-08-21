@@ -121,29 +121,37 @@ void main() {
 
 Note: this template's blocs use `abstract class` state hierarchies, not freezed unions, so assert with `isA<FeatureInitial>()` plus `having(...)` rather than equality on a sealed union.
 
-## Repository tests
+## Use case tests
+
+A repository in this template is a retrofit client — retrofit generated its
+implementation, so there is no hand-written logic in it to test. The layer
+worth testing is the use case above it, with the repository mocked:
 
 ```dart
-class _MockApi extends Mock implements UserApiClient {}
+class _MockRepository extends Mock implements UserRepository {}
 
 void main() {
-  late _MockApi api;
-  late UserRepositoryImpl repo;
+  late _MockRepository repository;
+  late UserUsecaseImpl usecase;
 
   setUp(() {
-    api = _MockApi();
-    repo = UserRepositoryImpl(api);
+    repository = _MockRepository();
+    usecase = UserUsecaseImpl(repository);
   });
 
-  test('getUser delegates to api client', () async {
-    final user = UserModel(id: '1', name: 'A');
-    when(() => api.getUser('1')).thenAnswer((_) async => user);
+  test('fetchProfile unwraps the response envelope', () async {
+    when(() => repository.getDetail(id: '1')).thenAnswer(
+      (_) async => ApiResponse(code: 200, data: {'id': '1', 'name': 'A'}),
+    );
 
-    expect(await repo.getUser('1'), user);
-    verify(() => api.getUser('1')).called(1);
+    expect((await usecase.fetchProfile('1'))?.name, 'A');
+    verify(() => repository.getDetail(id: '1')).called(1);
   });
 }
 ```
+
+Mocking the abstract client works because `@RestApi()` declares an abstract
+class — `implements UserRepository` satisfies it without touching Dio.
 
 ## Widget tests
 

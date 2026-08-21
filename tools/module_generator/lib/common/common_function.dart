@@ -69,20 +69,29 @@ extension StringExtension on String {
     return '${this[0].toUpperCase()}${substring(1)}';
   }
 
+  /// Substitutes every `%%TOKEN%%` this template can carry.
+  ///
+  /// [extra] is for values a caller computes itself — the repository
+  /// generator's model import line and decode expression, whose shape depends
+  /// on whether a model was scaffolded at all. It is applied last, so a caller
+  /// can override a derived anchor when it knows better.
   String replaceContent({
     required String className,
     required String moduleName,
     String? fileDir,
     String? modelName,
     String? modelPath,
+    Map<String, String> extra = const {},
   }) {
     final replacements = <String, String>{
       classNameKey: className,
+      camelNameKey: camelCase(className),
       moduleNameKey: moduleName,
       modelNameKey: modelName ?? '',
       routeNameKey: moduleName.paramCase,
       if (fileDir != null)
         ...resolveImportAnchors(fileDir, modelPath: modelPath),
+      ...extra,
     };
 
     // Create pattern with word boundaries for exact matches

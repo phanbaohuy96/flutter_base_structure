@@ -47,14 +47,18 @@ class InputHelper {
   static Future<int> enterChoice(
     String message, {
     required Set<int> allowed,
+    int? defaultValue,
   }) async {
     while (true) {
       final raw = await enterText(message).then((value) => value?.trim() ?? '');
+      if (raw.isEmpty && defaultValue != null) {
+        return defaultValue;
+      }
       final selection = int.tryParse(raw);
       if (selection != null && allowed.contains(selection)) {
         return selection;
       }
-      print('Invalid option: "$raw"');
+      stdout.writeln('Invalid option: "$raw"');
     }
   }
 

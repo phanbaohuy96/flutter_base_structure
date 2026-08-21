@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'common_function.dart';
-import 'file_helper.dart';
 import 'input_helper.dart';
 
 /// What the generator was asked to produce.
@@ -24,6 +25,94 @@ enum GeneratorType {
   }
 }
 
+/// How a generated repository reaches the network.
+///
+/// Both transports emit a retrofit client — that is what a repository is in
+/// this template. The choice decides how much of the work fits in annotations:
+/// REST expresses an endpoint per method, while GraphQL routes every operation
+/// through one endpoint and therefore needs documents and an error check
+/// beside the client.
+enum RepositoryTransport {
+  /// A `@RestApi()` client whose annotated methods are the endpoints.
+  rest,
+
+  /// A one-method `@RestApi()` client plus the documents it posts, wrapped by
+  /// a repository that composes operations and reads the `errors` array.
+  graphql;
+
+  static RepositoryTransport? parse(String? value) {
+    if (value == null) {
+      return null;
+    }
+    for (final transport in RepositoryTransport.values) {
+      if (transport.name == value) {
+        return transport;
+      }
+    }
+    return null;
+  }
+
+  /// Human-readable name used by the interactive picker and the run summary.
+  String get label => switch (this) {
+    RepositoryTransport.rest => 'REST API (retrofit)',
+    RepositoryTransport.graphql => 'GraphQL',
+  };
+
+  /// One-line description shown next to [label] in the picker.
+  String get description => switch (this) {
+    RepositoryTransport.rest => 'Annotated client, one endpoint per method',
+    RepositoryTransport.graphql =>
+      'Retrofit transport + documents, `errors`-aware',
+  };
+}
+
+/// Which model template a repository run scaffolds for its payload type.
+///
+/// Folded into one choice rather than a yes/no followed by a style menu: the
+/// answer to "do you want a model" is almost always yes, so the useful
+/// question is which kind — with [ModelKind.none] as the opt-out that leaves
+/// the client typed against `Map<String, dynamic>`.
+enum ModelKind {
+  freezed,
+  jsonSerializable,
+  none;
+
+  static ModelKind? parse(String? value) {
+    if (value == null) {
+      return null;
+    }
+    for (final kind in ModelKind.values) {
+      if (kind.flagName == value) {
+        return kind;
+      }
+    }
+    return null;
+  }
+
+  /// Value accepted on the command line (`--model json_serializable`).
+  String get flagName => switch (this) {
+    ModelKind.freezed => 'freezed',
+    ModelKind.jsonSerializable => 'json_serializable',
+    ModelKind.none => 'none',
+  };
+
+  /// Human-readable name used by the interactive picker.
+  String get label => switch (this) {
+    ModelKind.freezed => 'Freezed',
+    ModelKind.jsonSerializable => 'Json Serializable',
+    ModelKind.none => 'none',
+  };
+
+  /// One-line description shown next to [label] in the picker.
+  String get description => switch (this) {
+    ModelKind.freezed => 'Immutable class with copyWith and fromJson/toJson',
+    ModelKind.jsonSerializable => 'Plain class with `@JsonKey` fields',
+    ModelKind.none => 'Type the endpoint against `Map<String, dynamic>`',
+  };
+
+  bool get writesFile => this != ModelKind.none;
+}
+
 /// Flags collected from the command line.
 ///
 /// Every field is optional: with no flags the generator falls back to the
@@ -33,18 +122,46 @@ enum GeneratorType {
 class GeneratorOptions {
   const GeneratorOptions({
     this.type,
+    this.package,
     this.name,
     this.dir,
     this.entity,
+    this.transport,
+    this.modelKind,
+    this.modelName,
+    this.modelDir,
     this.scaffoldEntity = true,
     this.force = false,
     this.nonInteractive = false,
   });
 
   final GeneratorType? type;
+
+  /// Workspace-relative path (or package name) to generate into.
+  ///
+  /// Resolved before any prompt runs, because the target package decides both
+  /// where files land and what may be generated at all — a repository is a
+  /// retrofit client, and not every package can host one.
+  final String? package;
   final String? name;
   final String? dir;
   final String? entity;
+
+  /// Transport for `--type repository`; ignored by every other type.
+  final RepositoryTransport? transport;
+
+  /// Model template scaffolded alongside a generated repository.
+  ///
+  /// Null means "ask", which is why it is not defaulted here: a
+  /// non-interactive run wants [ModelKind.freezed], but an interactive one
+  /// wants the picker, and a default would rob it of the difference.
+  final ModelKind? modelKind;
+
+  /// Model class name; derived from the repository name when omitted.
+  final String? modelName;
+
+  /// Model output directory; derived from the package layout when omitted.
+  final String? modelDir;
   final bool scaffoldEntity;
   final bool force;
   final bool nonInteractive;
@@ -243,23 +360,34 @@ Future<String> _require(
   return prompt();
 }
 
-/// Refuses to overwrite an existing module unless the caller opted in.
+/// Refuses to overwrite files the run would replace, unless the caller opted
+/// in with `--force`.
 ///
-/// Module files are written with `overrideFile: true`, so without this guard a
-/// mistyped name silently replaced a real feature's bloc, screen and route.
-Future<void> assertModuleTargetWritable(
-  ModuleRequest request, {
-  required String moduleDirName,
+/// Checks the files themselves rather than the directory that holds them. An
+/// existing directory is not by itself a conflict: adding a `product_detail`
+/// module beside a hand-written `product_detail/README.md`, or re-running the
+/// generator after deleting one file, writes nothing that is already there.
+/// Refusing on the directory turned those into a dead end whose only way
+/// forward — `--force` — is the one option that *does* destroy work.
+Future<void> assertTargetWritable(
+  List<String> paths, {
+  required bool force,
 }) async {
-  if (request.force) {
+  if (force) {
     return;
   }
-  final target = '${request.dir}/$moduleDirName';
-  if (!await FilesHelper.existsDir(target)) {
+  final conflicts = <String>[];
+  for (final path in paths) {
+    if (File(path).existsSync()) {
+      conflicts.add(path);
+    }
+  }
+  if (conflicts.isEmpty) {
     return;
   }
   throw GeneratorInputException(
-    '$target already exists. Re-run with --force to overwrite it, or pick a '
-    'different module name.',
+    'Refusing to overwrite ${conflicts.length} existing file(s):\n'
+    '${conflicts.map((path) => '  - $path').join('\n')}\n'
+    '  Re-run with --force to replace them, or pick a different name.',
   );
 }

@@ -1,6 +1,118 @@
 import '../common/common_function.dart';
 import '../common/file_helper.dart';
 
+/// One file a module template emits.
+class _ModuleFile {
+  const _ModuleFile({
+    required this.dir,
+    required this.fileName,
+    required this.template,
+    this.postProcess,
+  });
+
+  final String dir;
+  final String fileName;
+  final String template;
+  final String Function(String content)? postProcess;
+
+  String get path => '$dir/$fileName';
+}
+
+/// The files [source] emits for a module, in emission order.
+///
+/// Derived once and read by both the writer and the overwrite guard, so the
+/// guard can never check a different set of paths than the run touches.
+List<_ModuleFile> _moduleFiles({
+  required Map<String, dynamic> source,
+  required String inputModuleName,
+  required String inputModuleDir,
+}) {
+  final moduleName = formatModuleName(inputModuleName);
+  final moduleDir = '${normalizeDir(inputModuleDir)}/$moduleName';
+  final blocDir = '$moduleDir/bloc';
+  final viewsDir = '$moduleDir/views';
+
+  return [
+    _ModuleFile(
+      dir: blocDir,
+      fileName: '${moduleName}_bloc.dart',
+      template: source['bloc']['bloc'] as String,
+    ),
+    _ModuleFile(
+      dir: blocDir,
+      fileName: '${moduleName}_state.dart',
+      template: source['bloc']['state'] as String,
+    ),
+    _ModuleFile(
+      dir: blocDir,
+      fileName: '${moduleName}_event.dart',
+      template: source['bloc']['event'] as String,
+    ),
+    _ModuleFile(
+      dir: viewsDir,
+      fileName: '${moduleName}_screen.dart',
+      template: source['views']['screen'] as String,
+    ),
+    _ModuleFile(
+      dir: viewsDir,
+      fileName: '$moduleName.action.dart',
+      template: source['views']['action'] as String,
+    ),
+    // Compound or arg-translating modules only — single-screen generators omit
+    // the 'coordinator' key so no shallow `pushBehavior.push` wrapper file is
+    // emitted; callers navigate via the route name directly.
+    if (source.containsKey('coordinator'))
+      _ModuleFile(
+        dir: moduleDir,
+        fileName: '${moduleName}_coordinator.dart',
+        template: source['coordinator'] as String,
+      ),
+    _ModuleFile(
+      dir: moduleDir,
+      fileName: '${moduleName}_route.dart',
+      template: source['route'] as String,
+    ),
+    _ModuleFile(
+      dir: moduleDir,
+      fileName: '$moduleName.dart',
+      template: source['module'] as String,
+      postProcess: sortDirectives,
+    ),
+  ];
+}
+
+/// Package-relative paths a module run would write.
+List<String> moduleFilePaths({
+  required Map<String, dynamic> source,
+  required String inputModuleName,
+  required String inputModuleDir,
+}) {
+  if (inputModuleName.isEmpty) {
+    return const [];
+  }
+  return _moduleFiles(
+    source: source,
+    inputModuleName: inputModuleName,
+    inputModuleDir: inputModuleDir,
+  ).map((file) => file.path).toList();
+}
+
+/// Package-relative paths a usecase run would write.
+List<String> usecaseFilePaths({
+  required String inputModuleName,
+  required String inputModuleDir,
+}) {
+  if (inputModuleName.isEmpty) {
+    return const [];
+  }
+  final moduleName = formatModuleName(inputModuleName);
+  final directory = '${normalizeDir(inputModuleDir)}/$moduleName';
+  return [
+    '$directory/${moduleName}_usecase.dart',
+    '$directory/${moduleName}_usecase.impl.dart',
+  ];
+}
+
 /// Writes one presentation module and returns every path it emitted.
 ///
 /// [modelName] is the domain entity the module is built around (e.g. `Product`)
@@ -22,90 +134,29 @@ Future<List<String>> generateModuleWithTemplateSource({
 
   final className = formatClassName(inputModuleName);
   final moduleName = formatModuleName(inputModuleName);
-  final moduleDir = '${normalizeDir(inputModuleDir)}/$moduleName';
-  final blocDir = '$moduleDir/bloc';
-  final viewsDir = '$moduleDir/views';
+  final files = _moduleFiles(
+    source: source,
+    inputModuleName: inputModuleName,
+    inputModuleDir: inputModuleDir,
+  );
 
   final emitted = <String>[];
-
-  Future<void> write({
-    required String dir,
-    required String fileName,
-    required String template,
-    String Function(String content)? postProcess,
-  }) async {
-    final pathFile = '$dir/$fileName';
-    final content = template.replaceContent(
+  for (final file in files) {
+    await FilesHelper.createFolder('${file.dir}/');
+    final content = file.template.replaceContent(
       className: className,
       moduleName: moduleName,
       modelName: modelName,
       modelPath: modelPath,
-      fileDir: dir,
+      fileDir: file.dir,
     );
     await FilesHelper.writeFile(
-      pathFile: pathFile,
-      content: postProcess?.call(content) ?? content,
+      pathFile: file.path,
+      content: file.postProcess?.call(content) ?? content,
       overrideFile: overrideFile,
     );
-    emitted.add(pathFile);
+    emitted.add(file.path);
   }
-
-  // #BLOC
-  await FilesHelper.createFolder('$blocDir/');
-  await write(
-    dir: blocDir,
-    fileName: '${moduleName}_bloc.dart',
-    template: source['bloc']['bloc'] as String,
-  );
-  await write(
-    dir: blocDir,
-    fileName: '${moduleName}_state.dart',
-    template: source['bloc']['state'] as String,
-  );
-  await write(
-    dir: blocDir,
-    fileName: '${moduleName}_event.dart',
-    template: source['bloc']['event'] as String,
-  );
-
-  // #VIEWS
-  await FilesHelper.createFolder('$viewsDir/');
-  await write(
-    dir: viewsDir,
-    fileName: '${moduleName}_screen.dart',
-    template: source['views']['screen'] as String,
-  );
-  await write(
-    dir: viewsDir,
-    fileName: '$moduleName.action.dart',
-    template: source['views']['action'] as String,
-  );
-
-  // #COORDINATOR (compound or arg-translating modules only — single-screen
-  // generators omit the 'coordinator' key so no shallow `pushBehavior.push`
-  // wrapper file is emitted; callers navigate via the route name directly.)
-  if (source.containsKey('coordinator')) {
-    await write(
-      dir: moduleDir,
-      fileName: '${moduleName}_coordinator.dart',
-      template: source['coordinator'] as String,
-    );
-  }
-
-  // #ROUTE
-  await write(
-    dir: moduleDir,
-    fileName: '${moduleName}_route.dart',
-    template: source['route'] as String,
-  );
-
-  // #EXPORT
-  await write(
-    dir: moduleDir,
-    fileName: '$moduleName.dart',
-    template: source['module'] as String,
-    postProcess: sortDirectives,
-  );
 
   return emitted;
 }
@@ -127,15 +178,17 @@ String sortDirectives(String content) {
 
 /// Writes the usecase pair for a module and returns every path it emitted.
 ///
-/// Uses `overrideFile: false` throughout: a usecase is where hand-written
-/// business logic accumulates, so re-running the generator must never clobber
-/// it.
+/// Defaults to `overrideFile: false`: a usecase is where hand-written business
+/// logic accumulates, so a module run that happens to reuse an existing
+/// usecase name leaves it alone. Only `--type usecase --force`, which asked
+/// for exactly that file, passes `true`.
 Future<List<String>> generateUsecaseWithTemplateSource({
   required Map<String, dynamic> source,
   required String inputModuleName,
   required String inputModuleDir,
   required String modelName,
   required String modelPath,
+  bool overrideFile = false,
 }) async {
   if (inputModuleName.isEmpty) {
     return const [];
@@ -159,7 +212,7 @@ Future<List<String>> generateUsecaseWithTemplateSource({
         modelPath: modelPath,
         fileDir: directory,
       ),
-      overrideFile: false,
+      overrideFile: overrideFile,
     );
     emitted.add(pathFile);
   }
