@@ -145,9 +145,14 @@ class _ScreenFormState extends State<ScreenForm> {
 
   /// Gets the screen form theme with widget overrides applied
   ScreenFormTheme get screenTheme => context.screenFormTheme.let((it) {
+    // A custom [onBack] handles navigation itself, so it counts as being able
+    // to go back even when the navigator has nothing to pop.
+    final canGoBack = Navigator.of(context).canPop() || widget.onBack != null;
+    final showBackButton =
+        (widget.showBackButton ?? it.showBackButton) && canGoBack;
     return it.copyWith(
       showHeaderImage: widget.showHeaderImage,
-      showBackButton: widget.showBackButton,
+      showBackButton: showBackButton,
       hasBottomBorderRadius: widget.hasBottomBorderRadius,
       centerTitle: widget.centerTitle,
       showAppbarDivider: widget.showAppbarDivider,
@@ -158,8 +163,7 @@ class _ScreenFormState extends State<ScreenForm> {
       titleStyle:
           widget.titleStyle ?? it.titleStyle ?? _theme.textTheme.titleLarge,
       titleSpacing:
-          widget.titleSpacing ??
-          (widget.showBackButton != true ? 16.0 : it.titleSpacing),
+          widget.titleSpacing ?? (!showBackButton ? 16.0 : it.titleSpacing),
       desStyle: widget.desStyle ?? it.desStyle ?? _theme.textTheme.titleSmall,
     );
   });
@@ -226,8 +230,7 @@ class _ScreenFormState extends State<ScreenForm> {
         screenTheme.appbarForegroundColor ??
         context.themeColor.appbarForegroundColor;
 
-    final showBackButton =
-        screenTheme.showBackButton == true && Navigator.of(context).canPop();
+    final showBackButton = screenTheme.showBackButton;
 
     return Container(
       decoration: BoxDecoration(
