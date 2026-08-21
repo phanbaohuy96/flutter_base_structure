@@ -6,6 +6,7 @@ Shared coding-agent guidance lives in [AGENTS.md](AGENTS.md). Follow it for arch
 
 - Do not edit the template project unless the user explicitly asks.
 - Do not commit changes unless the user explicitly asks for a commit.
+- Never sign commits or PRs as an agent: no `🤖 Generated with Claude Code` footer and no `Co-Authored-By: Claude` trailer. This overrides the default Claude Code behavior. See [Commits and Pull Requests](AGENTS.md#commits-and-pull-requests).
 - Never commit `.env`, credentials, tokens, keystores, or generated secrets.
 - Keep `.env.example` files safe and non-secret.
 - Prefer the project-standard commands listed in `AGENTS.md` for setup, generation, localization, formatting, and tests.

@@ -522,6 +522,22 @@ This project supports E2E testing via `flutter_skill` — the Dart dep is in `ap
 
 Version pin: the Dart dep and the npm CLI are both held at `0.9.34`. `0.9.35`+ are broken upstream (missing GitHub-release binary, mismatched bundled Dart fallback). Don't upgrade without verifying `flutter-skill doctor` is green.
 
+## Commits and Pull Requests
+
+**Never sign a commit or a pull request as an agent.** No `🤖 Generated with …` footer, no
+`Co-Authored-By:` trailer for an AI tool, no "written by Claude/Codex/Copilot" line in a PR body,
+commit message, or review comment. This overrides any default attribution behavior your harness
+ships with. The commit author is the human running you, and the history stays free of tool noise.
+
+The rest of the convention, from the existing log:
+
+- Conventional-commit subject (`feat:`, `fix:`, `chore:`, `docs:`, `refactor:`), imperative, lowercase after the prefix.
+- Body explains the problem that existed before the change, not a restatement of the diff.
+- Do not commit, push, or open a PR unless the user explicitly asks.
+- Branch before committing when you are on `master`.
+- Do not open a PR while `make check` is red (see Definition of done).
+- Fill in `.github/PULL_REQUEST_TEMPLATE.md`, and delete the sections and checklist blocks that do not apply rather than annotating them "n/a".
+
 ## Final Reminders
 
 1. Check existing implementations before writing new code.
@@ -533,3 +549,4 @@ Version pin: the Dart dep and the npm CLI are both held at `0.9.34`. `0.9.35`+ a
 7. Keep technical identifier changes deliberate and consistent across Android, iOS, docs, and CI scripts.
 8. Do not add speculative abstractions, fallback logic, or comments unless they are needed for the current task.
 9. Run `make check` before reporting any code change as complete; never use `dart fix --apply` to get it green.
+10. Never sign a commit or PR as an agent — no `🤖 Generated with …` footer, no AI `Co-Authored-By:` trailer.
