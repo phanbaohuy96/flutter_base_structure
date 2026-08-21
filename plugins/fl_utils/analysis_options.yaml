@@ -15,6 +15,12 @@ analyzer:
     - lib/generated_plugin_registrant.dart
     - lib/di/di.config.dart
     - "**.g.dart"
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 formatter:
   trailing_commas: preserve

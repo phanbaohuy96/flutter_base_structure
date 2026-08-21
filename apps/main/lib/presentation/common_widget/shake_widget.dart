@@ -48,9 +48,9 @@ class ShakeWidgetState extends State<ShakeWidget>
   Future vibrate() async {
     try {
       if ((await Vibration.hasAmplitudeControl()) == true) {
-        return Vibration.vibrate(amplitude: 128);
+        return await Vibration.vibrate(amplitude: 128);
       } else if ((await Vibration.hasVibrator()) == true) {
-        return Vibration.vibrate(amplitude: 128);
+        return await Vibration.vibrate(amplitude: 128);
       }
     } catch (_) {}
   }

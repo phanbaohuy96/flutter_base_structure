@@ -13,6 +13,12 @@ analyzer:
   exclude:
     - generated_plugin_registrant.dart
     - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
   language:
     strict-raw-types: false
   errors:

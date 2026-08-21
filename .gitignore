@@ -57,6 +57,7 @@ app.*.symbols
 # iOS
 **/ios/Runner/GeneratedPluginRegistrant.h
 **/ios/Runner/GeneratedPluginRegistrant.m
+**/ios/Flutter/ephemeral/
 **/UserInterfaceState.xcuserstate
 **/xcschememanagement.plist
 **/Generated.xcconfig
