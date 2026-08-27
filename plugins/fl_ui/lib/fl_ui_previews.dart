@@ -8,12 +8,24 @@ final ThemeData _materialLightPreviewTheme = _buildPreviewTheme(
   Brightness.light,
 );
 final ThemeData _materialDarkPreviewTheme = _buildPreviewTheme(Brightness.dark);
-final PreviewThemeData _previewTheme = PreviewThemeData(
-  materialLight: _materialLightPreviewTheme,
-  materialDark: _materialDarkPreviewTheme,
-);
 
-PreviewThemeData flUiPreviewTheme() => _previewTheme;
+final class FlUiPreviewThemeData extends PreviewThemeData {
+  const FlUiPreviewThemeData();
+
+  @override
+  Widget apply(BuildContext context, Widget child) {
+    final brightness =
+        MediaQuery.maybePlatformBrightnessOf(context) ?? Brightness.light;
+    return Theme(
+      data: brightness == Brightness.dark
+          ? _materialDarkPreviewTheme
+          : _materialLightPreviewTheme,
+      child: child,
+    );
+  }
+}
+
+PreviewThemeData flUiPreviewTheme() => const FlUiPreviewThemeData();
 
 Widget flUiPreviewWrapper(Widget child) {
   return Material(

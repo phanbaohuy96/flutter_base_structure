@@ -15,6 +15,12 @@ analyzer:
     - lib/src/di/data_source_micro.module.dart
     - "**.g.dart"
     - "**.freezed.dart"
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**
+    - macos/**
+    - linux/**
 
 formatter:
   trailing_commas: preserve

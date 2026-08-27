@@ -82,7 +82,7 @@ class PickFileHelper {
               );
 
         stopwatch.stop();
-        return Future.wait([...result.map(FilePicked.fromXFile)]);
+        return await Future.wait([...result.map(FilePicked.fromXFile)]);
       } catch (e) {
         stopwatch.stop();
         // Only fallback when the error fires almost instantly, which
@@ -93,10 +93,11 @@ class PickFileHelper {
 
         // Fallback: pickMultipleMedia / pickMedia require iOS 14+.
         // Use file_picker for broad compatibility.
-        return pickFiles(
+        final files = await pickFiles(
           allowMultiple: allowMultiple,
           type: FileType.media,
         );
+        return files;
       }
     }
 
@@ -118,7 +119,7 @@ class PickFileHelper {
           );
 
           stopwatch.stop();
-          return Future.wait([...result.map(FilePicked.fromXFile)]);
+          return await Future.wait([...result.map(FilePicked.fromXFile)]);
         } catch (e) {
           stopwatch.stop();
           // Only fallback when the error fires almost instantly, which
@@ -157,7 +158,7 @@ class PickFileHelper {
           );
 
           stopwatch.stop();
-          return Future.wait([...result.map(FilePicked.fromXFile)]);
+          return await Future.wait([...result.map(FilePicked.fromXFile)]);
         } catch (e) {
           stopwatch.stop();
           // Only fallback when the error fires almost instantly, which
