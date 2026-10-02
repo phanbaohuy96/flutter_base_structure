@@ -11,8 +11,6 @@ This repository is an opinionated Flutter project template for building multi-fl
 **Secondary locale**: Vietnamese (`vi`)  
 **Base package ID**: `com.pbh.myflutterbase`
 
-**Stack**: Flutter 3.41.9, Dart 3.11.5, Kotlin 2.1.0, AGP 8.9.1, Gradle 8.12, Java 17.
-
 ## Architecture
 
 The app follows clean architecture:
@@ -38,25 +36,6 @@ Dependency flow:
 ```text
 apps/main -> modules/data_source -> core -> plugins
 apps/main -> core
-```
-
-## Project Structure
-
-```text
-apps/main/           # Main Flutter app entry point and flavors
-core/                # Shared package: utilities, services, base widgets, app locale/theme helpers
-modules/
-  data_source/       # Retrofit, JSON, API-model, and repository plumbing
-plugins/
-  fl_ui/             # Reusable UI widgets
-  fl_theme/          # ThemeColor, ScreenTheme, app theme extensions
-  fl_media/          # Media picking/viewing helpers and localization
-  fl_navigation/     # Navigation utilities
-  fl_utils/          # Extensions, date/format helpers
-scripts + *.sh       # Build, clean, deploy, profile, identifier, localization helpers
-tools/
-  module_generator/  # Code generators for modules, assets, identifiers, l10n, exports
-.agents/             # Skill bundle for AI coding agents
 ```
 
 ## Entry Points and Flavors
@@ -87,14 +66,12 @@ These generic agent rules come before implementation details. For the full check
 2. **Simplicity first**: write the minimum code that solves the current request. Reuse existing repo patterns, widgets, helpers, and skills before adding new abstractions.
 3. **Surgical changes**: every changed line should trace to the request or required generated output. Do not refactor adjacent code, reformat unrelated files, or delete unrelated dead code unless asked.
 4. **Goal-driven execution**: for multi-step work, define success criteria before coding, then verify with concrete checks such as `rg`, generation commands, analyzer, tests, or UI smoke tests.
-5. **Use the model only for judgment calls**: use the model for classification, drafting, summarization, and extraction. Do not use it for routing, retries, or deterministic transforms. If code can answer, code answers.
-6. **Token budgets are not advisory**: per-task budget is 4,000 tokens and per-session budget is 30,000 tokens. If approaching budget, summarize and start fresh. Surface the breach; do not silently overrun.
-7. **Surface conflicts, don't average them**: if two patterns contradict, pick one based on which is more recent or more tested. Explain why and flag the other for cleanup. Do not blend conflicting patterns.
-8. **Read before you write**: before adding code, read exports, immediate callers, and shared utilities. "Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
-9. **Tests verify intent, not just behavior**: tests must encode why behavior matters, not only what it does. A test that cannot fail when business logic changes is wrong.
-10. **Checkpoint after every significant step**: summarize what was done, what is verified, and what is left. Do not continue from a state you cannot describe back. If you lose track, stop and restate.
-11. **Match the codebase's conventions, even if you disagree**: conformance is more important than taste inside the codebase. If you genuinely think a convention is harmful, surface it instead of forking silently.
-12. **Fail loud**: "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
+5. **Surface conflicts, don't average them**: if two patterns contradict, pick one based on which is more recent or more tested. Explain why and flag the other for cleanup. Do not blend conflicting patterns.
+6. **Read before you write**: before adding code, read exports, immediate callers, and shared utilities. "Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
+7. **Tests verify intent, not just behavior**: tests must encode why behavior matters, not only what it does. A test that cannot fail when business logic changes is wrong.
+8. **Checkpoint after every significant step**: summarize what was done, what is verified, and what is left. Do not continue from a state you cannot describe back. If you lose track, stop and restate.
+9. **Match the codebase's conventions, even if you disagree**: conformance is more important than taste inside the codebase. If you genuinely think a convention is harmful, surface it instead of forking silently.
+10. **Fail loud**: "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
 
 ## Generalized implementation guidance
 
@@ -121,25 +98,7 @@ Prefer project-standard commands over ad-hoc direct commands.
 
 When a direct Flutter/Dart command is needed, check `.fvm_cache` first. If it contains `USING_FVM=1`, use `fvm flutter ...` or `fvm dart ...` instead of the local Flutter/Dart installation.
 
-Useful make targets:
-
-```bash
-make check       # Definition of done: analyze + format_check + test (see Testing and Verification)
-make setup       # Clean + pub_get + lang + asset + gen_all
-make pub_get     # Dependencies across plugins, core, and main app
-make gen_all     # Code generation for core, data_source, and main app
-make gen_core    # Code generation for core only
-make gen_main    # Code generation for apps/main only
-make lang        # Regenerate all localization outputs
-make format      # Format hand-written Dart code
-make format_check # Verify formatting without rewriting files
-make test        # Run tests when available
-make coverage_main
-make analyze     # Analyze every package, or scope with PACKAGES="apps/main core"
-make run_module_generator     # Scaffold a feature module (interactive)
-make verify_module_generator  # Smoke-test the module generator end to end
-make help        # Show available commands
-```
+Run `make help` for the full target list. `make check` is the definition of done (see Testing and Verification).
 
 Do not run broad generation unless a relevant generated source changed. For example, only run `make gen_core` after changing `@JsonSerializable`, Freezed, Injectable, route/export inputs, or generated code inputs in `core`.
 
@@ -158,15 +117,7 @@ Generated files include:
 - generated export barrels from `module_generator:generate_export`
 - route provider registries from the `fl_navigation` build_runner builder
 
-Common generation commands:
-
-```bash
-make lang          # CSV -> ARB -> localization Dart for app/core/fl_media
-make gen_core      # build_runner + export generation in core
-make gen_main      # route provider registry + build_runner in apps/main
-make gen_all       # core + data_source + apps/main
-sh gen_app_identifier.sh apps/main
-```
+Regenerate app identifiers after editing `app_identifier.yaml` with `sh gen_app_identifier.sh apps/main`.
 
 ## Localization
 
@@ -183,13 +134,7 @@ Source files:
 - `core/lib/l10n/localizations.csv`
 - `plugins/fl_media/lib/src/l10n/localizations.csv`
 
-CSV format:
-
-```csv
-key,en,vi
-welcome,Welcome,Chào mừng
-greeting,"Hello, {name}!","Xin chào, {name}!"
-```
+CSV format (`key,en,vi` columns) and examples: `.agents/skills/fl-localization/SKILL.md`.
 
 Rules:
 
@@ -199,13 +144,6 @@ Rules:
 - Keep key names stable unless the rename improves stale branding or semantics.
 - Generated localization APIs use positional parameters, not named parameters.
 - In widgets, use the project localization helper, for example `final trans = translate(context);`.
-
-Locale wiring lives primarily in:
-
-- `core/lib/common/constants/locale/app_locale.dart`
-- `apps/main/lib/app_delegate.dart`
-- `core/lib/common/calendar.dart`
-- `core/lib/presentation/extentions/context_extention.dart`
 
 ## Presentation Module Architecture
 
@@ -266,37 +204,7 @@ Rules:
 - Extension target should be the private state class.
 - Action methods should usually be private.
 
-Example:
-
-```dart
-// settings_screen.dart
-part 'settings.action.dart';
-
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends StateBase<SettingsScreen> {
-  @override
-  Widget build(BuildContext context) {
-    final trans = translate(context);
-    return ThemeButton.primary(
-      title: trans.confirm,
-      onPressed: _handleConfirm,
-    );
-  }
-}
-
-// settings.action.dart
-part of 'settings_screen.dart';
-
-extension SettingsScreenAction on _SettingsScreenState {
-  void _handleConfirm() {}
-}
-```
+Full example: `.agents/skills/fl-extension-action/SKILL.md`.
 
 ## BLoC Standards
 
@@ -537,16 +445,3 @@ The rest of the convention, from the existing log:
 - Branch before committing when you are on `master`.
 - Do not open a PR while `make check` is red (see Definition of done).
 - Fill in `.github/PULL_REQUEST_TEMPLATE.md`, and delete the sections and checklist blocks that do not apply rather than annotating them "n/a".
-
-## Final Reminders
-
-1. Check existing implementations before writing new code.
-2. Prefer reusable widgets and helpers over new abstractions.
-3. Keep screens clean; move growing action logic to `*.action.dart`.
-4. Add/update English and Vietnamese localization through CSV files.
-5. Never edit generated files when a generator exists.
-6. Use make targets for generation and localization.
-7. Keep technical identifier changes deliberate and consistent across Android, iOS, docs, and CI scripts.
-8. Do not add speculative abstractions, fallback logic, or comments unless they are needed for the current task.
-9. Run `make check` before reporting any code change as complete; never use `dart fix --apply` to get it green.
-10. Never sign a commit or PR as an agent — no `🤖 Generated with …` footer, no AI `Co-Authored-By:` trailer.

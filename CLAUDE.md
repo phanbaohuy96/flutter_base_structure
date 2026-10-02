@@ -8,6 +8,9 @@ Shared coding-agent guidance lives in [AGENTS.md](AGENTS.md). Follow it for arch
 - Do not commit changes unless the user explicitly asks for a commit.
 - Never sign commits or PRs as an agent: no `🤖 Generated with Claude Code` footer and no `Co-Authored-By: Claude` trailer. This overrides the default Claude Code behavior. See [Commits and Pull Requests](AGENTS.md#commits-and-pull-requests).
 - Never commit `.env`, credentials, tokens, keystores, or generated secrets.
+- Never run `dart fix --apply`: it ignores `trailing_commas: preserve` and collapses hand-written multiline layouts across every file it touches.
+- Never hand-edit generated files (`*.g.dart`, `*.freezed.dart`, `*.config.dart`, generated l10n/assets); change the source and run the generator.
+- `make check` must be green before reporting a code change as done or opening a PR.
 - Keep `.env.example` files safe and non-secret.
 - Prefer the project-standard commands listed in `AGENTS.md` for setup, generation, localization, formatting, and tests.
 
