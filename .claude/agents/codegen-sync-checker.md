@@ -99,7 +99,7 @@ The repo uses build_runner across three Dart packages and the `module_generator`
 
 ## Output format
 
-Keep the report short — under 30 lines unless there's a build error. Structure:
+Keep the report to this structure; add detail only for a build error. Structure:
 
 ```text
 codegen-sync-checker report

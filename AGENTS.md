@@ -27,7 +27,7 @@ Primary libraries and patterns:
 - **State management**: BLoC + Freezed
 - **DI**: Injectable + GetIt (`apps/main/lib/di/di.dart`)
 - **Networking**: Retrofit + Dio via `modules/data_source`
-- **Local storage**: storage seam (`CoreLocalDataManager` / `LocalDataManager`) over SharedPreferences + FlutterSecureStorage. `hive_ce` is still a declared dep if a feature genuinely needs a box, but the template no longer ships a default Hive store.
+- **Local storage**: storage seam (`CoreLocalDataManager` / `LocalDataManager`) over SharedPreferences + FlutterSecureStorage. `hive_ce` is a declared dependency for a feature that genuinely needs a box; the template ships no default Hive store.
 - **Routing**: project route abstractions under `presentation/route`
 - **Localization**: CSV source files -> ARB -> generated localizations
 
@@ -69,7 +69,7 @@ These generic agent rules come before implementation details. For the full check
 5. **Surface conflicts, don't average them**: if two patterns contradict, pick one based on which is more recent or more tested. Explain why and flag the other for cleanup. Do not blend conflicting patterns.
 6. **Read before you write**: before adding code, read exports, immediate callers, and shared utilities. "Looks orthogonal" is dangerous. If unsure why code is structured a way, ask.
 7. **Tests verify intent, not just behavior**: tests must encode why behavior matters, not only what it does. A test that cannot fail when business logic changes is wrong.
-8. **Checkpoint after every significant step**: summarize what was done, what is verified, and what is left. Do not continue from a state you cannot describe back. If you lose track, stop and restate.
+8. **Know where you stand**: be able to say at any point what was done, what is verified, and what is left. If you can't, stop and restate before continuing.
 9. **Match the codebase's conventions, even if you disagree**: conformance is more important than taste inside the codebase. If you genuinely think a convention is harmful, surface it instead of forking silently.
 10. **Fail loud**: "Completed" is wrong if anything was skipped silently. "Tests pass" is wrong if any were skipped. Default to surfacing uncertainty, not hiding it.
 

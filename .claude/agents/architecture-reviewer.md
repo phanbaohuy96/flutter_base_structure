@@ -109,4 +109,4 @@ For each finding, include:
 - Do not flag style issues, naming, or test coverage — that's `flutter-reviewer` / `data-reviewer` territory under `.agents/skills/`.
 - Do not invent rules. If something feels wrong but isn't covered above, surface it as `Ask` rather than `Block`.
 
-Keep the report under 40 lines for normal diffs. If there are more than 10 violations, group them by package and summarise the pattern rather than listing every line.
+Keep the report scannable: one entry per finding, and when violations repeat a pattern, group them by package and summarise the pattern rather than listing every line.
